@@ -9,7 +9,7 @@ namespace ScriptableObjects
     /// 
     /// </summary>
     /// <remarks>Scriptable Objects are saved by default in the Editor, this class must be inherited only to keep user changes in a session (such as settings)</remarks>
-    internal class JsonSerializableSO : ScriptableObject
+    public class JsonSerializableSO : ScriptableObject
     {
         #if UNITY_EDITOR
         private const string ScriptableObjectsDataDirectory = "ScriptableObjects_dev";
