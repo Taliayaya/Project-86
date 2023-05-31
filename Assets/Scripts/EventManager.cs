@@ -7,6 +7,10 @@ namespace DefaultNamespace
     public class TypedEvent : UnityEvent<object> { }
     /// <summary>
     /// A general event manager that can be used to trigger events.
+    /// Using this EventManager is very important for the development of the code.
+    /// Try avoiding as much as possible the use of dependencies between classes and instead, raise events.
+    ///
+    /// This class should be used as a gateway between classes.
     /// </summary>
     public class EventManager : Singleton<EventManager>
     {
@@ -20,8 +24,6 @@ namespace DefaultNamespace
 
 
         #region Action events
-        
-        //Write me the documentation of the code
         
         /// <summary>
         /// Add a listener to the event with the given name.
