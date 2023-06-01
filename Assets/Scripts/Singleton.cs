@@ -97,6 +97,12 @@ public abstract class Singleton : MonoBehaviour
     private void OnApplicationQuit()
     {
         Quitting = true;
+        OnApplicationQuitting();
+    }
+
+    protected virtual void OnApplicationQuitting()
+    {
+        
     }
     #endregion
 }
