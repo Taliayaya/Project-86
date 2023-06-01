@@ -22,13 +22,13 @@ namespace DefaultNamespace
         private void OnMove(InputValue inputValue)
         {
             var data = inputValue.Get<Vector2>();
-            EventManager.TriggerEvent("onMove", data);
+            EventManager.TriggerEvent("OnMove", data);
         }
         
         private void OnFire(InputValue inputValue)
         {
             var data = inputValue.Get<float>();
-            EventManager.TriggerEvent("onFire", data);
+            EventManager.TriggerEvent("OnFire", data);
         }
 
         private void OnLookAround(InputValue inputValue)

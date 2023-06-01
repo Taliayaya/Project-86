@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DefaultNamespace;
+using ScriptableObjects.GameParameters;
 using UnityEngine;
 
 /// <summary>
@@ -9,15 +11,54 @@ using UnityEngine;
 /// </summary>
 public class GameManager : Singleton<GameManager>
 {
-    
-    void OnAwake()
+    public static bool GameIsPaused { get; private set; } = false;
+
+    #region Unity Callbacks
+
+    protected override void OnAwake()
     {
         
+        GameParameters[] gameParametersArray = Resources.LoadAll<GameParameters>("ScriptableObjects/Parameters");
+        foreach (var parameter in gameParametersArray)
+        {
+            Debug.Log("[GameManager] Parameter: " + parameter.GetParametersName);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnEnable()
     {
-        
+        EventManager.AddListener("PauseGame", OnPauseGame);
+        EventManager.AddListener("ResumeGame", OnResumeGame);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.RemoveListener("PauseGame", OnPauseGame);
+        EventManager.RemoveListener("ResumeGame", OnResumeGame);
+    }
+
+    #endregion
+
+    #region Resume / Pause Game
+
+    private void OnPauseGame()
+    {
+        GameIsPaused = true;
+        Time.timeScale = 0;
+    }
+
+    private void OnResumeGame()
+    {
+        GameIsPaused = false;
+        Time.timeScale = 1;
+    }
+
+    #endregion
+
+    protected override void OnApplicationQuitting()
+    {
+#if !UNITY_EDITOR
+        DataHandler.SaveGameData();
+#endif
     }
 }

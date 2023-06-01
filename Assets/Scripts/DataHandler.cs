@@ -14,5 +14,17 @@ namespace DefaultNamespace
             foreach (var parameters in gameParametersArray)
                 parameters.SaveToFile();
         }
+
+        public static void LoadGameData()
+        {
+            LoadParameters();
+        }
+
+        private static void LoadParameters()
+        {
+            var gameParametersArray = Resources.LoadAll<GameParameters>("ScriptableObjects/Parameters");
+            foreach (var parameter in gameParametersArray)
+                parameter.LoadFromFile();
+        }
     }
 }
