@@ -19,14 +19,14 @@ This file contains all the events that are emitted and their description.
 
 ## All Events
 
-| Event Name                                       | Typed | Type                                | Description                                                                              |
-|--------------------------------------------------|-------|-------------------------------------|------------------------------------------------------------------------------------------|
-| [PauseGame](#pausegame)                          | []    |                                     | Emitted when the game is paused.                                                         |
-| [ResumeGame](#resumegame)                        | []    |                                     | Emitted when the game is resumed.                                                        |
-| [UpdateGameParameter:\[name\]](#game-parameters) | [x]   | object *(depends on the parameter)* | Emitted when a game parameter is updated. The name of the parameter is in the event name |
-| [OnMove](#onmove)                                | [x]   | Vector2                             | Emitted when the player move input is pressed                                            |
-| [OnFire](#onfire)                                | [x]   | float                               | Emitted when the player fire input is pressed                                            |
-| [OnLookAround](#onlookaround)                    | [x]   | Vector2                             | Emitted when the mouse moves (delta mouse)                                               |
+| Event Name                                        | Type                                | Description                                                                              |
+|---------------------------------------------------|-------------------------------------|------------------------------------------------------------------------------------------|
+| [PauseGame](#pausegame)                           |                                     | Emitted when the game is paused.                                                         |
+| [ResumeGame](#resumegame)                         |                                     | Emitted when the game is resumed.                                                        |
+| [UpdateGameParameter:\[name\]](#game-parameters)  | object *(depends on the parameter)* | Emitted when a game parameter is updated. The name of the parameter is in the event name |
+| [OnMove](#onmove)                                 | Vector2                             | Emitted when the player move input is pressed                                            |
+| [OnFire](#onfire)                                 | float                               | Emitted when the player fire input is pressed                                            |
+| [OnLookAround](#onlookaround)                     | Vector2                             | Emitted when the mouse moves (delta mouse)                                               |
 
 ## Sound Events
 
