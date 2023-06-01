@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4987ed07734493ba0959dbbd7c31b85, type: 3}
   m_Name: Sound Parameters
   m_EditorClassIdentifier: 
-  fieldsToShowInGame: []
-  musicVolume: 0
+  fieldsToShowInGame:
+  - musicVolume
+  - sfxVolume
+  musicVolume: -12
   sfxVolume: 0
