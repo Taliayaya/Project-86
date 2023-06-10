@@ -44,6 +44,7 @@ namespace DefaultNamespace.Sound
 
         private void OnUpdateMusicVolume(object data)
         {
+            Debug.Log("Called Event");
             float volume = (float)data;
             masterMixer.SetFloat("musicVol", volume);
         }

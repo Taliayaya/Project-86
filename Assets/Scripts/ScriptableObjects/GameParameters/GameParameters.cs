@@ -7,7 +7,7 @@ namespace ScriptableObjects.GameParameters
     /// GameParameter is the base class for all the parameters section of the game.
     /// It allows to dynamically show or hide fields in the game settings.
     /// </summary>
-    public abstract class GameParameters : JsonSerializableSO
+    public abstract class GameParameters : BinarySerializableSO
     {
         [SerializeField] protected List<string> fieldsToShowInGame = new List<string>();
         
