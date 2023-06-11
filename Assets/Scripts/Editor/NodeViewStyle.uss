@@ -1,0 +1,148 @@
+#node-border {
+    background-color: rgb(56, 56, 56);
+    -unity-background-image-tint-color: rgb(56, 56, 56);
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+#input {
+    justify-content: center;
+    align-items: center;
+    cursor: initial;
+}
+
+#output {
+    justify-content: center;
+    align-items: center;
+}
+
+#selection-border {
+    border-left-color: rgb(0, 164, 217);
+    border-right-color: rgb(0, 164, 217);
+    border-top-color: rgb(0, 164, 217);
+    border-bottom-color: rgb(0, 164, 217);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+:hover > #selection-border {
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+}
+
+:selected > #selection-border {
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+}
+
+:hover:selected > #selection-border {
+    border-left-width: 2px;
+    border-right-width: 2px;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+}
+
+.node {
+    min-width: 150px;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+#title {
+    font-size: 14px;
+    -unity-font-style: bold;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+#description {
+    font-size: 10px;
+    white-space: normal;
+    max-width: 200px;
+}
+
+#divider {
+    min-height: 1px;
+    background-color: rgb(0, 0, 0);
+}
+
+.action #input {
+    background-color: rgb(239, 91, 91);
+}
+
+.composite #input {
+    background-color: rgb(32, 163, 158);
+}
+
+.decorator #input {
+    background-color: rgb(255, 186, 73);
+}
+
+.root #input {
+    min-height: 20px;
+    background-color: rgb(35, 0, 30);
+}
+
+#node-state {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.failure #node-state {
+    background-color: rgba(183, 0, 0, 255);
+}
+
+.running #node-state {
+    background-color: rgba(255, 248, 8, 255);
+}
+
+.success #node-state {
+    background-color: rgba(0, 147, 8, 255);
+}
+
+#input Port Label {
+    display: flex;
+    visibility: hidden;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 0;
+    padding-bottom: 15px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
