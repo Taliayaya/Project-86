@@ -11,8 +11,13 @@ namespace AI.BehaviourTree
             Success
         }
         
-        public State state = State.Running;
-        public bool started = false;
+        [HideInInspector] public State state = State.Running;
+        [HideInInspector] public bool started = false;
+        [HideInInspector] public string guid;
+        [HideInInspector] public Vector2 position;
+        [HideInInspector] public BlackBoard blackBoard;
+        
+        [TextArea] public string description;
 
         public State Update()
         {
@@ -32,6 +37,8 @@ namespace AI.BehaviourTree
 
             return state;
         }
+
+        public virtual Node Clone() => Instantiate(this);
 
         protected abstract void OnStart();
         protected abstract void OnStop();

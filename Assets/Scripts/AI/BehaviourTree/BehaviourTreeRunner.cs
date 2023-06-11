@@ -1,28 +1,23 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace AI.BehaviourTree
 {
     public class BehaviourTreeRunner : MonoBehaviour
     {
-        private BehaviourTree _tree;
+        public BehaviourTree tree;
 
         private void Start()
         {
-            _tree = ScriptableObject.CreateInstance<BehaviourTree>();
-            var log = ScriptableObject.CreateInstance<DebugLogNode>();
-            var repeat = ScriptableObject.CreateInstance<RepeatNode>();
-            
-            log.message = "Hello World!";
-            
-            _tree.rootNode = repeat;
-            repeat.child = log;
+            tree = tree.Clone();
+            tree.Bind();
         }
         
         
         private void Update()
         {
-            _tree.Update();
+            tree.Update();
         }
     }
 }

@@ -27,7 +27,7 @@ namespace DefaultNamespace
         
         #region  Properties
 
-        public static bool HasInstance => _instance;
+        public static bool HasInstance => _instance != null;
         
         public static T Instance
         {
