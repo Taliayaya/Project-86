@@ -23,18 +23,19 @@ public class GameManager : Singleton<GameManager>
         {
             Debug.Log("[GameManager] Parameter: " + parameter.GetParametersName);
         }
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void OnEnable()
     {
-        EventManager.AddListener("PauseGame", OnPauseGame);
-        EventManager.AddListener("ResumeGame", OnResumeGame);
+        EventManager.AddListener("OnPause", OnPauseGame);
+        EventManager.AddListener("OnResume", OnResumeGame);
     }
 
     private void OnDisable()
     {
-        EventManager.RemoveListener("PauseGame", OnPauseGame);
-        EventManager.RemoveListener("ResumeGame", OnResumeGame);
+        EventManager.RemoveListener("OnPause", OnPauseGame);
+        EventManager.RemoveListener("OnResume", OnResumeGame);
     }
 
     #endregion
@@ -45,12 +46,14 @@ public class GameManager : Singleton<GameManager>
     {
         GameIsPaused = true;
         Time.timeScale = 0;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     private void OnResumeGame()
     {
         GameIsPaused = false;
         Time.timeScale = 1;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     #endregion
