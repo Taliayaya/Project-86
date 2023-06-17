@@ -16,6 +16,11 @@ namespace DefaultNamespace
     [RequireComponent(typeof(PlayerInput))]
     public class InputManager : Singleton<InputManager>
     {
+        private PlayerInput _playerInput;
+        protected override void OnAwake()
+        {
+            _playerInput = GetComponent<PlayerInput>();
+        }
 
         #region Juggernaut Action Map
 
@@ -52,7 +57,24 @@ namespace DefaultNamespace
             var data = inputValue.Get<float>();
             EventManager.TriggerEvent("OnZoomOut", data);
         }
+
+        private void OnPause()
+        {
+            EventManager.TriggerEvent("OnPause");
+            _playerInput.SwitchCurrentActionMap("PauseMenu");
+        }
         
+        #endregion
+
+        #region Pause Action Map
+        
+
+        private void OnResume()
+        {
+            EventManager.TriggerEvent("OnResume");
+            _playerInput.SwitchCurrentActionMap("Juggernaut");
+        }
+
         #endregion
         
     }
