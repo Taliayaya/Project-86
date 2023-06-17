@@ -142,7 +142,7 @@ namespace Gameplay.Mecha
 
         private void MoveJuggernaut()
         {
-            var move = _rigidbody.transform.forward * (_lastMovement.y) + Vector3.right * (_lastMovement.x);
+            var move = _rigidbody.transform.forward * (_lastMovement.y) + _rigidbody.transform.right * (_lastMovement.x);
                                     
             //_rigidbody.MovePosition(_rigidbody.position + move * Time.fixedDeltaTime);
             _rigidbody.AddForce(move.normalized * (juggernautParameters.movementSpeed * 10f), ForceMode.Force);
