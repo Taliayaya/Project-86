@@ -205,12 +205,13 @@ namespace UI
         private float _previousAlpha;
         private void OnPause()
         {
-            FadeReticle(0.1f, 0.3f);
+            FadeReticle(0.1f, 0);
+            Debug.Log("OnPause");
         }
 
         private void OnResume()
         {
-            FadeReticle(_previousAlpha, 0.3f);
+            FadeReticle(_previousAlpha, 0);
         }
 
         #endregion
