@@ -1,24 +1,12 @@
-﻿using Gameplay;
+﻿using System;
 using UnityEngine;
 
-namespace DefaultNamespace.Gameplay
+namespace Gameplay
 {
     public class Enemy : MonoBehaviour, IHealth
     {
-        private float _health;
-        private float _maxHealth;
-
-        float IHealth.Health
-        {
-            get => _health;
-            set => _health = value;
-        }
-
-        float IHealth.MaxHealth
-        {
-            get => _maxHealth;
-            set => _maxHealth = value;
-        }
+        public float Health { get; set; } = 100;
+        public float MaxHealth { get; set; } = 100;
 
         public void OnTakeDamage()
         {
@@ -27,6 +15,12 @@ namespace DefaultNamespace.Gameplay
         void IHealth.Die()
         {
             Destroy(gameObject);
+        }
+
+        private void Awake()
+        {
+            Health = 300;
+            MaxHealth = 300;
         }
     }
 }
