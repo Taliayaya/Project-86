@@ -33,6 +33,19 @@ namespace UI
             foreach (var parameter in gameParametersArray)
                 _gameParametersMap.Add(parameter.GetParametersName, parameter);
             SetupGameSettingsPanel();
+            CloseGameSettingsPanel();
+        }
+
+        private void OnEnable()
+        {
+            EventManager.AddListener("OnPause", OpenGameSettingsPanel);
+            EventManager.AddListener("OnResume", CloseGameSettingsPanel);
+        }
+
+        private void OnDisable()
+        {
+            EventManager.RemoveListener("OnPause", OpenGameSettingsPanel);
+            EventManager.RemoveListener("OnResume", CloseGameSettingsPanel);
         }
 
         #region Dynamic Creation of the UI
@@ -139,12 +152,12 @@ namespace UI
         
         public void OpenGameSettingsPanel()
         {
-            gameSettingsPanel.SetActive(true);
+            gameSettingsPanel.transform.GetChild(0).gameObject.SetActive(true);
         }
         
         public void CloseGameSettingsPanel()
         {
-            gameSettingsPanel.SetActive(false);
+            gameSettingsPanel.transform.GetChild(0).gameObject.SetActive(false);
         }
         
         
