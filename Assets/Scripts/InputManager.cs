@@ -25,16 +25,32 @@ namespace DefaultNamespace
             EventManager.TriggerEvent("OnMove", data);
         }
         
-        private void OnFire(InputValue inputValue)
+        private void OnPrimaryFire(InputValue inputValue)
         {
-            var data = inputValue.Get<float>();
-            EventManager.TriggerEvent("OnFire", data);
+            EventManager.TriggerEvent("OnPrimaryFire");
+        }
+
+        private void OnSecondaryFire(InputValue inputValue)
+        {
+            EventManager.TriggerEvent("OnSecondaryFire");
         }
 
         private void OnLookAround(InputValue inputValue)
         {
             var data = inputValue.Get<Vector2>();
             EventManager.TriggerEvent("OnLookAround", data);
+        }
+
+        private void OnZoomIn(InputValue inputValue)
+        {
+            var data = inputValue.Get<float>();
+            EventManager.TriggerEvent("OnZoomIn", data);
+        }
+        
+        private void OnZoomOut(InputValue inputValue)
+        {
+            var data = inputValue.Get<float>();
+            EventManager.TriggerEvent("OnZoomOut", data);
         }
         
         #endregion
