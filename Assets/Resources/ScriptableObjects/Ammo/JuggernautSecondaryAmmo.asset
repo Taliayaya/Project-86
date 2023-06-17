@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a1d3f226d294dd28c3f4fd0c05ca9e3, type: 3}
+  m_Name: JuggernautSecondaryAmmo
+  m_EditorClassIdentifier: 
+  damage: 5
+  fireRate: 10
+  maxAmmo: 200
+  reloadTime: 1
+  maxLifetime: 3
+  forcePower: 100
+  prefab: {fileID: 511108076656415306, guid: aa0030755dea42748808705c045e1d29, type: 3}
+  fireSound: {fileID: 8300000, guid: 0ee50825c20f01a448cd0f2962411475, type: 3}
+  explosionPrefab: {fileID: 100002, guid: 99c73c92ac40473459640b165473206f, type: 3}
+  muzzleFlashPrefab: {fileID: 0}

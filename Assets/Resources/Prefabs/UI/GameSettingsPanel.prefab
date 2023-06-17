@@ -311,6 +311,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 326534296350493248}
+  - component: {fileID: 8751980441722113850}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -335,9 +336,35 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 300}
+  m_AnchoredPosition: {x: 0, y: 0.001159668}
+  m_SizeDelta: {x: 0, y: 715.68}
   m_Pivot: {x: 0, y: 1}
+--- !u!114 &8751980441722113850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4624978297700254116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &5586533788595872305
 GameObject:
   m_ObjectHideFlags: 0
@@ -430,9 +457,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Content: {fileID: 326534296350493248}
-  m_Horizontal: 1
+  m_Horizontal: 0
   m_Vertical: 1
-  m_MovementType: 1
+  m_MovementType: 2
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
@@ -568,8 +595,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5864750324850694964}
   m_HandleRect: {fileID: 7109754847207061681}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 1
+  m_Value: 0.05
+  m_Size: 0.9999983
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -802,6 +829,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8751980441506813446}
   - component: {fileID: 8751980441506813447}
+  - component: {fileID: 5560289868609747660}
   m_Layer: 5
   m_Name: GameSettingsPanel
   m_TagString: Untagged
@@ -838,6 +866,30 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8751980441506813465}
   m_CullTransparentMesh: 1
+--- !u!114 &5560289868609747660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8751980441506813465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53f77079b150eac43b3b8bef1a8e65b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menuButtonPrefab: {fileID: 1152001668232191575, guid: c8e28fd8a2d1f5d4a8a90e16a8077669,
+    type: 3}
+  contentParameterPrefab: {fileID: 1425709117274464693, guid: 099262be6c1407d47a6528a8e801fce6,
+    type: 3}
+  sliderPrefab: {fileID: 646928205646680415, guid: 4228aa60f59b2ba4581c0673cd883552,
+    type: 3}
+  togglePrefab: {fileID: 6403208429826557915, guid: d157df3dc68609b45bf2ad671ff267e2,
+    type: 3}
+  gameSettingsPanel: {fileID: 8751980441506813465}
+  menuContentName: {fileID: 2750334969338612634}
+  menusParent: {fileID: 8751980440435629938}
+  contentParent: {fileID: 326534296350493248}
 --- !u!1 &8751980441526141091
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,6 +16,11 @@ namespace DefaultNamespace
     [RequireComponent(typeof(PlayerInput))]
     public class InputManager : Singleton<InputManager>
     {
+        private PlayerInput _playerInput;
+        protected override void OnAwake()
+        {
+            _playerInput = GetComponent<PlayerInput>();
+        }
 
         #region Juggernaut Action Map
 
@@ -25,10 +30,14 @@ namespace DefaultNamespace
             EventManager.TriggerEvent("OnMove", data);
         }
         
-        private void OnFire(InputValue inputValue)
+        private void OnPrimaryFire(InputValue inputValue)
         {
-            var data = inputValue.Get<float>();
-            EventManager.TriggerEvent("OnFire", data);
+            EventManager.TriggerEvent("OnPrimaryFire");
+        }
+
+        private void OnSecondaryFire(InputValue inputValue)
+        {
+            EventManager.TriggerEvent("OnSecondaryFire");
         }
 
         private void OnLookAround(InputValue inputValue)
@@ -36,7 +45,36 @@ namespace DefaultNamespace
             var data = inputValue.Get<Vector2>();
             EventManager.TriggerEvent("OnLookAround", data);
         }
+
+        private void OnZoomIn(InputValue inputValue)
+        {
+            var data = inputValue.Get<float>();
+            EventManager.TriggerEvent("OnZoomIn", data);
+        }
         
+        private void OnZoomOut(InputValue inputValue)
+        {
+            var data = inputValue.Get<float>();
+            EventManager.TriggerEvent("OnZoomOut", data);
+        }
+
+        private void OnPause()
+        {
+            EventManager.TriggerEvent("OnPause");
+            _playerInput.SwitchCurrentActionMap("PauseMenu");
+        }
+        
+        #endregion
+
+        #region Pause Action Map
+        
+
+        private void OnResume()
+        {
+            EventManager.TriggerEvent("OnResume");
+            _playerInput.SwitchCurrentActionMap("Juggernaut");
+        }
+
         #endregion
         
     }

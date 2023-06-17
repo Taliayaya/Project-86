@@ -34,12 +34,12 @@
                 // 1. display the custom toggle button
                 // (little trick to have the button stick to the bottom of the row
                 // if there is a header on this property...)
-                EditorGUILayout.BeginVertical(GUILayout.Width(40f));
+                EditorGUILayout.BeginVertical(GUILayout.Width(20f));
                 EditorGUILayout.BeginHorizontal();
                 bool hasHeader = System.Attribute.IsDefined(field, typeof(HeaderAttribute), false);
                 if (hasHeader)
                     GUILayout.FlexibleSpace();
-                if (GUILayout.Button(parameters.ShowsField(field.Name) ? EditorGUIUtility.TrTextContent("animationvisibilitytoggleon@2x") : EditorGUIUtility.IconContent("scenevis_hidden_hover@2x"), _buttonsStyle, GUILayout.Width(20f), GUILayout.Height(20f)))
+                if (GUILayout.Button(parameters.ShowsField(field.Name) ? EditorGUIUtility.IconContent("animationvisibilitytoggleon@2x") : EditorGUIUtility.IconContent("scenevis_hidden_hover@2x"), _buttonsStyle, GUILayout.Width(20f), GUILayout.Height(20f)))
                 {
                     parameters.ToggleShowField(field.Name);
                     parameters.ToggleSerializeField(field.Name);
