@@ -18,6 +18,8 @@ namespace UI
 
         private void OnEnable()
         {
+            EventManager.AddListener("OnPause", OnPause);
+            EventManager.AddListener("OnResume", OnResume);
             EventManager.AddListener("OnUpdateHealth", OnUpdateHealth);
             EventManager.AddListener("OnUpdatePrimaryAmmoAmount", OnUpdatePrimaryAmmoAmount);
             EventManager.AddListener("OnZoomChange", OnZoomChange);
@@ -29,6 +31,8 @@ namespace UI
 
         private void OnDisable()
         {
+            EventManager.RemoveListener("OnPause", OnPause);
+            EventManager.RemoveListener("OnResume", OnResume);
             EventManager.RemoveListener("OnUpdateHealth", OnUpdateHealth);
             EventManager.RemoveListener("OnUpdatePrimaryAmmoAmount", OnUpdatePrimaryAmmoAmount);
             EventManager.RemoveListener("OnZoomChange", OnZoomChange);
@@ -48,6 +52,7 @@ namespace UI
 
         private void FadeReticle(float alpha, float duration)
         {
+            _previousAlpha = reticleImages[0].color.a;
             foreach (var image in reticleImages)
             {
                 image.CrossFadeAlpha(alpha, duration, false);
@@ -192,6 +197,21 @@ namespace UI
             topIndicatorText.text = (-(float)playerXRotation).ToString("F1", new CultureInfo("en-US"));
         }
         
+
+        #endregion
+
+        #region OnPause/OnResume
+
+        private float _previousAlpha;
+        private void OnPause()
+        {
+            FadeReticle(0.1f, 0.3f);
+        }
+
+        private void OnResume()
+        {
+            FadeReticle(_previousAlpha, 0.3f);
+        }
 
         #endregion
     }
