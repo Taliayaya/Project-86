@@ -14,6 +14,9 @@ namespace Gameplay
         {
             Health = Mathf.Clamp(Health - damageAmount, 0, MaxHealth);
             OnTakeDamage();
+            
+            if (!Alive)
+                Die();
         }
 
         protected void Die();
