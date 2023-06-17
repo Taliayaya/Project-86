@@ -84,7 +84,6 @@ namespace Gameplay.Mecha
         {
             
             GetComponent<Rigidbody>();
-            Cursor.lockState = CursorLockMode.Locked;
         }
 
         private void OnEnable()
