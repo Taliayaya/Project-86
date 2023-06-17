@@ -101,6 +101,8 @@ namespace AI.BehaviourTree
                     break;
             }
         }
+        
+#endif
 
         public List<Node> GetChildren(Node parent)
         {
@@ -135,6 +137,7 @@ namespace AI.BehaviourTree
                 children.ForEach(c => Traverse(c, visitor));
             }
         }
+        
         public BehaviourTree Clone()
         {
             BehaviourTree tree = Instantiate(this);
@@ -151,6 +154,5 @@ namespace AI.BehaviourTree
                 node.blackBoard = blackBoard;
             });
         }
-#endif
     }
 }
