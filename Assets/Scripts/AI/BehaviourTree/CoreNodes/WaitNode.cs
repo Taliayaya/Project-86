@@ -1,14 +1,14 @@
 using UnityEngine;
 
-namespace AI.BehaviourTree
+namespace AI.BehaviourTree.CoreNodes
 {
     public class WaitNode : ActionNode
     {
         public float duration = 1f;
-        private float startTime;
+        private float _startTime;
         protected override void OnStart()
         {
-            startTime = Time.time;
+            _startTime = Time.time;
         }
 
         protected override void OnStop()
@@ -17,7 +17,7 @@ namespace AI.BehaviourTree
 
         protected override State OnUpdate()
         {
-            if (Time.time - startTime >= duration)
+            if (Time.time - _startTime >= duration)
             {
                 return State.Success;
             }
