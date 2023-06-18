@@ -18,16 +18,16 @@ namespace DefaultNamespace.Sound
 
         private void OnEnable()
         {
-            EventManager.AddListener("PauseGame", OnPauseGame );
-            EventManager.AddListener("ResumeGame", OnResumeGame);
+            EventManager.AddListener("OnPause", OnPauseGame );
+            EventManager.AddListener("OnResume", OnResumeGame);
             EventManager.AddListener("UpdateGameParameter:musicVolume",OnUpdateMusicVolume);
             EventManager.AddListener("UpdateGameParameter:sfxVolume", OnUpdateSfxVolume);
         }
 
         private void OnDisable()
         {
-            EventManager.RemoveListener("PauseGame", OnPauseGame );
-            EventManager.RemoveListener("ResumeGame", OnResumeGame);
+            EventManager.RemoveListener("OnPause", OnPauseGame );
+            EventManager.RemoveListener("OnResume", OnResumeGame);
             EventManager.RemoveListener("UpdateGameParameter:musicVolume",OnUpdateMusicVolume);
             EventManager.RemoveListener("UpdateGameParameter:sfxVolume", OnUpdateSfxVolume);
         }
