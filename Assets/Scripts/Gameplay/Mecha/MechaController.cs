@@ -149,7 +149,7 @@ namespace Gameplay.Mecha
 
         private void ApplyGravity()
         {
-            _rigidbody.AddForce(Vector3.up * (gravity * Time.fixedDeltaTime));
+            _rigidbody.AddForce(Vector3.up * (gravity * Time.fixedDeltaTime), ForceMode.Force);
         }
 
         private void RotateJuggernaut()
@@ -185,8 +185,8 @@ namespace Gameplay.Mecha
         {
             if (data is not Vector2 pos)
                 return;
-            _xRotation -= pos.y * juggernautParameters.mouseSensitivity * Time.fixedDeltaTime;
-            _yRotation += pos.x * juggernautParameters.mouseSensitivity * Time.fixedDeltaTime;
+            _xRotation -= pos.y * juggernautParameters.MouseSensitivity * Time.fixedDeltaTime;
+            _yRotation += pos.x * juggernautParameters.MouseSensitivity * Time.fixedDeltaTime;
             EventManager.TriggerEvent("OnUpdateCompass", _yRotation);
 
             _xRotation = Mathf.Clamp(_xRotation, MinXRotation, MaxXRotation);
