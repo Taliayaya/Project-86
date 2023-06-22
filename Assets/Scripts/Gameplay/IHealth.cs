@@ -3,23 +3,30 @@ using UnityEngine;
 
 namespace Gameplay
 {
+    public struct DamagePackage
+    {
+        public float DamageAmount;
+        public Faction Faction;
+    }
     public interface IHealth
     {
         public float Health { get; set; }
         public float MaxHealth { get; set; }
+        
+        public Faction Faction { get; set; }
 
         public void OnTakeDamage();
 
-        public void TakeDamage(float damageAmount)
+        public void TakeDamage(DamagePackage damagePackage)
         {
-            Health = Mathf.Clamp(Health - damageAmount, 0, MaxHealth);
+            Health = Mathf.Clamp(Health - damagePackage.DamageAmount, 0, MaxHealth);
             OnTakeDamage();
             
             if (!Alive)
                 Die();
         }
 
-        protected void Die();
+        public void Die();
 
         public bool Alive => Health > 0;
     }
