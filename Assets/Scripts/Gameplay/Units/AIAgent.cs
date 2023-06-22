@@ -54,8 +54,9 @@ namespace Gameplay.Units
 
         }
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             Tree.blackBoard.SetValue("navMeshAgent", _agent);
             Tree.blackBoard.SetValue("transform", transform);
             Tree.blackBoard.SetValue("agentSO", agentSo);

@@ -11,7 +11,7 @@ namespace Gameplay
 
         [SerializeField]
         private UnityEvent<float, float> onHealthChange;
-        private void Start()
+        protected virtual void Start()
         {
             _modules = GetComponentsInChildren<Module>();
             foreach (var module in _modules)
