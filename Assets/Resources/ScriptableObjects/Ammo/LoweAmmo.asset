@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a1d3f226d294dd28c3f4fd0c05ca9e3, type: 3}
+  m_Name: LoweAmmo
+  m_EditorClassIdentifier: 
+  damageCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 400
+      inSlope: -66.666664
+      outSlope: -66.666664
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 3
+      value: 200
+      inSlope: -22.606886
+      outSlope: -22.606886
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.10154302
+    - serializedVersion: 3
+      time: 10
+      value: 100
+      inSlope: -14.285714
+      outSlope: -14.285714
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  fireRate: 0.5
+  maxAmmo: 20
+  reloadTime: 3
+  maxLifetime: 5
+  forcePower: 600
+  prefab: {fileID: 1265322072642014774, guid: 5860792ccc0f1e14db69840f8be58a53, type: 3}
+  fireSound: {fileID: 8300000, guid: a06fad0c670d5574a91051df04dec1bd, type: 3}
+  explosionPrefab: {fileID: 100008, guid: 875c9bcb71a8d7f46a64a8a7df5987e0, type: 3}
+  muzzleFlashPrefab: {fileID: 0}
