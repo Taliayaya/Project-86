@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace AI.BehaviourTree.CoreNodes
+namespace AI.BehaviourTree.CoreNodes.Action
 {
     public class DebugLogNode : ActionNode
     {
