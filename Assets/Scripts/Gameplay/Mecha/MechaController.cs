@@ -8,7 +8,7 @@ using UnityEngine.Serialization;
 namespace Gameplay.Mecha
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class MechaController : MonoBehaviour, IHealth
+    public class MechaController : Unit
     {
         public enum Zoom
         {
@@ -20,7 +20,6 @@ namespace Gameplay.Mecha
         public JuggernautParameters juggernautParameters;
         private Vector2 _lastMouseUpdate;
         private Rigidbody _rigidbody;
-
 
         [SerializeField] private float gravity = -9.81f;
 
@@ -36,7 +35,6 @@ namespace Gameplay.Mecha
         private Transform[] ground;
         [SerializeField] private LayerMask groundMask;
 
-        [SerializeField] private Transform gunTransform;
         private bool _isGrounded;
 
         private Vector2 _lastMovement;
@@ -44,6 +42,7 @@ namespace Gameplay.Mecha
         private float _xRotation;
 
         private float _yRotation;
+        private float _yVelocity;
 
         private Zoom _zoom = Zoom.Default;
         private Zoom CameraZoom
@@ -80,10 +79,13 @@ namespace Gameplay.Mecha
 
         #region Unity Callbacks
 
-        void Awake()
+        public override void Awake()
         {
-            
+            base.Awake();
+            Health = juggernautParameters.health;
+            MaxHealth = juggernautParameters.health;
             GetComponent<Rigidbody>();
+            EventManager.TriggerEvent("OnUpdateHealth", 1f);
         }
 
         private void OnEnable()
@@ -108,7 +110,7 @@ namespace Gameplay.Mecha
         {
             MoveJuggernaut();
             CheckGround();
-            ApplyGravity();
+            ApplyGravity(); // Currently using the rigidbody gravity
             RotateJuggernaut();
             LimitSpeed();
         }
@@ -144,12 +146,15 @@ namespace Gameplay.Mecha
             var move = _rigidbody.transform.forward * (_lastMovement.y) + _rigidbody.transform.right * (_lastMovement.x);
                                     
             //_rigidbody.MovePosition(_rigidbody.position + move * Time.fixedDeltaTime);
-            _rigidbody.AddForce(move.normalized * (juggernautParameters.movementSpeed * 10f), ForceMode.Force);
+            _rigidbody.AddForce(move.normalized * (juggernautParameters.movementSpeed * 1000f), ForceMode.Force);
         }
 
         private void ApplyGravity()
         {
-            _rigidbody.AddForce(Vector3.up * (gravity * Time.fixedDeltaTime), ForceMode.Force);
+            _yVelocity += gravity * Time.fixedDeltaTime;
+            if (_isGrounded)
+                _yVelocity = -0.1f;
+            _rigidbody.AddForce(Vector3.up * (_yVelocity), ForceMode.Force);
         }
 
         private void RotateJuggernaut()
@@ -244,18 +249,22 @@ namespace Gameplay.Mecha
 
         #region Health Manager
 
-        public float Health { get; set; }
-
-        public float MaxHealth { get; set; }
-
-        public void OnTakeDamage()
+        public override void OnTakeDamage()
         {
+            base.OnTakeDamage();
             EventManager.TriggerEvent("OnTakeDamage", Health);
+            EventManager.TriggerEvent("OnUpdateHealth", Health/MaxHealth);
         }
 
-        void IHealth.Die()
+        public override void Die()
         {
-            EventManager.TriggerEvent("OnDeath");
+            base.Die();
+            var deathData = new DeathData
+            {
+                DeathPosition = transform.position,
+                Faction = Faction
+            };
+            EventManager.TriggerEvent("OnDeath", deathData);
         }
         
         #endregion
