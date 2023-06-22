@@ -6,7 +6,7 @@ using UnityEngine.Serialization;
 
 namespace Gameplay.Mecha
 {
-    public class WeaponModule : MonoBehaviour
+    public class WeaponModule : Module
     {
         public enum WeaponType
         {
@@ -16,7 +16,7 @@ namespace Gameplay.Mecha
         
         [Header("Settings")]
         [SerializeField] private WeaponType weaponType;
-        [SerializeField] private bool listenToEvents = true;
+        [FormerlySerializedAs("listenToEvents")] [SerializeField] private bool listenOrTriggersEvents = true;
         [SerializeField] private bool holdFire = false;
         [SerializeField] private AmmoSO ammo;
         
@@ -24,6 +24,8 @@ namespace Gameplay.Mecha
         [SerializeField] private Transform gunTransform;
         [SerializeField] private AudioSource gunAudioSource;
         [SerializeField] private Transform cameraTransform;
+
+        [SerializeField] private Collider myParentColliderToIgnore;
 
         [Header("Overrides")]
         [Tooltip(
@@ -37,6 +39,9 @@ namespace Gameplay.Mecha
         
         private bool _isHeld = false;
 
+        public float FireRate => ammo.fireRate;
+        public bool HoldFire => holdFire;
+
 
         public int CurrentAmmoRemaining
         {
@@ -44,7 +49,8 @@ namespace Gameplay.Mecha
             set
             {
                 _currentAmmoRemaining = value;
-                EventManager.TriggerEvent($"OnUpdate{weaponType}Ammo{(weaponType == WeaponType.Secondary ? ammoLeftOrRight : string.Empty)}Amount", _currentAmmoRemaining);
+                if (listenOrTriggersEvents)
+                    EventManager.TriggerEvent($"OnUpdate{weaponType}Ammo{(weaponType == WeaponType.Secondary ? ammoLeftOrRight : string.Empty)}Amount", _currentAmmoRemaining);
             }
         }
 
@@ -59,7 +65,7 @@ namespace Gameplay.Mecha
 
         private void OnEnable()
         {
-            if (!listenToEvents) return;
+            if (!listenOrTriggersEvents) return;
             switch (weaponType)
             {
                 case WeaponType.Primary:
@@ -75,7 +81,7 @@ namespace Gameplay.Mecha
 
         private void OnDisable()
         {
-            if (!listenToEvents) return;
+            if (!listenOrTriggersEvents) return;
             switch (weaponType)
             {
                 case WeaponType.Primary:
@@ -104,6 +110,33 @@ namespace Gameplay.Mecha
             gunAudioSource.Stop();
         }
 
+
+        public IEnumerator ShootDuringTime(Transform forwardTransform, float time)
+        {
+            var startTime = Time.time;
+            while (Time.time - startTime < time)
+            {
+                Debug.Log("Shoot " + name);
+                Shoot(forwardTransform);
+                yield return new WaitForSeconds(1/ammo.fireRate);
+            }
+        }
+        public IEnumerator ShootHoldDuringTime(Transform forwardTransform, float time)
+        {
+            PlayBulletSound(false);
+            var startTime = Time.time;
+            while (Time.time - startTime < time)
+            {
+                Shoot(forwardTransform);
+                yield return new WaitForSeconds(1/ammo.fireRate);
+            }
+            
+            yield return new WaitForSeconds(0.1f);
+            gunAudioSource.Stop();
+            
+        }
+
+
         private void OnFire()
         {
             _isHeld = !_isHeld;
@@ -125,26 +158,30 @@ namespace Gameplay.Mecha
             }
         }
 
-        private void Shoot()
+        public void Shoot(Transform origin)
         {
-            FireBullet();
+            if (_currentAmmoRemaining <= 0) return;
+            FireBullet(origin);
             UpdateAmmoAmount();
         }
 
-        private void FireBullet()
+        private void Shoot()
         {
-            var bulletDirection = cameraTransform.forward;
-            if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out var hit, 500f))
+            Shoot(cameraTransform);
+        }
+
+        private void FireBullet(Transform origin)
+        {
+            var bulletDirection = origin.forward;
+            if (Physics.Raycast(origin.position, origin.forward, out var hit, 500f))
             {
                 bulletDirection = (hit.point - gunTransform.position).normalized;
             }
 
             var bullet = Instantiate(ammo.prefab, gunTransform.position, Quaternion.identity);
             var bulletScript = bullet.GetComponent<Bullet>();
+            bulletScript.Init(ammo.damageCurve, faction, ammo.explosionPrefab);
             bulletScript.InitLifeTime(ammo.maxLifetime);
-            bulletScript.explosionPrefab = ammo.explosionPrefab;
-            bulletScript.damage = ammo.damage;
-
 
             var bulletRb = bullet.GetComponent<Rigidbody>();
 
@@ -152,7 +189,10 @@ namespace Gameplay.Mecha
             bulletRb.AddForce(bulletDirection * ammo.forcePower, ForceMode.Impulse);
             var rot = bulletRb.rotation.eulerAngles;
             bulletRb.rotation = Quaternion.Euler(rot.x, gunTransform.eulerAngles.y, rot.z);
-            Physics.IgnoreCollision(bullet.GetComponentInChildren<Collider>(), _gunTransformCollider);
+            var bulletCollider = bullet.GetComponentInChildren<Collider>();
+            Physics.IgnoreCollision(bulletCollider, _gunTransformCollider);
+            if (myParentColliderToIgnore != null)
+                Physics.IgnoreCollision(bulletCollider, myParentColliderToIgnore);
             Invoke(nameof(ResetOnFire), 1 / ammo.fireRate);
         }
 
