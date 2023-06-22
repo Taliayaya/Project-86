@@ -27,6 +27,8 @@ namespace UI
             EventManager.AddListener("OnUpdateSecondaryAmmoRightAmount", OnUpdateSecondaryAmmoRight);
             EventManager.AddListener("OnUpdateCompass", OnUpdateCompass);
             EventManager.AddListener("OnUpdateXRotation", OnUpdateSideBarAngles);
+            EventManager.AddListener("OnDeath", OnDeath);
+            EventManager.AddListener("OnRespawn", OnRespawn);
         }
 
         private void OnDisable()
@@ -40,6 +42,8 @@ namespace UI
             EventManager.RemoveListener("OnUpdateSecondaryAmmoRightAmount", OnUpdateSecondaryAmmoRight);
             EventManager.RemoveListener("OnUpdateCompass", OnUpdateCompass);
             EventManager.RemoveListener("OnUpdateXRotation", OnUpdateSideBarAngles);
+            EventManager.RemoveListener("OnDeath", OnDeath);
+            EventManager.RemoveListener("OnRespawn", OnRespawn);
         }
 
         #endregion
@@ -93,10 +97,25 @@ namespace UI
         #region Health UI
 
         [Header("Health UI")] [SerializeField] private TextMeshProUGUI healthText;
+        [SerializeField] private Image juggImage;
 
         private void OnUpdateHealth(object healthPercentage)
         {
-            healthText.text = healthPercentage.ToString();
+            var health = 1 - (float)healthPercentage;
+            healthText.text = (int)(health * 100) + "%";
+            
+            if (health < 0.5f)
+            {
+                juggImage.color = Color.white;
+            }
+            else if (health < 0.75f)
+            {
+                juggImage.color = Color.yellow;
+            }
+            else
+            {
+                juggImage.color = Color.red;
+            }
         }
 
         #endregion
@@ -212,6 +231,21 @@ namespace UI
         private void OnResume()
         {
             FadeReticle(_previousAlpha, 0);
+        }
+
+        #endregion
+
+        #region Death and Respawn
+
+        public void OnDeath(object data)
+        {
+            EventManager.TriggerEvent("OnZoomChange", MechaController.Zoom.Default);
+            FadeReticle(0, 0.3f);
+        }
+        
+        public void OnRespawn(object data)
+        {
+            FadeReticle(1, 0.3f);
         }
 
         #endregion
