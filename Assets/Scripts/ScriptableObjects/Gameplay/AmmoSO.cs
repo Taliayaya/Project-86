@@ -6,7 +6,7 @@ namespace ScriptableObjects
     public class AmmoSO : ScriptableObject
     {
         [Header("Ammo Properties")]
-        public float damage = 10;
+        public AnimationCurve damageCurve;
         public float fireRate = 1f;
         public int maxAmmo = 20;
         public float reloadTime = 1f;
@@ -18,5 +18,8 @@ namespace ScriptableObjects
         public AudioClip fireSound;
         public GameObject explosionPrefab;
         public GameObject muzzleFlashPrefab;
+
+        public float Damage(int time) => damageCurve.Evaluate(time);
+
     }
 }

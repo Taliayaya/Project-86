@@ -8,7 +8,7 @@ namespace AI.BehaviourTree
     {
         public BehaviourTree tree;
 
-        private void Start()
+        private void Awake()
         {
             tree = tree.Clone();
             tree.Bind();

@@ -1,4 +1,4 @@
-namespace AI.BehaviourTree.CoreNodes
+namespace AI.BehaviourTree.CoreNodes.Composite
 {
     public class SequencerNode : CompositeNode
     {

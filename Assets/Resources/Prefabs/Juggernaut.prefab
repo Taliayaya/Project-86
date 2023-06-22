@@ -74,7 +74,6 @@ GameObject:
   - component: {fileID: 163463783249716833}
   - component: {fileID: 218212536384410263}
   - component: {fileID: 218212536384410262}
-  - component: {fileID: 218212536384410266}
   - component: {fileID: 218212536384410265}
   m_Layer: 0
   m_Name: SpiderOrange
@@ -91,7 +90,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 166757913720247049}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -3.21, z: 0}
   m_LocalScale: {x: 35.48698, y: 35.48698, z: 35.48698}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -150,20 +149,6 @@ MonoBehaviour:
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
     m_Visible: 1
---- !u!64 &218212536384410266
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 166757913720247049}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 5d67c81cdf5717340b0943f1f80dd628, type: 3}
 --- !u!114 &218212536384410265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1137,7 +1122,7 @@ GameObject:
   - component: {fileID: 2425518220724238010}
   - component: {fileID: 2425518220724238011}
   - component: {fileID: 2425518220724238008}
-  - component: {fileID: 1710789276}
+  - component: {fileID: 1272649634}
   m_Layer: 0
   m_Name: Juggernaut
   m_TagString: Untagged
@@ -1189,6 +1174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f13ea461cf5e394b9453915daa88cc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  faction: 0
   juggernautParameters: {fileID: 11400000, guid: 6c4a4c7a46816b44b895f909655cdc26,
     type: 2}
   gravity: 0
@@ -1203,9 +1189,8 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 1
-  gunTransform: {fileID: 0}
---- !u!65 &1710789276
-BoxCollider:
+--- !u!135 &1272649634
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1215,8 +1200,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 6.345591, y: 7.13, z: 6.755989}
-  m_Center: {x: 0.2, y: 3.67, z: 0.02}
+  m_Radius: 4
+  m_Center: {x: 0, y: 0.8, z: 0}
 --- !u!1 &2425518220896484195
 GameObject:
   m_ObjectHideFlags: 0
@@ -1680,13 +1665,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c20935483dbb488eba5bae69617000bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  faction: 0
   weaponType: 0
-  listenToEvents: 1
+  listenOrTriggersEvents: 1
   holdFire: 0
   ammo: {fileID: 11400000, guid: a6693c60172457f4e930b1c4d20539e6, type: 2}
   gunTransform: {fileID: 2425518220896484196}
   gunAudioSource: {fileID: 2425518220990468993}
   cameraTransform: {fileID: 1915203270723828997}
+  myParentColliderToIgnore: {fileID: 0}
   ammoLeftOrRight: Left
 --- !u!1 &6968089332652691700
 GameObject:

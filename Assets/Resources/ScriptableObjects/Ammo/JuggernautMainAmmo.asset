@@ -12,12 +12,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a1d3f226d294dd28c3f4fd0c05ca9e3, type: 3}
   m_Name: JuggernautMainAmmo
   m_EditorClassIdentifier: 
-  damage: 100
-  fireRate: 2
+  damageCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 300
+      inSlope: -66.666664
+      outSlope: -66.666664
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 3
+      value: 100
+      inSlope: -0.05190854
+      outSlope: -0.05190854
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.47550848
+    - serializedVersion: 3
+      time: 10
+      value: 100
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  fireRate: 0.5
   maxAmmo: 20
   reloadTime: 3
   maxLifetime: 5
-  forcePower: 800
+  forcePower: 600
   prefab: {fileID: 511108076656415306, guid: ad870af184b387044b74ec880baeb9cf, type: 3}
   fireSound: {fileID: 8300000, guid: a06fad0c670d5574a91051df04dec1bd, type: 3}
   explosionPrefab: {fileID: 100006, guid: e076683e0305e35498b8e8834978c0fa, type: 3}

@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a68da4124454477f91adf4ebc33cc630, type: 3}
+  m_Name: DemoParameters
+  m_EditorClassIdentifier: 
+  fieldsToSerialize:
+  - spawnCount
+  - spawnRadius
+  - ameiseLoweRatio
+  - ameiseHealth
+  - loweHealth
+  fieldsToShowInGame:
+  - spawnCount
+  - spawnRadius
+  - ameiseLoweRatio
+  - ameiseHealth
+  - loweHealth
+  spawnCount: 10
+  spawnRadius: 1000
+  ameiseHealth: 100
+  loweHealth: 1000
+  ameiseLoweRatio: 66
+  ameisePrefab: {fileID: 4327031186688988237, guid: 2ac9fe52fce327c489bceeee3e50d2ef,
+    type: 3}
+  lowePrefab: {fileID: 7370565030344059284, guid: a2cea7378011e864ba089dc28e115c7e,
+    type: 3}

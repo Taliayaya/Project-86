@@ -14,7 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldsToSerialize:
   - mouseSensitivity
+  - health
+  - movementSpeed
   fieldsToShowInGame:
   - mouseSensitivity
+  - health
+  - movementSpeed
   mouseSensitivity: 100
   movementSpeed: 40
+  stepHeight: 0.8
+  faction: 0
+  health: 100
