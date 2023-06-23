@@ -17,7 +17,8 @@ namespace AI.BehaviourTree
         
         private void Update()
         {
-            tree.Update();
+            if (!GameManager.GameIsPaused)
+                tree.Update();
         }
     }
 }
