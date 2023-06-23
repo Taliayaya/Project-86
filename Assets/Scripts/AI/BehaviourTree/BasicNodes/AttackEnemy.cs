@@ -24,22 +24,31 @@ namespace AI.BehaviourTree.BasicNodes
         private Coroutine[] _coroutines;
         
         private bool _isSet = false;
+        private int startcount = 0;
+
         protected override void OnStart()
         {
             if (!_isSet)
             {
                 _transform = blackBoard.GetValue<Transform>("transform");
                 _weaponModules = blackBoard.GetValue<WeaponModule[]>("weaponModules");
+                _coroutines = new Coroutine[_weaponModules.Length];
                 _isSet = true;
+                Debug.Log("Weapon Module : " +_weaponModules.Length);
             }
+
             // closest target is set in CanSeeObject and can change
             _closestTarget = blackBoard.GetValue<Transform>("closestTarget");
 
-            if (_coroutines != null)
+            if (_coroutines[0] is not null)
                 for (int i = 0; i < _weaponModules.Length; i++)
                 {
                     _weaponModules[i].StopCoroutine(_coroutines[i]);
                 }
+
+            startcount++;
+            for (int i = 0; i < _weaponModules.Length; i++)
+                _coroutines[i] = ShootAtEnemy(_weaponModules[i]);
         }
 
         protected override void OnStop()
@@ -51,22 +60,18 @@ namespace AI.BehaviourTree.BasicNodes
         {
             if (!_closestTarget)
                 return State.Failure;
-            _coroutines = new Coroutine[_weaponModules.Length];
-            for (int i = 0; i < _weaponModules.Length; i++)
-                _coroutines[i] =  ShootAtEnemy(_weaponModules[i]);
+            
             return State.Success;
         }
 
         private Coroutine ShootAtEnemy(WeaponModule weaponModule)
         {
+            Debug.Log("Created Coroutine");
             if (weaponModule.HoldFire)
             {
                 return weaponModule.StartCoroutine(weaponModule.ShootHoldDuringTime(_transform, timeBeforeSpotExpired));
             }
-            else
-            {
-                return weaponModule.StartCoroutine(weaponModule.ShootDuringTime(_transform, timeBeforeSpotExpired));
-            }
+            return weaponModule.StartCoroutine(weaponModule.ShootDuringTime(_transform, timeBeforeSpotExpired));
         }
     }
 }

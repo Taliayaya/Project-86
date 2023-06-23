@@ -15,19 +15,32 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: e39331eeed8bf024f90c48bcaf518a89
-  position: {x: -0.00000035436096, y: 385.7382}
+  position: {x: -0.00000047683716, y: 550.8501}
   description: 
   children:
   - {fileID: 7568919797040301472}
-  - {fileID: 7568919797040301472}
-  - {fileID: -607033897279286089}
   - {fileID: -607033897279286089}
   - {fileID: -4641583286826127574}
-  - {fileID: -4641583286826127574}
-  - {fileID: 5298634524117987852}
   - {fileID: 5298634524117987852}
   - {fileID: 3494659102506230013}
-  - {fileID: 3494659102506230013}
+--- !u!114 &-5507849650730996023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfa8cd909c574fa5994d2ca11aa581ea, type: 3}
+  m_Name: InvertNode
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: e59e116fc3824874199ddba313e6e20a
+  position: {x: -0.00009737015, y: 394}
+  description: 
+  child: {fileID: -7367820337200250000}
 --- !u!114 &-4835848497065203695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,7 +76,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 31f2e97c23a264644ad38267ba493a9a
-  position: {x: 220.83302, y: 635}
+  position: {x: 220.99994, y: 725.5109}
   description: 
   startMaintainingDistance: 1
 --- !u!114 &-607033897279286089
@@ -81,7 +94,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 57c3a322ca2bde043b5612b5c5d8975e
-  position: {x: -38.12522, y: 623}
+  position: {x: -27.65001, y: 714}
   description: 'Start a rotation coroutine on the transform of the AI.
 
     Requires
@@ -116,6 +129,7 @@ MonoBehaviour:
   - {fileID: 3494659102506230013}
   - {fileID: 290080391627111605}
   - {fileID: 753131073619244712}
+  - {fileID: -5507849650730996023}
 --- !u!114 &290080391627111605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,7 +148,7 @@ MonoBehaviour:
   position: {x: -0.00003655815, y: 231.173}
   description: 
   children:
-  - {fileID: -7367820337200250000}
+  - {fileID: -5507849650730996023}
   - {fileID: 753131073619244712}
 --- !u!114 &697413744868673379
 MonoBehaviour:
@@ -169,7 +183,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 75ae1739f9d60764babb00fcb1a64697
-  position: {x: 270.87482, y: 410}
+  position: {x: 259.99994, y: 500.511}
   description: 
   duration: 2
 --- !u!114 &3494659102506230013
@@ -187,7 +201,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: f151820b26071814cbe1492c92735537
-  position: {x: 645.2704, y: 635}
+  position: {x: 640.6297, y: 726}
   description: 
   duration: 2
 --- !u!114 &5298634524117987852
@@ -205,9 +219,9 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 1734853416c5eea4b8822e8fa8714bab
-  position: {x: 435.27036, y: 635}
+  position: {x: 438, y: 725.5109}
   description: Attack towards the enemy spot
-  timeBeforeSpotExpired: 5
+  timeBeforeSpotExpired: 2
 --- !u!114 &7568919797040301472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,7 +237,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 75ff7338e7ba7c8428de1b10eb801a82
-  position: {x: -306.04172, y: 623}
+  position: {x: -305.99997, y: 713.511}
   description: Set closestTarget into the blackboard at the closest enemy spot or
     null if none..
   enemyFaction: 0
