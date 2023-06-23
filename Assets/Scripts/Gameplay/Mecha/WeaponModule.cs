@@ -65,6 +65,8 @@ namespace Gameplay.Mecha
 
         private void OnEnable()
         {
+            EventManager.AddListener("OnPause", OnPause);
+            EventManager.AddListener("OnResume", OnResume);
             if (!listenOrTriggersEvents) return;
             switch (weaponType)
             {
@@ -77,10 +79,15 @@ namespace Gameplay.Mecha
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+            
         }
+
+        
 
         private void OnDisable()
         {
+            EventManager.RemoveListener("OnPause", OnPause);
+            EventManager.RemoveListener("OnResume", OnResume);
             if (!listenOrTriggersEvents) return;
             switch (weaponType)
             {
@@ -93,9 +100,21 @@ namespace Gameplay.Mecha
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+            
         }
 
         #endregion
+        
+        private void OnPause()
+        {
+            _isHeld = false;
+            gunAudioSource.Pause();
+        }
+
+        private void OnResume()
+        {
+            gunAudioSource.UnPause();
+        }
         
         private IEnumerator FireOnHeld()
         {
