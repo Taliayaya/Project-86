@@ -121,7 +121,7 @@ namespace UI
 
             var rangeAttribute = (RangeAttribute)Attribute.GetCustomAttribute(fieldInfo, typeof(RangeAttribute));
             var slider = Instantiate(sliderPrefab, parent);
-            var sliderComponent = slider.GetComponent<Slider>();
+            var sliderComponent = slider.GetComponentInChildren<Slider>();
             sliderComponent.minValue = rangeAttribute.min;
             sliderComponent.maxValue = rangeAttribute.max;
             sliderComponent.wholeNumbers = fieldInfo.FieldType == typeof(int);
