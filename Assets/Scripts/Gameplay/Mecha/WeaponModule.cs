@@ -184,15 +184,16 @@ namespace Gameplay.Mecha
             bulletScript.InitLifeTime(ammo.maxLifetime);
 
             var bulletRb = bullet.GetComponent<Rigidbody>();
-
+            var bulletCollider = bullet.GetComponentInChildren<Collider>();
+            Physics.IgnoreCollision(bulletCollider, _gunTransformCollider, true);
+             if (myParentColliderToIgnore != null)
+                 Physics.IgnoreCollision(bulletCollider, myParentColliderToIgnore, true);
             _canFire = false;
             bulletRb.AddForce(bulletDirection * ammo.forcePower, ForceMode.Impulse);
             var rot = bulletRb.rotation.eulerAngles;
             bulletRb.rotation = Quaternion.Euler(rot.x, gunTransform.eulerAngles.y, rot.z);
-            var bulletCollider = bullet.GetComponentInChildren<Collider>();
-            Physics.IgnoreCollision(bulletCollider, _gunTransformCollider);
-            if (myParentColliderToIgnore != null)
-                Physics.IgnoreCollision(bulletCollider, myParentColliderToIgnore);
+            
+           
             Invoke(nameof(ResetOnFire), 1 / ammo.fireRate);
         }
 
