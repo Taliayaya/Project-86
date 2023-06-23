@@ -52,6 +52,8 @@ namespace UI
 
         [Header("Reticle UI")] [SerializeField]
         private MaskableGraphic[] reticleImages;
+        
+        [SerializeField] private MaskableGraphic crosshair;
 
 
         private void FadeReticle(float alpha, float duration)
@@ -134,10 +136,12 @@ namespace UI
                 case MechaController.Zoom.Default:
                     zoomText.text = "ZOOM   1.0 X";
                     FadeZoom(0, 0.1f);
+                    crosshair.CrossFadeAlpha(1, 0.1f, false);
                     FadeReticle(1, 0.1f);
                     break;
                 case MechaController.Zoom.X2:
                     FadeZoom(1, 0.2f);
+                    crosshair.CrossFadeAlpha(0.9f, 0.2f, false);
                     FadeReticle(0.2f, 0.2f);
                     zoomGrid.pixelsPerUnitMultiplier = 1;
                     zoomText.text = "ZOOM   2.0 X";
@@ -225,12 +229,14 @@ namespace UI
         private void OnPause()
         {
             FadeReticle(0.1f, 0);
+            crosshair.CrossFadeAlpha(0.1f, 0, true);
             Debug.Log("OnPause");
         }
 
         private void OnResume()
         {
             FadeReticle(_previousAlpha, 0);
+            crosshair.CrossFadeAlpha(1f, 0, true);
         }
 
         #endregion
