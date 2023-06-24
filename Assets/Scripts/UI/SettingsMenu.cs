@@ -36,18 +36,6 @@ namespace UI
             CloseGameSettingsPanel();
         }
 
-        private void OnEnable()
-        {
-            EventManager.AddListener("OnPause", OpenGameSettingsPanel);
-            EventManager.AddListener("OnResume", CloseGameSettingsPanel);
-        }
-
-        private void OnDisable()
-        {
-            EventManager.RemoveListener("OnPause", OpenGameSettingsPanel);
-            EventManager.RemoveListener("OnResume", CloseGameSettingsPanel);
-        }
-
         #region Dynamic Creation of the UI
 
         private void SetupGameSettingsPanel()
@@ -121,7 +109,7 @@ namespace UI
 
             var rangeAttribute = (RangeAttribute)Attribute.GetCustomAttribute(fieldInfo, typeof(RangeAttribute));
             var slider = Instantiate(sliderPrefab, parent);
-            var sliderComponent = slider.GetComponent<Slider>();
+            var sliderComponent = slider.GetComponentInChildren<Slider>();
             sliderComponent.minValue = rangeAttribute.min;
             sliderComponent.maxValue = rangeAttribute.max;
             sliderComponent.wholeNumbers = fieldInfo.FieldType == typeof(int);
@@ -152,10 +140,11 @@ namespace UI
         
         public void OpenGameSettingsPanel()
         {
-            gameSettingsPanel.transform.GetChild(0).gameObject.SetActive(true);
+            WindowManager.Open(() => gameSettingsPanel.transform.GetChild(0).gameObject.SetActive(true), CloseGameSettingsPanel);
         }
         
-        public void CloseGameSettingsPanel()
+        // Use Window.Close to close the window instead of this method
+        private void CloseGameSettingsPanel()
         {
             gameSettingsPanel.transform.GetChild(0).gameObject.SetActive(false);
         }

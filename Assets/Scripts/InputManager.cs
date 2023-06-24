@@ -1,5 +1,6 @@
 ﻿using DefaultNamespace;
 using Gameplay;
+using UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -81,6 +82,11 @@ public class InputManager : Singleton<InputManager>
 
     private void OnResume()
     {
+        WindowManager.Close();
+        if (WindowManager.WindowOpenedCount > 0)
+            return;
+        Debug.Log("OnResume");
+
         EventManager.TriggerEvent("OnResume");
         _playerInput.SwitchCurrentActionMap("Juggernaut");
     }

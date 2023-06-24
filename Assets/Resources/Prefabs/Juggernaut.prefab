@@ -1174,10 +1174,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f13ea461cf5e394b9453915daa88cc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onHealthChange:
+    m_PersistentCalls:
+      m_Calls: []
   faction: 0
   juggernautParameters: {fileID: 11400000, guid: 6c4a4c7a46816b44b895f909655cdc26,
     type: 2}
-  gravity: 0
+  gravity: -1000
   groundDrag: 5
   modelTransform: {fileID: 163463783249716833}
   virtualCamera: {fileID: 2441174999437711923}
@@ -1200,8 +1203,8 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 4
-  m_Center: {x: 0, y: 0.8, z: 0}
+  m_Radius: 4.4
+  m_Center: {x: 0, y: 0.5, z: 0.64}
 --- !u!1 &2425518220896484195
 GameObject:
   m_ObjectHideFlags: 0
@@ -1385,7 +1388,7 @@ MonoBehaviour:
     FieldOfView: 60
     OrthographicSize: 5
     NearClipPlane: 0.3
-    FarClipPlane: 1000
+    FarClipPlane: 3000
     Dutch: 0
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
@@ -2089,6 +2092,11 @@ PrefabInstance:
       propertyPath: cameraTransform
       value: 
       objectReference: {fileID: 1915203270723828997}
+    - target: {fileID: 7673167084498494577, guid: 48660cbbbff3f6942babc11f0af5b319,
+        type: 3}
+      propertyPath: myParentColliderToIgnore
+      value: 
+      objectReference: {fileID: 1272649634}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 48660cbbbff3f6942babc11f0af5b319, type: 3}
 --- !u!4 &2449266063498974443 stripped
@@ -2174,6 +2182,11 @@ PrefabInstance:
       propertyPath: cameraTransform
       value: 
       objectReference: {fileID: 1915203270723828997}
+    - target: {fileID: 7673167084498494577, guid: 48660cbbbff3f6942babc11f0af5b319,
+        type: 3}
+      propertyPath: myParentColliderToIgnore
+      value: 
+      objectReference: {fileID: 1272649634}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 48660cbbbff3f6942babc11f0af5b319, type: 3}
 --- !u!4 &101663311974980744 stripped

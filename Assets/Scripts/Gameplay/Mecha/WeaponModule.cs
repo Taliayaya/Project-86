@@ -65,6 +65,8 @@ namespace Gameplay.Mecha
 
         private void OnEnable()
         {
+            EventManager.AddListener("OnPause", OnPause);
+            EventManager.AddListener("OnResume", OnResume);
             if (!listenOrTriggersEvents) return;
             switch (weaponType)
             {
@@ -77,10 +79,15 @@ namespace Gameplay.Mecha
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+            
         }
+
+        
 
         private void OnDisable()
         {
+            EventManager.RemoveListener("OnPause", OnPause);
+            EventManager.RemoveListener("OnResume", OnResume);
             if (!listenOrTriggersEvents) return;
             switch (weaponType)
             {
@@ -93,9 +100,21 @@ namespace Gameplay.Mecha
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+            
         }
 
         #endregion
+        
+        private void OnPause()
+        {
+            _isHeld = false;
+            gunAudioSource.Pause();
+        }
+
+        private void OnResume()
+        {
+            gunAudioSource.UnPause();
+        }
         
         private IEnumerator FireOnHeld()
         {
@@ -184,15 +203,16 @@ namespace Gameplay.Mecha
             bulletScript.InitLifeTime(ammo.maxLifetime);
 
             var bulletRb = bullet.GetComponent<Rigidbody>();
-
+            var bulletCollider = bullet.GetComponentInChildren<Collider>();
+            Physics.IgnoreCollision(bulletCollider, _gunTransformCollider, true);
+             if (myParentColliderToIgnore != null)
+                 Physics.IgnoreCollision(bulletCollider, myParentColliderToIgnore, true);
             _canFire = false;
             bulletRb.AddForce(bulletDirection * ammo.forcePower, ForceMode.Impulse);
             var rot = bulletRb.rotation.eulerAngles;
             bulletRb.rotation = Quaternion.Euler(rot.x, gunTransform.eulerAngles.y, rot.z);
-            var bulletCollider = bullet.GetComponentInChildren<Collider>();
-            Physics.IgnoreCollision(bulletCollider, _gunTransformCollider);
-            if (myParentColliderToIgnore != null)
-                Physics.IgnoreCollision(bulletCollider, myParentColliderToIgnore);
+            
+           
             Invoke(nameof(ResetOnFire), 1 / ammo.fireRate);
         }
 

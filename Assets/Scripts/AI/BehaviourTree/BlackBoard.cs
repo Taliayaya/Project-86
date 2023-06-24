@@ -26,7 +26,24 @@ namespace AI.BehaviourTree
         {
             return _values[key];
         }
+
+        public bool TryGetValue<T>(string key, out T value)
+        {
+            if (_values.TryGetValue(key, out var obj))
+            {
+                value = (T)obj;
+                return true;
+            }
+            value = default;
+            return false;
+        }
         
+        public bool TryGetValue(string key, out object value)
+        {
+            return _values.TryGetValue(key, out value);
+        }
+
+
         public void RemoveValue(string key)
         {
             _values.Remove(key);

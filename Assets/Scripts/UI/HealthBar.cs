@@ -15,7 +15,7 @@ namespace UI
 
         public void OnHealthChange(float health, float maxHealth)
         {
-            healthText.text = $"{health} / {maxHealth}"; 
+            healthText.text = $"{health:F0} / {maxHealth}"; 
             healthSlider.value = health / maxHealth;
         }
     }
