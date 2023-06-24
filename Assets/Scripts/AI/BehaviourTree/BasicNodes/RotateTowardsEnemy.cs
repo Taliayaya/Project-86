@@ -2,12 +2,14 @@
 using Gameplay.Units;
 using Unity.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace AI.BehaviourTree.BasicNodes
 {
     public class RotateTowardsEnemy : ActionNode
     {
         private Transform _enemyTransform;
+        private NavMeshAgent _navMeshAgent;
         private AIAgent _aiAgent;
 
         [SerializeField] private float rotationSpeed = 1f;
@@ -28,9 +30,13 @@ namespace AI.BehaviourTree.BasicNodes
             if (!_isSet)
             {
                 _aiAgent = blackBoard.GetValue<AIAgent>("aiAgent");
+                _navMeshAgent = blackBoard.GetValue<NavMeshAgent>("navMeshAgent");
                 _isSet = true;
+                
+                _navMeshAgent.updateRotation = false;
             }
-            _enemyTransform = blackBoard.GetValue<Transform>("closestTarget");
+            if (!blackBoard.TryGetValue("closestTarget", out _enemyTransform))
+                return;
         }
 
         protected override void OnStop()
@@ -38,18 +44,24 @@ namespace AI.BehaviourTree.BasicNodes
 
         }
 
+        private float _angularSpeed;
         protected override State OnUpdate()
         {
-            if (!_enemyTransform)
+            if (startRotating && !_enemyTransform)
                 return State.Failure;
-            if (startRotating && !_isRotating)
+            if (startRotating)
             {
-                _aiAgent.RotateTowardsEnemy(_enemyTransform);
-                _isRotating = true;
+                if (!_aiAgent.isRotating)
+                {
+                    _angularSpeed = _navMeshAgent.angularSpeed;
+                    _navMeshAgent.angularSpeed = 0;
+                    _aiAgent.RotateTowardsEnemy(_enemyTransform);
+                }
             }
             else
             {
-                _aiAgent.StopRotating(_enemyTransform);
+                _navMeshAgent.angularSpeed = _angularSpeed;
+                _aiAgent.StopRotating();
             }
 
             return State.Success;
