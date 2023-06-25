@@ -38,9 +38,11 @@ namespace ScriptableObjects
             FileStream stream = new FileStream(filePath, FileMode.Create);
             
             BinarySerializableData data = new BinarySerializableData(this, fieldsToSerialize);
+            Debug.Log($"[BinarySerializableSO] SaveToFile: Saving to {filePath}");
             try
             {
                 formatter.Serialize(stream, data.Properties);
+                Debug.Log($"[BinarySerializableSO] SaveToFile: Successfully serialized");
             }
             catch (SerializationException e)
             {
@@ -88,6 +90,7 @@ namespace ScriptableObjects
             try
             {
                 properties = formatter.Deserialize(stream) as Dictionary<string, object>;
+                Debug.Log($"[BinarySerializableSO] LoadFromFile: Successfully deserialized");
             }
             catch (SerializationException e)
             {
@@ -132,5 +135,32 @@ namespace ScriptableObjects
                 fieldsToSerialize.Add(fieldName);
         }
 
+        public void ResetToDefault()
+        {
+            Type T = GetType();
+            foreach (var fieldName in fieldsToSerialize)
+            {
+                var field = T.GetField(fieldName);
+                DefaultValueAttribute defaultValue = field.GetCustomAttribute(typeof(DefaultValueAttribute)) as DefaultValueAttribute;
+                if (defaultValue != null)
+                    field.SetValue(this, defaultValue.GetDefaultValue());
+            }
+        }
+    }
+}
+
+
+public class DefaultValueAttribute : Attribute
+{
+    public object Value { get; }
+
+    public DefaultValueAttribute(object value)
+    {
+        Value = value;
+    }
+
+    public object GetDefaultValue()
+    {
+        return Value;
     }
 }

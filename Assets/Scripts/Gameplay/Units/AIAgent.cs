@@ -3,6 +3,7 @@ using System.Collections;
 using AI.BehaviourTree;
 using Gameplay.Mecha;
 using ScriptableObjects.AI;
+using ScriptableObjects.GameParameters;
 using UnityEngine;
 using UnityEngine.AI;
 

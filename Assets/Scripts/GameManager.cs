@@ -24,6 +24,7 @@ public class GameManager : Singleton<GameManager>
             Debug.Log("[GameManager] Parameter: " + parameter.GetParametersName);
         }
         Cursor.lockState = CursorLockMode.Locked;
+        DataHandler.LoadGameData();
     }
 
     private void OnEnable()

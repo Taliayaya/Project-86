@@ -71,16 +71,27 @@ public class InputManager : Singleton<InputManager>
 
     private void OnPause()
     {
+        if (_pauseCd)
+            return;
         EventManager.TriggerEvent("OnPause");
         _playerInput.SwitchCurrentActionMap("PauseMenu");
+        _pauseCd = true;
+        Invoke(nameof(ResetPauseCd), _pauseDelay);
     }
+    
         
     #endregion
+    
+    private void ResetPauseCd()
+    {
+        _pauseCd = false;
+    }
 
     #region Pause Action Map
         
-
-    private void OnResume()
+    [SerializeField] private float _pauseDelay = 0.2f;
+    private bool _pauseCd = false;
+    public void OnResume()
     {
         WindowManager.Close();
         if (WindowManager.WindowOpenedCount > 0)
