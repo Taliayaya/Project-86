@@ -22,6 +22,7 @@ namespace UI
         [SerializeField] private TextMeshProUGUI menuContentName;
         [SerializeField] private Transform menusParent;
         [SerializeField] private Transform contentParent;
+        [SerializeField] private Button resetButton;
         
         private Dictionary<string, GameParameters> _gameParametersMap;
 
@@ -77,6 +78,9 @@ namespace UI
             
             var parameters = _gameParametersMap[menu];
             var parameterType = parameters.GetType();
+            resetButton.onClick.RemoveAllListeners();
+            resetButton.onClick.AddListener(
+                () => ResetCategory(parameters));
             
             foreach (var fieldName in parameters.FieldsToShowInGame)
             {
@@ -90,6 +94,12 @@ namespace UI
                 else
                     Debug.LogError($"[SettingsMenu] Field type \"{field.FieldType}\" not supported");
             }
+        }
+        
+        private void ResetCategory(GameParameters parameters)
+        {
+            parameters.ResetToDefault();
+            SetGameSettingsContent(parameters.GetParametersName);
         }
 
         private void AddToggle(FieldInfo fieldInfo, GameParameters parameters, string parameter, Transform parent = null)
@@ -146,6 +156,7 @@ namespace UI
         // Use Window.Close to close the window instead of this method
         private void CloseGameSettingsPanel()
         {
+            DataHandler.SaveGameData(); // Saving the settings
             gameSettingsPanel.transform.GetChild(0).gameObject.SetActive(false);
         }
         

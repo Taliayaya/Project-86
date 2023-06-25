@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ScriptableObjects.GameParameters
@@ -10,7 +11,6 @@ namespace ScriptableObjects.GameParameters
     public abstract class GameParameters : BinarySerializableSO
     {
         [SerializeField] protected List<string> fieldsToShowInGame = new List<string>();
-        
         public abstract string GetParametersName { get; }
         
         /// <summary>
