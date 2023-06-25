@@ -84,7 +84,7 @@ namespace Gameplay.Mecha
             base.Awake();
             Health = juggernautParameters.health;
             MaxHealth = juggernautParameters.health;
-            GetComponent<Rigidbody>();
+            _rigidbody = GetComponent<Rigidbody>();
             EventManager.TriggerEvent("OnUpdateHealth", 1f);
         }
 
