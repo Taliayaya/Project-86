@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using Gameplay.Mecha;
 using TMPro;
@@ -13,6 +14,8 @@ namespace UI
 
         private void Awake()
         {
+            var maskableIcon = iconParent.GetComponentsInChildren<MaskableGraphic>();
+            reticleImages.AddRange(maskableIcon);
             FadeZoom(0, 0);
         }
 
@@ -51,7 +54,9 @@ namespace UI
         #region Reticle UI
 
         [Header("Reticle UI")] [SerializeField]
-        private MaskableGraphic[] reticleImages;
+        private List<MaskableGraphic> reticleImages;
+
+        [SerializeField] private Transform iconParent;
         
         [SerializeField] private MaskableGraphic crosshair;
 

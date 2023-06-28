@@ -138,7 +138,7 @@ namespace Gameplay.Mecha
             if (_isGrounded)
                 _rigidbody.drag = groundDrag;
             else
-                _rigidbody.drag = 0;
+                _rigidbody.drag = 1;
         }
 
         private void MoveJuggernaut()
