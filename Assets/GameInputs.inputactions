@@ -67,6 +67,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "GrapplingThrow",
+                    "type": "Button",
+                    "id": "61498dba-ce58-42c5-8a49-0dabea6a200f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -199,6 +208,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bb03fa5d-008f-4001-88c7-44df54b876f1",
+                    "path": "<Keyboard>/e",
+                    "interactions": "Press(behavior=2)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "GrapplingThrow",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

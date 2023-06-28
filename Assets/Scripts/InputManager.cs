@@ -79,6 +79,12 @@ public class InputManager : Singleton<InputManager>
         Invoke(nameof(ResetPauseCd), _pauseDelay);
     }
     
+    private void OnGrapplingThrow(InputValue inputValue)
+    {
+        Debug.Log("OnGrapplingThrow " + inputValue.isPressed);
+        EventManager.TriggerEvent("OnGrapplingThrow", inputValue.isPressed);
+    }
+    
         
     #endregion
     
