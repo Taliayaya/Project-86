@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6678,6 +6678,24 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 467517640}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &496377095 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2425518220724238009, guid: f845514aa5916cd44a8d9ef2722d88e3,
+    type: 3}
+  m_PrefabInstance: {fileID: 2425518221084318893}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &496377096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 496377095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22fce887ce7f08a409da3e01d129114d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &497143433
 GameObject:
   m_ObjectHideFlags: 0
@@ -22235,6 +22253,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2425518220724238008, guid: f845514aa5916cd44a8d9ef2722d88e3,
+        type: 3}
+      propertyPath: onHealthChange.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2425518220724238008, guid: f845514aa5916cd44a8d9ef2722d88e3,
+        type: 3}
+      propertyPath: onHealthChange.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2425518220724238008, guid: f845514aa5916cd44a8d9ef2722d88e3,
+        type: 3}
+      propertyPath: onHealthChange.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2425518220724238009, guid: f845514aa5916cd44a8d9ef2722d88e3,
         type: 3}
       propertyPath: m_Name

@@ -120,8 +120,7 @@ namespace Gameplay.Mecha
 
         #region Movement and Camera
 
-        
-
+    
         private void CheckGround()
         {
             int groundNumber = 0;
@@ -176,7 +175,6 @@ namespace Gameplay.Mecha
                 _rigidbody.velocity = new Vector3(limitedVel.x, _rigidbody.velocity.y, limitedVel.z);
             }
         }
-
         
         #endregion
         
