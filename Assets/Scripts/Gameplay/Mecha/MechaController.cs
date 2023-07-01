@@ -1,5 +1,6 @@
 using System;
 using Cinemachine;
+using Gameplay.Units;
 using ScriptableObjects;
 using ScriptableObjects.GameParameters;
 using UnityEngine;
@@ -17,10 +18,13 @@ namespace Gameplay.Mecha
             X4,
             X8,
         }
-        public JuggernautParameters juggernautParameters;
-        private Vector2 _lastMouseUpdate;
-        private Rigidbody _rigidbody;
 
+
+        
+
+        #region Serialized Fields
+
+        public JuggernautParameters juggernautParameters;
         [SerializeField] private float gravity = -9.81f;
 
         [Header("Movement")] 
@@ -34,7 +38,12 @@ namespace Gameplay.Mecha
         [SerializeField]
         private Transform[] ground;
         [SerializeField] private LayerMask groundMask;
+        #endregion
 
+        #region Private Fields
+
+        private Vector2 _lastMouseUpdate;
+        private Rigidbody _rigidbody;
         private bool _isGrounded;
 
         private Vector2 _lastMovement;
@@ -45,6 +54,11 @@ namespace Gameplay.Mecha
         private float _yVelocity;
 
         private Zoom _zoom = Zoom.Default;
+        
+        #endregion
+
+        #region Properties
+
         private Zoom CameraZoom
         {
             get => _zoom;
@@ -74,7 +88,20 @@ namespace Gameplay.Mecha
                 EventManager.TriggerEvent("OnZoomChange", _zoom);
             }
         } 
+        
+        #endregion
 
+        
+        public override UnitState State
+        {
+            get => _state;
+            set
+            {
+                _state = value;
+                EventManager.TriggerEvent("OnMechaStateChange", _state);
+            }
+        }
+        
         // Start is called before the first frame update
 
         #region Unity Callbacks
@@ -108,11 +135,15 @@ namespace Gameplay.Mecha
 
         private void FixedUpdate()
         {
-            MoveJuggernaut();
             CheckGround();
             ApplyGravity(); // Currently using the rigidbody gravity
-            RotateJuggernaut();
             LimitSpeed();
+            if (State == UnitState.Default)
+            {
+                MoveJuggernaut();
+
+                RotateJuggernaut();
+            }
         }
 
 
@@ -208,6 +239,7 @@ namespace Gameplay.Mecha
         }
 
         private bool _zoomCd = false;
+        [SerializeField] private UnitState _state;
 
         private void OnZoomIn(object data)
         {
