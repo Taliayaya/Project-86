@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a1d3f226d294dd28c3f4fd0c05ca9e3, type: 3}
   m_Name: JuggernautSecondaryAmmo
   m_EditorClassIdentifier: 
+  gunTypeName: 'Sub Ammo : 12.7mm HMG'
   damageCurve:
     serializedVersion: 2
     m_Curve:
@@ -37,7 +38,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   fireRate: 10
-  maxAmmo: 200
+  maxAmmo: 10
   reloadTime: 1
   maxLifetime: 3
   forcePower: 500

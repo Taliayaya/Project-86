@@ -5,6 +5,7 @@ namespace ScriptableObjects
     [CreateAssetMenu(fileName = "Ammo", menuName = "Scriptable Objects/Ammo")]
     public class AmmoSO : ScriptableObject
     {
+        [Header("Information")] public string gunTypeName = "Main Gun : 57mm APFSDS";
         [Header("Ammo Properties")]
         public AnimationCurve damageCurve;
         public float fireRate = 1f;

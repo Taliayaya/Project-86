@@ -1,16 +1,21 @@
-﻿using System;
-using Gameplay.Mecha;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 
-namespace Gameplay
+namespace Gameplay.Units
 {
+    
+    public enum UnitState
+    {
+        Default,
+        Reloading,
+    }
     public class Unit : MonoBehaviour, IHealth
     {
         private Module[] _modules;
 
-        [SerializeField]
-        private UnityEvent<float, float> onHealthChange;
+        public UnityEvent<float, float> onHealthChange;
+        
+        public UnityEvent<Unit> onUnitDeath;
         protected virtual void Start()
         {
             _modules = GetComponentsInChildren<Module>();
@@ -23,6 +28,7 @@ namespace Gameplay
         public float MaxHealth { get; set; } = 100;
         [SerializeField] private Faction faction;
         public Faction Faction { get => faction; set => faction = value; }
+        public virtual UnitState State { get; set; } = UnitState.Default;
 
         public virtual void OnTakeDamage()
         {
@@ -32,6 +38,7 @@ namespace Gameplay
         public virtual void Die()
         {
             Destroy(gameObject);
+            onUnitDeath.Invoke(this);
             Factions.RemoveMember(faction, gameObject);
         }
 

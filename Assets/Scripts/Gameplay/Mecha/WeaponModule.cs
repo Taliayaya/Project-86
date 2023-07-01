@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using ScriptableObjects;
+using UI;
+using UI.HUD;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -33,7 +35,7 @@ namespace Gameplay.Mecha
          SerializeField]
         private string ammoLeftOrRight = "Left";
         
-        private bool _canFire = true;
+        public bool canFire = true;
         private Collider _gunTransformCollider;
         private int _currentAmmoRemaining;
         
@@ -41,6 +43,10 @@ namespace Gameplay.Mecha
 
         public float FireRate => ammo.fireRate;
         public bool HoldFire => holdFire;
+        public int MaxAmmo => ammo.maxAmmo;
+        public WeaponType Type => weaponType;
+        public float ReloadTime => ammo.reloadTime;
+        public string WeaponName => ammo.gunTypeName;
 
 
         public int CurrentAmmoRemaining
@@ -116,8 +122,24 @@ namespace Gameplay.Mecha
             gunAudioSource.UnPause();
         }
         
+        private void TriggerNoAmmoPopUp()
+        {
+            Debug.Log("No Ammo");
+            EventManager.TriggerEvent("OnNoAmmo", new AmmoPopUpData(ammo.gunTypeName, 2f));
+        }
+        
+        /// <summary>
+        /// Player related method
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator FireOnHeld()
         {
+            if (_currentAmmoRemaining <= 0)
+            {
+                TriggerNoAmmoPopUp();
+                yield break;
+            }
+
             PlayBulletSound(false);
             while (_isHeld && _currentAmmoRemaining > 0)
             {
@@ -130,6 +152,12 @@ namespace Gameplay.Mecha
         }
 
 
+        /// <summary>
+        /// AI related method
+        /// </summary>
+        /// <param name="forwardTransform"></param>
+        /// <param name="time"></param>
+        /// <returns></returns>
         public IEnumerator ShootDuringTime(Transform forwardTransform, float time)
         {
             var startTime = Time.time;
@@ -140,6 +168,12 @@ namespace Gameplay.Mecha
                 yield return new WaitForSeconds(1/ammo.fireRate);
             }
         }
+        /// <summary>
+        /// AI related method
+        /// </summary>
+        /// <param name="forwardTransform"></param>
+        /// <param name="time"></param>
+        /// <returns></returns>
         public IEnumerator ShootHoldDuringTime(Transform forwardTransform, float time)
         {
             PlayBulletSound(false);
@@ -159,7 +193,7 @@ namespace Gameplay.Mecha
         private void OnFire()
         {
             _isHeld = !_isHeld;
-            if (_canFire && _currentAmmoRemaining > 0)
+            if (canFire && _currentAmmoRemaining > 0)
             {
                 if (holdFire)
                 {
@@ -175,11 +209,14 @@ namespace Gameplay.Mecha
                     PlayBulletSound();
                 }
             }
+            if (_currentAmmoRemaining <= 0)
+                TriggerNoAmmoPopUp();
         }
-
+        
         public void Shoot(Transform origin)
         {
-            if (_currentAmmoRemaining <= 0) return;
+            if (_currentAmmoRemaining <= 0)
+                return;
             FireBullet(origin);
             UpdateAmmoAmount();
         }
@@ -207,7 +244,7 @@ namespace Gameplay.Mecha
             Physics.IgnoreCollision(bulletCollider, _gunTransformCollider, true);
              if (myParentColliderToIgnore != null)
                  Physics.IgnoreCollision(bulletCollider, myParentColliderToIgnore, true);
-            _canFire = false;
+            canFire = false;
             bulletRb.AddForce(bulletDirection * ammo.forcePower, ForceMode.Impulse);
             var rot = bulletRb.rotation.eulerAngles;
             bulletRb.rotation = Quaternion.Euler(rot.x, gunTransform.eulerAngles.y, rot.z);
@@ -234,16 +271,18 @@ namespace Gameplay.Mecha
             
             if (_currentAmmoRemaining <= 0)
             {
-                Invoke(nameof(ResetAmmo), 1/ammo.reloadTime);
+                //if (listenOrTriggersEvents) TriggerNoAmmoPopUp();
+                if (faction == Faction.Legion)
+                    Invoke(nameof(ResetAmmo), 1/ammo.reloadTime);
             }
         }
 
         private void ResetOnFire()
         {
-            _canFire = true;
+            canFire = true;
         }
         
-        private void ResetAmmo()
+        public void ResetAmmo()
         {
             CurrentAmmoRemaining = ammo.maxAmmo;
         }
