@@ -81,9 +81,28 @@ public class InputManager : Singleton<InputManager>
     
     private void OnGrapplingThrow(InputValue inputValue)
     {
-        Debug.Log("OnGrapplingThrow " + inputValue.isPressed);
         EventManager.TriggerEvent("OnGrapplingThrow", inputValue.isPressed);
     }
+    
+    private void OnReload(InputValue inputValue)
+    {
+        EventManager.TriggerEvent("OnReload");
+    }
+
+    #region Scavenger Inputs
+
+    private void OnCallScavenger(InputValue inputValue)
+    {
+        EventManager.TriggerEvent("OnCallScavenger");
+    }
+    
+    private void OnStopScavenger(InputValue inputValue)
+    {
+        EventManager.TriggerEvent("OnStopScavenger");
+    }
+    
+
+    #endregion
     
         
     #endregion

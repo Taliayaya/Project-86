@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a1d3f226d294dd28c3f4fd0c05ca9e3, type: 3}
   m_Name: JuggernautMainAmmo
   m_EditorClassIdentifier: 
+  gunTypeName: 'Main Gun : 57mm APFSDS'
   damageCurve:
     serializedVersion: 2
     m_Curve:
@@ -46,7 +47,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   fireRate: 0.5
-  maxAmmo: 20
+  maxAmmo: 5
   reloadTime: 3
   maxLifetime: 5
   forcePower: 600
