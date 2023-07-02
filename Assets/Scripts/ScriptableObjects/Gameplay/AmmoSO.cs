@@ -17,6 +17,7 @@ namespace ScriptableObjects
         [Header("Ammo Prefabs")]
         public GameObject prefab;
         public AudioClip fireSound;
+        public AudioClip reloadSound;
         public GameObject explosionPrefab;
         public GameObject muzzleFlashPrefab;
 

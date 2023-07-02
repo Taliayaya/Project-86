@@ -41,7 +41,8 @@ namespace Gameplay
          _damagePackage = new DamagePackage()
          {
             Faction = _factionOrigin,
-            DamageAmount = Damage
+            DamageAmount = Damage,
+            DamageSourcePosition = _origin
          };
          if (other.gameObject.TryGetComponent(out IHealth health))
          {
