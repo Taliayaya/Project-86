@@ -219,10 +219,12 @@ MonoBehaviour:
   gunTip: {fileID: 4851724596298210724}
   whatIsGrappleable:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 1
   maxGrappleDistance: 300
   grappleDelayTime: 0.5
-  grapplePullSpeed: 10
+  grapplePullSpeed: 20
+  juggernautParameters: {fileID: 11400000, guid: 6c4a4c7a46816b44b895f909655cdc26,
+    type: 2}
   quality: 500
   waveHeight: 6
   waveCount: 3
