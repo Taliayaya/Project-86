@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Gameplay;
+using Gameplay.Units;
 using JetBrains.Annotations;
 using ScriptableObjects.AI;
 using UnityEngine;
@@ -22,15 +23,17 @@ namespace AI.BehaviourTree.BasicNodes
         private Transform _transform;
         [Tooltip("The tag the AI will try to search for"), SerializeField] private Faction enemyFaction;
         
-        [CanBeNull] private Transform _closestTarget;
+        [SerializeField] private LayerMask layerMask;
+        [CanBeNull] private Unit _closestTarget;
 
-        private Transform ClosestTarget
+        [CanBeNull]
+        private Unit ClosestTarget
         {
             get => _closestTarget;
             set
             {
                 _closestTarget = value;
-                blackBoard.SetValue("closestTarget", _closestTarget);
+                blackBoard.SetValue("closestTarget", _closestTarget ? _closestTarget.transform : null);
             }
         }
         private bool _isSet = false;
@@ -40,9 +43,9 @@ namespace AI.BehaviourTree.BasicNodes
         
         private AgentSO _agentSo;
         
-        private List<GameObject> _targets;
+        private List<Unit> _targets;
         
-        private List<GameObject> _spottedTargets = new List<GameObject>();
+        private List<Unit> _spottedTargets = new List<Unit>();
         private IEnumerator _canSeeTargetEnumerator;
         protected override void OnStart()
         {
@@ -57,7 +60,6 @@ namespace AI.BehaviourTree.BasicNodes
             _isDone = false;
             _canSeeTarget = false;
             _canSeeTargetEnumerator = CanSeeTarget();
-            Debug.Log("Starting CanSeeObject");
         }
 
         protected override void OnStop()
@@ -73,7 +75,7 @@ namespace AI.BehaviourTree.BasicNodes
 
             if (ClosestTarget)
             {
-                if (CanSeeSingleTarget(ClosestTarget.gameObject))
+                if (CanSeeSingleTarget(ClosestTarget))
                 {
                     _canSeeTarget = true;
                     _isDone = true;
@@ -83,7 +85,6 @@ namespace AI.BehaviourTree.BasicNodes
                 ClosestTarget = null;
             }
 
-            Debug.Log("Stuck here");
             _canSeeTargetEnumerator.MoveNext();
             return State.Running;
         }
@@ -98,7 +99,7 @@ namespace AI.BehaviourTree.BasicNodes
         {
             _spottedTargets.Clear();
             var minDistance = Mathf.Infinity;
-            foreach (var target in new List<GameObject>(_targets))
+            foreach (var target in new List<Unit>(_targets))
             {
                 if (!target)
                     continue;
@@ -109,10 +110,10 @@ namespace AI.BehaviourTree.BasicNodes
                 if (angle < _agentSo.fieldOfViewAngle * 0.5f)
                 {
                     Debug.DrawLine(_transform.position, target.transform.position, Color.blue);
-                    if (PerformRaycast(direction, target) && minDistance > direction.magnitude)
+                    if (PerformRaycast(direction, target) && (minDistance > direction.magnitude || (ClosestTarget && ClosestTarget.Priority > target.Priority)))
                     {
                         minDistance = direction.magnitude;
-                        ClosestTarget = target.transform;
+                        ClosestTarget = target;
                     }
                 }
 
@@ -122,7 +123,7 @@ namespace AI.BehaviourTree.BasicNodes
             _isDone = true;
         }
 
-        private bool CanSeeSingleTarget(GameObject target)
+        private bool CanSeeSingleTarget(Unit target)
         {
             var direction = target.transform.position - _transform.position;
             var angle = Vector3.Angle(direction, _transform.forward);
@@ -169,13 +170,13 @@ namespace AI.BehaviourTree.BasicNodes
 
         }
 
-        private bool PerformRaycast(Vector3 direction, GameObject target)
+        private bool PerformRaycast(Vector3 direction, Unit target)
         {
             RaycastHit hit;
             Debug.DrawRay(_transform.position, direction.normalized * _agentSo.viewDistance, Color.yellow);
-            if (Physics.Raycast(_transform.position, direction.normalized, out hit, _agentSo.viewDistance))
+            if (Physics.Raycast(_transform.position, direction.normalized, out hit, _agentSo.viewDistance, layerMask))
             {
-                if (hit.collider.gameObject == target)
+                if (hit.collider.gameObject == target.gameObject)
                 {
                     Debug.DrawLine(_transform.position, target.transform.position, Color.green);
                     _canSeeTarget = true;

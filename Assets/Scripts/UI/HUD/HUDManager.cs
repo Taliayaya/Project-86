@@ -1,15 +1,20 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using Gameplay;
 using Gameplay.Mecha;
+using Gameplay.Units;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI
+namespace UI.HUD
 {
     public class HUDManager : MonoBehaviour
     {
+        private UnitState _playedMechaState;
+        
         #region Unity Callbacks
 
         private void Awake()
@@ -32,6 +37,8 @@ namespace UI
             EventManager.AddListener("OnUpdateXRotation", OnUpdateSideBarAngles);
             EventManager.AddListener("OnDeath", OnDeath);
             EventManager.AddListener("OnRespawn", OnRespawn);
+            
+            EventManager.AddListener("OnMechaStateChange", OnMechaStateChange);
         }
 
         private void OnDisable()
@@ -47,9 +54,17 @@ namespace UI
             EventManager.RemoveListener("OnUpdateXRotation", OnUpdateSideBarAngles);
             EventManager.RemoveListener("OnDeath", OnDeath);
             EventManager.RemoveListener("OnRespawn", OnRespawn);
+            
+            EventManager.RemoveListener("OnMechaStateChange", OnMechaStateChange);
         }
 
+        
+
         #endregion
+        private void OnMechaStateChange(object arg0)
+        {
+            _playedMechaState = (UnitState) arg0;
+        }
 
         #region Reticle UI
 
@@ -135,6 +150,8 @@ namespace UI
 
         private void OnZoomChange(object zoomAmount)
         {
+            if (GameManager.GameIsPaused || _playedMechaState != UnitState.Default)
+                return;
             MechaController.Zoom zoom = (MechaController.Zoom)zoomAmount;
             switch (zoom)
             {
@@ -203,6 +220,8 @@ namespace UI
        
         private void OnUpdateCompass(object playerYRotation)
         {
+            if (GameManager.GameIsPaused || _playedMechaState != UnitState.Default)
+                return;
             compassImage.uvRect = new Rect((float)playerYRotation / 360, 0, 1, 1);
         }
 
@@ -219,6 +238,8 @@ namespace UI
         
         private void OnUpdateSideBarAngles(object playerXRotation)
         {
+            if (GameManager.GameIsPaused || _playedMechaState != UnitState.Default)
+                return;
             float maxAngles = MechaController.MaxXRotation - MechaController.MinXRotation;
             sideBarAnglesImageLeft.uvRect = new Rect( 0,1 - (float)playerXRotation / maxAngles,  1, 1);
             sideBarAnglesImageRight.uvRect = new Rect(0, 1 -(float)playerXRotation / maxAngles,  1, 1);
@@ -260,6 +281,7 @@ namespace UI
         }
 
         #endregion
+
     }
 
 

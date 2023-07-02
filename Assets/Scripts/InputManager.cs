@@ -43,6 +43,12 @@ public class InputManager : Singleton<InputManager>
         
     private void OnPrimaryFire(InputValue inputValue)
     {
+        if (_isOrderingScavenger)
+        {
+            _isOrderingScavenger = false;
+            EventManager.TriggerEvent("OnOrderScavengerSubmit");
+            return;
+        }
         EventManager.TriggerEvent("OnPrimaryFire");
     }
 
@@ -81,9 +87,35 @@ public class InputManager : Singleton<InputManager>
     
     private void OnGrapplingThrow(InputValue inputValue)
     {
-        Debug.Log("OnGrapplingThrow " + inputValue.isPressed);
         EventManager.TriggerEvent("OnGrapplingThrow", inputValue.isPressed);
     }
+    
+    private void OnReload(InputValue inputValue)
+    {
+        EventManager.TriggerEvent("OnReload");
+    }
+
+    #region Scavenger Inputs
+
+    private void OnCallScavenger(InputValue inputValue)
+    {
+        EventManager.TriggerEvent("OnCallScavenger");
+    }
+    
+    private void OnStopScavenger(InputValue inputValue)
+    {
+        EventManager.TriggerEvent("OnStopScavenger");
+    }
+    
+    private bool _isOrderingScavenger = false;
+    private void OnOrderScavenger(InputValue inputValue)
+    {
+        _isOrderingScavenger = !_isOrderingScavenger;
+        EventManager.TriggerEvent("OnOrderScavenger");
+    }
+    
+
+    #endregion
     
         
     #endregion

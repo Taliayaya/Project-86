@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Gameplay;
+using Gameplay.Units;
 using ScriptableObjects.GameParameters;
 using UnityEngine;
 using UnityEngine.AI;
@@ -38,9 +39,9 @@ public class LegionSpawner : MonoBehaviour
     
     private void KillAllLegions()
     {
-        foreach (var legion in new List<GameObject>(Factions.GetMembers(Faction.Legion)))
+        foreach (var legion in new List<Unit>(Factions.GetMembers(Faction.Legion)))
         {
-            legion.GetComponent<Unit>().Die();
+            legion.Die();
         }
     }
 

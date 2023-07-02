@@ -1,5 +1,6 @@
 using System;
 using Cinemachine;
+using Gameplay.Units;
 using ScriptableObjects;
 using ScriptableObjects.GameParameters;
 using UnityEngine;
@@ -17,10 +18,13 @@ namespace Gameplay.Mecha
             X4,
             X8,
         }
-        public JuggernautParameters juggernautParameters;
-        private Vector2 _lastMouseUpdate;
-        private Rigidbody _rigidbody;
 
+
+        
+
+        #region Serialized Fields
+
+        public JuggernautParameters juggernautParameters;
         [SerializeField] private float gravity = -9.81f;
 
         [Header("Movement")] 
@@ -34,7 +38,12 @@ namespace Gameplay.Mecha
         [SerializeField]
         private Transform[] ground;
         [SerializeField] private LayerMask groundMask;
+        #endregion
 
+        #region Private Fields
+
+        private Vector2 _lastMouseUpdate;
+        private Rigidbody _rigidbody;
         private bool _isGrounded;
 
         private Vector2 _lastMovement;
@@ -45,6 +54,11 @@ namespace Gameplay.Mecha
         private float _yVelocity;
 
         private Zoom _zoom = Zoom.Default;
+        
+        #endregion
+
+        #region Properties
+
         private Zoom CameraZoom
         {
             get => _zoom;
@@ -74,7 +88,20 @@ namespace Gameplay.Mecha
                 EventManager.TriggerEvent("OnZoomChange", _zoom);
             }
         } 
+        
+        #endregion
 
+        
+        public override UnitState State
+        {
+            get => _state;
+            set
+            {
+                _state = value;
+                EventManager.TriggerEvent("OnMechaStateChange", _state);
+            }
+        }
+        
         // Start is called before the first frame update
 
         #region Unity Callbacks
@@ -88,8 +115,9 @@ namespace Gameplay.Mecha
             EventManager.TriggerEvent("OnUpdateHealth", 1f);
         }
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
             if (!_rigidbody)
                 _rigidbody = GetComponent<Rigidbody>();
             EventManager.AddListener("OnLookAround", OnLookAround);
@@ -98,8 +126,9 @@ namespace Gameplay.Mecha
             EventManager.AddListener("OnZoomOut", OnZoomOut);
         }
 
-        private void OnDisable()
+        protected override void OnDisable()
         {
+            base.OnDisable();
             EventManager.RemoveListener("OnLookAround", OnLookAround);
             EventManager.RemoveListener("OnMove", OnMove);
             EventManager.RemoveListener("OnZoomIn", OnZoomIn);
@@ -108,11 +137,15 @@ namespace Gameplay.Mecha
 
         private void FixedUpdate()
         {
-            MoveJuggernaut();
             CheckGround();
             ApplyGravity(); // Currently using the rigidbody gravity
-            RotateJuggernaut();
             LimitSpeed();
+            if (State == UnitState.Default)
+            {
+                MoveJuggernaut();
+
+                RotateJuggernaut();
+            }
         }
 
 
@@ -208,6 +241,7 @@ namespace Gameplay.Mecha
         }
 
         private bool _zoomCd = false;
+        [SerializeField] private UnitState _state;
 
         private void OnZoomIn(object data)
         {
@@ -249,9 +283,9 @@ namespace Gameplay.Mecha
 
         #region Health Manager
 
-        public override void OnTakeDamage()
+        public override void OnTakeDamage(DamagePackage damagePackage)
         {
-            base.OnTakeDamage();
+            base.OnTakeDamage(damagePackage);
             EventManager.TriggerEvent("OnTakeDamage", Health);
             EventManager.TriggerEvent("OnUpdateHealth", Health/MaxHealth);
         }

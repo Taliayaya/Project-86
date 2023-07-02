@@ -33,6 +33,20 @@ AudioMixerEffectController:
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0
   m_Bypass: 0
+--- !u!244 &-3448849753808143605
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 759da9e10d883b54d842cdc5aa1b7613
+  m_EffectName: Attenuation
+  m_MixLevel: 568f08ce8ccb56d4c81d48fb80c6e569
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
 --- !u!241 &24100000
 AudioMixerController:
   m_ObjectHideFlags: 0
@@ -55,6 +69,7 @@ AudioMixerController:
     - 16b2fa32a8f251745b11fadcd0258603
     - e7d00d001b0039446acda822af4dbda7
     - a8cd86e6d83db354699f36504d069d56
+    - 6bde71a135b596049b8312c88ca9a2fa
     name: View
   m_CurrentViewIndex: 0
   m_TargetSnapshot: {fileID: 24500006}
@@ -70,6 +85,7 @@ AudioMixerGroupController:
   m_Children:
   - {fileID: -5566782973873335814}
   - {fileID: 4391838872661691230}
+  - {fileID: 8843940232986239663}
   m_Volume: c3f02c8d4b7386044bdae98cc95e4ffd
   m_Pitch: ec00ca9ce1ead8c40bba421f64e3a878
   m_Send: 00000000000000000000000000000000
@@ -102,7 +118,8 @@ AudioMixerSnapshotController:
   m_Name: Snapshot
   m_AudioMixer: {fileID: 24100000}
   m_SnapshotID: 613c9ebf9010f6048bb9c18d6a137c01
-  m_FloatValues: {}
+  m_FloatValues:
+    ae23355d87d394e46b100389d97acd5d: -9.833286
   m_TransitionOverrides: {}
 --- !u!244 &4371537909176671842
 AudioMixerEffectController:
@@ -133,6 +150,25 @@ AudioMixerGroupController:
   m_Send: 00000000000000000000000000000000
   m_Effects:
   - {fileID: 4371537909176671842}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!243 &8843940232986239663
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: GunSounds
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 6bde71a135b596049b8312c88ca9a2fa
+  m_Children: []
+  m_Volume: ae23355d87d394e46b100389d97acd5d
+  m_Pitch: dd067ab77ba66e84ea01f510837e8abc
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: -3448849753808143605}
   m_UserColorIndex: 0
   m_Mute: 0
   m_Solo: 0

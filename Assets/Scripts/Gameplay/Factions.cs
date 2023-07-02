@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Gameplay.Units;
 using UnityEngine;
 
 namespace Gameplay
@@ -10,18 +11,18 @@ namespace Gameplay
     }
     public static class Factions
     {
-        private static readonly Dictionary<Faction, List<GameObject>> _factionMembers = new Dictionary<Faction, List<GameObject>>();
+        private static readonly Dictionary<Faction, List<Unit>> _factionMembers = new Dictionary<Faction, List<Unit>>();
         
-        public static void AddMember(Faction faction, GameObject member)
+        public static void AddMember(Faction faction, Unit member)
         {
             if (!_factionMembers.ContainsKey(faction))
             {
-                _factionMembers[faction] = new List<GameObject>();
+                _factionMembers[faction] = new List<Unit>();
             }
             _factionMembers[faction].Add(member);
         }
         
-        public static void RemoveMember(Faction faction, GameObject member)
+        public static void RemoveMember(Faction faction, Unit member)
         {
             if (!_factionMembers.ContainsKey(faction))
             {
@@ -30,11 +31,11 @@ namespace Gameplay
             _factionMembers[faction].Remove(member);
         }
         
-        public static List<GameObject> GetMembers(Faction faction)
+        public static List<Unit> GetMembers(Faction faction)
         {
             if (!_factionMembers.ContainsKey(faction))
             {
-                return new List<GameObject>();
+                return new List<Unit>();
             }
             return _factionMembers[faction];
         }
