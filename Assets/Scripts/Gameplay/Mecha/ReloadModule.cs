@@ -84,7 +84,9 @@ namespace Gameplay.Mecha
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent<Scavenger>(out var scavenger))
+            Debug.Log("OnTriggerEnter" + other.name);
+            var scavenger = other.GetComponentInParent<Scavenger>();
+            if (scavenger)
             {
                 _scavengerInRange.Add(scavenger);
             }
@@ -92,7 +94,8 @@ namespace Gameplay.Mecha
         
         private void OnTriggerExit(Collider other)
         {
-            if (other.TryGetComponent<Scavenger>(out var scavenger))
+            var scavenger = other.GetComponentInParent<Scavenger>();
+            if (scavenger)
             {
                 _scavengerInRange.Remove(scavenger);
             }
@@ -102,6 +105,7 @@ namespace Gameplay.Mecha
 
         public void Reload()
         {
+            Debug.Log("Reload");
             _scavenger = GetClosestScavenger();
             if (_scavenger)
                 _scavenger.Reload(weaponModules, unit);

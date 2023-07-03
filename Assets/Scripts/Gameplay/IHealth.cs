@@ -7,6 +7,7 @@ namespace Gameplay
     {
         public float DamageAmount;
         public Faction Faction;
+        public Vector3 DamageSourcePosition;
     }
     public interface IHealth
     {
@@ -15,12 +16,12 @@ namespace Gameplay
         
         public Faction Faction { get; set; }
 
-        public void OnTakeDamage();
+        public void OnTakeDamage(DamagePackage damagePackage);
 
         public void TakeDamage(DamagePackage damagePackage)
         {
             Health = Mathf.Clamp(Health - damagePackage.DamageAmount, 0, MaxHealth);
-            OnTakeDamage();
+            OnTakeDamage(damagePackage);
             
             if (!Alive)
                 Die();

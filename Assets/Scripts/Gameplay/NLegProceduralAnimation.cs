@@ -2,14 +2,22 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class NLegProceduralAnimation : MonoBehaviour
 {
     [SerializeField] private Transform[] legTargets;
+    
+    [Header("Settings")]
     [SerializeField] private float stepSize = 1f;
     [SerializeField] private float stepHeight = 0.1f;
     [SerializeField] private int smoothness = 1;
     [SerializeField] private bool bodyOrientation = true;
+    
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip[] stepSounds;
+    
 
     private Vector3[] _defaultLegPositions;
     private Vector3[] _lastLegPositions;
@@ -138,9 +146,12 @@ public class NLegProceduralAnimation : MonoBehaviour
             }
         }
     }
+
+    private int _soundQueue = 0;
     
     private IEnumerator MoveLegCoroutine(int legToMove, Vector3 targetPoint)
     {
+        _soundQueue++;
         Vector3 startPos = _lastLegPositions[legToMove];
 
         for (int i = 1; i <= smoothness; i++)
@@ -149,9 +160,12 @@ public class NLegProceduralAnimation : MonoBehaviour
             legTargets[legToMove].position += transform.up * (Mathf.Sin((float)i / (smoothness + 1f) * Mathf.PI) * stepHeight);
             yield return new WaitForFixedUpdate();
         }
+        if (Physics.Raycast(legTargets[legToMove].position, Vector3.down, out RaycastHit hit, 1f))
+            audioSource.PlayOneShot(stepSounds[Random.Range(0, stepSounds.Length)], 1 / (float)_soundQueue );
         legTargets[legToMove].position = targetPoint;
         _lastLegPositions[legToMove] = targetPoint;
         _legMoving = false;
+        _soundQueue--;
     }
 
     private void OnDrawGizmosSelected()

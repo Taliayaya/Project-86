@@ -121,8 +121,9 @@ namespace Gameplay.Mecha
             EventManager.TriggerEvent("OnUpdateHealth", 1f);
         }
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
             if (!_rigidbody)
                 _rigidbody = GetComponent<Rigidbody>();
             EventManager.AddListener("OnLookAround", OnLookAround);
@@ -131,8 +132,9 @@ namespace Gameplay.Mecha
             EventManager.AddListener("OnZoomOut", OnZoomOut);
         }
 
-        private void OnDisable()
+        protected override void OnDisable()
         {
+            base.OnDisable();
             EventManager.RemoveListener("OnLookAround", OnLookAround);
             EventManager.RemoveListener("OnMove", OnMove);
             EventManager.RemoveListener("OnZoomIn", OnZoomIn);
@@ -295,9 +297,9 @@ namespace Gameplay.Mecha
 
         #region Health Manager
 
-        public override void OnTakeDamage()
+        public override void OnTakeDamage(DamagePackage damagePackage)
         {
-            base.OnTakeDamage();
+            base.OnTakeDamage(damagePackage);
             EventManager.TriggerEvent("OnTakeDamage", Health);
             EventManager.TriggerEvent("OnUpdateHealth", Health/MaxHealth);
         }

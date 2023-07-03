@@ -79,6 +79,24 @@ MonoBehaviour:
   position: {x: 220.99994, y: 725.5109}
   description: 
   startMaintainingDistance: 1
+--- !u!114 &-4262725138408213610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95cd3b536895480ea0fd49227a9242f1, type: 3}
+  m_Name: MaintainIdealDistance
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 01b07c826c41add48946eb042ff1e693
+  position: {x: 598, y: 501}
+  description: 
+  startMaintainingDistance: 0
 --- !u!114 &-607033897279286089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,6 +149,7 @@ MonoBehaviour:
   - {fileID: 753131073619244712}
   - {fileID: -5507849650730996023}
   - {fileID: 8534154198598654227}
+  - {fileID: -4262725138408213610}
 --- !u!114 &290080391627111605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,6 +171,7 @@ MonoBehaviour:
   - {fileID: -5507849650730996023}
   - {fileID: 8534154198598654227}
   - {fileID: 753131073619244712}
+  - {fileID: -4262725138408213610}
 --- !u!114 &697413744868673379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,6 +263,9 @@ MonoBehaviour:
   description: Set closestTarget into the blackboard at the closest enemy spot or
     null if none..
   enemyFaction: 0
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!114 &8534154198598654227
 MonoBehaviour:
   m_ObjectHideFlags: 0

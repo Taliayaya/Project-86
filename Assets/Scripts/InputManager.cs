@@ -43,6 +43,12 @@ public class InputManager : Singleton<InputManager>
         
     private void OnPrimaryFire(InputValue inputValue)
     {
+        if (_isOrderingScavenger)
+        {
+            _isOrderingScavenger = false;
+            EventManager.TriggerEvent("OnOrderScavengerSubmit");
+            return;
+        }
         EventManager.TriggerEvent("OnPrimaryFire");
     }
 
@@ -99,6 +105,13 @@ public class InputManager : Singleton<InputManager>
     private void OnStopScavenger(InputValue inputValue)
     {
         EventManager.TriggerEvent("OnStopScavenger");
+    }
+    
+    private bool _isOrderingScavenger = false;
+    private void OnOrderScavenger(InputValue inputValue)
+    {
+        _isOrderingScavenger = !_isOrderingScavenger;
+        EventManager.TriggerEvent("OnOrderScavenger");
     }
     
 

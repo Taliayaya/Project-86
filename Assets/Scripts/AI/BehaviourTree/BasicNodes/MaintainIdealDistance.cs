@@ -20,7 +20,7 @@ namespace AI.BehaviourTree.BasicNodes
                 _aiAgent = blackBoard.GetValue<AIAgent>("aiAgent");
                 _isSet = true;
             }
-            _closestTarget = blackBoard.GetValue<Transform>("closestTarget");
+            blackBoard.TryGetValue<Transform>("closestTarget", out _closestTarget);
         }
 
         protected override void OnStop()
@@ -29,14 +29,13 @@ namespace AI.BehaviourTree.BasicNodes
 
         protected override State OnUpdate()
         {
+            if (!startMaintainingDistance)
+                _aiAgent.StopMaintainIdealDistance();
             if (!_closestTarget)
                 return State.Failure;
             
             if (startMaintainingDistance)
                 _aiAgent.StartMaintainIdealDistance(_closestTarget);
-            else
-                _aiAgent.StopMaintainIdealDistance(_closestTarget);
-                
 
             return State.Success;
         }

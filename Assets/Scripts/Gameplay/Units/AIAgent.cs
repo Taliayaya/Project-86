@@ -102,12 +102,15 @@ namespace Gameplay.Units
 
         public void StartMaintainIdealDistance(Transform closestTarget)
         {
-            StartCoroutine(MaintainIdealDistanceCoroutine(closestTarget));
+            _maintainIdealDistanceCoroutine = StartCoroutine(MaintainIdealDistanceCoroutine(closestTarget));
         }
-        public void StopMaintainIdealDistance(Transform closestTarget)
+        public void StopMaintainIdealDistance()
         {
-            StopCoroutine(MaintainIdealDistanceCoroutine(closestTarget));
+            if (_maintainIdealDistanceCoroutine != null)
+                StopCoroutine(_maintainIdealDistanceCoroutine);
         }
+        
+        private Coroutine _maintainIdealDistanceCoroutine;
         IEnumerator MaintainIdealDistanceCoroutine(Transform closestTarget)
         {
             while (true)

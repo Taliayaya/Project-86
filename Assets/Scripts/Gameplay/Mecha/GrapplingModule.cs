@@ -1,4 +1,5 @@
 using System;
+using ScriptableObjects.GameParameters;
 using UI;
 using UI.HUD;
 using UnityEngine;
@@ -20,6 +21,7 @@ namespace Gameplay.Mecha
         private float maxGrappleDistance = 100f;
         [SerializeField] private float grappleDelayTime = 0.1f;
         [SerializeField] private float grapplePullSpeed = 10f;
+        [SerializeField] private JuggernautParameters juggernautParameters;
         
         [Header("Rope Parameters")]
         [SerializeField] private int quality = 100;
@@ -65,7 +67,7 @@ namespace Gameplay.Mecha
                 EventManager.TriggerEvent("GrapplingModule", new ModuleData
                 {
                     name = "GrapplingModule",
-                    cooldown = grapplingCd,
+                    cooldown = juggernautParameters.grapplingCd,
                     status = ModuleStatus.Disabled,
                 });
             
@@ -109,14 +111,14 @@ namespace Gameplay.Mecha
                 EventManager.TriggerEvent("GrapplingModule", new ModuleData
                 {
                     name = "GrapplingModule",
-                    cooldown = grapplingCd,
+                    cooldown = juggernautParameters.grapplingCd,
                     status = ModuleStatus.Active,
                 });
             
             lr.SetPosition(quality, gunTip.position);
             _isGrappling = true;
             RaycastHit hit;
-            if (Physics.Raycast(cam.position, cam.forward, out hit, maxGrappleDistance, whatIsGrappleable))
+            if (Physics.Raycast(cam.position, cam.forward, out hit, juggernautParameters.maxGrappleDistance, whatIsGrappleable))
             {
                 _grapplePoint = hit.point;
                 Invoke(nameof(ExecuteGrapple), grappleDelayTime);
@@ -166,7 +168,7 @@ namespace Gameplay.Mecha
         {
             _recast = true;
             var direction = (_grapplePoint - rb.position).normalized;
-            rb.AddForce(direction * (1000 * grapplePullSpeed), ForceMode.Force);
+            rb.AddForce(direction * (1000 * juggernautParameters.grapplePullSpeed), ForceMode.Force);
             var distance = Vector3.Distance(rb.position, _grapplePoint);
             _joint.maxDistance = distance;
             _joint.minDistance = distance * 0.25f;
@@ -202,16 +204,17 @@ namespace Gameplay.Mecha
 
         private void StopGrapple(bool success = true)
         {
+            var grapplingCooldown = juggernautParameters.grapplingCd;
             if (isMainModule)
                 EventManager.TriggerEvent("GrapplingModule", new ModuleData
                 {
                     name = "GrapplingModule",
-                    cooldown = success ? grapplingCd : grapplingCd * 0.2f,
+                    cooldown = success ? grapplingCooldown : grapplingCooldown * 0.2f,
                     status = ModuleStatus.Cooldown,
                 });
             RemoveSwing();
             _isGrappling = false;
-            _grapplingCdTimer = success ? grapplingCd : grapplingCd * 0.2f;
+            _grapplingCdTimer = success ? grapplingCooldown : grapplingCooldown * 0.2f;
             _canPull = false;
             _recast = false;
             lr.SetPosition(1, gunTip.position);

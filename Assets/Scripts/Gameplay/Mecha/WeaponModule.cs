@@ -21,6 +21,7 @@ namespace Gameplay.Mecha
         [FormerlySerializedAs("listenToEvents")] [SerializeField] private bool listenOrTriggersEvents = true;
         [SerializeField] private bool holdFire = false;
         [SerializeField] private AmmoSO ammo;
+        [SerializeField] private LayerMask fireBulletLayerMask = 1;
         
         [Header("References")]
         [SerializeField] private Transform gunTransform;
@@ -229,7 +230,7 @@ namespace Gameplay.Mecha
         private void FireBullet(Transform origin)
         {
             var bulletDirection = origin.forward;
-            if (Physics.Raycast(origin.position, origin.forward, out var hit, 500f))
+            if (Physics.Raycast(origin.position, origin.forward, out var hit, 500f, fireBulletLayerMask))
             {
                 bulletDirection = (hit.point - gunTransform.position).normalized;
             }
@@ -248,9 +249,15 @@ namespace Gameplay.Mecha
             bulletRb.AddForce(bulletDirection * ammo.forcePower, ForceMode.Impulse);
             var rot = bulletRb.rotation.eulerAngles;
             bulletRb.rotation = Quaternion.Euler(rot.x, gunTransform.eulerAngles.y, rot.z);
-            
+            if (ammo.reloadSound != null)
+                Invoke(nameof(PlayReloadSound), 0.3f);
            
             Invoke(nameof(ResetOnFire), 1 / ammo.fireRate);
+        }
+        
+        private void PlayReloadSound()
+        {
+            gunAudioSource.PlayOneShot(ammo.reloadSound);
         }
 
         private void PlayBulletSound(bool oneShot = true)

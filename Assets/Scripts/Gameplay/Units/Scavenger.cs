@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Gameplay.Mecha;
+using ScriptableObjects.GameParameters;
 using ScriptableObjects.Gameplay;
 using UnityEngine;
 using UnityEngine.Events;
@@ -9,26 +10,77 @@ using UnityEngine.SceneManagement;
 
 namespace Gameplay.Units
 {
-    [RequireComponent(typeof(SphereCollider))]
     public class Scavenger : Unit
     {
         [SerializeField] private List<AmmoStackSO> ammoStacks;
         
         private List<AmmoStackSO> _copyAmmoStacks;
+        public ScavengerParameters scavengerParameters;
+        public UnityEvent<DamagePackage> onTakeDamage = new UnityEvent<DamagePackage>();
+        
+        [SerializeField] private bool emitEvents;
+        
+         
+
+        public override float Priority => 1;
 
         public bool IsReloading { get; private set; } = false;
-        [SerializeField] private bool emitEvents;
+        private string _name;
+        public string Name { get; set; }
 
         private int GetAmmoIndex(WeaponModule.WeaponType weaponType)
         {
             return ammoStacks.FindIndex((w) => w.weaponType == weaponType && w.ammoAmount > 0);
         }
+
+        public override void OnTakeDamage(DamagePackage damagePackage)
+        {
+            base.OnTakeDamage(damagePackage);
+            onTakeDamage.Invoke(damagePackage);
+        }
         
+        public override void Die()
+        {
+            base.Die();
+            if (emitEvents)
+                EventManager.TriggerEvent("OnScavengerDeath", this);
+            if (scavengerParameters.deathExplodePrefab != null && ammoStacks.Exists(so => so.ammoAmount > 50))
+            {
+                Vector3 explosionPosition = transform.position;
+                
+                if (Physics.Raycast(transform.position, Vector3.down, out var hit, 100, 1));
+                    explosionPosition = hit.point;
+                Instantiate(scavengerParameters.deathExplodePrefab, explosionPosition, Quaternion.identity);
+                AOEExplode();
+            }
+        }
+        
+        private void AOEExplode()
+        {
+            var hits = Physics.OverlapSphere(transform.position, scavengerParameters.deathExplodeRadius, scavengerParameters.deathExplodeLayerMask);
+            foreach (var hit in hits)
+            {
+                if (hit.TryGetComponent(out IHealth health))
+                {
+                    var distance = Vector3.Distance(transform.position, hit.transform.position);
+                    var damagePackage = new DamagePackage
+                    {
+                        DamageAmount = scavengerParameters.Damage(distance),
+                        DamageSourcePosition = transform.position,
+                        Faction = Faction
+                    };
+                    health.TakeDamage(damagePackage);
+                }
+            }
+        }
+
         #region Unity Callbacks
 
         public override void Awake()
         {
             base.Awake();
+            Health = scavengerParameters.maxHealth;
+            MaxHealth = scavengerParameters.maxHealth;
             _copyAmmoStacks = new List<AmmoStackSO>(ammoStacks.Count);
             foreach (var ammoStack in ammoStacks)
                 _copyAmmoStacks.Add(Instantiate(ammoStack));
@@ -83,5 +135,13 @@ namespace Gameplay.Units
         
         
         #endregion
+
+        private void OnDrawGizmosSelected()
+        {
+            if (!Application.isPlaying || !scavengerParameters)
+                return;
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, scavengerParameters.deathExplodeRadius);
+        }
     }
 }

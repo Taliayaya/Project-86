@@ -15,6 +15,12 @@ namespace ScriptableObjects.GameParameters
         public Faction faction = Faction.Republic;
         
         [Range(1, 3000), DefaultValue(100f)] public float health = 100f;
+        
+        //[] 
+        [DefaultValue(100), Range(10, 500)] public float maxGrappleDistance = 100f;
+        [DefaultValue(20), Range(2, 60)] public float grapplePullSpeed = 20f;
+        [DefaultValue(2), Range(0.1f, 10)] public float grapplingCd = 2;
+                
 
 
         public float MouseSensitivity => mouseSensitivity / 4;

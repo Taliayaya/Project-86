@@ -103,6 +103,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "OrderScavenger",
+                    "type": "Button",
+                    "id": "c210b217-b90a-418a-975b-469a0d59cf40",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -279,6 +288,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "StopScavenger",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4f6bd720-165a-4aff-a6f9-b99ddb86c21e",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OrderScavenger",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
