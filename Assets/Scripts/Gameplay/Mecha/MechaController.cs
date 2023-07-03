@@ -53,6 +53,12 @@ namespace Gameplay.Mecha
         private float _yRotation;
         private float _yVelocity;
 
+        public float jumpHeight = 2000;
+
+        public float dashStrength  = 1500;
+        public float dashCooldown = 1;
+    
+
         private Zoom _zoom = Zoom.Default;
         
         #endregion
@@ -185,6 +191,16 @@ namespace Gameplay.Mecha
             if (_isGrounded)
                 _yVelocity = -0.1f;
             _rigidbody.AddForce(Vector3.up * (_yVelocity), ForceMode.Force);
+
+            if(Input.GetKeyDown(KeyCode.Space) && _isGrounded)
+            {
+            _rigidbody.AddForce(Vector3.up * Mathf.Sqrt(jumpHeight * -2f * gravity), ForceMode.Impulse);
+            }
+
+            if(Input.GetKeyDown(KeyCode.Q) && _isGrounded)
+            {
+            _rigidbody.AddForce(transform.forward * Mathf.Sqrt(dashStrength * -2f * gravity), ForceMode.Impulse);
+            }
         }
 
         private void RotateJuggernaut()

@@ -8,6 +8,7 @@ namespace Gameplay.Units
     {
         Default,
         Reloading,
+        Dashing,
     }
     public class Unit : MonoBehaviour, IHealth
     {
