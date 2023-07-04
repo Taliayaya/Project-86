@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace AI.BehaviourTree.CoreNodes
 {
     public class RootNode : Node
@@ -6,6 +8,7 @@ namespace AI.BehaviourTree.CoreNodes
     
         protected override void OnStart()
         {
+            Debug.Log("Root node start");
         }
 
         protected override void OnStop()

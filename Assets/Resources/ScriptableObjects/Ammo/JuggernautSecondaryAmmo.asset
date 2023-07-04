@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a1d3f226d294dd28c3f4fd0c05ca9e3, type: 3}
   m_Name: JuggernautSecondaryAmmo
   m_EditorClassIdentifier: 
+  gunTypeName: 'Sub Ammo : 12.7mm HMG'
   damageCurve:
     serializedVersion: 2
     m_Curve:
@@ -42,6 +43,7 @@ MonoBehaviour:
   maxLifetime: 3
   forcePower: 500
   prefab: {fileID: 511108076656415306, guid: aa0030755dea42748808705c045e1d29, type: 3}
-  fireSound: {fileID: 8300000, guid: 0ee50825c20f01a448cd0f2962411475, type: 3}
+  fireSound: {fileID: 8300000, guid: 56e7de8bcb66df14cae9ed481b0102b1, type: 3}
+  reloadSound: {fileID: 0}
   explosionPrefab: {fileID: 100002, guid: 99c73c92ac40473459640b165473206f, type: 3}
   muzzleFlashPrefab: {fileID: 0}

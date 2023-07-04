@@ -19,6 +19,7 @@
             GameParameters parameters = (GameParameters)target;
 
             EditorGUILayout.LabelField($"Name: {parameters.GetParametersName}", EditorStyles.boldLabel);
+            //EditorGUILayout.PropertyField(serializedObject.FindProperty("fieldsToSerialize"), true); // Uncomment this line to display the fieldsToSerialize list in the inspector
 
             System.Type parametersType = parameters.GetType();
             FieldInfo[] fields = parametersType.GetFields();

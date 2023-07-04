@@ -79,6 +79,24 @@ MonoBehaviour:
   position: {x: 220.99994, y: 725.5109}
   description: 
   startMaintainingDistance: 1
+--- !u!114 &-4262725138408213610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95cd3b536895480ea0fd49227a9242f1, type: 3}
+  m_Name: MaintainIdealDistance
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 01b07c826c41add48946eb042ff1e693
+  position: {x: 598, y: 501}
+  description: 
+  startMaintainingDistance: 0
 --- !u!114 &-607033897279286089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,7 +112,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 57c3a322ca2bde043b5612b5c5d8975e
-  position: {x: -27.65001, y: 714}
+  position: {x: -31.041758, y: 726}
   description: 'Start a rotation coroutine on the transform of the AI.
 
     Requires
@@ -130,6 +148,8 @@ MonoBehaviour:
   - {fileID: 290080391627111605}
   - {fileID: 753131073619244712}
   - {fileID: -5507849650730996023}
+  - {fileID: 8534154198598654227}
+  - {fileID: -4262725138408213610}
 --- !u!114 &290080391627111605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145,11 +165,13 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 254c631f1c5ecff4d8b840afd4d6695f
-  position: {x: -0.00003655815, y: 231.173}
+  position: {x: -0.00001627655, y: 224.91652}
   description: 
   children:
   - {fileID: -5507849650730996023}
+  - {fileID: 8534154198598654227}
   - {fileID: 753131073619244712}
+  - {fileID: -4262725138408213610}
 --- !u!114 &697413744868673379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,7 +205,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 75ae1739f9d60764babb00fcb1a64697
-  position: {x: 259.99994, y: 500.511}
+  position: {x: 391.00003, y: 501.00006}
   description: 
   duration: 2
 --- !u!114 &3494659102506230013
@@ -241,3 +263,28 @@ MonoBehaviour:
   description: Set closestTarget into the blackboard at the closest enemy spot or
     null if none..
   enemyFaction: 0
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1
+--- !u!114 &8534154198598654227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4873663f8ce54f74bccf8dbf007106b6, type: 3}
+  m_Name: RotateTowardsEnemy
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 34a7ebad2835c0d479f54cb5392d295f
+  position: {x: 190.63, y: 501.00006}
+  description: 
+  rotationSpeed: 1
+  startRotating: 0
+  requiredKeys:
+  - aiAgent (AIAgent.cs)
+  - closestTarget (Transform)

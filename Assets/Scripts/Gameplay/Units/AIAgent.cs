@@ -3,6 +3,7 @@ using System.Collections;
 using AI.BehaviourTree;
 using Gameplay.Mecha;
 using ScriptableObjects.AI;
+using ScriptableObjects.GameParameters;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -33,6 +34,8 @@ namespace Gameplay.Units
         private WeaponModule[] _weaponModules;
         public BehaviourTree Tree => _behaviourTreeRunner.tree;
         public DemoParameters demoParameters;
+        
+        private Coroutine _rotateCoroutine;
 
         public override void Awake()
         {
@@ -72,13 +75,15 @@ namespace Gameplay.Units
         [HideInInspector] public bool isRotating;
         public void RotateTowardsEnemy(Transform closestTarget)
         {
+            StopRotating();
             isRotating = true;
-            StartCoroutine(RotateTowardsEnemyCoroutine(closestTarget));
+            _rotateCoroutine = StartCoroutine(RotateTowardsEnemyCoroutine(closestTarget));
         }
 
-        public void StopRotating(Transform closestTarget)
+        public void StopRotating()
         {
-            StopCoroutine(RotateTowardsEnemyCoroutine(closestTarget));
+            if (_rotateCoroutine != null)
+                StopCoroutine(_rotateCoroutine);
             isRotating = false;
         }
         
@@ -90,19 +95,22 @@ namespace Gameplay.Units
                     yield break;
                 var direction = (closestTarget.position - transform.position).normalized;
                 var lookRotation = Quaternion.LookRotation(direction);
-                transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 1);
+                transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * agentSo.rotationSpeed);
                 yield return null;
             }
         }
 
         public void StartMaintainIdealDistance(Transform closestTarget)
         {
-            StartCoroutine(MaintainIdealDistanceCoroutine(closestTarget));
+            _maintainIdealDistanceCoroutine = StartCoroutine(MaintainIdealDistanceCoroutine(closestTarget));
         }
-        public void StopMaintainIdealDistance(Transform closestTarget)
+        public void StopMaintainIdealDistance()
         {
-            StopCoroutine(MaintainIdealDistanceCoroutine(closestTarget));
+            if (_maintainIdealDistanceCoroutine != null)
+                StopCoroutine(_maintainIdealDistanceCoroutine);
         }
+        
+        private Coroutine _maintainIdealDistanceCoroutine;
         IEnumerator MaintainIdealDistanceCoroutine(Transform closestTarget)
         {
             while (true)
@@ -118,7 +126,7 @@ namespace Gameplay.Units
                     }
                     else if (distance < agentSo.idealDistanceFromEnemy - 3)
                     {
-                        if (NavMesh.SamplePosition(transform.position - transform.forward * 5, out NavMeshHit hit, 10,
+                        if (NavMesh.SamplePosition(transform.position - transform.forward * agentSo.idealDistanceFromEnemy, out NavMeshHit hit, 10,
                                 NavMesh.AllAreas))
                             _agent.SetDestination(hit.position);
                     }

@@ -1,5 +1,6 @@
 ﻿using DefaultNamespace;
 using Gameplay;
+using UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -42,6 +43,12 @@ public class InputManager : Singleton<InputManager>
         
     private void OnPrimaryFire(InputValue inputValue)
     {
+        if (_isOrderingScavenger)
+        {
+            _isOrderingScavenger = false;
+            EventManager.TriggerEvent("OnOrderScavengerSubmit");
+            return;
+        }
         EventManager.TriggerEvent("OnPrimaryFire");
     }
 
@@ -70,17 +77,65 @@ public class InputManager : Singleton<InputManager>
 
     private void OnPause()
     {
+        if (_pauseCd)
+            return;
         EventManager.TriggerEvent("OnPause");
         _playerInput.SwitchCurrentActionMap("PauseMenu");
+        _pauseCd = true;
+        Invoke(nameof(ResetPauseCd), _pauseDelay);
     }
+    
+    private void OnGrapplingThrow(InputValue inputValue)
+    {
+        EventManager.TriggerEvent("OnGrapplingThrow", inputValue.isPressed);
+    }
+    
+    private void OnReload(InputValue inputValue)
+    {
+        EventManager.TriggerEvent("OnReload");
+    }
+
+    #region Scavenger Inputs
+
+    private void OnCallScavenger(InputValue inputValue)
+    {
+        EventManager.TriggerEvent("OnCallScavenger");
+    }
+    
+    private void OnStopScavenger(InputValue inputValue)
+    {
+        EventManager.TriggerEvent("OnStopScavenger");
+    }
+    
+    private bool _isOrderingScavenger = false;
+    private void OnOrderScavenger(InputValue inputValue)
+    {
+        _isOrderingScavenger = !_isOrderingScavenger;
+        EventManager.TriggerEvent("OnOrderScavenger");
+    }
+    
+
+    #endregion
+    
         
     #endregion
+    
+    private void ResetPauseCd()
+    {
+        _pauseCd = false;
+    }
 
     #region Pause Action Map
         
-
-    private void OnResume()
+    [SerializeField] private float _pauseDelay = 0.2f;
+    private bool _pauseCd = false;
+    public void OnResume()
     {
+        WindowManager.Close();
+        if (WindowManager.WindowOpenedCount > 0)
+            return;
+        Debug.Log("OnResume");
+
         EventManager.TriggerEvent("OnResume");
         _playerInput.SwitchCurrentActionMap("Juggernaut");
     }

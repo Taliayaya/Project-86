@@ -144,14 +144,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c20935483dbb488eba5bae69617000bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  faction: 0
   weaponType: 1
-  listenToEvents: 1
+  listenOrTriggersEvents: 1
   holdFire: 1
   ammo: {fileID: 11400000, guid: c7016e9a02e0b564fba18bfa241944f4, type: 2}
+  fireBulletLayerMask:
+    serializedVersion: 2
+    m_Bits: 129
   gunTransform: {fileID: 206984805398388775}
   gunAudioSource: {fileID: 5952406706035772804}
   cameraTransform: {fileID: 0}
+  myParentColliderToIgnore: {fileID: 0}
   ammoLeftOrRight: Left
+  canFire: 1
 --- !u!82 &5952406706035772804
 AudioSource:
   m_ObjectHideFlags: 0
@@ -161,11 +167,11 @@ AudioSource:
   m_GameObject: {fileID: 7492193195463254585}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: -5566782973873335814, guid: 86627ef9b19d90447a04b809d9fb5949,
+  OutputAudioMixerGroup: {fileID: 8843940232986239663, guid: 86627ef9b19d90447a04b809d9fb5949,
     type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.7
   m_Pitch: 1
   Loop: 0
   Mute: 0

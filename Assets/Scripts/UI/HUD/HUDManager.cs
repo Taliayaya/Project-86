@@ -1,18 +1,26 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Globalization;
+using Gameplay;
 using Gameplay.Mecha;
+using Gameplay.Units;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI
+namespace UI.HUD
 {
     public class HUDManager : MonoBehaviour
     {
+        private UnitState _playedMechaState;
+        
         #region Unity Callbacks
 
         private void Awake()
         {
+            var maskableIcon = iconParent.GetComponentsInChildren<MaskableGraphic>();
+            reticleImages.AddRange(maskableIcon);
             FadeZoom(0, 0);
         }
 
@@ -29,6 +37,8 @@ namespace UI
             EventManager.AddListener("OnUpdateXRotation", OnUpdateSideBarAngles);
             EventManager.AddListener("OnDeath", OnDeath);
             EventManager.AddListener("OnRespawn", OnRespawn);
+            
+            EventManager.AddListener("OnMechaStateChange", OnMechaStateChange);
         }
 
         private void OnDisable()
@@ -44,14 +54,26 @@ namespace UI
             EventManager.RemoveListener("OnUpdateXRotation", OnUpdateSideBarAngles);
             EventManager.RemoveListener("OnDeath", OnDeath);
             EventManager.RemoveListener("OnRespawn", OnRespawn);
+            
+            EventManager.RemoveListener("OnMechaStateChange", OnMechaStateChange);
         }
 
+        
+
         #endregion
+        private void OnMechaStateChange(object arg0)
+        {
+            _playedMechaState = (UnitState) arg0;
+        }
 
         #region Reticle UI
 
         [Header("Reticle UI")] [SerializeField]
-        private MaskableGraphic[] reticleImages;
+        private List<MaskableGraphic> reticleImages;
+
+        [SerializeField] private Transform iconParent;
+        
+        [SerializeField] private MaskableGraphic crosshair;
 
 
         private void FadeReticle(float alpha, float duration)
@@ -128,16 +150,20 @@ namespace UI
 
         private void OnZoomChange(object zoomAmount)
         {
+            if (GameManager.GameIsPaused || _playedMechaState != UnitState.Default)
+                return;
             MechaController.Zoom zoom = (MechaController.Zoom)zoomAmount;
             switch (zoom)
             {
                 case MechaController.Zoom.Default:
                     zoomText.text = "ZOOM   1.0 X";
                     FadeZoom(0, 0.1f);
+                    crosshair.CrossFadeAlpha(1, 0.1f, false);
                     FadeReticle(1, 0.1f);
                     break;
                 case MechaController.Zoom.X2:
                     FadeZoom(1, 0.2f);
+                    crosshair.CrossFadeAlpha(0.9f, 0.2f, false);
                     FadeReticle(0.2f, 0.2f);
                     zoomGrid.pixelsPerUnitMultiplier = 1;
                     zoomText.text = "ZOOM   2.0 X";
@@ -194,6 +220,8 @@ namespace UI
        
         private void OnUpdateCompass(object playerYRotation)
         {
+            if (GameManager.GameIsPaused || _playedMechaState != UnitState.Default)
+                return;
             compassImage.uvRect = new Rect((float)playerYRotation / 360, 0, 1, 1);
         }
 
@@ -210,6 +238,8 @@ namespace UI
         
         private void OnUpdateSideBarAngles(object playerXRotation)
         {
+            if (GameManager.GameIsPaused || _playedMechaState != UnitState.Default)
+                return;
             float maxAngles = MechaController.MaxXRotation - MechaController.MinXRotation;
             sideBarAnglesImageLeft.uvRect = new Rect( 0,1 - (float)playerXRotation / maxAngles,  1, 1);
             sideBarAnglesImageRight.uvRect = new Rect(0, 1 -(float)playerXRotation / maxAngles,  1, 1);
@@ -225,12 +255,14 @@ namespace UI
         private void OnPause()
         {
             FadeReticle(0.1f, 0);
+            crosshair.CrossFadeAlpha(0.1f, 0, true);
             Debug.Log("OnPause");
         }
 
         private void OnResume()
         {
             FadeReticle(_previousAlpha, 0);
+            crosshair.CrossFadeAlpha(1f, 0, true);
         }
 
         #endregion
@@ -249,6 +281,7 @@ namespace UI
         }
 
         #endregion
+
     }
 
 
