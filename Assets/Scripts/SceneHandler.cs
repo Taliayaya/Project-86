@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UI;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace DefaultNamespace
@@ -7,8 +8,9 @@ namespace DefaultNamespace
     {
         public static void ReloadScene()
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            WindowManager.CloseAll();
             EventManager.TriggerEvent("OnResume");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 }
