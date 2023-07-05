@@ -111,7 +111,7 @@ namespace Gameplay.Units
 
         protected virtual void Update()
         {
-            Debug.Log("Velocity of " + name + " is " + _rb.velocity.magnitude + " and engine status is " + EngineStatus);
+            //Debug.Log("Velocity of " + name + " is " + _rb.velocity.magnitude + " and engine status is " + EngineStatus);
             EngineStatus = _rb.velocity.magnitude switch
             {
                 < 5 => EngineStatus.Idle,
