@@ -136,8 +136,7 @@ namespace Gameplay
         
         private void GoTo()
         {
-            var distance = Vector3.Distance(transform.position, master.transform.position);
-            if (distance < 1)
+            if (_scavengerAgent.pathStatus == NavMeshPathStatus.PathComplete && _scavengerAgent.remainingDistance < 1)
             {
                 State = ScavengerState.Idle;
                 return;
