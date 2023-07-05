@@ -138,12 +138,25 @@ namespace ScriptableObjects
         public void ResetToDefault()
         {
             Type T = GetType();
+            var s = "";
+            foreach (var fieldName in fieldsToSerialize)
+            {
+                s += fieldName + ", ";
+            }
+            Debug.Log("[BinarySerializableSO] ResetToDefault: Resetting to default values: " + s);
             foreach (var fieldName in fieldsToSerialize)
             {
                 var field = T.GetField(fieldName);
                 DefaultValueAttribute defaultValue = field.GetCustomAttribute(typeof(DefaultValueAttribute)) as DefaultValueAttribute;
                 if (defaultValue != null)
-                    field.SetValue(this, defaultValue.GetDefaultValue());
+                {
+                    var val = defaultValue.GetDefaultValue();
+                    field.SetValue(this, val);
+                    Debug.Log($"[BinarySerializableSO] ResetToDefault: Reset {fieldName} to {val}, {val.GetType()}");
+                    EventManager.TriggerEvent($"UpdateGameParameter:{fieldName}", val);
+                }
+                else
+                    Debug.LogWarning($"[BinarySerializableSO] ResetToDefault: No default value found for {fieldName}");
             }
         }
     }

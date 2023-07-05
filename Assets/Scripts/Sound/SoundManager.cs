@@ -45,13 +45,25 @@ namespace DefaultNamespace.Sound
         private void OnUpdateMusicVolume(object data)
         {
             Debug.Log("Called Event");
-            float volume = (float)data;
+            float volume;
+            if (data is float volf)
+                volume = volf;
+            else if (data is int voli)
+                volume = voli;
+            else
+                throw new ArgumentException("data is not float or int");
             masterMixer.SetFloat("musicVol", volume);
         }
 
         private void OnUpdateSfxVolume(object data)
         {
-            float volume = (float)data;
+            float volume;
+            if (data is float volf)
+                volume = volf;
+            else if (data is int voli)
+                volume = voli;
+            else
+                throw new ArgumentException("data is not float or int");
             masterMixer.SetFloat("sfxVol", volume);
         }
     }
