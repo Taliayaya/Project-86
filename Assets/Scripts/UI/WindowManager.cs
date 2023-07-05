@@ -50,6 +50,12 @@ namespace UI
                     ShowWindowWindow(window);
         }
         
+        public static void CloseAll()
+        {
+            while (WindowStack.Count > 0)
+                Close();
+        }
+        
         private static void HideWindowWindow(Window window)
         {
             window.Close();
