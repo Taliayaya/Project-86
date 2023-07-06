@@ -13,6 +13,11 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: e3ea471ecd155324d9fc022d0ede14fe,
         type: 2}
     - target: {fileID: 496458843, guid: c60559b31bc453d4592bc5925d48232c, type: 3}
+      propertyPath: engineAudioSo
+      value: 
+      objectReference: {fileID: 11400000, guid: cdbf35fdc54510f4e8c98c65ac06db71,
+        type: 2}
+    - target: {fileID: 496458843, guid: c60559b31bc453d4592bc5925d48232c, type: 3}
       propertyPath: engineAudioSource
       value: 
       objectReference: {fileID: 1850275427234497227}
@@ -97,7 +102,7 @@ PrefabInstance:
     - target: {fileID: 7611585065316723255, guid: c60559b31bc453d4592bc5925d48232c,
         type: 3}
       propertyPath: m_Name
-      value: Ameise Variant
+      value: Ameise
       objectReference: {fileID: 0}
     - target: {fileID: 7611585065316723257, guid: c60559b31bc453d4592bc5925d48232c,
         type: 3}
@@ -301,7 +306,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

@@ -8,6 +8,11 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 496458843, guid: c60559b31bc453d4592bc5925d48232c, type: 3}
+      propertyPath: engineAudioSo
+      value: 
+      objectReference: {fileID: 11400000, guid: cdbf35fdc54510f4e8c98c65ac06db71,
+        type: 2}
+    - target: {fileID: 496458843, guid: c60559b31bc453d4592bc5925d48232c, type: 3}
       propertyPath: engineAudioSource
       value: 
       objectReference: {fileID: 747775229316639250}
@@ -137,7 +142,7 @@ PrefabInstance:
     - target: {fileID: 7611585065316723255, guid: c60559b31bc453d4592bc5925d48232c,
         type: 3}
       propertyPath: m_Name
-      value: Lowe Variant
+      value: Lowe
       objectReference: {fileID: 0}
     - target: {fileID: 7611585065316723257, guid: c60559b31bc453d4592bc5925d48232c,
         type: 3}

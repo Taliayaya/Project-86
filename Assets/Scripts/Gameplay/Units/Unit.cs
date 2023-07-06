@@ -1,4 +1,5 @@
 ﻿using System;
+using ScriptableObjects.Sound;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -9,6 +10,13 @@ namespace Gameplay.Units
     {
         Default,
         Reloading,
+    }
+
+    public enum EngineStatus
+    {
+        Idle,
+        Walking,
+        Running,
     }
     [RequireComponent(typeof(Rigidbody))]
     public class Unit : MonoBehaviour, IHealth
@@ -23,12 +31,40 @@ namespace Gameplay.Units
         
         [Header("Sounds")]
         [SerializeField] private AudioSource engineAudioSource;
+        [SerializeField] private EngineAudioSO engineAudioSo;
         
            public virtual float Health { get; set; } = 100;
            public float MaxHealth { get; set; } = 100;
         [SerializeField] private Faction faction;
         public Faction Faction { get => faction; set => faction = value; }
         public virtual UnitState State { get; set; } = UnitState.Default;
+        
+        private EngineStatus _engineStatus = EngineStatus.Idle;
+
+        protected virtual EngineStatus EngineStatus
+        {
+            get => _engineStatus;
+            set
+            {
+                if (value == _engineStatus) return;
+                engineAudioSource.clip = value switch
+                {
+                    EngineStatus.Idle => engineAudioSo.engineIdle,
+                    EngineStatus.Walking => engineAudioSo.engineWalking,
+                    EngineStatus.Running => engineAudioSo.engineSpeeding,
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+                engineAudioSource.PlayOneShot((int)_engineStatus < (int)value
+                    ? engineAudioSo.engineAcceleration
+                    : engineAudioSo.engineDeceleration, 0.5f);
+
+                engineAudioSource.loop = true;
+                engineAudioSource.Play();
+                
+                _engineStatus = value;
+            }
+        }
+
         public virtual float Priority => 5;
 
         protected virtual void Start()
@@ -39,6 +75,8 @@ namespace Gameplay.Units
             onHealthChange.Invoke(Health, MaxHealth); // Initialize health bar
             
             _rb = GetComponent<Rigidbody>();
+            engineAudioSource.clip = engineAudioSo.engineIdle;
+            engineAudioSource.loop = true;
             engineAudioSource.Play();
         }
 
@@ -73,11 +111,15 @@ namespace Gameplay.Units
 
         protected virtual void Update()
         {
-            if (_rb.velocity.magnitude < 5)
-                engineAudioSource.volume = 0.3f;
-            else
-                engineAudioSource.volume = 0.1f;
+            //Debug.Log("Velocity of " + name + " is " + _rb.velocity.magnitude + " and engine status is " + EngineStatus);
+            EngineStatus = _rb.velocity.magnitude switch
+            {
+                < 5 => EngineStatus.Idle,
+                < 40 => EngineStatus.Walking,
+                _ => EngineStatus.Running
+            };
         }
+
 
         public virtual void Die()
         {
