@@ -33,6 +33,7 @@ namespace Gameplay.Mecha
         [SerializeField]
         private Transform modelTransform;
         [SerializeField] private CinemachineVirtualCamera virtualCamera;
+        [SerializeField] private LayerMask forwardMask;
 
         [Header("Ground Check")] 
         [SerializeField]
@@ -140,6 +141,7 @@ namespace Gameplay.Mecha
             CheckGround();
             ApplyGravity(); // Currently using the rigidbody gravity
             LimitSpeed();
+            CheckDistanceForward();
             if (State == UnitState.Default)
             {
                 MoveJuggernaut();
@@ -153,6 +155,15 @@ namespace Gameplay.Mecha
 
         #region Movement and Camera
 
+        private void CheckDistanceForward()
+        {
+            if (Physics.Raycast(virtualCamera.transform.position, virtualCamera.transform.forward, out var hit, 4000, forwardMask))
+            {
+                EventManager.TriggerEvent("OnDistanceForward", hit.distance);
+            }
+            else
+                EventManager.TriggerEvent("OnDistanceForward", float.NaN);
+        }
         
 
         private void CheckGround()
@@ -250,7 +261,7 @@ namespace Gameplay.Mecha
             if (CameraZoom != Zoom.X8)
                 CameraZoom++;
             _zoomCd = true;
-            Invoke(nameof(ResetZoomCd), 0.25f);
+            Invoke(nameof(ResetZoomCd), juggernautParameters.scrollSensitivity / 100);
         }
 
         private void OnZoomOut(object data)
@@ -260,7 +271,7 @@ namespace Gameplay.Mecha
             if (CameraZoom != Zoom.Default)
                 CameraZoom--;
             _zoomCd = true;
-            Invoke(nameof(ResetZoomCd), 0.25f);
+            Invoke(nameof(ResetZoomCd), juggernautParameters.scrollSensitivity / 100);
 
         }
 

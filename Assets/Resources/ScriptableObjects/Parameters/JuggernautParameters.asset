@@ -19,6 +19,7 @@ MonoBehaviour:
   - grapplePullSpeed
   - grapplingCd
   - maxGrappleDistance
+  - scrollSensitivity
   fieldsToShowInGame:
   - mouseSensitivity
   - movementSpeed
@@ -26,8 +27,10 @@ MonoBehaviour:
   - grapplePullSpeed
   - grapplingCd
   - maxGrappleDistance
+  - scrollSensitivity
   mouseSensitivity: 10
-  movementSpeed: 30
+  scrollSensitivity: 25
+  movementSpeed: 100
   stepHeight: 0.8
   faction: 0
   health: 100

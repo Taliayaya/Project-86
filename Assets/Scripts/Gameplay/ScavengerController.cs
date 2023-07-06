@@ -34,6 +34,8 @@ namespace Gameplay
             set
             {
                 _state = value;
+                if (!gameObject.activeSelf)
+                    return;
                 switch (_state)
                 {
                     case ScavengerState.Hide:
