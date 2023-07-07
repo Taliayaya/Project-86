@@ -237,7 +237,7 @@ namespace Gameplay.Mecha
 
             var bullet = Instantiate(ammo.prefab, gunTransform.position, Quaternion.identity);
             var bulletScript = bullet.GetComponent<Bullet>();
-            bulletScript.Init(ammo.damageCurve, faction, ammo.explosionPrefab);
+            bulletScript.Init(ammo, faction);
             bulletScript.InitLifeTime(ammo.maxLifetime);
 
             var bulletRb = bullet.GetComponent<Rigidbody>();

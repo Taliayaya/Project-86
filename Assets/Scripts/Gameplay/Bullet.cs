@@ -1,16 +1,16 @@
 using System;
+using ScriptableObjects;
 using UnityEngine;
 
 namespace Gameplay
 {
    public class Bullet : MonoBehaviour
    {
-      private AnimationCurve _damageCurve;
       private Vector3 _origin;
       private Faction _factionOrigin; // To avoid killing each other
-      private GameObject _explosionPrefab;
+      public AmmoSO Ammo { get; set; }
       
-      private float Damage => _damageCurve.Evaluate(_lifeTime);
+      private float Damage => Ammo.damageCurve.Evaluate(_lifeTime);
 
       private DamagePackage _damagePackage;
       private float _lifeTime;
@@ -24,11 +24,10 @@ namespace Gameplay
          Physics.IgnoreLayerCollision(layer, layer, true);
       }
       
-      public void Init(AnimationCurve damageCurve, Faction factionOrigin, GameObject explosionPrefab)
+      public void Init(AmmoSO ammoSo, Faction factionOrigin)
       {
-         _damageCurve = damageCurve;
+         Ammo = ammoSo;
          _factionOrigin = factionOrigin;
-         _explosionPrefab = explosionPrefab;
       }
 
       public void InitLifeTime(float lifeTime)
@@ -44,13 +43,29 @@ namespace Gameplay
             DamageAmount = Damage,
             DamageSourcePosition = _origin
          };
-         if (other.gameObject.TryGetComponent(out IHealth health))
+         
+         // commented to avoid damaging twice
+         //if (other.gameObject.TryGetComponent(out IHealth health))
+         //{
+         //   health.TakeDamage(_damagePackage);
+         //}
+
+         var colliders = new Collider[5];
+         var position = other.contacts[0].point;
+         var size = Physics.OverlapSphereNonAlloc(position, Ammo.explosionRadius, colliders, Ammo.explosionLayerMask);
+         Debug.Log($"Explosion size: {size}");
+         Debug.DrawLine(position, position + Vector3.up * 10, Color.red, 10f);
+         for(int i = 0; i < size; i++)
          {
-            health.TakeDamage(_damagePackage);
+            var col = colliders[i];
+            Debug.Log($"Explosion collider: {col.name}");
+            if (col.TryGetComponent(out IHealth health2))
+            {
+               health2.TakeDamage(_damagePackage);
+            }
          }
 
-         Debug.Log("Bullet hit something! " + other.gameObject.name);
-         Instantiate(_explosionPrefab, transform.position, Quaternion.LookRotation(transform.position - _origin));
+         Instantiate(Ammo.explosionPrefab, position,  Quaternion.LookRotation(position - _origin));
          Destroy(gameObject);
       }
 

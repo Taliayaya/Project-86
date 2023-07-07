@@ -8,6 +8,7 @@ namespace Gameplay
     {
         Republic,
         Legion,
+        Neutral
     }
     public static class Factions
     {
