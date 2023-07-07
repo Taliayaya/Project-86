@@ -10,14 +10,7 @@ namespace ScriptableObjects.GameParameters
         
         [Header("On Death")]
         public GameObject deathExplodePrefab;
-        public float deathExplodeRadius;
-        public AnimationCurve deathExplodeDamage;
-        public LayerMask deathExplodeLayerMask;
         
-        public float Damage(float distance)
-        {
-            return deathExplodeDamage.Evaluate(distance);
-        }
         public override string GetParametersName { get; } = "Scavenger";
     }
 }

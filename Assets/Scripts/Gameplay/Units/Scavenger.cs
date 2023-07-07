@@ -19,8 +19,6 @@ namespace Gameplay.Units
         public UnityEvent<DamagePackage> onTakeDamage = new UnityEvent<DamagePackage>();
         
         [SerializeField] private bool emitEvents;
-        
-         
 
         public override float Priority => 1;
 
@@ -51,28 +49,9 @@ namespace Gameplay.Units
                 if (Physics.Raycast(transform.position, Vector3.down, out var hit, 100, 1));
                     explosionPosition = hit.point;
                 Instantiate(scavengerParameters.deathExplodePrefab, explosionPosition, Quaternion.identity);
-                AOEExplode();
             }
         }
         
-        private void AOEExplode()
-        {
-            var hits = Physics.OverlapSphere(transform.position, scavengerParameters.deathExplodeRadius, scavengerParameters.deathExplodeLayerMask);
-            foreach (var hit in hits)
-            {
-                if (hit.TryGetComponent(out IHealth health))
-                {
-                    var distance = Vector3.Distance(transform.position, hit.transform.position);
-                    var damagePackage = new DamagePackage
-                    {
-                        DamageAmount = scavengerParameters.Damage(distance),
-                        DamageSourcePosition = transform.position,
-                        Faction = Faction
-                    };
-                    health.TakeDamage(damagePackage);
-                }
-            }
-        }
 
         #region Unity Callbacks
 
@@ -140,8 +119,6 @@ namespace Gameplay.Units
         {
             if (!Application.isPlaying || !scavengerParameters)
                 return;
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, scavengerParameters.deathExplodeRadius);
         }
     }
 }
