@@ -7,12 +7,16 @@ namespace UI.HUD
 {
     public class ScavengerWindow : MonoBehaviour
     {
-        [Header("References")]
+        [Header("Alive References")]
+        [SerializeField] private GameObject alivePanel;
         [SerializeField] private TextMeshProUGUI scavengerName;
         
         [SerializeField] private Image healthBar;
         [SerializeField] private TextMeshProUGUI actionText;
         [SerializeField] private TextMeshProUGUI scavengerDistance;
+        
+        [Header("Dead References")]
+        [SerializeField] private GameObject deadPanel;
 
         private void OnEnable()
         {
@@ -42,7 +46,21 @@ namespace UI.HUD
 
         private void OnScavengerHealthChange(object arg0)
         {
-            healthBar.fillAmount = (float) arg0;
+            if (arg0 is float health)
+                healthBar.fillAmount = health;
+            else
+                return;
+
+            if (health <= 0)
+            {
+                alivePanel.SetActive(false);
+                deadPanel.SetActive(true);
+            }
+            else
+            {
+                alivePanel.SetActive(true);
+                deadPanel.SetActive(false);
+            }
         }
 
         private void OnScavengerStateChange(object arg0)

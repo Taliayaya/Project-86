@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a1d3f226d294dd28c3f4fd0c05ca9e3, type: 3}
   m_Name: LoweAmmo
   m_EditorClassIdentifier: 
+  gunTypeName: 'Main Gun : 57mm APFSDS'
   damageCurve:
     serializedVersion: 2
     m_Curve:
@@ -50,7 +51,12 @@ MonoBehaviour:
   reloadTime: 3
   maxLifetime: 5
   forcePower: 600
+  explosionRadius: 30
+  explosionLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
   prefab: {fileID: 1265322072642014774, guid: 5860792ccc0f1e14db69840f8be58a53, type: 3}
   fireSound: {fileID: 8300000, guid: a06fad0c670d5574a91051df04dec1bd, type: 3}
+  reloadSound: {fileID: 0}
   explosionPrefab: {fileID: 100008, guid: 875c9bcb71a8d7f46a64a8a7df5987e0, type: 3}
   muzzleFlashPrefab: {fileID: 0}

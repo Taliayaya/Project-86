@@ -37,7 +37,7 @@ namespace UI.HUD
             EventManager.AddListener("OnUpdateXRotation", OnUpdateSideBarAngles);
             EventManager.AddListener("OnDeath", OnDeath);
             EventManager.AddListener("OnRespawn", OnRespawn);
-            
+            EventManager.AddListener("OnDistanceForward", OnUpdateDistance);
             EventManager.AddListener("OnMechaStateChange", OnMechaStateChange);
         }
 
@@ -54,7 +54,7 @@ namespace UI.HUD
             EventManager.RemoveListener("OnUpdateXRotation", OnUpdateSideBarAngles);
             EventManager.RemoveListener("OnDeath", OnDeath);
             EventManager.RemoveListener("OnRespawn", OnRespawn);
-            
+            EventManager.RemoveListener("OnDistanceForward", OnUpdateDistance);
             EventManager.RemoveListener("OnMechaStateChange", OnMechaStateChange);
         }
 
@@ -96,23 +96,39 @@ namespace UI.HUD
             int amount = (int)amountRemaining;
             primaryAmmoText.text = amountRemaining.ToString();
 
-            if (amount <= 2)
-            {
-                primaryAmmoText.color = Color.red;
-            }
-            else if (amount <= 5)
-            {
-                primaryAmmoText.color = Color.yellow;
-            }
-            else
-            {
-                primaryAmmoText.color = Color.white;
-            }
+            //if (amount <= 2)
+            //{
+            //    primaryAmmoText.color = Color.red;
+            //}
+            //else if (amount <= 5)
+            //{
+            //    primaryAmmoText.color = Color.yellow;
+            //}
+            //else
+            //{
+            //    primaryAmmoText.color = Color.white;
+            //}
 
 
         }
 
 
+
+        #endregion
+
+        #region Distance Looking UI
+        
+        [Header("Distance Looking UI")] [SerializeField] private TextMeshProUGUI distanceText;
+        
+        private void OnUpdateDistance(object distance)
+        {
+            if (distance is not float dist)
+                return;
+            if (float.IsNaN(dist))
+                distanceText.text = "OOB";
+            else
+                distanceText.text = dist.ToString("0000", CultureInfo.InvariantCulture) + "m";
+        }
 
         #endregion
 

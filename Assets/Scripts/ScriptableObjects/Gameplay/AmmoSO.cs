@@ -13,6 +13,10 @@ namespace ScriptableObjects
         public float reloadTime = 1f;
         public float maxLifetime = 5;
         public float forcePower = 500f;
+        
+        [Header("Explosion Properties")]
+        [Range(0, 200)] public float explosionRadius = 1f;
+        public LayerMask explosionLayerMask = 1;
 
         [Header("Ammo Prefabs")]
         public GameObject prefab;

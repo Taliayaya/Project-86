@@ -158,30 +158,37 @@ namespace Gameplay.Mecha
         /// </summary>
         /// <param name="forwardTransform"></param>
         /// <param name="time"></param>
+        /// <param name="canShoot"></param>
         /// <returns></returns>
-        public IEnumerator ShootDuringTime(Transform forwardTransform, float time)
+        public IEnumerator ShootDuringTime(float time, Func<bool> canShoot)
         {
             var startTime = Time.time;
             while (Time.time - startTime < time)
             {
-                Debug.Log("Shoot " + name);
-                Shoot(forwardTransform);
+                if (!canShoot())
+                    yield return new WaitForSeconds(0.1f);
+                Shoot(cameraTransform);
                 yield return new WaitForSeconds(1/ammo.fireRate);
             }
         }
+
         /// <summary>
         /// AI related method
         /// </summary>
         /// <param name="forwardTransform"></param>
         /// <param name="time"></param>
+        /// <param name="canShoot"></param>
         /// <returns></returns>
-        public IEnumerator ShootHoldDuringTime(Transform forwardTransform, float time)
+        public IEnumerator ShootHoldDuringTime(float time, Func<bool> canShoot)
         {
             PlayBulletSound(false);
             var startTime = Time.time;
+            
             while (Time.time - startTime < time)
             {
-                Shoot(forwardTransform);
+                if (!canShoot())
+                    yield return new WaitForSeconds(0.1f);
+                Shoot(cameraTransform);
                 yield return new WaitForSeconds(1/ammo.fireRate);
             }
             
@@ -233,28 +240,34 @@ namespace Gameplay.Mecha
             if (Physics.Raycast(origin.position, origin.forward, out var hit, 500f, fireBulletLayerMask))
             {
                 bulletDirection = (hit.point - gunTransform.position).normalized;
+                Debug.DrawRay(gunTransform.position, bulletDirection * 100, Color.red, 1f);
+            }
+            else
+            {
+                Debug.DrawRay(gunTransform.position, bulletDirection * 100, Color.green, 1f);
             }
 
             var bullet = Instantiate(ammo.prefab, gunTransform.position, Quaternion.identity);
+            var bulletCollider = bullet.GetComponentInChildren<Collider>();
+            Physics.IgnoreCollision(bulletCollider, _gunTransformCollider, true);
+            if (myParentColliderToIgnore != null)
+                Physics.IgnoreCollision(bulletCollider, myParentColliderToIgnore, true);
             var bulletScript = bullet.GetComponent<Bullet>();
-            bulletScript.Init(ammo.damageCurve, faction, ammo.explosionPrefab);
+            bulletScript.Init(ammo, faction);
             bulletScript.InitLifeTime(ammo.maxLifetime);
 
             var bulletRb = bullet.GetComponent<Rigidbody>();
-            var bulletCollider = bullet.GetComponentInChildren<Collider>();
-            Physics.IgnoreCollision(bulletCollider, _gunTransformCollider, true);
-             if (myParentColliderToIgnore != null)
-                 Physics.IgnoreCollision(bulletCollider, myParentColliderToIgnore, true);
+
             canFire = false;
             bulletRb.AddForce(bulletDirection * ammo.forcePower, ForceMode.Impulse);
             var rot = bulletRb.rotation.eulerAngles;
             bulletRb.rotation = Quaternion.Euler(rot.x, gunTransform.eulerAngles.y, rot.z);
             if (ammo.reloadSound != null)
                 Invoke(nameof(PlayReloadSound), 0.3f);
-           
+
             Invoke(nameof(ResetOnFire), 1 / ammo.fireRate);
         }
-        
+
         private void PlayReloadSound()
         {
             gunAudioSource.PlayOneShot(ammo.reloadSound);

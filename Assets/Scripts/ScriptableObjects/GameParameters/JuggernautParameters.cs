@@ -1,5 +1,6 @@
 ﻿using Gameplay;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace ScriptableObjects.GameParameters
 {
@@ -8,8 +9,12 @@ namespace ScriptableObjects.GameParameters
     {
         [Range(1, 100), DefaultValue(10f)]
         public float mouseSensitivity = 10f;
+        [Range(1f, 100f), DefaultValue(25)]
+        public float scrollSensitivity = 25f;
         [Range(10, 100), DefaultValue(30)]
-        public float movementSpeed = 30f;
+        public float walkSpeed = 30f;
+        [Range(10, 100), DefaultValue(60)]
+        public float runSpeed = 60f;
 
         public float stepHeight = 0.8f;
         public Faction faction = Faction.Republic;
