@@ -236,25 +236,26 @@ namespace Gameplay.Mecha
             }
 
             var bullet = Instantiate(ammo.prefab, gunTransform.position, Quaternion.identity);
+            var bulletCollider = bullet.GetComponentInChildren<Collider>();
+            Physics.IgnoreCollision(bulletCollider, _gunTransformCollider, true);
+            if (myParentColliderToIgnore != null)
+                Physics.IgnoreCollision(bulletCollider, myParentColliderToIgnore, true);
             var bulletScript = bullet.GetComponent<Bullet>();
             bulletScript.Init(ammo, faction);
             bulletScript.InitLifeTime(ammo.maxLifetime);
 
             var bulletRb = bullet.GetComponent<Rigidbody>();
-            var bulletCollider = bullet.GetComponentInChildren<Collider>();
-            Physics.IgnoreCollision(bulletCollider, _gunTransformCollider, true);
-             if (myParentColliderToIgnore != null)
-                 Physics.IgnoreCollision(bulletCollider, myParentColliderToIgnore, true);
+
             canFire = false;
             bulletRb.AddForce(bulletDirection * ammo.forcePower, ForceMode.Impulse);
             var rot = bulletRb.rotation.eulerAngles;
             bulletRb.rotation = Quaternion.Euler(rot.x, gunTransform.eulerAngles.y, rot.z);
             if (ammo.reloadSound != null)
                 Invoke(nameof(PlayReloadSound), 0.3f);
-           
+
             Invoke(nameof(ResetOnFire), 1 / ammo.fireRate);
         }
-        
+
         private void PlayReloadSound()
         {
             gunAudioSource.PlayOneShot(ammo.reloadSound);
