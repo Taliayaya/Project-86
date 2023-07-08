@@ -40,6 +40,11 @@ public class InputManager : Singleton<InputManager>
         var data = inputValue.Get<Vector2>();
         EventManager.TriggerEvent("OnMove", data);
     }
+
+    private void OnRun(InputValue inputValue)
+    {
+        EventManager.TriggerEvent("OnRun", inputValue.isPressed);
+    }
         
     private void OnPrimaryFire(InputValue inputValue)
     {

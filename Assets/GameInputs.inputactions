@@ -15,6 +15,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "Run",
+                    "type": "Button",
+                    "id": "d8ab6343-6efd-4421-913e-9807afa995af",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=2)",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "LookAround",
                     "type": "Value",
                     "id": "94c9a217-ed1d-4b85-8ee4-d4b6529cfe39",
@@ -299,6 +308,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "OrderScavenger",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0584fa3d-1282-4bab-bf6d-2ea4f2d208d9",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Run",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

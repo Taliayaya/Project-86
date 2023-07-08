@@ -55,10 +55,13 @@ namespace Gameplay.Mecha
         private float _yVelocity;
 
         private Zoom _zoom = Zoom.Default;
+        private bool _isRunning;
         
         #endregion
 
         #region Properties
+        
+        public float MovementSpeed => _isRunning ? juggernautParameters.runSpeed : juggernautParameters.walkSpeed;
 
         private Zoom CameraZoom
         {
@@ -125,6 +128,7 @@ namespace Gameplay.Mecha
             EventManager.AddListener("OnMove", OnMove);
             EventManager.AddListener("OnZoomIn", OnZoomIn);
             EventManager.AddListener("OnZoomOut", OnZoomOut);
+            EventManager.AddListener("OnRun", OnRun);
         }
 
         protected override void OnDisable()
@@ -134,6 +138,7 @@ namespace Gameplay.Mecha
             EventManager.RemoveListener("OnMove", OnMove);
             EventManager.RemoveListener("OnZoomIn", OnZoomIn);
             EventManager.RemoveListener("OnZoomOut", OnZoomOut);
+            EventManager.RemoveListener("OnRun", OnRun);
         }
 
         private void FixedUpdate()
@@ -190,7 +195,7 @@ namespace Gameplay.Mecha
             var move = _rigidbody.transform.forward * (_lastMovement.y) + _rigidbody.transform.right * (_lastMovement.x);
                                     
             //_rigidbody.MovePosition(_rigidbody.position + move * Time.fixedDeltaTime);
-            _rigidbody.AddForce(move.normalized * (juggernautParameters.movementSpeed * 1000f), ForceMode.Force);
+            _rigidbody.AddForce(move.normalized * (MovementSpeed * 1000f), ForceMode.Force);
         }
 
         private void ApplyGravity()
@@ -214,9 +219,9 @@ namespace Gameplay.Mecha
         private void LimitSpeed()
         {
             var flatVel = new Vector3(_rigidbody.velocity.x, 0f, _rigidbody.velocity.z);
-            if (flatVel.magnitude > juggernautParameters.movementSpeed)
+            if (flatVel.magnitude > MovementSpeed)
             {
-                var limitedVel = flatVel.normalized * juggernautParameters.movementSpeed;
+                var limitedVel = flatVel.normalized * MovementSpeed;
                 _rigidbody.velocity = new Vector3(limitedVel.x, _rigidbody.velocity.y, limitedVel.z);
             }
         }
@@ -273,6 +278,13 @@ namespace Gameplay.Mecha
             _zoomCd = true;
             Invoke(nameof(ResetZoomCd), juggernautParameters.scrollSensitivity / 100);
 
+        }
+        
+        private void OnRun(object data)
+        {
+            if (data is not bool run)
+                return;
+            _isRunning = run;
         }
 
         #endregion
