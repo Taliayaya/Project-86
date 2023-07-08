@@ -7,6 +7,8 @@
     public class GameParameterEditor : Editor
     {
         private GUIStyle _buttonsStyle;
+        
+        private bool _showFieldsToSerialize = false;
         public override void OnInspectorGUI()
         {
             if (_buttonsStyle == null)
@@ -19,7 +21,14 @@
             GameParameters parameters = (GameParameters)target;
 
             EditorGUILayout.LabelField($"Name: {parameters.GetParametersName}", EditorStyles.boldLabel);
-            //EditorGUILayout.PropertyField(serializedObject.FindProperty("fieldsToSerialize"), true); // Uncomment this line to display the fieldsToSerialize list in the inspector
+            if (GUILayout.Button("Debug fields to Serialize"))
+            {
+                _showFieldsToSerialize = !_showFieldsToSerialize;
+            }
+            if (_showFieldsToSerialize)
+            {
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("fieldsToSerialize"), true); // Uncomment this line to display the fieldsToSerialize list in the inspector
+            }
 
             System.Type parametersType = parameters.GetType();
             FieldInfo[] fields = parametersType.GetFields();
