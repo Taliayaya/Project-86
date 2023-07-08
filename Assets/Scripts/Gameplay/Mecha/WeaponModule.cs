@@ -158,30 +158,37 @@ namespace Gameplay.Mecha
         /// </summary>
         /// <param name="forwardTransform"></param>
         /// <param name="time"></param>
+        /// <param name="canShoot"></param>
         /// <returns></returns>
-        public IEnumerator ShootDuringTime(Transform forwardTransform, float time)
+        public IEnumerator ShootDuringTime(float time, Func<bool> canShoot)
         {
             var startTime = Time.time;
             while (Time.time - startTime < time)
             {
-                Debug.Log("Shoot " + name);
-                Shoot(forwardTransform);
+                if (!canShoot())
+                    yield return new WaitForSeconds(0.1f);
+                Shoot(cameraTransform);
                 yield return new WaitForSeconds(1/ammo.fireRate);
             }
         }
+
         /// <summary>
         /// AI related method
         /// </summary>
         /// <param name="forwardTransform"></param>
         /// <param name="time"></param>
+        /// <param name="canShoot"></param>
         /// <returns></returns>
-        public IEnumerator ShootHoldDuringTime(Transform forwardTransform, float time)
+        public IEnumerator ShootHoldDuringTime(float time, Func<bool> canShoot)
         {
             PlayBulletSound(false);
             var startTime = Time.time;
+            
             while (Time.time - startTime < time)
             {
-                Shoot(forwardTransform);
+                if (!canShoot())
+                    yield return new WaitForSeconds(0.1f);
+                Shoot(cameraTransform);
                 yield return new WaitForSeconds(1/ammo.fireRate);
             }
             
@@ -233,6 +240,11 @@ namespace Gameplay.Mecha
             if (Physics.Raycast(origin.position, origin.forward, out var hit, 500f, fireBulletLayerMask))
             {
                 bulletDirection = (hit.point - gunTransform.position).normalized;
+                Debug.DrawRay(gunTransform.position, bulletDirection * 100, Color.red, 1f);
+            }
+            else
+            {
+                Debug.DrawRay(gunTransform.position, bulletDirection * 100, Color.green, 1f);
             }
 
             var bullet = Instantiate(ammo.prefab, gunTransform.position, Quaternion.identity);

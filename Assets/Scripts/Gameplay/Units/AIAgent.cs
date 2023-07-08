@@ -77,6 +77,7 @@ namespace Gameplay.Units
         {
             StopRotating();
             isRotating = true;
+            _agent.updateRotation = false;
             _rotateCoroutine = StartCoroutine(RotateTowardsEnemyCoroutine(closestTarget));
         }
 
@@ -85,6 +86,7 @@ namespace Gameplay.Units
             if (_rotateCoroutine != null)
                 StopCoroutine(_rotateCoroutine);
             isRotating = false;
+            _agent.updateRotation = true;
         }
         
         IEnumerator RotateTowardsEnemyCoroutine(Transform closestTarget)

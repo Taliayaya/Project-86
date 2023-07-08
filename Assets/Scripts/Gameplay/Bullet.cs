@@ -53,7 +53,7 @@ namespace Gameplay
          var colliders = new Collider[5];
          var position = other.contacts[0].point;
          var size = Physics.OverlapSphereNonAlloc(position, Ammo.explosionRadius, colliders, Ammo.explosionLayerMask);
-         Debug.Log($"Explosion size: {size}");
+         Debug.Log($"Explosion size: {size} and collided with {other.gameObject.name}");
          Debug.DrawLine(position, position + Vector3.up * 10, Color.red, 10f);
          for(int i = 0; i < size; i++)
          {

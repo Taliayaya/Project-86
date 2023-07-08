@@ -64,6 +64,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 278476087899091994, guid: c60559b31bc453d4592bc5925d48232c,
         type: 3}
+      propertyPath: cameraTransform
+      value: 
+      objectReference: {fileID: 4327031186688988227}
+    - target: {fileID: 278476087899091994, guid: c60559b31bc453d4592bc5925d48232c,
+        type: 3}
       propertyPath: myParentColliderToIgnore
       value: 
       objectReference: {fileID: 586595652}
@@ -72,6 +77,11 @@ PrefabInstance:
       propertyPath: faction
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2542840793318145145, guid: c60559b31bc453d4592bc5925d48232c,
+        type: 3}
+      propertyPath: cameraTransform
+      value: 
+      objectReference: {fileID: 4327031186688988227}
     - target: {fileID: 2542840793318145145, guid: c60559b31bc453d4592bc5925d48232c,
         type: 3}
       propertyPath: myParentColliderToIgnore

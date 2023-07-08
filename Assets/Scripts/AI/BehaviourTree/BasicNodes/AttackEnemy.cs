@@ -19,6 +19,7 @@ namespace AI.BehaviourTree.BasicNodes
         private Transform _closestTarget;
         
         [SerializeField] private float timeBeforeSpotExpired = 5f;
+        public float angleToShoot = 15f;
         
         private WeaponModule[] _weaponModules;
         private Coroutine[] _coroutines;
@@ -69,9 +70,18 @@ namespace AI.BehaviourTree.BasicNodes
             Debug.Log("Created Coroutine");
             if (weaponModule.HoldFire)
             {
-                return weaponModule.StartCoroutine(weaponModule.ShootHoldDuringTime(_transform, timeBeforeSpotExpired));
+                return weaponModule.StartCoroutine(weaponModule.ShootHoldDuringTime(timeBeforeSpotExpired,
+                    EnemyInRange));
             }
-            return weaponModule.StartCoroutine(weaponModule.ShootDuringTime(_transform, timeBeforeSpotExpired));
+            return weaponModule.StartCoroutine(weaponModule.ShootDuringTime(timeBeforeSpotExpired, EnemyInRange));
+        }
+
+        public bool EnemyInRange()
+        {
+            var direction = _closestTarget.transform.position - _transform.position;
+            var angle = Vector3.Angle(direction, _transform.forward);
+
+            return angle < angleToShoot * 0.5f;
         }
     }
 }
