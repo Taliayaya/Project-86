@@ -1,36 +1,48 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
-public class MenuKeybinds : MonoBehaviour
+namespace UI
 {
-    [SerializeField] private GameObject inputRebindingPrefab;
-    [SerializeField] private GameObject keybindsParent;
-    
-    
-    [Header("Rebindable Actions")]
-    [SerializeField] private List<InputActionReference> actionReferences;
-
-    // Start is called before the first frame update
-
-    public void GenerateKeybinds()
+    public class MenuKeybinds : SettingsMenuCategory
     {
-        foreach (Transform c in keybindsParent.transform)
+        [SerializeField] private GameObject inputRebindingPrefab;
+
+        [Header("Rebindable Actions")]
+        public List<InputActionReference> actionReferences;
+
+        public override string MenuContentName => "Keybinds";
+        // Start is called before the first frame update
+
+        public void GenerateKeybinds(Transform contentParent)
         {
-            Destroy(c.gameObject);
-        }
-        foreach (InputActionReference inputRef in actionReferences)
-        {
-            
-            if (inputRef.action.bindings.Count > 0)
+            foreach (InputActionReference inputRef in actionReferences)
             {
-                GameObject rebindDisplay = Instantiate(inputRebindingPrefab, keybindsParent.transform);
-                rebindDisplay.GetComponent<RebindingDisplay>().ActionReference = inputRef;
+                if (inputRef.action.bindings.Count > 0)
+                {
+                    GameObject rebindDisplay = Instantiate(inputRebindingPrefab, contentParent);
+                    rebindDisplay.GetComponent<RebindingDisplay>().ActionReference = inputRef;
+                }
             }
+        
+        }
+
+        public override void GenerateContent(Transform contentParent)
+        {
+            GenerateKeybinds(contentParent);
         }
         
-    }
+        public override void OnMenuCategoryGenerated(SettingsUI settingsUI)
+        {
+            CreateMenu(settingsUI);
+        }
+        
 
+        public override void ResetSettings()
+        {
+            
+        }
+    }
 }

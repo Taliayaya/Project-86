@@ -9,23 +9,17 @@ using UnityEngine.UI;
 
 namespace UI
 {
-    public class SettingsMenu : MonoBehaviour
+    public class SettingsMenu : SettingsMenuCategory
     {
         [Header("Prefabs")]
-        [SerializeField] private GameObject menuButtonPrefab;
-        [SerializeField] private GameObject contentParameterPrefab;
         [SerializeField] private GameObject sliderPrefab;
         [SerializeField] private GameObject togglePrefab;
-
+        [SerializeField] private GameObject contentParameterPrefab;
+        
         [Header("References")]
-        [SerializeField] private GameObject gameSettingsPanel;
-        [SerializeField] private TextMeshProUGUI menuContentName;
-        [SerializeField] private Transform menusParent;
-        [SerializeField] private Transform contentParent;
-        [SerializeField] private Button resetButton;
         
         private Dictionary<string, GameParameters> _gameParametersMap;
-
+        
         private void Awake()
         {
             // Loading game parameters into the dictionary with its name as a key and a reference to the object as a value
@@ -33,17 +27,36 @@ namespace UI
             var gameParametersArray = Resources.LoadAll<GameParameters>("ScriptableObjects/Parameters");
             foreach (var parameter in gameParametersArray)
                 _gameParametersMap.Add(parameter.GetParametersName, parameter);
-            SetupGameSettingsPanel();
         }
 
-        private void Start()
-        {
-            CloseGameSettingsPanel();
-        }
 
         #region Dynamic Creation of the UI
 
-        private void SetupGameSettingsPanel()
+        public override void GenerateContent(Transform contentParent)
+        {
+            // not used, custom
+        }
+
+        public override void OnMenuCategoryGenerated(SettingsUI settingsUI)
+        {
+            SetupGameSettingsPanel(settingsUI);
+        }
+
+        public override void ResetSettings()
+        {
+            // not used, custom
+            
+        }
+
+        public GameObject AddSettingsMenu(SettingsUI settingsUI, string menuContentName)
+        {
+            var menuButton = Instantiate(menuCategoryPrefab, settingsUI.menusParent);
+            menuButton.GetComponentInChildren<TMP_Text>().text = menuContentName;
+            menuButton.GetComponent<Button>().onClick.AddListener(() => SetGameSettingsContent(menuContentName, settingsUI));
+            return menuButton;
+        }
+
+        private void SetupGameSettingsPanel(SettingsUI settingsUI)
         {
             List<string> availableMenus = new List<string>();
             foreach (var parametersValue in _gameParametersMap.Values)
@@ -51,44 +64,33 @@ namespace UI
                 // Ignore the parameters that have no parameters to show
                 if (parametersValue.FieldsToShowInGame.Count == 0)
                     continue;
-                var g = Instantiate(menuButtonPrefab, menusParent);
                 var menuName = parametersValue.GetParametersName;
-                
+                AddSettingsMenu(settingsUI, menuName);
                 // Set the button name
-                g.transform.GetComponentInChildren<TextMeshProUGUI>().text = menuName;
-
-                Button b = g.GetComponent<Button>();
-                AddGameSettingsPanelMenuListener(b, menuName);
-                
                 availableMenus.Add(menuName);
             }
 
             if (availableMenus.Count > 0)
-                SetGameSettingsContent(availableMenus[0]);
+                SetGameSettingsContent(availableMenus[0], settingsUI);
         }
 
-        private void AddGameSettingsPanelMenuListener(Button b, string menu)
+        private void SetGameSettingsContent(string menu, SettingsUI settingsUI)
         {
-            b.onClick.AddListener(() => SetGameSettingsContent(menu));
-        }
-
-        private void SetGameSettingsContent(string menu)
-        {
-            menuContentName.text = menu;
+            settingsUI.menuContentName.text = menu;
             
             // Destroy the previous content
-            foreach (Transform child in contentParent)
+            foreach (Transform child in settingsUI.contentParent)
                 Destroy(child.gameObject);
             
             var parameters = _gameParametersMap[menu];
             var parameterType = parameters.GetType();
-            resetButton.onClick.RemoveAllListeners();
-            resetButton.onClick.AddListener(
-                () => ResetCategory(parameters));
+            settingsUI.onResetButton.RemoveAllListeners();
+            settingsUI.onResetButton.AddListener(
+                (s) => ResetCategory(parameters, settingsUI));
             
             foreach (var fieldName in parameters.FieldsToShowInGame)
             {
-                var paramWrapper = Instantiate(contentParameterPrefab, contentParent);
+                var paramWrapper = Instantiate(contentParameterPrefab, settingsUI.contentParent);
                 paramWrapper.transform.GetComponentInChildren<TextMeshProUGUI>().text = fieldName;
                 var field = parameterType.GetField(fieldName);
                 if (field.FieldType == typeof(bool))
@@ -100,10 +102,10 @@ namespace UI
             }
         }
         
-        private void ResetCategory(GameParameters parameters)
+        private void ResetCategory(GameParameters parameters, SettingsUI settingsUI)
         {
             parameters.ResetToDefault();
-            SetGameSettingsContent(parameters.GetParametersName);
+            SetGameSettingsContent(parameters.GetParametersName, settingsUI);
         }
 
         private void AddToggle(FieldInfo fieldInfo, GameParameters parameters, string parameter, Transform parent = null)
@@ -152,18 +154,7 @@ namespace UI
         
         #endregion
         
-        public void OpenGameSettingsPanel()
-        {
-            WindowManager.Open(() => gameSettingsPanel.transform.GetChild(0).gameObject.SetActive(true), CloseGameSettingsPanel);
-        }
         
-        // Use Window.Close to close the window instead of this method
-        private void CloseGameSettingsPanel()
-        {
-            DataHandler.SaveGameData(); // Saving the settings
-            gameSettingsPanel.transform.GetChild(0).gameObject.SetActive(false);
-        }
-        
-        
+
     }
 }
