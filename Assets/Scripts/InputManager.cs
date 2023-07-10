@@ -21,16 +21,21 @@ public class InputManager : Singleton<InputManager>
     protected override void OnAwake()
     {
         _playerInput = GetComponent<PlayerInput>();
+        var keybindsSave = PlayerPrefs.GetString("keybinds");
+        if (keybindsSave != "")
+            _playerInput.actions.LoadBindingOverridesFromJson(keybindsSave);
     }
 
     private void OnEnable()
     {
         EventManager.AddListener("OnDeath", OnDeath);
+        EventManager.AddListener("RebindStarted", OnRebindStarted);
     }
         
     private void OnDisable()
     {
         EventManager.RemoveListener("OnDeath", OnDeath);
+        EventManager.RemoveListener("RebindStarted", OnRebindStarted);
     }
 
     #region Juggernaut Action Map
@@ -71,13 +76,17 @@ public class InputManager : Singleton<InputManager>
     private void OnZoomIn(InputValue inputValue)
     {
         var data = inputValue.Get<float>();
-        EventManager.TriggerEvent("OnZoomIn", data);
+        if (data > 0)
+            EventManager.TriggerEvent("OnZoomIn", data);
     }
         
     private void OnZoomOut(InputValue inputValue)
     {
         var data = inputValue.Get<float>();
-        EventManager.TriggerEvent("OnZoomOut", data);
+        Debug.Log(data);
+        if (data < 0)
+            EventManager.TriggerEvent("OnZoomOut", data);
+        //EventManager.TriggerEvent("OnZoomOut", data);
     }
 
     private void OnPause()
@@ -167,6 +176,18 @@ public class InputManager : Singleton<InputManager>
     {
         _deathData = (DeathData) deathData;
         _playerInput.SwitchCurrentActionMap("Death");
+    }
+    
+    private void OnRebindStarted(object started)
+    {
+        if ((bool)started)
+            _playerInput.SwitchCurrentActionMap("Rebinding");
+        else
+        {
+            var keybindsSave = _playerInput.actions.SaveBindingOverridesAsJson();
+            PlayerPrefs.SetString("keybinds", keybindsSave);
+            _playerInput.SwitchCurrentActionMap("PauseMenu");
+        }
     }
         
 }

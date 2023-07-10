@@ -215,7 +215,7 @@
                 {
                     "name": "",
                     "id": "df43aacc-92fd-4633-963d-b3c96d1723d8",
-                    "path": "<Mouse>/scroll/up",
+                    "path": "<Mouse>/scroll/y",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -226,7 +226,7 @@
                 {
                     "name": "",
                     "id": "ae67c592-5f85-472b-8f77-2f555a9e4fe3",
-                    "path": "<Mouse>/scroll/down",
+                    "path": "<Mouse>/scroll/y",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -390,6 +390,12 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Rebinding",
+            "id": "48485b7a-90b1-4c90-9e2d-eb0ad7a4ff0d",
+            "actions": [],
+            "bindings": []
         }
     ],
     "controlSchemes": []

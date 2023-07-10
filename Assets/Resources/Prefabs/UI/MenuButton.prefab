@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Sound
+  m_text: Keybinds
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -147,6 +147,7 @@ GameObject:
   - component: {fileID: 1152001668232191563}
   - component: {fileID: 1152001668232191562}
   - component: {fileID: 1152001668232191561}
+  - component: {fileID: 1258284889}
   m_Layer: 5
   m_Name: MenuButton
   m_TagString: Untagged
@@ -257,3 +258,33 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1258284889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1152001668232191575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93a3e3019417c2d429fc3630e1b29508, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputRebindingPrefab: {fileID: 1075056695965065716, guid: ee85eb39d4fdcdd4eaba87017422fc3f,
+    type: 3}
+  keybindsParent: {fileID: 0}
+  actionReferences:
+  - {fileID: 3814143314724051539, guid: f0941c9159ab44549ae4a15211db10be, type: 3}
+  - {fileID: -610582249941903689, guid: f0941c9159ab44549ae4a15211db10be, type: 3}
+  - {fileID: -6834970209543029, guid: f0941c9159ab44549ae4a15211db10be, type: 3}
+  - {fileID: -1343128230019269346, guid: f0941c9159ab44549ae4a15211db10be, type: 3}
+  - {fileID: -3866742164044699048, guid: f0941c9159ab44549ae4a15211db10be, type: 3}
+  - {fileID: 429555649249299665, guid: f0941c9159ab44549ae4a15211db10be, type: 3}
+  - {fileID: 4900900510214711176, guid: f0941c9159ab44549ae4a15211db10be, type: 3}
+  - {fileID: -8322920569894536290, guid: f0941c9159ab44549ae4a15211db10be, type: 3}
+  - {fileID: 2330765805484653791, guid: f0941c9159ab44549ae4a15211db10be, type: 3}
+  - {fileID: 8923728074965732014, guid: f0941c9159ab44549ae4a15211db10be, type: 3}
+  - {fileID: -2076700147287921243, guid: f0941c9159ab44549ae4a15211db10be, type: 3}
+  - {fileID: 4286204329177378132, guid: f0941c9159ab44549ae4a15211db10be, type: 3}
+  - {fileID: -1525019116810370409, guid: f0941c9159ab44549ae4a15211db10be, type: 3}
+  - {fileID: 2070100893835697221, guid: f0941c9159ab44549ae4a15211db10be, type: 3}

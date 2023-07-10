@@ -34,6 +34,10 @@ namespace UI
             foreach (var parameter in gameParametersArray)
                 _gameParametersMap.Add(parameter.GetParametersName, parameter);
             SetupGameSettingsPanel();
+        }
+
+        private void Start()
+        {
             CloseGameSettingsPanel();
         }
 
