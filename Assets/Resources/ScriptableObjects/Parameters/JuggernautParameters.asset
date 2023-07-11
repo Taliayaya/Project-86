@@ -14,23 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldsToSerialize:
   - mouseSensitivity
+  - scrollSensitivity
   - health
+  - maxGrappleDistance
   - grapplePullSpeed
   - grapplingCd
-  - maxGrappleDistance
-  - scrollSensitivity
   fieldsToShowInGame:
   - mouseSensitivity
-  - movementSpeed
+  - scrollSensitivity
   - health
+  - maxGrappleDistance
   - grapplePullSpeed
   - grapplingCd
-  - maxGrappleDistance
-  - scrollSensitivity
   mouseSensitivity: 10
   scrollSensitivity: 25
-  walkSpeed: 20
-  runSpeed: 50
+  walkSpeed: 30
+  runSpeed: 60
   stepHeight: 0.8
   faction: 0
   health: 100
