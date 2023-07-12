@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using ScriptableObjects.Keybinds;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,18 +13,19 @@ namespace UI
 
         [Header("Rebindable Actions")]
         public List<InputActionReference> actionReferences;
+        public KeybindsSO keybindsSO;
 
         public override string MenuContentName => "Keybinds";
         // Start is called before the first frame update
 
         public void GenerateKeybinds(Transform contentParent)
         {
-            foreach (InputActionReference inputRef in actionReferences)
+            foreach (Keybind keybind in keybindsSO.keybinds)
             {
-                if (inputRef.action.bindings.Count > 0)
+                if (keybind.Count > 0)
                 {
                     GameObject rebindDisplay = Instantiate(inputRebindingPrefab, contentParent);
-                    rebindDisplay.GetComponent<RebindingDisplay>().ActionReference = inputRef;
+                    rebindDisplay.GetComponent<RebindingDisplay>().Keybind = keybind;
                 }
             }
         
@@ -40,9 +42,11 @@ namespace UI
         }
         
 
-        public override void ResetSettings()
+        public override void ResetSettings(SettingsUI settingsUI)
         {
-            
+            EventManager.TriggerEvent("DeleteSave", "Inputs");
+            settingsUI.ClearContent();
+            GenerateKeybinds(settingsUI.contentParent);
         }
     }
 }
