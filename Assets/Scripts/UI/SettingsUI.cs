@@ -28,7 +28,12 @@ namespace UI
             menuContentName.text = menuCategory.MenuContentName;
             menuCategory.GenerateContent(contentParent);
             onResetButton.RemoveAllListeners();
-            onResetButton.AddListener((s) => menuCategory.ResetSettings());
+            AddListener(menuCategory);
+        }
+        
+        private void AddListener(SettingsMenuCategory menuCategory)
+        {
+            onResetButton.AddListener((s) => menuCategory.ResetSettings(s));
         }
 
         public void ResetButton()

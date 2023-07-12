@@ -25,6 +25,6 @@ namespace UI
 
         public abstract void OnMenuCategoryGenerated(SettingsUI settingsUI);
         
-        public abstract void ResetSettings();
+        public abstract void ResetSettings(SettingsUI settingsUI);
     }
 }

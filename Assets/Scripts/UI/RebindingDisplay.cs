@@ -1,21 +1,22 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using ScriptableObjects.Keybinds;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class RebindingDisplay : MonoBehaviour
 {
-    private InputActionReference _actionReference;
-
-    public InputActionReference ActionReference
+    private Keybind _keybind;
+    
+    public Keybind Keybind
     {
-        get => _actionReference;
+        get => _keybind;
             
          set
          {
-             _actionReference = value;
+             _keybind = value;
              Init();
          }
     }
@@ -24,25 +25,28 @@ public class RebindingDisplay : MonoBehaviour
     [SerializeField] private TMP_Text bindingDisplayName;
     [SerializeField] private GameObject startRebindButton;
     [SerializeField] private TMP_Text inputNameText;
+    [SerializeField] private TMP_Text inputDescriptionText;
+    [SerializeField] private GameObject helperBox;
 
 
     public void Init()
     {
-        inputNameText.text = ActionReference.action.name;
-        if (ActionReference.action.bindings.Count > 0)
+        inputNameText.text = Keybind.Name;
+        if (Keybind.Count > 0)
             UpdateKeyText();
     }
 
     private void UpdateKeyText()
     {
-        bindingDisplayName.text = InputControlPath.ToHumanReadableString(ActionReference.action.bindings[0].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice);
+        bindingDisplayName.text = InputControlPath.ToHumanReadableString(Keybind.EffectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice);
+        inputDescriptionText.text = Keybind.description;
     }
     
     public void StartRebind()
     {
         EventManager.TriggerEvent("RebindStarted", true);
         startRebindButton.SetActive(false);
-        ActionReference.action.PerformInteractiveRebinding().WithCancelingThrough("Escape").OnCancel(operation =>
+        Keybind.inputActionReference.action.PerformInteractiveRebinding().WithCancelingThrough("Escape").OnCancel(operation =>
         {
             EventManager.TriggerEvent("RebindStarted", false);
             startRebindButton.SetActive(true);

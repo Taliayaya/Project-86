@@ -42,7 +42,7 @@ namespace UI
             SetupGameSettingsPanel(settingsUI);
         }
 
-        public override void ResetSettings()
+        public override void ResetSettings(SettingsUI settingsUI)
         {
             // not used, custom
             
