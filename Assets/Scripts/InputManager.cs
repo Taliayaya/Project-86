@@ -30,12 +30,14 @@ public class InputManager : Singleton<InputManager>
     {
         EventManager.AddListener("OnDeath", OnDeath);
         EventManager.AddListener("RebindStarted", OnRebindStarted);
+        EventManager.AddListener("DeleteSave", OnDeleteSave);
     }
         
     private void OnDisable()
     {
         EventManager.RemoveListener("OnDeath", OnDeath);
         EventManager.RemoveListener("RebindStarted", OnRebindStarted);
+        EventManager.RemoveListener("DeleteSave", OnDeleteSave);
     }
 
     #region Juggernaut Action Map
@@ -187,6 +189,17 @@ public class InputManager : Singleton<InputManager>
             var keybindsSave = _playerInput.actions.SaveBindingOverridesAsJson();
             PlayerPrefs.SetString("keybinds", keybindsSave);
             _playerInput.SwitchCurrentActionMap("PauseMenu");
+        }
+    }
+
+    private void OnDeleteSave(object obj)
+    {
+        switch ((string)obj)
+        {
+            case "Inputs":
+                PlayerPrefs.DeleteKey("keybinds");
+                _playerInput.actions.RemoveAllBindingOverrides();
+                break;
         }
     }
         
