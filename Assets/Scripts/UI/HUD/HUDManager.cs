@@ -20,14 +20,14 @@ namespace UI.HUD
         private void Awake()
         {
             var maskableIcon = iconParent.GetComponentsInChildren<MaskableGraphic>();
-            reticleImages.AddRange(maskableIcon);
+            //reticleImages.AddRange(maskableIcon);
             FadeZoom(0, 0);
         }
 
         private void OnEnable()
         {
-            EventManager.AddListener("OnPause", OnPause);
-            EventManager.AddListener("OnResume", OnResume);
+            //EventManager.AddListener("OnPause", OnPause);
+            //EventManager.AddListener("OnResume", OnResume);
             EventManager.AddListener("OnUpdateHealth", OnUpdateHealth);
             EventManager.AddListener("OnUpdatePrimaryAmmoAmount", OnUpdatePrimaryAmmoAmount);
             EventManager.AddListener("OnZoomChange", OnZoomChange);
@@ -36,15 +36,15 @@ namespace UI.HUD
             EventManager.AddListener("OnUpdateCompass", OnUpdateCompass);
             EventManager.AddListener("OnUpdateXRotation", OnUpdateSideBarAngles);
             EventManager.AddListener("OnDeath", OnDeath);
-            EventManager.AddListener("OnRespawn", OnRespawn);
+            //EventManager.AddListener("OnRespawn", OnRespawn);
             EventManager.AddListener("OnDistanceForward", OnUpdateDistance);
             EventManager.AddListener("OnMechaStateChange", OnMechaStateChange);
         }
 
         private void OnDisable()
         {
-            EventManager.RemoveListener("OnPause", OnPause);
-            EventManager.RemoveListener("OnResume", OnResume);
+            //EventManager.RemoveListener("OnPause", OnPause);
+            //EventManager.RemoveListener("OnResume", OnResume);
             EventManager.RemoveListener("OnUpdateHealth", OnUpdateHealth);
             EventManager.RemoveListener("OnUpdatePrimaryAmmoAmount", OnUpdatePrimaryAmmoAmount);
             EventManager.RemoveListener("OnZoomChange", OnZoomChange);
@@ -53,7 +53,7 @@ namespace UI.HUD
             EventManager.RemoveListener("OnUpdateCompass", OnUpdateCompass);
             EventManager.RemoveListener("OnUpdateXRotation", OnUpdateSideBarAngles);
             EventManager.RemoveListener("OnDeath", OnDeath);
-            EventManager.RemoveListener("OnRespawn", OnRespawn);
+            //EventManager.RemoveListener("OnRespawn", OnRespawn);
             EventManager.RemoveListener("OnDistanceForward", OnUpdateDistance);
             EventManager.RemoveListener("OnMechaStateChange", OnMechaStateChange);
         }
@@ -68,20 +68,40 @@ namespace UI.HUD
 
         #region Reticle UI
 
-        [Header("Reticle UI")] [SerializeField]
+        [Header("Reticle UI")] [SerializeField, Obsolete("Use _reticleCanvasGroups instead | migration ongoing")]
         private List<MaskableGraphic> reticleImages;
+        private List<CanvasGroup> _reticleCanvasGroups = new List<CanvasGroup>();
 
         [SerializeField] private Transform iconParent;
         
         [SerializeField] private MaskableGraphic crosshair;
 
+        float _previousAlpha;
 
+        [Obsolete("HUDManager is not responsible for reticle fade anymore | migration ongoing")]
         private void FadeReticle(float alpha, float duration)
         {
             _previousAlpha = reticleImages[0].color.a;
             foreach (var image in reticleImages)
             {
                 image.CrossFadeAlpha(alpha, duration, false);
+            }
+
+            StartCoroutine(FadeReticleCoroutine(alpha, duration));
+        }
+        
+        private IEnumerator FadeReticleCoroutine(float alpha, float duration)
+        {
+            float remainingDuration = duration;
+            while (remainingDuration > 0)
+            {
+                remainingDuration -= Time.deltaTime;
+                foreach (var canvasGroup in _reticleCanvasGroups)
+                {
+                    canvasGroup.alpha = Mathf.Lerp(_previousAlpha, alpha, remainingDuration / duration);
+                }
+
+                yield return null;
             }
         }
 
@@ -163,6 +183,7 @@ namespace UI.HUD
         [Header("Zoom UI")] [SerializeField] private Image[] zoomImage;
         [SerializeField] private TextMeshProUGUI zoomText;
         [SerializeField] private Image zoomGrid;
+        [SerializeField] private CanvasGroup zoomCanvasGroup;
 
         private void OnZoomChange(object zoomAmount)
         {
@@ -174,13 +195,13 @@ namespace UI.HUD
                 case MechaController.Zoom.Default:
                     zoomText.text = "ZOOM   1.0 X";
                     FadeZoom(0, 0.1f);
-                    crosshair.CrossFadeAlpha(1, 0.1f, false);
-                    FadeReticle(1, 0.1f);
+                    //crosshair.CrossFadeAlpha(1, 0.1f, false);
+                    //FadeReticle(1, 0.1f);
                     break;
                 case MechaController.Zoom.X2:
                     FadeZoom(1, 0.2f);
-                    crosshair.CrossFadeAlpha(0.9f, 0.2f, false);
-                    FadeReticle(0.2f, 0.2f);
+                    //crosshair.CrossFadeAlpha(0.9f, 0.2f, false);
+                    //FadeReticle(0.2f, 0.2f);
                     zoomGrid.pixelsPerUnitMultiplier = 1;
                     zoomText.text = "ZOOM   2.0 X";
                     break;
@@ -267,7 +288,7 @@ namespace UI.HUD
 
         #region OnPause/OnResume
 
-        private float _previousAlpha;
+        [Obsolete("Now handled by HUDWindow")]
         private void OnPause()
         {
             FadeReticle(0.1f, 0);
@@ -275,6 +296,7 @@ namespace UI.HUD
             Debug.Log("OnPause");
         }
 
+        [Obsolete("Now handled by HUDWindow")]
         private void OnResume()
         {
             FadeReticle(_previousAlpha, 0);
@@ -288,9 +310,9 @@ namespace UI.HUD
         public void OnDeath(object data)
         {
             EventManager.TriggerEvent("OnZoomChange", MechaController.Zoom.Default);
-            FadeReticle(0, 0.3f);
         }
         
+        [Obsolete("Now handled by HUDWindow")]
         public void OnRespawn(object data)
         {
             FadeReticle(1, 0.3f);
