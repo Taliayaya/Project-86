@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using ScriptableObjects.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,6 +11,8 @@ namespace ScriptableObjects
     [System.Serializable]
     public class BinarySerializableData
     {
+        // Only add here types that are serializable by default
+        // Otherwise, add them to the SerializeValue method and the Deserialize method
         private static readonly List<Type> SerializableTypes = new List<Type>()
         {
             typeof(int),
@@ -21,13 +24,13 @@ namespace ScriptableObjects
 
         public Dictionary<string, object> Properties;
 
-        public BinarySerializableData(ScriptableObject so, List<string> fieldsToSerialize)
+        public BinarySerializableData(ScriptableObject so, List<string> fieldsToSerialize, bool serializeAll = false)
         {
             Properties = new Dictionary<string, object>();
             Type T = so.GetType();
             foreach (var field in T.GetFields())
             {
-                if (!fieldsToSerialize.Contains(field.Name))
+                if (!serializeAll && !fieldsToSerialize.Contains(field.Name))
                     continue;
                 if (Serialize(field, so, out var value))
                     Properties[field.Name] = value;
@@ -52,6 +55,13 @@ namespace ScriptableObjects
             {
                 float[] c = (float[])data;
                 value = new Color(c[0], c[1], c[2], c[3]);
+                return true;
+            }
+
+            if (IsOfType(T, typeof(Vector2)))
+            {
+                float[] v = (float[])data;
+                value = new Vector2(v[0], v[1]);
                 return true;
             }
             value = null;
@@ -81,6 +91,13 @@ namespace ScriptableObjects
             {
                 Color c= (Color)inValue;
                 outValue = new float[] { c.r, c.g, c.b, c.a };
+                return true;
+            }
+
+            if (IsOfType(T, typeof(Vector2)))
+            {
+                var v = (Vector2)inValue;
+                outValue = new float[] {v.x, v.y};
                 return true;
             }
             

@@ -63,6 +63,28 @@ namespace ScriptableObjects
         {
             SaveToFile(name);
         }
+        
+        public void SaveToFileDefault()
+        {
+            SaveToFileDefault(name);
+        }
+        
+        public void SaveToFileDefault(string filename)
+        {
+            SaveToFile(filename + "_default");
+        }
+
+        public void DeleteSave(string filename)
+        {
+            string dirPath = Path.Combine(Application.persistentDataPath, ScriptableObjectsDataDirectory);
+            string filePath = Path.Combine(dirPath, $"{filename}.data");
+            File.Delete(filePath);
+        }
+
+        public void DeleteSave()
+        {
+            DeleteSave(name);
+        }
 
         /// <summary>
         /// Loads the ScriptableObject from a file in the persistent data path.
@@ -71,7 +93,8 @@ namespace ScriptableObjects
         /// <remarks>Any serialized field will be overriden by the content if it exists. It may cause unexpected issues.</remarks>
         /// <seealso cref="JsonSerializableSO.LoadFromFile(string)"/>
         /// <param name="filename">The input file name</param>
-        public void LoadFromFile(string filename)
+        /// <param name="saveCurrentValues">Whether or not we keep the default values</param>
+        public void LoadFromFile(string filename, bool saveCurrentValues = true)
         {
             string dirPath = Path.Combine(Application.persistentDataPath, ScriptableObjectsDataDirectory);
             string filePath = Path.Combine(dirPath, $"{filename}.data");
@@ -81,6 +104,11 @@ namespace ScriptableObjects
                 Debug.LogWarning(
                     $"[BinarySerializableSO] LoadFromFile: File \"{filePath}\" not found! Getting default values.", this);
                 return;
+            }
+            
+            if (saveCurrentValues)
+            {
+                SaveToFileDefault(filename);
             }
 
             BinaryFormatter formatter = new BinaryFormatter();
@@ -108,6 +136,7 @@ namespace ScriptableObjects
             foreach (var pair in properties)
             {
                 var field = T.GetField(pair.Key);
+                
                 if (BinarySerializableData.Deserialize(field, pair.Value, out var deserializedValue))
                     field.SetValue(this, deserializedValue);
             }
@@ -124,7 +153,7 @@ namespace ScriptableObjects
         
         public bool SerializeField(string fieldName)
         {
-            return fieldsToSerialize.Contains(fieldName);
+            return fieldsToSerialize.Contains(fieldName) ;
         }
 
         public void ToggleSerializeField(string fieldName)
@@ -137,36 +166,26 @@ namespace ScriptableObjects
 
         public void ResetToDefault()
         {
-            Type T = GetType();
-            var s = "";
-            foreach (var fieldName in fieldsToSerialize)
-            {
-                s += fieldName + ", ";
-            }
-            Debug.Log("[BinarySerializableSO] ResetToDefault: Resetting to default values: " + s);
-            foreach (var fieldName in fieldsToSerialize)
-            {
-                var field = T.GetField(fieldName);
-                DefaultValueAttribute defaultValue = field.GetCustomAttribute(typeof(DefaultValueAttribute)) as DefaultValueAttribute;
-                if (defaultValue != null)
-                {
-                    var val = defaultValue.GetDefaultValue();
-                    field.SetValue(this, val);
-                    Debug.Log($"[BinarySerializableSO] ResetToDefault: Reset {fieldName} to {val}, {val.GetType()}");
-                    EventManager.TriggerEvent($"UpdateGameParameter:{fieldName}", val);
-                }
-                else
-                    Debug.LogWarning($"[BinarySerializableSO] ResetToDefault: No default value found for {fieldName}");
-            }
+            LoadFromFile(name + "_default", false);
+        }
+        
+        public void ResetToDefault(string filename)
+        {
+            LoadFromFile(filename + "_default", false);
         }
     }
 }
 
 
+[Obsolete("Attribute must use constant value, which is not possible with what we want." +
+          "Instead, we are now using another file to store the default values.")]
 public class DefaultValueAttribute : Attribute
 {
-    public object Value { get; }
+    public object Value { get; set; }
 
+    public DefaultValueAttribute()
+    {
+    }
     public DefaultValueAttribute(object value)
     {
         Value = value;

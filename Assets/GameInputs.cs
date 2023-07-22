@@ -37,6 +37,15 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
+                    ""name"": ""Run"",
+                    ""type"": ""Button"",
+                    ""id"": ""d8ab6343-6efd-4421-913e-9807afa995af"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""LookAround"",
                     ""type"": ""Value"",
                     ""id"": ""94c9a217-ed1d-4b85-8ee4-d4b6529cfe39"",
@@ -64,13 +73,85 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Zoom"",
+                    ""name"": ""ZoomIn"",
                     ""type"": ""Value"",
                     ""id"": ""e0c56757-f07b-4170-84f0-09bb498145b0"",
                     ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ZoomOut"",
+                    ""type"": ""Value"",
+                    ""id"": ""68ed8334-5536-4964-ba37-ddd1e0d0e6dc"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""b4130cd2-8954-44ff-941c-4efcd8f4be5f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""GrapplingThrow"",
+                    ""type"": ""Button"",
+                    ""id"": ""61498dba-ce58-42c5-8a49-0dabea6a200f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Reload"",
+                    ""type"": ""Button"",
+                    ""id"": ""02da73f0-4dbf-43c7-a39a-ba4536659d5c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CallScavenger"",
+                    ""type"": ""Button"",
+                    ""id"": ""5083b44f-56d9-42b5-bc8f-d5d1d4219764"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""StopScavenger"",
+                    ""type"": ""Button"",
+                    ""id"": ""4d436ac2-bd20-41e7-a43d-a64da4e56a97"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OrderScavenger"",
+                    ""type"": ""Button"",
+                    ""id"": ""c210b217-b90a-418a-975b-469a0d59cf40"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""EditHUD"",
+                    ""type"": ""Button"",
+                    ""id"": ""9ab8614e-3d5f-4e3e-88c5-db393f1fd02f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -144,7 +225,7 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""46390a3b-df17-4fc8-a3e3-f9a8af9d6bd4"",
                     ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press(behavior=2)"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""SecondaryFire"",
@@ -169,7 +250,293 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Zoom"",
+                    ""action"": ""ZoomIn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ae67c592-5f85-472b-8f77-2f555a9e4fe3"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ZoomOut"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6a025e52-49da-4402-ad09-654cc6d8e6ad"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""69bb7d65-66a0-4c5c-824a-36cc74ef6fdb"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bb03fa5d-008f-4001-88c7-44df54b876f1"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""GrapplingThrow"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""971045a2-d1c2-412e-b575-583c23ae2276"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reload"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7dba9552-c888-4b0a-862f-4db673bb2607"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CallScavenger"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7afc0892-ecf1-4303-a353-b7c2c4b6f770"",
+                    ""path"": ""<Keyboard>/h"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""StopScavenger"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4f6bd720-165a-4aff-a6f9-b99ddb86c21e"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OrderScavenger"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0584fa3d-1282-4bab-bf6d-2ea4f2d208d9"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Run"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""72373517-2c28-4e8b-8a80-953080c26935"",
+                    ""path"": ""<Keyboard>/alt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EditHUD"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""PauseMenu"",
+            ""id"": ""5f7862a5-41aa-4474-8ecc-410dbc45c0c3"",
+            ""actions"": [
+                {
+                    ""name"": ""Resume"",
+                    ""type"": ""Button"",
+                    ""id"": ""a7547108-8dd5-48e0-9c6e-3729530667ac"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""faf1abf2-b17c-4285-bbdf-e9a151835242"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Resume"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fe789e86-60b5-45b8-a9a9-be7056ca84b3"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Resume"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Death"",
+            ""id"": ""dfd6d04d-2847-4f04-9fb9-d258b6b81890"",
+            ""actions"": [
+                {
+                    ""name"": ""Respawn"",
+                    ""type"": ""Button"",
+                    ""id"": ""5509df49-ab86-4858-a330-bab3540c2373"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""4e71129c-19e8-40fb-8cff-196b6bce6282"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Respawn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Rebinding"",
+            ""id"": ""48485b7a-90b1-4c90-9e2d-eb0ad7a4ff0d"",
+            ""actions"": [],
+            ""bindings"": []
+        },
+        {
+            ""name"": ""HUDEdit"",
+            ""id"": ""75b66185-2d77-44ea-8e0a-e29932fcf38d"",
+            ""actions"": [
+                {
+                    ""name"": ""Move"",
+                    ""type"": ""Value"",
+                    ""id"": ""782f737d-5df8-46d3-b3f0-96dc7813cc98"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""EditHUD"",
+                    ""type"": ""Button"",
+                    ""id"": ""afd98134-bcef-4f15-9120-dab3546c81a7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""745ff3f2-a9f7-4ad0-95ed-27cb91fbac16"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Up"",
+                    ""id"": ""da5b0e9c-e214-4278-9c74-37540d673cbf"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Down"",
+                    ""id"": ""5776e064-347a-4756-aee7-7a41aa52486b"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Left"",
+                    ""id"": ""fd529fb4-3b66-4d46-b1e8-054e9367a590"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Right"",
+                    ""id"": ""428253a0-a56c-4e39-8ba8-d7cd57902ba4"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f367bf20-8381-469e-854e-c1685fe1dfc9"",
+                    ""path"": ""<Keyboard>/alt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EditHUD"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""728b4e95-b2aa-4a6b-841c-4a105d21aa4b"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EditHUD"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -181,10 +548,31 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         // Juggernaut
         m_Juggernaut = asset.FindActionMap("Juggernaut", throwIfNotFound: true);
         m_Juggernaut_Move = m_Juggernaut.FindAction("Move", throwIfNotFound: true);
+        m_Juggernaut_Run = m_Juggernaut.FindAction("Run", throwIfNotFound: true);
         m_Juggernaut_LookAround = m_Juggernaut.FindAction("LookAround", throwIfNotFound: true);
         m_Juggernaut_PrimaryFire = m_Juggernaut.FindAction("PrimaryFire", throwIfNotFound: true);
         m_Juggernaut_SecondaryFire = m_Juggernaut.FindAction("SecondaryFire", throwIfNotFound: true);
-        m_Juggernaut_Zoom = m_Juggernaut.FindAction("Zoom", throwIfNotFound: true);
+        m_Juggernaut_ZoomIn = m_Juggernaut.FindAction("ZoomIn", throwIfNotFound: true);
+        m_Juggernaut_ZoomOut = m_Juggernaut.FindAction("ZoomOut", throwIfNotFound: true);
+        m_Juggernaut_Pause = m_Juggernaut.FindAction("Pause", throwIfNotFound: true);
+        m_Juggernaut_GrapplingThrow = m_Juggernaut.FindAction("GrapplingThrow", throwIfNotFound: true);
+        m_Juggernaut_Reload = m_Juggernaut.FindAction("Reload", throwIfNotFound: true);
+        m_Juggernaut_CallScavenger = m_Juggernaut.FindAction("CallScavenger", throwIfNotFound: true);
+        m_Juggernaut_StopScavenger = m_Juggernaut.FindAction("StopScavenger", throwIfNotFound: true);
+        m_Juggernaut_OrderScavenger = m_Juggernaut.FindAction("OrderScavenger", throwIfNotFound: true);
+        m_Juggernaut_EditHUD = m_Juggernaut.FindAction("EditHUD", throwIfNotFound: true);
+        // PauseMenu
+        m_PauseMenu = asset.FindActionMap("PauseMenu", throwIfNotFound: true);
+        m_PauseMenu_Resume = m_PauseMenu.FindAction("Resume", throwIfNotFound: true);
+        // Death
+        m_Death = asset.FindActionMap("Death", throwIfNotFound: true);
+        m_Death_Respawn = m_Death.FindAction("Respawn", throwIfNotFound: true);
+        // Rebinding
+        m_Rebinding = asset.FindActionMap("Rebinding", throwIfNotFound: true);
+        // HUDEdit
+        m_HUDEdit = asset.FindActionMap("HUDEdit", throwIfNotFound: true);
+        m_HUDEdit_Move = m_HUDEdit.FindAction("Move", throwIfNotFound: true);
+        m_HUDEdit_EditHUD = m_HUDEdit.FindAction("EditHUD", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -247,19 +635,37 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Juggernaut;
     private List<IJuggernautActions> m_JuggernautActionsCallbackInterfaces = new List<IJuggernautActions>();
     private readonly InputAction m_Juggernaut_Move;
+    private readonly InputAction m_Juggernaut_Run;
     private readonly InputAction m_Juggernaut_LookAround;
     private readonly InputAction m_Juggernaut_PrimaryFire;
     private readonly InputAction m_Juggernaut_SecondaryFire;
-    private readonly InputAction m_Juggernaut_Zoom;
+    private readonly InputAction m_Juggernaut_ZoomIn;
+    private readonly InputAction m_Juggernaut_ZoomOut;
+    private readonly InputAction m_Juggernaut_Pause;
+    private readonly InputAction m_Juggernaut_GrapplingThrow;
+    private readonly InputAction m_Juggernaut_Reload;
+    private readonly InputAction m_Juggernaut_CallScavenger;
+    private readonly InputAction m_Juggernaut_StopScavenger;
+    private readonly InputAction m_Juggernaut_OrderScavenger;
+    private readonly InputAction m_Juggernaut_EditHUD;
     public struct JuggernautActions
     {
         private @GameInputs m_Wrapper;
         public JuggernautActions(@GameInputs wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Juggernaut_Move;
+        public InputAction @Run => m_Wrapper.m_Juggernaut_Run;
         public InputAction @LookAround => m_Wrapper.m_Juggernaut_LookAround;
         public InputAction @PrimaryFire => m_Wrapper.m_Juggernaut_PrimaryFire;
         public InputAction @SecondaryFire => m_Wrapper.m_Juggernaut_SecondaryFire;
-        public InputAction @Zoom => m_Wrapper.m_Juggernaut_Zoom;
+        public InputAction @ZoomIn => m_Wrapper.m_Juggernaut_ZoomIn;
+        public InputAction @ZoomOut => m_Wrapper.m_Juggernaut_ZoomOut;
+        public InputAction @Pause => m_Wrapper.m_Juggernaut_Pause;
+        public InputAction @GrapplingThrow => m_Wrapper.m_Juggernaut_GrapplingThrow;
+        public InputAction @Reload => m_Wrapper.m_Juggernaut_Reload;
+        public InputAction @CallScavenger => m_Wrapper.m_Juggernaut_CallScavenger;
+        public InputAction @StopScavenger => m_Wrapper.m_Juggernaut_StopScavenger;
+        public InputAction @OrderScavenger => m_Wrapper.m_Juggernaut_OrderScavenger;
+        public InputAction @EditHUD => m_Wrapper.m_Juggernaut_EditHUD;
         public InputActionMap Get() { return m_Wrapper.m_Juggernaut; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -272,6 +678,9 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
+            @Run.started += instance.OnRun;
+            @Run.performed += instance.OnRun;
+            @Run.canceled += instance.OnRun;
             @LookAround.started += instance.OnLookAround;
             @LookAround.performed += instance.OnLookAround;
             @LookAround.canceled += instance.OnLookAround;
@@ -281,9 +690,33 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
             @SecondaryFire.started += instance.OnSecondaryFire;
             @SecondaryFire.performed += instance.OnSecondaryFire;
             @SecondaryFire.canceled += instance.OnSecondaryFire;
-            @Zoom.started += instance.OnZoom;
-            @Zoom.performed += instance.OnZoom;
-            @Zoom.canceled += instance.OnZoom;
+            @ZoomIn.started += instance.OnZoomIn;
+            @ZoomIn.performed += instance.OnZoomIn;
+            @ZoomIn.canceled += instance.OnZoomIn;
+            @ZoomOut.started += instance.OnZoomOut;
+            @ZoomOut.performed += instance.OnZoomOut;
+            @ZoomOut.canceled += instance.OnZoomOut;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
+            @GrapplingThrow.started += instance.OnGrapplingThrow;
+            @GrapplingThrow.performed += instance.OnGrapplingThrow;
+            @GrapplingThrow.canceled += instance.OnGrapplingThrow;
+            @Reload.started += instance.OnReload;
+            @Reload.performed += instance.OnReload;
+            @Reload.canceled += instance.OnReload;
+            @CallScavenger.started += instance.OnCallScavenger;
+            @CallScavenger.performed += instance.OnCallScavenger;
+            @CallScavenger.canceled += instance.OnCallScavenger;
+            @StopScavenger.started += instance.OnStopScavenger;
+            @StopScavenger.performed += instance.OnStopScavenger;
+            @StopScavenger.canceled += instance.OnStopScavenger;
+            @OrderScavenger.started += instance.OnOrderScavenger;
+            @OrderScavenger.performed += instance.OnOrderScavenger;
+            @OrderScavenger.canceled += instance.OnOrderScavenger;
+            @EditHUD.started += instance.OnEditHUD;
+            @EditHUD.performed += instance.OnEditHUD;
+            @EditHUD.canceled += instance.OnEditHUD;
         }
 
         private void UnregisterCallbacks(IJuggernautActions instance)
@@ -291,6 +724,9 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
+            @Run.started -= instance.OnRun;
+            @Run.performed -= instance.OnRun;
+            @Run.canceled -= instance.OnRun;
             @LookAround.started -= instance.OnLookAround;
             @LookAround.performed -= instance.OnLookAround;
             @LookAround.canceled -= instance.OnLookAround;
@@ -300,9 +736,33 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
             @SecondaryFire.started -= instance.OnSecondaryFire;
             @SecondaryFire.performed -= instance.OnSecondaryFire;
             @SecondaryFire.canceled -= instance.OnSecondaryFire;
-            @Zoom.started -= instance.OnZoom;
-            @Zoom.performed -= instance.OnZoom;
-            @Zoom.canceled -= instance.OnZoom;
+            @ZoomIn.started -= instance.OnZoomIn;
+            @ZoomIn.performed -= instance.OnZoomIn;
+            @ZoomIn.canceled -= instance.OnZoomIn;
+            @ZoomOut.started -= instance.OnZoomOut;
+            @ZoomOut.performed -= instance.OnZoomOut;
+            @ZoomOut.canceled -= instance.OnZoomOut;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
+            @GrapplingThrow.started -= instance.OnGrapplingThrow;
+            @GrapplingThrow.performed -= instance.OnGrapplingThrow;
+            @GrapplingThrow.canceled -= instance.OnGrapplingThrow;
+            @Reload.started -= instance.OnReload;
+            @Reload.performed -= instance.OnReload;
+            @Reload.canceled -= instance.OnReload;
+            @CallScavenger.started -= instance.OnCallScavenger;
+            @CallScavenger.performed -= instance.OnCallScavenger;
+            @CallScavenger.canceled -= instance.OnCallScavenger;
+            @StopScavenger.started -= instance.OnStopScavenger;
+            @StopScavenger.performed -= instance.OnStopScavenger;
+            @StopScavenger.canceled -= instance.OnStopScavenger;
+            @OrderScavenger.started -= instance.OnOrderScavenger;
+            @OrderScavenger.performed -= instance.OnOrderScavenger;
+            @OrderScavenger.canceled -= instance.OnOrderScavenger;
+            @EditHUD.started -= instance.OnEditHUD;
+            @EditHUD.performed -= instance.OnEditHUD;
+            @EditHUD.canceled -= instance.OnEditHUD;
         }
 
         public void RemoveCallbacks(IJuggernautActions instance)
@@ -320,12 +780,221 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         }
     }
     public JuggernautActions @Juggernaut => new JuggernautActions(this);
+
+    // PauseMenu
+    private readonly InputActionMap m_PauseMenu;
+    private List<IPauseMenuActions> m_PauseMenuActionsCallbackInterfaces = new List<IPauseMenuActions>();
+    private readonly InputAction m_PauseMenu_Resume;
+    public struct PauseMenuActions
+    {
+        private @GameInputs m_Wrapper;
+        public PauseMenuActions(@GameInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Resume => m_Wrapper.m_PauseMenu_Resume;
+        public InputActionMap Get() { return m_Wrapper.m_PauseMenu; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PauseMenuActions set) { return set.Get(); }
+        public void AddCallbacks(IPauseMenuActions instance)
+        {
+            if (instance == null || m_Wrapper.m_PauseMenuActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PauseMenuActionsCallbackInterfaces.Add(instance);
+            @Resume.started += instance.OnResume;
+            @Resume.performed += instance.OnResume;
+            @Resume.canceled += instance.OnResume;
+        }
+
+        private void UnregisterCallbacks(IPauseMenuActions instance)
+        {
+            @Resume.started -= instance.OnResume;
+            @Resume.performed -= instance.OnResume;
+            @Resume.canceled -= instance.OnResume;
+        }
+
+        public void RemoveCallbacks(IPauseMenuActions instance)
+        {
+            if (m_Wrapper.m_PauseMenuActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IPauseMenuActions instance)
+        {
+            foreach (var item in m_Wrapper.m_PauseMenuActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_PauseMenuActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public PauseMenuActions @PauseMenu => new PauseMenuActions(this);
+
+    // Death
+    private readonly InputActionMap m_Death;
+    private List<IDeathActions> m_DeathActionsCallbackInterfaces = new List<IDeathActions>();
+    private readonly InputAction m_Death_Respawn;
+    public struct DeathActions
+    {
+        private @GameInputs m_Wrapper;
+        public DeathActions(@GameInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Respawn => m_Wrapper.m_Death_Respawn;
+        public InputActionMap Get() { return m_Wrapper.m_Death; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(DeathActions set) { return set.Get(); }
+        public void AddCallbacks(IDeathActions instance)
+        {
+            if (instance == null || m_Wrapper.m_DeathActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_DeathActionsCallbackInterfaces.Add(instance);
+            @Respawn.started += instance.OnRespawn;
+            @Respawn.performed += instance.OnRespawn;
+            @Respawn.canceled += instance.OnRespawn;
+        }
+
+        private void UnregisterCallbacks(IDeathActions instance)
+        {
+            @Respawn.started -= instance.OnRespawn;
+            @Respawn.performed -= instance.OnRespawn;
+            @Respawn.canceled -= instance.OnRespawn;
+        }
+
+        public void RemoveCallbacks(IDeathActions instance)
+        {
+            if (m_Wrapper.m_DeathActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IDeathActions instance)
+        {
+            foreach (var item in m_Wrapper.m_DeathActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_DeathActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public DeathActions @Death => new DeathActions(this);
+
+    // Rebinding
+    private readonly InputActionMap m_Rebinding;
+    private List<IRebindingActions> m_RebindingActionsCallbackInterfaces = new List<IRebindingActions>();
+    public struct RebindingActions
+    {
+        private @GameInputs m_Wrapper;
+        public RebindingActions(@GameInputs wrapper) { m_Wrapper = wrapper; }
+        public InputActionMap Get() { return m_Wrapper.m_Rebinding; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(RebindingActions set) { return set.Get(); }
+        public void AddCallbacks(IRebindingActions instance)
+        {
+            if (instance == null || m_Wrapper.m_RebindingActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_RebindingActionsCallbackInterfaces.Add(instance);
+        }
+
+        private void UnregisterCallbacks(IRebindingActions instance)
+        {
+        }
+
+        public void RemoveCallbacks(IRebindingActions instance)
+        {
+            if (m_Wrapper.m_RebindingActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IRebindingActions instance)
+        {
+            foreach (var item in m_Wrapper.m_RebindingActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_RebindingActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public RebindingActions @Rebinding => new RebindingActions(this);
+
+    // HUDEdit
+    private readonly InputActionMap m_HUDEdit;
+    private List<IHUDEditActions> m_HUDEditActionsCallbackInterfaces = new List<IHUDEditActions>();
+    private readonly InputAction m_HUDEdit_Move;
+    private readonly InputAction m_HUDEdit_EditHUD;
+    public struct HUDEditActions
+    {
+        private @GameInputs m_Wrapper;
+        public HUDEditActions(@GameInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_HUDEdit_Move;
+        public InputAction @EditHUD => m_Wrapper.m_HUDEdit_EditHUD;
+        public InputActionMap Get() { return m_Wrapper.m_HUDEdit; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(HUDEditActions set) { return set.Get(); }
+        public void AddCallbacks(IHUDEditActions instance)
+        {
+            if (instance == null || m_Wrapper.m_HUDEditActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_HUDEditActionsCallbackInterfaces.Add(instance);
+            @Move.started += instance.OnMove;
+            @Move.performed += instance.OnMove;
+            @Move.canceled += instance.OnMove;
+            @EditHUD.started += instance.OnEditHUD;
+            @EditHUD.performed += instance.OnEditHUD;
+            @EditHUD.canceled += instance.OnEditHUD;
+        }
+
+        private void UnregisterCallbacks(IHUDEditActions instance)
+        {
+            @Move.started -= instance.OnMove;
+            @Move.performed -= instance.OnMove;
+            @Move.canceled -= instance.OnMove;
+            @EditHUD.started -= instance.OnEditHUD;
+            @EditHUD.performed -= instance.OnEditHUD;
+            @EditHUD.canceled -= instance.OnEditHUD;
+        }
+
+        public void RemoveCallbacks(IHUDEditActions instance)
+        {
+            if (m_Wrapper.m_HUDEditActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IHUDEditActions instance)
+        {
+            foreach (var item in m_Wrapper.m_HUDEditActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_HUDEditActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public HUDEditActions @HUDEdit => new HUDEditActions(this);
     public interface IJuggernautActions
     {
         void OnMove(InputAction.CallbackContext context);
+        void OnRun(InputAction.CallbackContext context);
         void OnLookAround(InputAction.CallbackContext context);
         void OnPrimaryFire(InputAction.CallbackContext context);
         void OnSecondaryFire(InputAction.CallbackContext context);
-        void OnZoom(InputAction.CallbackContext context);
+        void OnZoomIn(InputAction.CallbackContext context);
+        void OnZoomOut(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
+        void OnGrapplingThrow(InputAction.CallbackContext context);
+        void OnReload(InputAction.CallbackContext context);
+        void OnCallScavenger(InputAction.CallbackContext context);
+        void OnStopScavenger(InputAction.CallbackContext context);
+        void OnOrderScavenger(InputAction.CallbackContext context);
+        void OnEditHUD(InputAction.CallbackContext context);
+    }
+    public interface IPauseMenuActions
+    {
+        void OnResume(InputAction.CallbackContext context);
+    }
+    public interface IDeathActions
+    {
+        void OnRespawn(InputAction.CallbackContext context);
+    }
+    public interface IRebindingActions
+    {
+    }
+    public interface IHUDEditActions
+    {
+        void OnMove(InputAction.CallbackContext context);
+        void OnEditHUD(InputAction.CallbackContext context);
     }
 }
