@@ -117,7 +117,6 @@ namespace Gameplay.Mecha
             MaxHealth = juggernautParameters.health;
             _rigidbody = GetComponent<Rigidbody>();
             EventManager.TriggerEvent("OnUpdateHealth", 1f);
-            EventManager.TriggerEvent("RegisterMinimapTarget", transform);
         }
 
         protected override void OnEnable()
@@ -156,6 +155,11 @@ namespace Gameplay.Mecha
             }
         }
 
+        protected override void Start()
+        {
+            base.Start();
+            EventManager.TriggerEvent("RegisterMinimapTarget", transform);
+        }
 
         #endregion
 
