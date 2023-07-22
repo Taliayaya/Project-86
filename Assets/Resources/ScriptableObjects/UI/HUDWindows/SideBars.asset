@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bfcd1452034439ab29f1bfd0775d78e, type: 3}
+  m_Name: SideBars
+  m_EditorClassIdentifier: 
+  fieldsToSerialize:
+  - title
+  - position
+  - sizeMultiplier
+  - inactiveOpacity
+  - activeOpacity
+  - orderInLayer
+  - zoomOpacity
+  - isActive
+  title: Angle bars
+  position: {x: 0, y: 0}
+  sizeMultiplier: 1
+  inactiveOpacity: 0
+  activeOpacity: 1
+  zoomOpacity: 1
+  isActive: 1
+  orderInLayer: 5
+  showBorder: 0
+  isDraggable: 0
+  isEditable: 0
+  isResizable: 0
+  isClosable: 1
+  isOpacityEditable: 1
