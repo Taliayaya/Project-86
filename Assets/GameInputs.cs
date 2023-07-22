@@ -143,6 +143,15 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""EditHUD"",
+                    ""type"": ""Button"",
+                    ""id"": ""9ab8614e-3d5f-4e3e-88c5-db393f1fd02f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -343,6 +352,17 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                     ""action"": ""Run"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""72373517-2c28-4e8b-8a80-953080c26935"",
+                    ""path"": ""<Keyboard>/alt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EditHUD"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -418,6 +438,109 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
             ""id"": ""48485b7a-90b1-4c90-9e2d-eb0ad7a4ff0d"",
             ""actions"": [],
             ""bindings"": []
+        },
+        {
+            ""name"": ""HUDEdit"",
+            ""id"": ""75b66185-2d77-44ea-8e0a-e29932fcf38d"",
+            ""actions"": [
+                {
+                    ""name"": ""Move"",
+                    ""type"": ""Value"",
+                    ""id"": ""782f737d-5df8-46d3-b3f0-96dc7813cc98"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""EditHUD"",
+                    ""type"": ""Button"",
+                    ""id"": ""afd98134-bcef-4f15-9120-dab3546c81a7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""745ff3f2-a9f7-4ad0-95ed-27cb91fbac16"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Up"",
+                    ""id"": ""da5b0e9c-e214-4278-9c74-37540d673cbf"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Down"",
+                    ""id"": ""5776e064-347a-4756-aee7-7a41aa52486b"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Left"",
+                    ""id"": ""fd529fb4-3b66-4d46-b1e8-054e9367a590"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Right"",
+                    ""id"": ""428253a0-a56c-4e39-8ba8-d7cd57902ba4"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f367bf20-8381-469e-854e-c1685fe1dfc9"",
+                    ""path"": ""<Keyboard>/alt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EditHUD"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""728b4e95-b2aa-4a6b-841c-4a105d21aa4b"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EditHUD"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -437,6 +560,7 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         m_Juggernaut_CallScavenger = m_Juggernaut.FindAction("CallScavenger", throwIfNotFound: true);
         m_Juggernaut_StopScavenger = m_Juggernaut.FindAction("StopScavenger", throwIfNotFound: true);
         m_Juggernaut_OrderScavenger = m_Juggernaut.FindAction("OrderScavenger", throwIfNotFound: true);
+        m_Juggernaut_EditHUD = m_Juggernaut.FindAction("EditHUD", throwIfNotFound: true);
         // PauseMenu
         m_PauseMenu = asset.FindActionMap("PauseMenu", throwIfNotFound: true);
         m_PauseMenu_Resume = m_PauseMenu.FindAction("Resume", throwIfNotFound: true);
@@ -445,6 +569,10 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         m_Death_Respawn = m_Death.FindAction("Respawn", throwIfNotFound: true);
         // Rebinding
         m_Rebinding = asset.FindActionMap("Rebinding", throwIfNotFound: true);
+        // HUDEdit
+        m_HUDEdit = asset.FindActionMap("HUDEdit", throwIfNotFound: true);
+        m_HUDEdit_Move = m_HUDEdit.FindAction("Move", throwIfNotFound: true);
+        m_HUDEdit_EditHUD = m_HUDEdit.FindAction("EditHUD", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -519,6 +647,7 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Juggernaut_CallScavenger;
     private readonly InputAction m_Juggernaut_StopScavenger;
     private readonly InputAction m_Juggernaut_OrderScavenger;
+    private readonly InputAction m_Juggernaut_EditHUD;
     public struct JuggernautActions
     {
         private @GameInputs m_Wrapper;
@@ -536,6 +665,7 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         public InputAction @CallScavenger => m_Wrapper.m_Juggernaut_CallScavenger;
         public InputAction @StopScavenger => m_Wrapper.m_Juggernaut_StopScavenger;
         public InputAction @OrderScavenger => m_Wrapper.m_Juggernaut_OrderScavenger;
+        public InputAction @EditHUD => m_Wrapper.m_Juggernaut_EditHUD;
         public InputActionMap Get() { return m_Wrapper.m_Juggernaut; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -584,6 +714,9 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
             @OrderScavenger.started += instance.OnOrderScavenger;
             @OrderScavenger.performed += instance.OnOrderScavenger;
             @OrderScavenger.canceled += instance.OnOrderScavenger;
+            @EditHUD.started += instance.OnEditHUD;
+            @EditHUD.performed += instance.OnEditHUD;
+            @EditHUD.canceled += instance.OnEditHUD;
         }
 
         private void UnregisterCallbacks(IJuggernautActions instance)
@@ -627,6 +760,9 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
             @OrderScavenger.started -= instance.OnOrderScavenger;
             @OrderScavenger.performed -= instance.OnOrderScavenger;
             @OrderScavenger.canceled -= instance.OnOrderScavenger;
+            @EditHUD.started -= instance.OnEditHUD;
+            @EditHUD.performed -= instance.OnEditHUD;
+            @EditHUD.canceled -= instance.OnEditHUD;
         }
 
         public void RemoveCallbacks(IJuggernautActions instance)
@@ -774,6 +910,60 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         }
     }
     public RebindingActions @Rebinding => new RebindingActions(this);
+
+    // HUDEdit
+    private readonly InputActionMap m_HUDEdit;
+    private List<IHUDEditActions> m_HUDEditActionsCallbackInterfaces = new List<IHUDEditActions>();
+    private readonly InputAction m_HUDEdit_Move;
+    private readonly InputAction m_HUDEdit_EditHUD;
+    public struct HUDEditActions
+    {
+        private @GameInputs m_Wrapper;
+        public HUDEditActions(@GameInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_HUDEdit_Move;
+        public InputAction @EditHUD => m_Wrapper.m_HUDEdit_EditHUD;
+        public InputActionMap Get() { return m_Wrapper.m_HUDEdit; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(HUDEditActions set) { return set.Get(); }
+        public void AddCallbacks(IHUDEditActions instance)
+        {
+            if (instance == null || m_Wrapper.m_HUDEditActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_HUDEditActionsCallbackInterfaces.Add(instance);
+            @Move.started += instance.OnMove;
+            @Move.performed += instance.OnMove;
+            @Move.canceled += instance.OnMove;
+            @EditHUD.started += instance.OnEditHUD;
+            @EditHUD.performed += instance.OnEditHUD;
+            @EditHUD.canceled += instance.OnEditHUD;
+        }
+
+        private void UnregisterCallbacks(IHUDEditActions instance)
+        {
+            @Move.started -= instance.OnMove;
+            @Move.performed -= instance.OnMove;
+            @Move.canceled -= instance.OnMove;
+            @EditHUD.started -= instance.OnEditHUD;
+            @EditHUD.performed -= instance.OnEditHUD;
+            @EditHUD.canceled -= instance.OnEditHUD;
+        }
+
+        public void RemoveCallbacks(IHUDEditActions instance)
+        {
+            if (m_Wrapper.m_HUDEditActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IHUDEditActions instance)
+        {
+            foreach (var item in m_Wrapper.m_HUDEditActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_HUDEditActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public HUDEditActions @HUDEdit => new HUDEditActions(this);
     public interface IJuggernautActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -789,6 +979,7 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         void OnCallScavenger(InputAction.CallbackContext context);
         void OnStopScavenger(InputAction.CallbackContext context);
         void OnOrderScavenger(InputAction.CallbackContext context);
+        void OnEditHUD(InputAction.CallbackContext context);
     }
     public interface IPauseMenuActions
     {
@@ -800,5 +991,10 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
     }
     public interface IRebindingActions
     {
+    }
+    public interface IHUDEditActions
+    {
+        void OnMove(InputAction.CallbackContext context);
+        void OnEditHUD(InputAction.CallbackContext context);
     }
 }

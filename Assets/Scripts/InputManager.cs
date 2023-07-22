@@ -1,5 +1,6 @@
 ﻿using DefaultNamespace;
 using Gameplay;
+using ScriptableObjects.UI;
 using UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -18,9 +19,11 @@ public class InputManager : Singleton<InputManager>
 {
     private DeathData _deathData;
     private PlayerInput _playerInput;
+    private CursorSO _cursorSo;
     protected override void OnAwake()
     {
         _playerInput = GetComponent<PlayerInput>();
+        _cursorSo = Resources.Load<CursorSO>("ScriptableObjects/UI/Cursor/Cursor");
         var keybindsSave = PlayerPrefs.GetString("keybinds");
         if (keybindsSave != "")
             _playerInput.actions.LoadBindingOverridesFromJson(keybindsSave);
@@ -129,10 +132,28 @@ public class InputManager : Singleton<InputManager>
         _isOrderingScavenger = !_isOrderingScavenger;
         EventManager.TriggerEvent("OnOrderScavenger");
     }
-    
+
 
     #endregion
-    
+
+    private bool _isEditingHUD = false;
+    private void OnEditHUD(InputValue inputValue)
+    {
+        _isEditingHUD = !_isEditingHUD;
+        if (_isEditingHUD)
+        {
+            Cursor.lockState = CursorLockMode.Confined;
+            _playerInput.SwitchCurrentActionMap("HUDEdit");
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            _playerInput.SwitchCurrentActionMap("Juggernaut");
+            Cursor.SetCursor(_cursorSo.defaultTexture, Vector2.zero, CursorMode.Auto);
+        }
+
+        EventManager.TriggerEvent("OnHUDEdit", _isEditingHUD);
+    }
         
     #endregion
     
