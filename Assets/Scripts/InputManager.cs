@@ -1,5 +1,6 @@
 ﻿using DefaultNamespace;
 using Gameplay;
+using ScriptableObjects.UI;
 using UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -18,19 +19,28 @@ public class InputManager : Singleton<InputManager>
 {
     private DeathData _deathData;
     private PlayerInput _playerInput;
+    private CursorSO _cursorSo;
     protected override void OnAwake()
     {
         _playerInput = GetComponent<PlayerInput>();
+        _cursorSo = Resources.Load<CursorSO>("ScriptableObjects/UI/Cursor/Cursor");
+        var keybindsSave = PlayerPrefs.GetString("keybinds");
+        if (keybindsSave != "")
+            _playerInput.actions.LoadBindingOverridesFromJson(keybindsSave);
     }
 
     private void OnEnable()
     {
         EventManager.AddListener("OnDeath", OnDeath);
+        EventManager.AddListener("RebindStarted", OnRebindStarted);
+        EventManager.AddListener("DeleteSave", OnDeleteSave);
     }
         
     private void OnDisable()
     {
         EventManager.RemoveListener("OnDeath", OnDeath);
+        EventManager.RemoveListener("RebindStarted", OnRebindStarted);
+        EventManager.RemoveListener("DeleteSave", OnDeleteSave);
     }
 
     #region Juggernaut Action Map
@@ -71,13 +81,17 @@ public class InputManager : Singleton<InputManager>
     private void OnZoomIn(InputValue inputValue)
     {
         var data = inputValue.Get<float>();
-        EventManager.TriggerEvent("OnZoomIn", data);
+        if (data > 0)
+            EventManager.TriggerEvent("OnZoomIn", data);
     }
         
     private void OnZoomOut(InputValue inputValue)
     {
         var data = inputValue.Get<float>();
-        EventManager.TriggerEvent("OnZoomOut", data);
+        Debug.Log(data);
+        if (data < 0)
+            EventManager.TriggerEvent("OnZoomOut", data);
+        //EventManager.TriggerEvent("OnZoomOut", data);
     }
 
     private void OnPause()
@@ -118,10 +132,28 @@ public class InputManager : Singleton<InputManager>
         _isOrderingScavenger = !_isOrderingScavenger;
         EventManager.TriggerEvent("OnOrderScavenger");
     }
-    
+
 
     #endregion
-    
+
+    private bool _isEditingHUD = false;
+    private void OnEditHUD(InputValue inputValue)
+    {
+        _isEditingHUD = !_isEditingHUD;
+        if (_isEditingHUD)
+        {
+            Cursor.lockState = CursorLockMode.Confined;
+            _playerInput.SwitchCurrentActionMap("HUDEdit");
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            _playerInput.SwitchCurrentActionMap("Juggernaut");
+            Cursor.SetCursor(_cursorSo.defaultTexture, Vector2.zero, CursorMode.Auto);
+        }
+
+        EventManager.TriggerEvent("OnHUDEdit", _isEditingHUD);
+    }
         
     #endregion
     
@@ -167,6 +199,29 @@ public class InputManager : Singleton<InputManager>
     {
         _deathData = (DeathData) deathData;
         _playerInput.SwitchCurrentActionMap("Death");
+    }
+    
+    private void OnRebindStarted(object started)
+    {
+        if ((bool)started)
+            _playerInput.SwitchCurrentActionMap("Rebinding");
+        else
+        {
+            var keybindsSave = _playerInput.actions.SaveBindingOverridesAsJson();
+            PlayerPrefs.SetString("keybinds", keybindsSave);
+            _playerInput.SwitchCurrentActionMap("PauseMenu");
+        }
+    }
+
+    private void OnDeleteSave(object obj)
+    {
+        switch ((string)obj)
+        {
+            case "Inputs":
+                PlayerPrefs.DeleteKey("keybinds");
+                _playerInput.actions.RemoveAllBindingOverrides();
+                break;
+        }
     }
         
 }

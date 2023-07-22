@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c286ecb2f8334ff1b2bf7d3fe8a3b783, type: 3}
+  m_Name: Keybinds
+  m_EditorClassIdentifier: 
+  keybinds:
+  - description: 'Fire the main ammo of your juggernaut.
+
+      Press it to fire
+      from where you look and destroy your enemies. Also used as a  confirmation.'
+    inputActionReference: {fileID: -8322920569894536290, guid: f0941c9159ab44549ae4a15211db10be,
+      type: 3}
+  - description: 'Fire the secondary ammo of your juggernaut.
+
+      Press or hold
+      it to fire where you look and destroy your enemies.'
+    inputActionReference: {fileID: -2076700147287921243, guid: f0941c9159ab44549ae4a15211db10be,
+      type: 3}
+  - description: 'While nearby a scavenger, press this key to start the reload process.
+
+      You
+      need to reload if you''re out of ammo.'
+    inputActionReference: {fileID: 2330765805484653791, guid: f0941c9159ab44549ae4a15211db10be,
+      type: 3}
+  - description: Press this key to throw the wire where you look. If it hits something,
+      recast and hold to get pulled towards the target. Release the key to remove
+      the wire.
+    inputActionReference: {fileID: -6834970209543029, guid: f0941c9159ab44549ae4a15211db10be,
+      type: 3}
+  - description: While pressed, the movement speed of your juggernaut is increased.
+    inputActionReference: {fileID: 8923728074965732014, guid: f0941c9159ab44549ae4a15211db10be,
+      type: 3}
+  - description: If active, allows to increase the zoom level by one if it's not
+      maxed.
+    inputActionReference: {fileID: -1525019116810370409, guid: f0941c9159ab44549ae4a15211db10be,
+      type: 3}
+  - description: If active, allows to decrease the zoom level by one if it's not
+      at the lowest.
+    inputActionReference: {fileID: 2070100893835697221, guid: f0941c9159ab44549ae4a15211db10be,
+      type: 3}
+  - description: Press this key to order the scavenger to follow you around until
+      it reach you or is attacked.
+    inputActionReference: {fileID: -610582249941903689, guid: f0941c9159ab44549ae4a15211db10be,
+      type: 3}
+  - description: 'Press this key to enter the order mode. Recast to exit the mode
+      without doing anything. Press Left Click to confirm the target destination
+      of the scavenger. '
+    inputActionReference: {fileID: 429555649249299665, guid: f0941c9159ab44549ae4a15211db10be,
+      type: 3}
+  - description: Stop any on going action of the scavenger.
+    inputActionReference: {fileID: 4286204329177378132, guid: f0941c9159ab44549ae4a15211db10be,
+      type: 3}
+  - description: Key used to respawn after death.
+    inputActionReference: {fileID: 3814143314724051539, guid: f0941c9159ab44549ae4a15211db10be,
+      type: 3}

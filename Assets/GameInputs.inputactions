@@ -121,6 +121,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "EditHUD",
+                    "type": "Button",
+                    "id": "9ab8614e-3d5f-4e3e-88c5-db393f1fd02f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -215,7 +224,7 @@
                 {
                     "name": "",
                     "id": "df43aacc-92fd-4633-963d-b3c96d1723d8",
-                    "path": "<Mouse>/scroll/up",
+                    "path": "<Mouse>/scroll/y",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -226,7 +235,7 @@
                 {
                     "name": "",
                     "id": "ae67c592-5f85-472b-8f77-2f555a9e4fe3",
-                    "path": "<Mouse>/scroll/down",
+                    "path": "<Mouse>/scroll/y",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -321,6 +330,17 @@
                     "action": "Run",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "72373517-2c28-4e8b-8a80-953080c26935",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "EditHUD",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -386,6 +406,115 @@
                     "processors": "",
                     "groups": "",
                     "action": "Respawn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Rebinding",
+            "id": "48485b7a-90b1-4c90-9e2d-eb0ad7a4ff0d",
+            "actions": [],
+            "bindings": []
+        },
+        {
+            "name": "HUDEdit",
+            "id": "75b66185-2d77-44ea-8e0a-e29932fcf38d",
+            "actions": [
+                {
+                    "name": "Move",
+                    "type": "Value",
+                    "id": "782f737d-5df8-46d3-b3f0-96dc7813cc98",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "EditHUD",
+                    "type": "Button",
+                    "id": "afd98134-bcef-4f15-9120-dab3546c81a7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "2D Vector",
+                    "id": "745ff3f2-a9f7-4ad0-95ed-27cb91fbac16",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "Up",
+                    "id": "da5b0e9c-e214-4278-9c74-37540d673cbf",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Down",
+                    "id": "5776e064-347a-4756-aee7-7a41aa52486b",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Left",
+                    "id": "fd529fb4-3b66-4d46-b1e8-054e9367a590",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Right",
+                    "id": "428253a0-a56c-4e39-8ba8-d7cd57902ba4",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "f367bf20-8381-469e-854e-c1685fe1dfc9",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "EditHUD",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "728b4e95-b2aa-4a6b-841c-4a105d21aa4b",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "EditHUD",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

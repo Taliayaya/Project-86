@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30d3342639994b2a923e38c2f3701ec7, type: 3}
+  m_Name: Cursor
+  m_EditorClassIdentifier: 
+  defaultTexture: {fileID: 0}
+  hoverTexture: {fileID: 0}
+  dragTexture: {fileID: 2800000, guid: 321f0e3969ced604cb6b8a1a2aad987a, type: 3}
+  resizeTexture: {fileID: 2800000, guid: e277bee12d27a0b419aa707c80eba52e, type: 3}
