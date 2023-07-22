@@ -8,7 +8,7 @@ namespace ScriptableObjects.Tutorial
     public struct Tutorial
     {
         public string title;
-        [TextArea(1, 6)]
+        [TextArea(1, 20)]
         public string description;
         public Sprite image;
     }

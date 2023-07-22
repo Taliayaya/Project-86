@@ -20,8 +20,10 @@ public class MoveWindowArea : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             if (!hudWindow.IsActivated)
             {
                 _rawImage.raycastTarget = _hudWindow.settings.isDraggable;
-                _rawImage.color = new Color(0, 0, 0, 0.1f);
+                _rawImage.color = new Color(0, 0, 0, 0.2f);
             }
+            else if (hudWindow.settings.activeOpacity < 0.1f)
+                _rawImage.color = new Color(0, 0, 0, 0.1f);
 
         }
     }
