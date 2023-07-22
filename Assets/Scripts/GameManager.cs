@@ -25,6 +25,7 @@ public class GameManager : Singleton<GameManager>
         }
         Cursor.lockState = CursorLockMode.Locked;
         DataHandler.LoadGameData();
+        Screen.SetResolution(1920, 1080, FullScreenMode.FullScreenWindow);
     }
 
     private void OnEnable()
