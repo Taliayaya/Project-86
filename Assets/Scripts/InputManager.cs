@@ -198,6 +198,8 @@ public class InputManager : Singleton<InputManager>
     private void OnDeath(object deathData)
     {
         _deathData = (DeathData) deathData;
+        if (_isEditingHUD)
+            OnEditHUD(null);
         _playerInput.SwitchCurrentActionMap("Death");
     }
     
