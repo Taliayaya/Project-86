@@ -13,6 +13,7 @@ public class NLegProceduralAnimation : MonoBehaviour
     [SerializeField] private float stepHeight = 0.1f;
     [SerializeField] private int smoothness = 1;
     [SerializeField] private bool bodyOrientation = true;
+    [SerializeField] private LayerMask groundLayer;
     
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
@@ -33,12 +34,12 @@ public class NLegProceduralAnimation : MonoBehaviour
     private float _velocityMultiplier = 5f;
     private bool _legMoving = false;
 
-    private static Vector3[] MatchToSurfaceFromAbove(Vector3 point, float halfRange, Vector3 up)
+    private static Vector3[] MatchToSurfaceFromAbove(Vector3 point, float halfRange, Vector3 up, LayerMask layerMask)
     {
         Vector3[] res = new Vector3[2];
         RaycastHit hit;
         Ray ray = new Ray(point + halfRange * up, -up);
-        if (Physics.Raycast(ray, out hit, 2 * halfRange))
+        if (Physics.Raycast(ray, out hit, 2 * halfRange, layerMask))
         {
             res[0] = hit.point;
             res[1] = hit.normal;
@@ -132,7 +133,7 @@ public class NLegProceduralAnimation : MonoBehaviour
                               //(_desiredLegPositions[legToMove] - legTargets[legToMove].position) + 
                               _velocity * _velocityMultiplier;
         _legMoving = true;
-        Vector3[] positionAndNormal = MatchToSurfaceFromAbove(targetPoint, RaycastRange, transform.up);
+        Vector3[] positionAndNormal = MatchToSurfaceFromAbove(targetPoint, RaycastRange, transform.up, groundLayer);
         StartCoroutine(MoveLegCoroutine(legToMove, positionAndNormal[0]));
     }
 
@@ -160,7 +161,7 @@ public class NLegProceduralAnimation : MonoBehaviour
             legTargets[legToMove].position += transform.up * (Mathf.Sin((float)i / (smoothness + 1f) * Mathf.PI) * stepHeight);
             yield return new WaitForFixedUpdate();
         }
-        if (Physics.Raycast(legTargets[legToMove].position, Vector3.down, out RaycastHit hit, 1f))
+        if (Physics.Raycast(legTargets[legToMove].position, Vector3.down, out RaycastHit hit, 1f, groundLayer))
             audioSource.PlayOneShot(stepSounds[Random.Range(0, stepSounds.Length)], 1 / (float)_soundQueue );
         legTargets[legToMove].position = targetPoint;
         _lastLegPositions[legToMove] = targetPoint;

@@ -32,7 +32,8 @@ namespace Gameplay.Mecha
 
         [SerializeField]
         private Transform modelTransform;
-        [SerializeField] private CinemachineVirtualCamera virtualCamera;
+        [SerializeField] private Camera zoomCamera;
+        [SerializeField] private CinemachineVirtualCamera vCamera;
         [SerializeField] private LayerMask forwardMask;
 
         [Header("Ground Check")] 
@@ -88,7 +89,7 @@ namespace Gameplay.Mecha
                         throw new ArgumentOutOfRangeException();
                 }
 
-                virtualCamera.m_Lens.FieldOfView = zoomValue;
+                zoomCamera.fieldOfView = zoomValue;
                 EventManager.TriggerEvent("OnZoomChange", _zoom);
             }
         } 
@@ -167,7 +168,7 @@ namespace Gameplay.Mecha
 
         private void CheckDistanceForward()
         {
-            if (Physics.Raycast(virtualCamera.transform.position, virtualCamera.transform.forward, out var hit, 4000, forwardMask))
+            if (Physics.Raycast(vCamera.transform.position, vCamera.transform.forward, out var hit, 4000, forwardMask))
             {
                 EventManager.TriggerEvent("OnDistanceForward", hit.distance);
             }

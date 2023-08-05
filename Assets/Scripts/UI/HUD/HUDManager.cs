@@ -220,12 +220,7 @@ namespace UI.HUD
 
         private void FadeZoom(float alpha, float duration)
         {
-            foreach (var image in zoomImage)
-            {
-                image.CrossFadeAlpha(alpha, duration, false);
-            }
-
-            zoomText.CrossFadeAlpha(alpha, duration, false);
+            StartCoroutine(zoomCanvasGroup.Fade(alpha, duration));
         }
 
 
@@ -320,6 +315,31 @@ namespace UI.HUD
 
         #endregion
 
+    }
+
+    public static class CanvasGroupExtensionMethods
+    {
+
+        public static IEnumerator Fade(this CanvasGroup canvasGroup, float targetAlpha, float duration)
+        {
+            float remainingDuration = duration;
+            float previousAlpha = canvasGroup.alpha;
+            
+            if (targetAlpha != 0)
+                foreach (Transform transform in canvasGroup.transform)
+                    transform.gameObject.SetActive(true);
+            while (remainingDuration > 0)
+            {
+                remainingDuration -= Time.deltaTime;
+                canvasGroup.alpha = Mathf.Lerp(previousAlpha, targetAlpha, remainingDuration / duration);
+                yield return null;
+            }
+
+            foreach (Transform transform in canvasGroup.transform)
+            {
+                transform.gameObject.SetActive(targetAlpha != 0);
+            }
+        }
     }
 
 

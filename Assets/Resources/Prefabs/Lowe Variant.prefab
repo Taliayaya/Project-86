@@ -242,6 +242,11 @@ PrefabInstance:
       objectReference: {fileID: 1167489426882708834}
     - target: {fileID: 5408784206191323767, guid: c60559b31bc453d4592bc5925d48232c,
         type: 3}
+      propertyPath: groundLayer.m_Bits
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5408784206191323767, guid: c60559b31bc453d4592bc5925d48232c,
+        type: 3}
       propertyPath: stepSounds.Array.size
       value: 1
       objectReference: {fileID: 0}
