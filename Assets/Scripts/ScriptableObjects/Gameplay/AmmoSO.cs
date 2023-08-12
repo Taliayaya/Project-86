@@ -24,6 +24,10 @@ namespace ScriptableObjects
         public AudioClip reloadSound;
         public GameObject explosionPrefab;
         public GameObject muzzleFlashPrefab;
+        
+        
+        public AudioClip onHitSound;
+        public GameObject missEffect;
 
         public float Damage(int time) => damageCurve.Evaluate(time);
 

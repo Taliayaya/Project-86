@@ -8,6 +8,7 @@ namespace Gameplay
         public float DamageAmount;
         public Faction Faction;
         public Vector3 DamageSourcePosition;
+        public AudioClip DamageAudioClip;
     }
     public interface IHealth
     {
