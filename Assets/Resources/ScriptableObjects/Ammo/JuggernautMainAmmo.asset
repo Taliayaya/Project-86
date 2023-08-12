@@ -51,7 +51,7 @@ MonoBehaviour:
   reloadTime: 3
   maxLifetime: 5
   forcePower: 600
-  explosionRadius: 2.6
+  explosionRadius: 0
   explosionLayerMask:
     serializedVersion: 2
     m_Bits: 128
@@ -60,3 +60,5 @@ MonoBehaviour:
   reloadSound: {fileID: 8300000, guid: 5421ca678be48164b9a886778594cb8d, type: 3}
   explosionPrefab: {fileID: 100006, guid: e076683e0305e35498b8e8834978c0fa, type: 3}
   muzzleFlashPrefab: {fileID: 0}
+  onHitSound: {fileID: 8300000, guid: 0be766ae7eccdae40b1f3576dea28ba3, type: 3}
+  missEffect: {fileID: 100002, guid: 56bfc2f4b4a0c534c8ef3d0fd1124c44, type: 3}

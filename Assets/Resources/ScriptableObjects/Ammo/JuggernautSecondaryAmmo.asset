@@ -42,10 +42,11 @@ MonoBehaviour:
   reloadTime: 1
   maxLifetime: 3
   forcePower: 500
-  explosionRadius: 1
+  explosionRadius: 0
   explosionLayerMask:
     serializedVersion: 2
     m_Bits: 128
+  onHitSound: {fileID: 0}
   prefab: {fileID: 511108076656415306, guid: aa0030755dea42748808705c045e1d29, type: 3}
   fireSound: {fileID: 8300000, guid: 56e7de8bcb66df14cae9ed481b0102b1, type: 3}
   reloadSound: {fileID: 0}
