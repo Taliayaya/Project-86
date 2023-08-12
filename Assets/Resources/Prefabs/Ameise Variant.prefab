@@ -156,6 +156,92 @@ PrefabInstance:
       propertyPath: myParentColliderToIgnore
       value: 
       objectReference: {fileID: 586595652}
+    - target: {fileID: 1269329004787466712, guid: c60559b31bc453d4592bc5925d48232c,
+        type: 3}
+      propertyPath: MaxDistance
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1269329004787466712, guid: c60559b31bc453d4592bc5925d48232c,
+        type: 3}
+      propertyPath: rolloffMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1269329004787466712, guid: c60559b31bc453d4592bc5925d48232c,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 8843940232986239663, guid: 86627ef9b19d90447a04b809d9fb5949,
+        type: 2}
+    - target: {fileID: 1269329004787466712, guid: c60559b31bc453d4592bc5925d48232c,
+        type: 3}
+      propertyPath: rolloffCustomCurve.m_Curve.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1269329004787466712, guid: c60559b31bc453d4592bc5925d48232c,
+        type: 3}
+      propertyPath: rolloffCustomCurve.m_Curve.Array.data[0].time
+      value: 0.002
+      objectReference: {fileID: 0}
+    - target: {fileID: 1269329004787466712, guid: c60559b31bc453d4592bc5925d48232c,
+        type: 3}
+      propertyPath: rolloffCustomCurve.m_Curve.Array.data[1].time
+      value: 0.29465657
+      objectReference: {fileID: 0}
+    - target: {fileID: 1269329004787466712, guid: c60559b31bc453d4592bc5925d48232c,
+        type: 3}
+      propertyPath: rolloffCustomCurve.m_Curve.Array.data[2].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1269329004787466712, guid: c60559b31bc453d4592bc5925d48232c,
+        type: 3}
+      propertyPath: rolloffCustomCurve.m_Curve.Array.data[1].value
+      value: 0.39117444
+      objectReference: {fileID: 0}
+    - target: {fileID: 1269329004787466712, guid: c60559b31bc453d4592bc5925d48232c,
+        type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1269329004787466712, guid: c60559b31bc453d4592bc5925d48232c,
+        type: 3}
+      propertyPath: rolloffCustomCurve.m_Curve.Array.data[1].inSlope
+      value: -1.1968856
+      objectReference: {fileID: 0}
+    - target: {fileID: 1269329004787466712, guid: c60559b31bc453d4592bc5925d48232c,
+        type: 3}
+      propertyPath: rolloffCustomCurve.m_Curve.Array.data[2].inSlope
+      value: -0.20682292
+      objectReference: {fileID: 0}
+    - target: {fileID: 1269329004787466712, guid: c60559b31bc453d4592bc5925d48232c,
+        type: 3}
+      propertyPath: rolloffCustomCurve.m_Curve.Array.data[0].inWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1269329004787466712, guid: c60559b31bc453d4592bc5925d48232c,
+        type: 3}
+      propertyPath: rolloffCustomCurve.m_Curve.Array.data[1].outSlope
+      value: -1.1968856
+      objectReference: {fileID: 0}
+    - target: {fileID: 1269329004787466712, guid: c60559b31bc453d4592bc5925d48232c,
+        type: 3}
+      propertyPath: rolloffCustomCurve.m_Curve.Array.data[2].inWeight
+      value: 0.25134608
+      objectReference: {fileID: 0}
+    - target: {fileID: 1269329004787466712, guid: c60559b31bc453d4592bc5925d48232c,
+        type: 3}
+      propertyPath: rolloffCustomCurve.m_Curve.Array.data[2].outSlope
+      value: -0.20682292
+      objectReference: {fileID: 0}
+    - target: {fileID: 1269329004787466712, guid: c60559b31bc453d4592bc5925d48232c,
+        type: 3}
+      propertyPath: rolloffCustomCurve.m_Curve.Array.data[0].outWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1269329004787466712, guid: c60559b31bc453d4592bc5925d48232c,
+        type: 3}
+      propertyPath: rolloffCustomCurve.m_Curve.Array.data[1].outWeight
+      value: 0.20276158
+      objectReference: {fileID: 0}
     - target: {fileID: 2542840793318145145, guid: c60559b31bc453d4592bc5925d48232c,
         type: 3}
       propertyPath: faction
