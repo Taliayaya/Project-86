@@ -33,6 +33,8 @@ namespace AI.BehaviourTree.BasicNodes
                 _navMeshAgent = blackBoard.GetValue<NavMeshAgent>("navMeshAgent");
                 _isSet = true;
                 
+                _angularSpeed = _navMeshAgent.angularSpeed;
+                
                 _navMeshAgent.updateRotation = false;
             }
             if (!blackBoard.TryGetValue("closestTarget", out _enemyTransform))
@@ -47,13 +49,13 @@ namespace AI.BehaviourTree.BasicNodes
         private float _angularSpeed;
         protected override State OnUpdate()
         {
+            _navMeshAgent.angularSpeed = _angularSpeed;
             if (startRotating && !_enemyTransform)
                 return State.Failure;
             if (startRotating)
             {
                 if (!_aiAgent.isRotating)
                 {
-                    _angularSpeed = _navMeshAgent.angularSpeed;
                     _navMeshAgent.angularSpeed = 0;
                     _aiAgent.RotateTowardsEnemy(_enemyTransform);
                 }
