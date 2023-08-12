@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using AI.BehaviourTree;
 using Gameplay.Mecha;
+using JetBrains.Annotations;
 using ScriptableObjects.AI;
 using ScriptableObjects.GameParameters;
 using UnityEngine;
@@ -22,15 +24,17 @@ namespace Gameplay.Units
         public Color sideViewColor = Color.cyan;
     }
     
-    [RequireComponent(typeof(NavMeshAgent), typeof(BehaviourTreeRunner))]
+    [RequireComponent(typeof(NavMeshAgent), typeof(BehaviourTreeRunner), typeof(AudioSource))]
     public class AIAgent : Unit
     {
         private NavMeshAgent _agent;
         private BehaviourTreeRunner _behaviourTreeRunner;
+        private AudioSource _audioSource;
 
         [SerializeField] private AgentSO agentSo;
 
         [SerializeField] private DebugAgent debugAgent;
+        [SerializeField] [CanBeNull] private List<Transform> patrolWaypoints = null;
         private WeaponModule[] _weaponModules;
         public BehaviourTree Tree => _behaviourTreeRunner.tree;
         public DemoParameters demoParameters;
@@ -43,6 +47,7 @@ namespace Gameplay.Units
             _agent = GetComponent<NavMeshAgent>();
             _behaviourTreeRunner = GetComponent<BehaviourTreeRunner>();
             _weaponModules = GetComponentsInChildren<WeaponModule>();
+            _audioSource = GetComponent<AudioSource>();
             if (name.Contains("Lowe"))
             {
                 Health = demoParameters.loweHealth;
@@ -65,6 +70,8 @@ namespace Gameplay.Units
             Tree.blackBoard.SetValue("agentSO", agentSo);
             Tree.blackBoard.SetValue("weaponModules", _weaponModules);
             Tree.blackBoard.SetValue("aiAgent", this);
+            if (patrolWaypoints != null)
+                Tree.blackBoard.SetValue("waypoints", patrolWaypoints);
         }
 
 
@@ -141,6 +148,22 @@ namespace Gameplay.Units
         }
 
         #endregion
+
+        public override void OnTakeDamage(DamagePackage damagePackage)
+        {
+            base.OnTakeDamage(damagePackage);
+            if (damagePackage.DamageAudioClip != null)
+                _audioSource.PlayOneShot(damagePackage.DamageAudioClip);
+            
+        }
+
+        public override void Die()
+        {
+            if (agentSo.deathEffect != null)
+                Instantiate(agentSo.deathEffect, transform.position, Quaternion.identity);
+            base.Die();
+            
+        }
 
         #region Debug
 
