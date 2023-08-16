@@ -22,6 +22,9 @@ namespace Gameplay.Units
     public class Unit : MonoBehaviour, IHealth
     {
         private Module[] _modules;
+        
+        [Header("Base Unit Settings")]
+        public UnitType unitType = UnitType.None;
 
         public UnityEvent<float, float> onHealthChange;
 
@@ -33,8 +36,8 @@ namespace Gameplay.Units
         [SerializeField] private AudioSource engineAudioSource;
         [SerializeField] private EngineAudioSO engineAudioSo;
         
-           public virtual float Health { get; set; } = 100;
-           public float MaxHealth { get; set; } = 100;
+        public virtual float Health { get; set; } = 100;
+        public float MaxHealth { get; set; } = 100;
         [SerializeField] private Faction faction;
         public Faction Faction { get => faction; set => faction = value; }
         public virtual UnitState State { get; set; } = UnitState.Default;
@@ -123,6 +126,8 @@ namespace Gameplay.Units
 
         public virtual void Die()
         {
+            Debug.Log("Unit " + name + " is dead");
+            EventManager.TriggerEvent("UnitDeath", this);
             Destroy(gameObject);
             onUnitDeath.Invoke(this);
             Factions.RemoveMember(faction, this);
