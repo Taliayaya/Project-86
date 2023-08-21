@@ -26,11 +26,15 @@ namespace Gameplay.Quests
             get => Instance._currentQuest;
             set
             {
-                if (Instance._currentQuest != value)
-                {
-                    Instance._currentQuest = value;
-                    EventManager.TriggerEvent("QuestChanged", value);
-                }
+                if (Instance._currentQuest == value) return;
+                
+                if (Instance._currentQuest != null)
+                    Instance._currentQuest.OnStatusChanged -= Instance.OnQuestStatusChanged;
+                Instance._currentQuest = value;
+                if (value != null)
+                    value.OnStatusChanged += Instance.OnQuestStatusChanged;
+
+                EventManager.TriggerEvent("QuestChanged", value);
             }
         }
         

@@ -13,15 +13,22 @@ namespace Gameplay.Quests.Tasks
         public event StatusChanged OnStatusChanged;
         public event TaskProgressChanged OnTaskProgressChanged;
         
+        [NonSerialized]
         private TaskStatus _status = TaskStatus.Inactive;
         public TaskStatus Status
         {
             get => _status;
             set
             {
-                if (_status != value)
-                    OnStatusChanged?.Invoke(_status, this);
+                
+                var oldStatus = _status;
                 _status = value;
+                if (oldStatus != value)
+                {
+                    OnStatusChanged?.Invoke(oldStatus, this);
+                    Debug.Log($"[Task] Status: {_status} -> {value} {OnStatusChanged.GetInvocationList().Length}");
+                }
+
             }
         }
 
@@ -57,6 +64,7 @@ namespace Gameplay.Quests.Tasks
         {
             if (!CanComplete() && !forceComplete)
                 return false;
+            Debug.Log("[Task] Complete(): Task completed");
             Status = TaskStatus.Completed;
 
             return IsCompleted;
@@ -76,6 +84,16 @@ namespace Gameplay.Quests.Tasks
         {
             OnTaskProgressChanged?.Invoke(task);
         }
+
+        public virtual void RegisterEvents()
+        {
+            
+        }
+        
+        public virtual void UnregisterEvents()
+        {
+            
+        } 
 
 
     }
