@@ -78,6 +78,8 @@ namespace AI.BehaviourTree.BasicNodes
 
         public bool EnemyInRange()
         {
+            if (!_closestTarget)
+                return false;
             var direction = _closestTarget.transform.position - _transform.position;
             var angle = Vector3.Angle(direction, _transform.forward);
 
