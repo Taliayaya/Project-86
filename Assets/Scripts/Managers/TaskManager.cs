@@ -68,27 +68,10 @@ namespace Managers
 			}
 		}
 
-		private static TaskManager _singleton;
-
-		private void Awake()
-		{
-			_singleton = this;
-		}
-
 		public static TaskState CreateTask(IEnumerator coroutine)
 		{
-			if (!_singleton)
-			{
-				var taskManager = FindObjectOfType<TaskManager>();
-				if (taskManager is not null)
-				{
-					_singleton = taskManager;
-				}
-				if(_singleton == null) {
-					var go = new GameObject("TaskManager");
-					_singleton = go.AddComponent<TaskManager>();
-				}
-			}
+		       if (!Instance)
+		              Debug.Log("Creating instance...)
 			return new TaskState(coroutine);
 		}
 	}
