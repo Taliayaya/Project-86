@@ -18,9 +18,9 @@ MonoBehaviour:
     swipeSameState: 1
     swipeSelectionOnly: 1
     depthMode: 2
-    showLayers: 1
-    clickToSelectLayer: 1
-    applyChildLayers: 1
+    showLayers: 0
+    clickToSelectLayer: 0
+    applyChildLayers: 0
     showAllComponents: 1
     showBreadcrumbs: 1
     instanceBreadcrumbs:
@@ -3462,6 +3462,60 @@ MonoBehaviour:
         shown: 0
         isBuiltIn: 0
         script: {fileID: 11500000, guid: e2e837670fe3437a971fa05cd1f51118, type: 3}
+      - displayName: TaskManager
+        name: Managers.TaskManager, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+        content:
+          m_Text: TaskManager
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000,
+            type: 0}
+          m_Tooltip: TaskManager
+        shown: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 928cf8f231f6e9d4f8802fde1cb6a9e4, type: 3}
+      - displayName: ScavengerController
+        name: Gameplay.ScavengerController, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+        content:
+          m_Text: ScavengerController
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000,
+            type: 0}
+          m_Tooltip: ScavengerController
+        shown: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 530e0ed69ef14e22ac38bbc8c9a283de, type: 3}
+      - displayName: Explosion
+        name: Gameplay.Explosion, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+        content:
+          m_Text: Explosion
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000,
+            type: 0}
+          m_Tooltip: Explosion
+        shown: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 099cba5bd9054d388969b1e701d0181e, type: 3}
+      - displayName: DestroyEffect
+        name: DestroyEffect, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: DestroyEffect
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000,
+            type: 0}
+          m_Tooltip: DestroyEffect
+        shown: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 88b9b11ad00a01e44aa1c4d1ab3954eb, type: 3}
+      - displayName: csLightControl
+        name: csLightControl, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+        content:
+          m_Text: csLightControl
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000,
+            type: 0}
+          m_Tooltip: csLightControl
+        shown: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 741004066245a714390df3757b77251a, type: 3}
     excludedComponents:
       name: Excluded
       components:
