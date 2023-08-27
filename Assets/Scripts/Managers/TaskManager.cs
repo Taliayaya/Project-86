@@ -37,7 +37,7 @@ namespace Managers
 			public void Start()
 			{
 				running = true;
-				_singleton.StartCoroutine(CallWrapper());
+				Instance.StartCoroutine(CallWrapper());
 			}
 		
 			public void Stop()
