@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Managers
 {
-	internal class TaskManager : MonoBehaviour
+	internal class TaskManager : Singleton<TaskManager>
 	{
 		public class TaskState
 		{
