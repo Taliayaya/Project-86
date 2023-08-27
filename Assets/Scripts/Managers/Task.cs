@@ -53,8 +53,6 @@ namespace Managers
 			{
 				Start();
 			}
-
-			Debug.Log("TASKS: Created new task");
 		}
 	
 		/// <summary>
@@ -62,7 +60,7 @@ namespace Managers
 		/// </summary>
 		public void Start()
 		{
-			Debug.Log($"TASKS: Starting task {this.task.coroutine}");
+			//Debug.Log($"TASKS: Starting task {this.task.coroutine}");
 			task.Start();
 		}
 
@@ -71,7 +69,7 @@ namespace Managers
 		/// </summary>
 		public void Stop()
 		{
-			Debug.Log($"TASKS: Stopping task {this.task.coroutine}");
+			//Debug.Log($"TASKS: Stopping task {this.task.coroutine}");
 			task.Stop();
 		}
 	
@@ -80,7 +78,7 @@ namespace Managers
 		/// </summary>
 		public void Pause()
 		{
-			Debug.Log($"TASKS: Pausing task {this.task.coroutine}");
+			//Debug.Log($"TASKS: Pausing task {this.task.coroutine}");
 			task.Pause();
 		}
 	
@@ -89,7 +87,7 @@ namespace Managers
 		/// </summary>
 		public void Unpause()
 		{
-			Debug.Log($"TASKS: Resuming task {this.task.coroutine}");
+			//Debug.Log($"TASKS: Resuming task {this.task.coroutine}");
 			task.Unpause();
 		}
 
