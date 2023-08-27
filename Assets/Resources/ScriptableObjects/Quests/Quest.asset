@@ -1,5 +1,61 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5512832634597092555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81f83c59e9ec4de893756b44e6eb480e, type: 3}
+  m_Name: TimerTask
+  m_EditorClassIdentifier: 
+  importance: 0
+  timerEndBehaviour: 0
+  timerName: Survive for
+  showTimerInSecondsOnly: 1
+  timerDuration: 120
+  onTimerUpdate:
+    m_PersistentCalls:
+      m_Calls: []
+  onTimerEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  timerOverrides:
+  - {fileID: 2130373215738474425}
+  - {fileID: -5361730702480860865}
+  timerActions: []
+--- !u!114 &-5361730702480860865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a63b4551a75040d488ee639b95c6e849, type: 3}
+  m_Name: TimerCompleteIfAllTasksCompleted
+  m_EditorClassIdentifier: 
+  behaviour: 0
+--- !u!114 &-5052166288779817887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d107c95c30d745febe538756188f5b9c, type: 3}
+  m_Name: ReachTask
+  m_EditorClassIdentifier: 
+  importance: 0
+  zoneAreaPrefab: {fileID: 2924105439288467838, guid: f4c92c7562300eb439c93ea89347e0d0,
+    type: 3}
+  zoneName: Reach the area
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12,11 +68,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d14bdceb0e945369d219b9a1138c180, type: 3}
   m_Name: Quest
   m_EditorClassIdentifier: 
+  questName: Intercept the Patrol
   description: 
   taskOrder: 0
   tasks:
   - {fileID: 5302240051167012821}
+  - {fileID: -5052166288779817887}
+  - {fileID: -5512832634597092555}
   requiredFinishedQuests: []
+--- !u!114 &2130373215738474425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb8131b5923949e98543263bfd5925e4, type: 3}
+  m_Name: TimerPlayerDeath
+  m_EditorClassIdentifier: 
+  behaviour: 0
 --- !u!114 &5302240051167012821
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29,5 +101,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa7b70fd7b754da0a15e15643b0b8710, type: 3}
   m_Name: KillTask
   m_EditorClassIdentifier: 
-  enemyToKill: 10
+  importance: 0
+  enemyToKill: 2
   type: 3

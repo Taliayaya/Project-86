@@ -1,16 +1,21 @@
 using System;
+using System.Collections.Generic;
 using Gameplay.Quests;
 using Gameplay.Quests.Tasks;
 using ScriptableObjects.Quests;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace UI.HUD
 {
     public class QuestWindow : MonoBehaviour
     {
-        [SerializeField]
-        private TMP_Text _questDescription;
+        [FormerlySerializedAs("_questDescriptionTransform")] [SerializeField]
+        private Transform questDescriptionTransform;
+        [FormerlySerializedAs("_questDescriptionPrefab")] [SerializeField] private GameObject questDescriptionPrefab;
+        
+        private List<TMP_Text> _tasksTexts = new List<TMP_Text>();
         private void Awake()
         {
             
@@ -35,22 +40,71 @@ namespace UI.HUD
                 return;
             }
             transform.GetChild(0).gameObject.SetActive(true);
-            _questDescription.text = "";
+            DestroyTasksTexts();
             foreach (var task in quest.Tasks)
             {
-                _questDescription.text += $"{task}\n";
+                TMP_Text text = Instantiate(questDescriptionPrefab, questDescriptionTransform).GetComponent<TMP_Text>();
+                text.gameObject.name = task.name;
+                _tasksTexts.Add(text);
+                if (task.importance == TaskImportance.Optional)
+                    text.text += $"[Optional] ";
+                text.text += task;
+                SetTextColorDependingStatus(task.Status, text);
             }
             quest.OnTaskProgressChanged += OnTaskProgressUpdate;
+            quest.OnTaskStatusChanged += OnTaskStatusChanged;
 
         }
-        
+
+        private void OnTaskStatusChanged(TaskStatus oldstatus, Task task)
+        {
+            for (int i = 0; i < _tasksTexts.Count; i++)
+            {
+                var text = _tasksTexts[i];
+                var currentTask = task.Owner.Tasks[i];
+                SetTextColorDependingStatus(currentTask.Status, text);
+            }
+        }
+
         private void OnTaskProgressUpdate(Task task)
         {
-            _questDescription.text = "";
-            foreach (var t in task.Owner.Tasks)
+            for (int i = 0; i < _tasksTexts.Count; i++)
             {
-                _questDescription.text += $"{t}\n";
+                var text = _tasksTexts[i];
+                var currentTask = task.Owner.Tasks[i];
+                text.text = currentTask.ToString();
+                SetTextColorDependingStatus(currentTask.Status, text);
             }
+            
+        }
+
+        private void SetTextColorDependingStatus(TaskStatus status, TMP_Text text)
+        {
+            switch (status)
+            {
+                case TaskStatus.Active:
+                    text.color = Color.white;
+                    break;
+                case TaskStatus.Inactive:
+                    text.color = Color.gray;
+                    break;
+                case TaskStatus.Completed:
+                    text.color = Color.green;
+                    break;
+                case TaskStatus.Failed:
+                    text.color = Color.gray;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+        private void DestroyTasksTexts()
+        {
+            foreach (var text in _tasksTexts)
+            {
+                Destroy(text.gameObject);
+            }
+            _tasksTexts.Clear();
         }
     }
 }

@@ -48,13 +48,11 @@ namespace Gameplay.Quests
         {
             foreach (var quest in quests)
             {
+                quest.OnStatusChanged += OnQuestStatusChanged;
                 if (CurrentQuest == null && quest.Activate())
                 {
-                    Debug.Log("[QuestManager] SelectFirstQuestAndRegister(): Quest selected");
                     CurrentQuest = quest;
                 }
-                Debug.Log("[QuestManager] SelectFirstQuestAndRegister(): Quest registered");
-                quest.OnStatusChanged += OnQuestStatusChanged;
             }
             
         }
@@ -67,6 +65,7 @@ namespace Gameplay.Quests
         
         public void OnQuestStatusChanged(QuestStatus oldStatus, Quest quest)
         {
+            EventManager.TriggerEvent("QuestStatusChanged", quest);
             if (quest.IsCompleted)
             {
                 if (quest == CurrentQuest)

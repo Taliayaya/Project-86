@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Gameplay.Quests;
 using Gameplay.Quests.Tasks;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Task = Gameplay.Quests.Tasks.Task;
+using TaskStatus = Gameplay.Quests.Tasks.TaskStatus;
 
 namespace ScriptableObjects.Quests
 {
@@ -24,6 +27,7 @@ namespace ScriptableObjects.Quests
         
         [Header("General Info")]
         
+        public string questName;
         [TextArea]
         public string description;
         
@@ -81,7 +85,7 @@ namespace ScriptableObjects.Quests
             if (_status != QuestStatus.Active)
                 return false;
 
-            foreach (var task in tasks)
+            foreach (var task in GetPrincipaleTasks())
             {
                 var canComplete = task.CanComplete();
                 if (!canComplete)
@@ -166,7 +170,13 @@ namespace ScriptableObjects.Quests
         public void NotifyTaskStatusChanged(TaskStatus oldStatus, Task task)
         {
             Debug.Log($"[Quest] NotifyTaskStatusChanged(): Task {task.name} status changed to {task.Status}");
-            Complete();
+            if (task.Status == TaskStatus.Failed && task.importance == TaskImportance.Principal)
+            {
+                Status = QuestStatus.Cancelled;
+                CompleteCompletableTasks();
+            }
+            else
+                Complete();
             OnTaskStatusChanged?.Invoke(oldStatus, task);
         }
         
@@ -215,6 +225,16 @@ namespace ScriptableObjects.Quests
         {
             return Tasks.Where(task => task.Status == TaskStatus.Completed).ToList();
         }
+        
+        public List<Task> GetPrincipaleTasks()
+        {
+            return Tasks.Where(task => task.importance == TaskImportance.Principal).ToList();
+        }
+        
+        public List<Task> GetOptionalTasks()
+        {
+            return Tasks.Where(task => task.importance == TaskImportance.Optional).ToList();
+        }
 
         public List<Task> GetTasks(TaskFilter filter)
         {
@@ -228,6 +248,10 @@ namespace ScriptableObjects.Quests
                     return GetActiveAndCompletedTasks();
                 case TaskFilter.Failed:
                     return GetFailedTasks();
+                case TaskFilter.Principal:
+                    return GetPrincipaleTasks();
+                case TaskFilter.Optional:
+                    return GetOptionalTasks();
                 case TaskFilter.All:
                     return Tasks.ToList();
                 default:
