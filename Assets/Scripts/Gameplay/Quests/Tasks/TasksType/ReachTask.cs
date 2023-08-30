@@ -36,6 +36,7 @@ namespace Gameplay.Quests.Tasks.TasksType
         {
             if (base.Complete(forceComplete))
             {
+                zoneArea.gameObject.SetActive(false);
                 zoneArea.onTriggerEnter.RemoveListener(OnTriggerEnter);
                 return true;
             }

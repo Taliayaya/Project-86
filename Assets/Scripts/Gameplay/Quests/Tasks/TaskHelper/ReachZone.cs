@@ -11,6 +11,14 @@ namespace Gameplay.Quests.Tasks.TaskHelper
         [NonSerialized]
         private ReachTask _task;
         public GameObject miniMapIcon;
+        public Marker marker;
+
+        private void OnDisable()
+        {
+            miniMapIcon.SetActive(false);
+            marker.gameObject.SetActive(false);
+        }
+
         public ReachTask Task
         {
             get => _task;
