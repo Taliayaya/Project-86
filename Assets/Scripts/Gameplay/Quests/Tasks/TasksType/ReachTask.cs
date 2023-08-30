@@ -1,5 +1,6 @@
 using System;
 using Gameplay.Quests.Tasks.TaskHelper;
+using Gameplay.Units;
 using UnityEngine;
 using Utility;
 
@@ -11,6 +12,8 @@ namespace Gameplay.Quests.Tasks.TasksType
         public ReachZone zoneArea;
         public GameObject zoneAreaPrefab;
         public string zoneName = "Reach the area";
+        public UnitType unitAllowed = UnitType.Juggernaut;
+        public bool playerOnly = true;
         
         [NonSerialized]
         private bool _zoneReached = false;
@@ -25,7 +28,9 @@ namespace Gameplay.Quests.Tasks.TasksType
         
         public void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject == PlayerManager.Player.gameObject && !IsCompleted)
+            bool isUnitAllowed = unitAllowed.HasFlag(other.GetComponent<Unit>()?.unitType ?? UnitType.None);
+            bool isPlayerOrAllowed = !playerOnly || other.gameObject == PlayerManager.Player.gameObject;
+            if (isUnitAllowed && isPlayerOrAllowed && !IsCompleted)
             {
                 _zoneReached = true;
                 Complete();
