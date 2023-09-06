@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.discord.game-sdk": "2.5.5",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.animation.rigging": "1.1.1",
     "com.unity.cinemachine": "2.8.9",
@@ -9,15 +10,18 @@
     "com.unity.ide.vscode": "1.2.5",
     "com.unity.inputsystem": "1.6.3",
     "com.unity.nuget.newtonsoft-json": "3.2.1",
-    "com.unity.postprocessing": "3.2.2",
     "com.unity.probuilder": "5.1.0",
     "com.unity.recorder": "3.0.3",
+    "com.unity.render-pipelines.high-definition": "12.1.12",
     "com.unity.render-pipelines.universal": "12.1.12",
+    "com.unity.shadergraph": "12.1.12",
+    "com.unity.terrain-tools": "4.0.5",
     "com.unity.test-framework": "1.1.33",
     "com.unity.textmeshpro": "3.0.6",
     "com.unity.timeline": "1.6.5",
     "com.unity.ugui": "1.0.0",
     "com.unity.visualscripting": "1.8.0",
+    "com.wooshii.hierarchydecorator": "0.9.1",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.animation": "1.0.0",
@@ -49,5 +53,15 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
-  }
+  },
+  "scopedRegistries": [
+    {
+      "name": "OpenUPM",
+      "url": "https://package.openupm.com",
+      "scopes": [
+        "com.discord.game-sdk",
+        "com.wooshii.hierarchydecorator"
+      ]
+    }
+  ]
 }
