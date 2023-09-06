@@ -1,10 +1,12 @@
-﻿    using System.Reflection;
-    using ScriptableObjects.GameParameters;
-    using UnityEditor;
-    using UnityEngine;
+﻿using System.Reflection;
+using ScriptableObjects.GameParameters;
+using UnityEditor;
+using UnityEngine;
 
+namespace Editor
+{
     [CustomEditor(typeof(GameParameters), true)]
-    public class GameParameterEditor : Editor
+    public class GameParameterEditor : UnityEditor.Editor
     {
         private GUIStyle _buttonsStyle;
         
@@ -69,3 +71,4 @@
             serializedObject.ApplyModifiedProperties();
         }
     }
+}

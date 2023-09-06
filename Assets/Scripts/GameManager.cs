@@ -17,7 +17,6 @@ public class GameManager : Singleton<GameManager>
 
     protected override void OnAwake()
     {
-        
         GameParameters[] gameParametersArray = Resources.LoadAll<GameParameters>("ScriptableObjects/Parameters");
         foreach (var parameter in gameParametersArray)
         {
@@ -26,6 +25,8 @@ public class GameManager : Singleton<GameManager>
         Cursor.lockState = CursorLockMode.Locked;
         DataHandler.LoadGameData();
         Screen.SetResolution(1920, 1080, FullScreenMode.FullScreenWindow);
+
+        Application.quitting += () => EventManager.TriggerEvent("OnApplicationQuit");
     }
 
     private void OnEnable()
