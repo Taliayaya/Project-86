@@ -208,7 +208,7 @@ namespace Gameplay.Mecha
         {
             _yVelocity += gravity * Time.fixedDeltaTime;
             if (_isGrounded)
-                _yVelocity = -0.1f;
+                _yVelocity = gravity;
             _rigidbody.AddForce(Vector3.up * (_yVelocity), ForceMode.Force);
         }
 
