@@ -1,7 +1,6 @@
 using System;
 using Gameplay.Quests;
 using Gameplay.Quests.Tasks;
-using ScriptableObjects.Quests;
 using TMPro;
 using UnityEngine;
 

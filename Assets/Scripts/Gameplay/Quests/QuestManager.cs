@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using DefaultNamespace;
 using JetBrains.Annotations;
-using ScriptableObjects.Quests;
 using UnityEngine;
 using UnityEngine.Events;
 

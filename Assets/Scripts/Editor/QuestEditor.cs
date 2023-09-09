@@ -1,11 +1,11 @@
     using System.Linq;
+    using Gameplay.Quests;
     using Gameplay.Quests.Tasks;
-    using ScriptableObjects.Quests;
     using UnityEditor;
     using UnityEngine;
 
     [CustomEditor(typeof(Quest))]
-    public class QuestEditor : Editor
+    public class QuestEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {
