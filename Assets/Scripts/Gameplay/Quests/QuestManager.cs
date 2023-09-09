@@ -25,11 +25,15 @@ namespace Gameplay.Quests
             get => Instance._currentQuest;
             set
             {
-                if (Instance._currentQuest != value)
-                {
-                    Instance._currentQuest = value;
-                    EventManager.TriggerEvent("QuestChanged", value);
-                }
+                if (Instance._currentQuest == value) return;
+                
+                if (Instance._currentQuest != null)
+                    Instance._currentQuest.OnStatusChanged -= Instance.OnQuestStatusChanged;
+                Instance._currentQuest = value;
+                if (value != null)
+                    value.OnStatusChanged += Instance.OnQuestStatusChanged;
+
+                EventManager.TriggerEvent("QuestChanged", value);
             }
         }
         
@@ -43,13 +47,11 @@ namespace Gameplay.Quests
         {
             foreach (var quest in quests)
             {
+                quest.OnStatusChanged += OnQuestStatusChanged;
                 if (CurrentQuest == null && quest.Activate())
                 {
-                    Debug.Log("[QuestManager] SelectFirstQuestAndRegister(): Quest selected");
                     CurrentQuest = quest;
                 }
-                Debug.Log("[QuestManager] SelectFirstQuestAndRegister(): Quest registered");
-                quest.OnStatusChanged += OnQuestStatusChanged;
             }
             
         }
@@ -62,6 +64,7 @@ namespace Gameplay.Quests
         
         public void OnQuestStatusChanged(QuestStatus oldStatus, Quest quest)
         {
+            EventManager.TriggerEvent("QuestStatusChanged", quest);
             if (quest.IsCompleted)
             {
                 if (quest == CurrentQuest)

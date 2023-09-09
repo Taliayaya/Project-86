@@ -6,6 +6,8 @@ namespace Gameplay.Quests.Tasks
         Active,
         ActiveAndCompleted,
         Failed,
+        Principal,
+        Optional,
         All,
     }
 }

@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Gameplay.Quests;
 using Gameplay.Quests.Tasks;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Task = Gameplay.Quests.Tasks.Task;
+using TaskStatus = Gameplay.Quests.Tasks.TaskStatus;
 
 namespace ScriptableObjects.Quests
 {
@@ -24,11 +27,13 @@ namespace ScriptableObjects.Quests
         
         [Header("General Info")]
         
+        public string questName;
         [TextArea]
         public string description;
         
         
         public TaskOrder taskOrder;
+        [NonSerialized]
         private QuestStatus _status = QuestStatus.Inactive;
 
         public QuestStatus Status
@@ -36,9 +41,10 @@ namespace ScriptableObjects.Quests
             get => _status;
             set
             {
-                if (_status != value)
-                    OnStatusChanged?.Invoke(_status, this);
+                var oldStatus = _status;
                 _status = value;
+                if (oldStatus != value)
+                    OnStatusChanged?.Invoke(_status, this);
 
             }
         }
@@ -71,7 +77,7 @@ namespace ScriptableObjects.Quests
                     return false;
             }
 
-            return true;
+            return !IsCompleted && Status != QuestStatus.Locked;
         }
 
         public bool CanComplete()
@@ -79,7 +85,7 @@ namespace ScriptableObjects.Quests
             if (_status != QuestStatus.Active)
                 return false;
 
-            foreach (var task in tasks)
+            foreach (var task in GetPrincipaleTasks())
             {
                 var canComplete = task.CanComplete();
                 if (!canComplete)
@@ -93,8 +99,8 @@ namespace ScriptableObjects.Quests
         {
             foreach (var task in Tasks)
             {
-                if (!task.IsCompleted && task.CanComplete())
-                    task.Complete(forceComplete);
+                if (!task.IsCompleted && task.Complete(forceComplete))
+                    task.UnregisterEvents();
             }
         }
         
@@ -102,9 +108,10 @@ namespace ScriptableObjects.Quests
         {
             if (!CanComplete() && !forceComplete)
                 return;
+            Debug.Log($"[Quest] Complete(): Quest {name} completed");
             Status = QuestStatus.Completed;
             CompleteCompletableTasks(forceComplete);
-            
+
         }
         
         
@@ -119,6 +126,7 @@ namespace ScriptableObjects.Quests
                         if (task.Status == TaskStatus.Inactive)
                         {
                             task.Activate();
+                            task.RegisterEvents();
                             task.Owner = this;
                             break;
                         }
@@ -159,9 +167,17 @@ namespace ScriptableObjects.Quests
         {
             OnTaskProgressChanged?.Invoke(task);
         }
-        public void NotifyTaskStatusChanged(TaskStatus newStatus, Task task)
+        public void NotifyTaskStatusChanged(TaskStatus oldStatus, Task task)
         {
-            OnTaskStatusChanged?.Invoke(newStatus, task);
+            Debug.Log($"[Quest] NotifyTaskStatusChanged(): Task {task.name} status changed to {task.Status}");
+            if (task.Status == TaskStatus.Failed && task.importance == TaskImportance.Principal)
+            {
+                Status = QuestStatus.Cancelled;
+                CompleteCompletableTasks();
+            }
+            else
+                Complete();
+            OnTaskStatusChanged?.Invoke(oldStatus, task);
         }
         
         private void RegisterTaskEvents()
@@ -170,6 +186,7 @@ namespace ScriptableObjects.Quests
             {
                 task.OnStatusChanged += NotifyTaskStatusChanged;
                 task.OnTaskProgressChanged += NotifyTaskProgressChanged;
+                task.RegisterEvents();
             }
         }
         
@@ -208,6 +225,16 @@ namespace ScriptableObjects.Quests
         {
             return Tasks.Where(task => task.Status == TaskStatus.Completed).ToList();
         }
+        
+        public List<Task> GetPrincipaleTasks()
+        {
+            return Tasks.Where(task => task.importance == TaskImportance.Principal).ToList();
+        }
+        
+        public List<Task> GetOptionalTasks()
+        {
+            return Tasks.Where(task => task.importance == TaskImportance.Optional).ToList();
+        }
 
         public List<Task> GetTasks(TaskFilter filter)
         {
@@ -221,6 +248,10 @@ namespace ScriptableObjects.Quests
                     return GetActiveAndCompletedTasks();
                 case TaskFilter.Failed:
                     return GetFailedTasks();
+                case TaskFilter.Principal:
+                    return GetPrincipaleTasks();
+                case TaskFilter.Optional:
+                    return GetOptionalTasks();
                 case TaskFilter.All:
                     return Tasks.ToList();
                 default:

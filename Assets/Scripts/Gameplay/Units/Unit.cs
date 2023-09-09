@@ -124,9 +124,12 @@ namespace Gameplay.Units
         }
 
 
+        public bool Died { get; protected set; } = false;
+
         public virtual void Die()
         {
-            Debug.Log("Unit " + name + " is dead");
+            if (Died) return;
+            Died = true;
             EventManager.TriggerEvent("UnitDeath", this);
             Destroy(gameObject);
             onUnitDeath.Invoke(this);
