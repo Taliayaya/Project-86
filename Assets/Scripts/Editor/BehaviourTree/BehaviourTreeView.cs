@@ -8,8 +8,6 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
 using Node = AI.BehaviourTree.Node;
 
-namespace Editor
-{
     public class BehaviourTreeView : GraphView
     {
         private BehaviourTree _tree;
@@ -25,7 +23,7 @@ namespace Editor
             this.AddManipulator(new ContentDragger());
             this.AddManipulator(new SelectionDragger());
             this.AddManipulator(new RectangleSelector());
-            var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Scripts/Editor/BehaviourTreeEditor.uss");
+            var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Scripts/Editor/BehaviourTree/BehaviourTreeEditor.uss");
             styleSheets.Add(styleSheet);
 
             Undo.undoRedoPerformed += OnUndoRedo;
@@ -169,4 +167,3 @@ namespace Editor
             });
         }
     }
-}

@@ -8,8 +8,6 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Node = AI.BehaviourTree.Node;
 
-namespace Editor
-{
     public sealed class NodeView : UnityEditor.Experimental.GraphView.Node
     {
         public Node Node;
@@ -17,7 +15,7 @@ namespace Editor
         public Port OutputPort;
         public Action<NodeView> OnNodeSelected;
 
-        public NodeView(Node node) : base("Assets/Scripts/Editor/NodeView.uxml")
+        public NodeView(Node node) : base("Assets/Scripts/Editor/BehaviourTree/NodeView.uxml")
         {
             Node = node;
             title = node.name;
@@ -165,4 +163,3 @@ namespace Editor
             }
         }
     }
-}

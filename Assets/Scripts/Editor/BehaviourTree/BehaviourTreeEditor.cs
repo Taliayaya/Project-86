@@ -42,12 +42,13 @@ namespace Editor
 
             // Import UXML
             var visualTree =
-                AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Scripts/Editor/BehaviourTreeEditor.uxml");
+                AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Scripts/Editor/BehaviourTree/BehaviourTreeEditor.uxml");
+            Debug.Assert(visualTree != null, nameof(visualTree) + " != null");
             visualTree.CloneTree(root);
 
             // A stylesheet can be added to a VisualElement.
             // The style will be applied to the VisualElement and all of its children.
-            var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Scripts/Editor/BehaviourTreeEditor.uss");
+            var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Scripts/Editor/BehaviourTree/BehaviourTreeEditor.uss");
             root.styleSheets.Add(styleSheet);
 
             _treeView = root.Q<BehaviourTreeView>();

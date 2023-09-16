@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Editor
-{
     public class InspectorView : VisualElement
     {
         private UnityEditor.Editor _editor;
@@ -25,4 +23,3 @@ namespace Editor
             Add(container);
         }
     }
-}
