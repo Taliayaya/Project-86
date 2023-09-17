@@ -88,7 +88,6 @@ public class InputManager : Singleton<InputManager>
     private void OnZoomOut(InputValue inputValue)
     {
         var data = inputValue.Get<float>();
-        Debug.Log(data);
         if (data < 0)
             EventManager.TriggerEvent("OnZoomOut", data);
         //EventManager.TriggerEvent("OnZoomOut", data);

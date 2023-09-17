@@ -20,21 +20,29 @@ namespace UI
 
         private void Start()
         {
-            EventManager.TriggerEvent("MinimapMarkerVisibilityChanged", this);
+            if (!IsVisible)
+                EventManager.TriggerEvent("MinimapMarkerVisibilityChanged", this);
         }
 
         private void OnBecameInvisible()
         {
             EventManager.TriggerEvent("MinimapMarkerVisibilityChanged", this);
-            Debug.Log("Marker became invisible");
             onVisibilityChanged?.Invoke(false);
         }
         
         private void OnBecameVisible()
         {
             EventManager.TriggerEvent("MinimapMarkerVisibilityChanged", this);
-            Debug.Log("Marker became visible");
             onVisibilityChanged?.Invoke(true);
+        }
+
+        private void OnEnable()
+        {
+        }
+        
+        private void OnDisable()
+        {
+            EventManager.TriggerEvent("MinimapMarkerVisibilityChanged", this);
         }
     }
 }

@@ -38,8 +38,9 @@ namespace UI.HUD
         private void OnMinimapMarkerVisibilityChanged(object arg0)
         {
             var marker = (MinimapMarker) arg0;
-            if (!marker.IsVisible)
+            if (!marker.IsVisible && marker.isActiveAndEnabled)
             {
+                Debug.Log("Marker became invisible");
                 var markerNavigation = Instantiate(markerPrefab, markerContainer).GetComponent<Image>();
                 markerNavigation.sprite = marker.icon;
                 markerNavigation.name = marker.GetInstanceID().ToString();
@@ -48,6 +49,7 @@ namespace UI.HUD
             }
             else
             {
+                Debug.Log("Marker became visible");
                 var markerNavigation = _markers.Find(x => x.transform.name == marker.GetInstanceID().ToString());
                 if (markerNavigation.transform)
                 {
@@ -141,8 +143,8 @@ namespace UI.HUD
                 transform.position = newPosition;
                 if (grid)
                 {
-                    var x = newPosition.x / minimapCamera.pixelWidth;
-                    var y = newPosition.z / minimapCamera.pixelHeight;
+                    var x = newPosition.x / minimapCamera.pixelWidth * 0.6f;
+                    var y = newPosition.z / minimapCamera.pixelHeight * 0.6f;
                     grid.uvRect = new Rect(x, y, grid.uvRect.width, grid.uvRect.height);
                 }
             }
