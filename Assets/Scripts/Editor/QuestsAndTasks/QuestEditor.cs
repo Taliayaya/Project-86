@@ -1,6 +1,8 @@
     using System.Linq;
     using Gameplay.Quests;
     using Gameplay.Quests.Tasks;
+    using Gameplay.Quests.Tasks.TaskHelper;
+    using Gameplay.Quests.Tasks.TasksType;
     using UnityEditor;
     using UnityEngine;
 
@@ -16,13 +18,26 @@
             {
                 if (GUILayout.Button($"Add {type.Name}"))
                 {
-                    var instance = (Task)CreateInstance(type);
+                    var go = new GameObject();
+                    var instance = (Task)go.AddComponent(type);
+                    go.transform.parent = quest.transform;
                     instance.name = type.Name;
                     quest.Tasks.Add(instance);
                     instance.Owner = quest;
-                    AssetDatabase.AddObjectToAsset(instance, quest);
-                    AssetDatabase.SaveAssets();
+
+                    switch (instance)
+                    {
+                        case ReachTask reachTask:
+                            var prefab = Resources.Load("Prefabs/Quests/Area/QuestArea");
+                            var reachZone = Instantiate(prefab) as GameObject;
+                            reachZone.transform.parent = go.transform;
+                            var reachArea = reachZone.GetComponent<ReachZone>();
+                            reachTask.zoneArea = reachArea;
+                            reachZone.name = "ReachZone";
+                            break;
+                    }
                 }
             }
         }
+        
     }

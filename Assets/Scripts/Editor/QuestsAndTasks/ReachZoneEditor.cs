@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 
 [CustomEditor(typeof(ReachZone))]
-public class ReachZoneEditor : Editor
+public class ReachZoneEditor : UnityEditor.Editor
 {
     public override void OnInspectorGUI()
     {

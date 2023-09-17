@@ -8,9 +8,7 @@ namespace Gameplay.Quests.Tasks.TasksType
 {
     public class ReachTask : Task
     {
-        [NonSerialized]
         public ReachZone zoneArea;
-        public GameObject zoneAreaPrefab;
         public string zoneName = "Reach the area";
         public UnitType unitAllowed = UnitType.Juggernaut;
         public bool playerOnly = true;
@@ -20,14 +18,13 @@ namespace Gameplay.Quests.Tasks.TasksType
         public override void Activate()
         {
             base.Activate();
-            zoneArea = Instantiate(zoneAreaPrefab, zoneAreaPrefab.transform.position, zoneAreaPrefab.transform.rotation)
-                .GetComponent<ReachZone>();
             zoneArea.Task = this;
             zoneArea.onTriggerEnter.AddListener(OnTriggerEnter);
         }
         
         public void OnTriggerEnter(Collider other)
         {
+            if (!PlayerManager.Player) return;
             bool isUnitAllowed = unitAllowed.HasFlag(other.GetComponent<Unit>()?.unitType ?? UnitType.None);
             bool isPlayerOrAllowed = !playerOnly || other.gameObject == PlayerManager.Player.gameObject;
             if (isUnitAllowed && isPlayerOrAllowed && !IsCompleted)

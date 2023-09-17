@@ -32,7 +32,7 @@ namespace UI.HUD
 
         private void OnQuestChanged(object questArg)
         {
-            Quest quest = (Quest) questArg;
+            var quest = (Quest) questArg;
             if (quest == null)
             {
                 transform.GetChild(0).gameObject.SetActive(false);
@@ -67,6 +67,8 @@ namespace UI.HUD
 
         private void OnTaskProgressUpdate(Task task)
         {
+            if (task.Owner.Tasks.Count != _tasksTexts.Count)
+                return;
             for (int i = 0; i < _tasksTexts.Count; i++)
             {
                 var text = _tasksTexts[i];

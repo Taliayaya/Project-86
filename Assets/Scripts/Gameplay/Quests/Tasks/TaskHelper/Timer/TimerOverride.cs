@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Gameplay.Quests.Tasks.TaskHelper.Timer
 {
-    public class TimerOverride : ScriptableObject
+    public class TimerOverride : MonoBehaviour
     {
         public Task Task { get; set; }
         public TimerOverrideBehaviour behaviour;

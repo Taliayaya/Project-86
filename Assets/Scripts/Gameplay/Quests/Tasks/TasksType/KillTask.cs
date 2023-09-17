@@ -15,6 +15,7 @@ namespace Gameplay.Quests.Tasks.TasksType
         public int enemyToKill;
         public UnitType type;
         
+        [SerializeField] private string taskName = "Kill";
         [NonSerialized]
         private int _currentEnemyKilled = 0;
 
@@ -42,7 +43,7 @@ namespace Gameplay.Quests.Tasks.TasksType
 
         public override string ToString()
         {
-            return $"Kill {enemyToKill} {type}{(enemyToKill > 1 ? "s" : "")}: {_currentEnemyKilled}/{enemyToKill}";
+            return $"{taskName} {enemyToKill} {type}{(enemyToKill > 1 ? "s" : "")}: {_currentEnemyKilled}/{enemyToKill}";
         }
 
         public override void RegisterEvents()

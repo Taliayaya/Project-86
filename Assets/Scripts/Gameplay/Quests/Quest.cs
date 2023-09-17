@@ -1,18 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Gameplay.Quests;
 using Gameplay.Quests.Tasks;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Task = Gameplay.Quests.Tasks.Task;
 using TaskStatus = Gameplay.Quests.Tasks.TaskStatus;
 
-namespace ScriptableObjects.Quests
+namespace Gameplay.Quests
 {
-    [CreateAssetMenu(fileName = "Quest", menuName = "Quests/Quest")]
-    public class Quest : ScriptableObject
+    public class Quest : MonoBehaviour
     {
         #region Events
         
@@ -77,6 +73,7 @@ namespace ScriptableObjects.Quests
                     return false;
             }
 
+            Debug.Log($"[Quest] CanActivate(): Quest {name} can be activated");
             return !IsCompleted && Status != QuestStatus.Locked;
         }
 
@@ -111,12 +108,19 @@ namespace ScriptableObjects.Quests
             Debug.Log($"[Quest] Complete(): Quest {name} completed");
             Status = QuestStatus.Completed;
             CompleteCompletableTasks(forceComplete);
+            foreach (Transform child in transform)
+                child.gameObject.SetActive(false);
 
         }
         
         
         private void ActivateTasks()
         {
+            foreach (Transform child in transform)
+            {
+                Debug.Log($"[Quest] ActivateTasks(): Activating task {child.name}");
+                child.gameObject.SetActive(true);
+            }
             RegisterTaskEvents();
             switch (taskOrder)
             {

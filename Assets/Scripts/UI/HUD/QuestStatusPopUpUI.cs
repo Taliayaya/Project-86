@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Gameplay.Quests;
-using ScriptableObjects.Quests;
 using TMPro;
 using UnityEngine;
 
@@ -20,6 +20,8 @@ namespace UI.HUD
         
         private static readonly int Play = Animator.StringToHash("Play");
         private static readonly int Stop = Animator.StringToHash("Stop");
+        
+        private Queue<Quest> _questQueue = new Queue<Quest>();
 
         private void Awake()
         {
@@ -37,13 +39,17 @@ namespace UI.HUD
         {
             EventManager.RemoveListener("QuestStatusChanged", OnQuestStatusChange);
         }
+        
+        private Coroutine _playingPopUpAnimationCoroutine;
 
         private void OnQuestStatusChange(object arg0)
         {
             var quest = (Quest) arg0;
             if (quest.Status is not QuestStatus.Inactive and not QuestStatus.Locked)
             {
-                StartCoroutine(PlayingPopUpAnimation(quest));
+                _questQueue.Enqueue(quest);
+                if (_playingPopUpAnimationCoroutine == null)
+                    _playingPopUpAnimationCoroutine = StartCoroutine(PlayingPopUpAnimation());
             }
 
         }
@@ -72,14 +78,20 @@ namespace UI.HUD
             
         }
         
-        private IEnumerator PlayingPopUpAnimation(Quest quest)
+        private IEnumerator PlayingPopUpAnimation()
         {
-            Debug.Log("PlayingPopUpAnimation");
-            SetText(quest);
-            animator.SetTrigger(Play);
-            yield return new WaitForSeconds(1);
-            yield return new WaitForSeconds(1f);
-            animator.SetTrigger(Stop);
+            while (_questQueue.Count > 0)
+            {
+                var quest = _questQueue.Dequeue();
+                Debug.Log("PlayingPopUpAnimation");
+                SetText(quest);
+                animator.SetTrigger(Play);
+                yield return new WaitForSeconds(1);
+                yield return new WaitForSeconds(1f);
+                animator.SetTrigger(Stop);
+                yield return new WaitForSeconds(3f);
+            }
+            _playingPopUpAnimationCoroutine = null;
         }
     }
 }

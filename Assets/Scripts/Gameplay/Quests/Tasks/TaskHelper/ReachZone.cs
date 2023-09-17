@@ -12,7 +12,7 @@ namespace Gameplay.Quests.Tasks.TaskHelper
         private ReachTask _task;
         public GameObject miniMapIcon;
         public Marker marker;
-
+        
         private void OnDisable()
         {
             miniMapIcon.SetActive(false);

@@ -2,12 +2,11 @@
     using Gameplay.Quests.Tasks;
     using Gameplay.Quests.Tasks.TaskHelper.Timer;
     using Gameplay.Quests.Tasks.TasksType;
-    using ScriptableObjects.Quests;
     using UnityEditor;
     using UnityEngine;
 
     [CustomEditor(typeof(TimerTask))]
-    public class TimerTaskEditor : Editor
+    public class TimerTaskEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {
@@ -18,12 +17,12 @@
             {
                 if (GUILayout.Button($"Add {type.Name}"))
                 {
-                    var instance = (TimerOverride)CreateInstance(type);
+                    var go = new GameObject();
+                    var instance = (TimerOverride)go.AddComponent(type);
+                    go.transform.parent = task.transform;
                     instance.name = type.Name;
                     task.timerOverrides.Add(instance);
                     instance.Task = task;
-                    AssetDatabase.AddObjectToAsset(instance, task);
-                    AssetDatabase.SaveAssets();
                 }
             }
         }
