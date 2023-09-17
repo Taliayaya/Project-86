@@ -1,11 +1,11 @@
 using System;
+using Gameplay.Quests.Tasks.TaskHelper.TasksModules;
 using Gameplay.Quests.Tasks.TasksType;
-using ScriptableObjects.Quests;
 using UnityEngine;
 
 namespace Gameplay.Quests.Tasks
 {
-    public class Task : ScriptableObject
+    public class Task : MonoBehaviour
     {
         public delegate void TaskProgressChanged(Task task);
         public delegate void StatusChanged(TaskStatus newStatus, Task task);
@@ -50,9 +50,18 @@ namespace Gameplay.Quests.Tasks
             {
                 _startTime = DateTime.Now;
                 Status = TaskStatus.Active;
+                ActivateTaskModules();
             }
             else if (Status == TaskStatus.Completed)
                 Debug.Log("[Task] Activate(): Task is already completed");
+        }
+        
+        private void ActivateTaskModules()
+        {
+            foreach (var taskModule in GetComponentsInChildren<TaskModule>())
+            {
+                taskModule.Activate(this);
+            }
         }
         
         public virtual bool CanComplete()
