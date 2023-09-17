@@ -22,6 +22,8 @@ namespace AI.BehaviourTree.BasicNodes
         
         private IEnumerator<Vector3> _patrolPoints;
         [CanBeNull] private List<Transform> _waypoints;
+
+        private Vector3? _goal;
         protected override void OnStart()
         {
             if (!_isSet)

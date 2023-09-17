@@ -134,6 +134,10 @@ PrefabInstance:
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 496458845, guid: c60559b31bc453d4592bc5925d48232c, type: 3}
+      propertyPath: m_Speed
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 496458845, guid: c60559b31bc453d4592bc5925d48232c, type: 3}
       propertyPath: m_Height
       value: 2
       objectReference: {fileID: 0}
@@ -329,7 +333,7 @@ PrefabInstance:
     - target: {fileID: 7611585065316723255, guid: c60559b31bc453d4592bc5925d48232c,
         type: 3}
       propertyPath: m_Name
-      value: Ameise
+      value: Ameise Variant
       objectReference: {fileID: 0}
     - target: {fileID: 7611585065316723257, guid: c60559b31bc453d4592bc5925d48232c,
         type: 3}
@@ -535,7 +539,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 2.5
+  m_Radius: 3.5
   m_Center: {x: 0, y: 1, z: 0}
 --- !u!82 &1850275427234497227
 AudioSource:

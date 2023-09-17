@@ -215,11 +215,15 @@ MonoBehaviour:
   listenOrTriggersEvents: 0
   holdFire: 0
   ammo: {fileID: 11400000, guid: a6693c60172457f4e930b1c4d20539e6, type: 2}
+  fireBulletLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
   gunTransform: {fileID: 7611585064324400010}
   gunAudioSource: {fileID: 7611585064415259503}
   cameraTransform: {fileID: 0}
   myParentColliderToIgnore: {fileID: 5731111181258434148}
   ammoLeftOrRight: Left
+  canFire: 1
 --- !u!1 &2935014233182562330
 GameObject:
   m_ObjectHideFlags: 0
@@ -936,6 +940,11 @@ MonoBehaviour:
   stepHeight: 1
   smoothness: 1
   bodyOrientation: 0
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  audioSource: {fileID: 0}
+  stepSounds: []
 --- !u!1 &5357198258921249417
 GameObject:
   m_ObjectHideFlags: 0
@@ -1788,6 +1797,7 @@ GameObject:
   - component: {fileID: 496458844}
   - component: {fileID: 496458845}
   - component: {fileID: 5731111181258434148}
+  - component: {fileID: 1269329004787466712}
   m_Layer: 7
   m_Name: Legion
   m_TagString: Enemy
@@ -1839,6 +1849,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 457c51b2782849cb8505917c84afa333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitType: 0
+  onHealthChange:
+    m_PersistentCalls:
+      m_Calls: []
+  onUnitDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  engineAudioSource: {fileID: 0}
+  engineAudioSo: {fileID: 0}
   faction: 1
   agentSo: {fileID: 11400000, guid: 348277b5d0d31b94f99e1b44322f01bf, type: 2}
   debugAgent:
@@ -1847,6 +1866,7 @@ MonoBehaviour:
     debugSpot: 1
     frontViewColor: {r: 0, g: 0, b: 1, a: 1}
     sideViewColor: {r: 0, g: 1, b: 1, a: 1}
+  patrolWaypoints: []
   demoParameters: {fileID: 11400000, guid: 54207af3f0293d54a84e4a6024f5506d, type: 2}
   isRotating: 0
 --- !u!114 &496458844
@@ -1897,6 +1917,102 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 7.0053587, y: 7.07, z: 7.5373974}
   m_Center: {x: -0.013449073, y: 0.1500001, z: 0.4815683}
+--- !u!82 &1269329004787466712
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7611585065316723255}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &5275242341208758280
 PrefabInstance:
   m_ObjectHideFlags: 0

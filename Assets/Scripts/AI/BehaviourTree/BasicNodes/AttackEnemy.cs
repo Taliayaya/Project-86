@@ -67,7 +67,6 @@ namespace AI.BehaviourTree.BasicNodes
 
         private Coroutine ShootAtEnemy(WeaponModule weaponModule)
         {
-            Debug.Log("Created Coroutine");
             if (weaponModule.HoldFire)
             {
                 return weaponModule.StartCoroutine(weaponModule.ShootHoldDuringTime(timeBeforeSpotExpired,
