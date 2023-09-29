@@ -1,0 +1,3 @@
+In this scene we've opted to use standard Unity [Reflection_Probes](https://docs.unity3d.com/Manual/class-ReflectionProbe.html) to provide the appearance of reflections on the lake surface.  
+
+You can express more sophisticated reflections using Shadergraph's custom lighting and Unity's custom script, but for the visual with HDRP samples, it was simply expressed as a reflection probe.

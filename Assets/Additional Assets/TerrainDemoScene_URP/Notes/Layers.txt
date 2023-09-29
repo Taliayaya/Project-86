@@ -1,0 +1,5 @@
+Once we added detail to the height map, we used the Terrain Tools [Brush_Mask_Filters](https://docs.unity3d.com/Packages/com.unity.terrain-tools@4.0/manual/brush-mask-filters.html) to paint appropriate materials onto the landscape.  The Brush Mask Filters make it easy to constrain painting to sloped or flat areas, to highlight concavities or exposed areas, and to add some naturalistic noise into the painting process.   
+
+Here you can see how a simple combination of slope and concavity filters allowed us to add details to the riverbed quickly and easily.
+
+This demo scene package includes a collection of ready-to-use [landscape_textures](Assets/TerrainDemoScene_URP/Terrain/Textures/Black_Sand_A/Black_Sand_A_BaseColor.tif) and [terrain_layers](Assets/TerrainDemoScene_URP/Terrain/Layers/Black_Sand_A.terrainlayer) that you can use in your own projects.

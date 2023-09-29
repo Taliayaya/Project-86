@@ -1,0 +1,5 @@
+Lightmap baking for this size and density of Terrain is challenging for the CPU lightmap baker, hence requiring very long bake time. Instead of sending the original version of the Terrain mesh to the lightmap baker, we created a proxy version of the Terrain and used that for baking instead. 
+
+We increased the [Pixel_Error](https://docs.unity3d.com/Manual/terrain-OtherSettings.html) settings on all Terrains to 100 to significantly reduce mesh density, then reduced the *Heightmap* *Resolution* to 512. 
+
+Click [here](Assets/TerrainDemoScene_URP/Prefabs/Terrain/TerrainProxy.prefab) to see the prefab asset and the optimized Terrain meshes in there.

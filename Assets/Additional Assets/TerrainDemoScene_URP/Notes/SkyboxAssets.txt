@@ -1,0 +1,7 @@
+Unity Terrain is optimized to support detailed interactions close to the camera with efficient rendering at longer distances.  
+
+However, filling the entire world with terrain is often too much. In this example we created the distant skyline with models, rather than conventional terrain.  We don't expect the player to interact with the distant mountains there's no need for navigation or physics support. Because the player's view is quite limited, we can use a conventional model with polygon reduction to make a particularly efficient rendered object. We can pull the final clipping plane in as close as possible to keep the distant peaks in view.
+
+In this example we use simple probe lighting for the skybox models. The models are far enough away from the camera that basic shading. Even though the assets are huge, a texture the size of 1024x1024 pixels is adequate to sell the illusion.
+
+We also split the original model of the horizon into eight 45-degree slices, which makes it easy for the renderer to cull parts of the skyline that are not visible to the camera.
