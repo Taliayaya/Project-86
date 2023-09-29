@@ -146,7 +146,7 @@ namespace ScriptableObjects
         /// Load the file with the same name as the ScriptableObject.
         /// See <see cref="LoadFromFile(string)"/> for more information.
         /// </summary>
-        public void LoadFromFile()
+        public virtual void LoadFromFile()
         {
             LoadFromFile(name);
         }
