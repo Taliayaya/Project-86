@@ -440,7 +440,8 @@ AudioSource:
   m_GameObject: {fileID: 4873349642617096944}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5566782973873335814, guid: 86627ef9b19d90447a04b809d9fb5949,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -487,7 +488,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -579,12 +580,15 @@ MonoBehaviour:
   legTargets:
   - {fileID: 5719840355901712580}
   - {fileID: 5719840355446409577}
-  - {fileID: 5719840355947992284}
   - {fileID: 5719840355314770889}
-  stepSize: 2
-  stepHeight: 0.1
+  - {fileID: 5719840355947992284}
+  stepSize: 3
+  stepHeight: 1
   smoothness: 1
   bodyOrientation: 0
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 1
   audioSource: {fileID: 5719840357059213190}
   stepSounds:
   - {fileID: 8300000, guid: cf87b5d8f7aef9d4d9cf5bea9c4a422a, type: 3}

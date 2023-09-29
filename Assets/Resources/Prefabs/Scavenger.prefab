@@ -153,8 +153,8 @@ NavMeshAgent:
   m_GameObject: {fileID: 1969537527645906367}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 2.5
-  m_Speed: 10
+  m_Radius: 2
+  m_Speed: 20
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 240
@@ -162,7 +162,7 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 4
+  m_Height: 3
   m_BaseOffset: 0
   m_WalkableMask: 1
   m_ObstacleAvoidanceType: 4
@@ -175,7 +175,8 @@ AudioSource:
   m_GameObject: {fileID: 1969537527645906367}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5566782973873335814, guid: 86627ef9b19d90447a04b809d9fb5949,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -222,7 +223,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -543,6 +544,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1969537527645906364}
     m_Modifications:
+    - target: {fileID: 270529416995594582, guid: caf1fd9d8560db14b8a88aa0b5c452e5,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c0711f16a53be7048af2894f304515f3, type: 2}
     - target: {fileID: 4873349642617096944, guid: caf1fd9d8560db14b8a88aa0b5c452e5,
         type: 3}
       propertyPath: m_Name
@@ -603,48 +609,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5719840357059213189, guid: caf1fd9d8560db14b8a88aa0b5c452e5,
-        type: 3}
-      propertyPath: stepSize
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5719840357059213189, guid: caf1fd9d8560db14b8a88aa0b5c452e5,
-        type: 3}
-      propertyPath: stepHeight
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5719840357059213189, guid: caf1fd9d8560db14b8a88aa0b5c452e5,
-        type: 3}
-      propertyPath: groundLayer.m_Bits
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5719840357059213189, guid: caf1fd9d8560db14b8a88aa0b5c452e5,
-        type: 3}
-      propertyPath: legTargets.Array.data[2]
-      value: 
-      objectReference: {fileID: 6067975485427848950}
-    - target: {fileID: 5719840357059213189, guid: caf1fd9d8560db14b8a88aa0b5c452e5,
-        type: 3}
-      propertyPath: legTargets.Array.data[3]
-      value: 
-      objectReference: {fileID: 6067975484995985891}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: caf1fd9d8560db14b8a88aa0b5c452e5, type: 3}
 --- !u!4 &6034681598782727541 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5254096588695425098, guid: caf1fd9d8560db14b8a88aa0b5c452e5,
-    type: 3}
-  m_PrefabInstance: {fileID: 1969537528479331647}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &6067975484995985891 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5719840355947992284, guid: caf1fd9d8560db14b8a88aa0b5c452e5,
-    type: 3}
-  m_PrefabInstance: {fileID: 1969537528479331647}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &6067975485427848950 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5719840355314770889, guid: caf1fd9d8560db14b8a88aa0b5c452e5,
     type: 3}
   m_PrefabInstance: {fileID: 1969537528479331647}
   m_PrefabAsset: {fileID: 0}
