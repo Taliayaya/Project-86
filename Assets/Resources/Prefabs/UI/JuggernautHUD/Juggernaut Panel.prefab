@@ -141,7 +141,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   childTransform: {fileID: 1925365348}
-  childObjects: []
+  childObjects:
+  - {fileID: 1884433745795895479}
   settings: {fileID: 11400000, guid: dff87701860986c4b961c39ba5f3fe80, type: 2}
   windowEditPrefab: {fileID: 3934103946074883202, guid: a8f96a66b20fdf340964941026afd90e,
     type: 3}
@@ -4976,7 +4977,7 @@ PrefabInstance:
     - target: {fileID: 6258099417280084386, guid: 3d4d328f2d734d640b394b31e7664bb7,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6258099417280084387, guid: 3d4d328f2d734d640b394b31e7664bb7,
         type: 3}
