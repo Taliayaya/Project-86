@@ -75,8 +75,10 @@ namespace Gameplay.Mecha
                 {
                     case Zoom.Default:
                         zoomValue = 60;
+                        zoomCamera.enabled = false;
                         break;
                     case Zoom.X2:
+                        zoomCamera.enabled = true;
                         zoomValue = 30;
                         break;
                     case Zoom.X4:
