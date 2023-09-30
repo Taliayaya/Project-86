@@ -14,6 +14,7 @@ namespace UI
         [Header("Prefabs")]
         [SerializeField] private GameObject sliderPrefab;
         [SerializeField] private GameObject togglePrefab;
+        [SerializeField] private GameObject dropdownPrefab;
         [SerializeField] private GameObject contentParameterPrefab;
         
         [Header("References")]
@@ -97,6 +98,8 @@ namespace UI
                     AddToggle(field, parameters, fieldName, paramWrapper.transform);
                 else if (field.FieldType == typeof(int) || field.FieldType == typeof(float))
                     AddSlider(field, parameters, fieldName, paramWrapper.transform);
+                else if (field.FieldType.IsEnum)
+                    AddDropdown(field, parameters, fieldName, paramWrapper.transform);
                 else
                     Debug.LogError($"[SettingsMenu] Field type \"{field.FieldType}\" not supported");
             }
@@ -135,6 +138,25 @@ namespace UI
             sliderComponent.onValueChanged.AddListener((value) => OnGameSettingsSliderValueChanged(parameters, fieldInfo, parameter, value));
         }
         
+        private void AddDropdown(FieldInfo fieldInfo, GameParameters parameters, string parameter, Transform parent = null)
+        {
+            var dropdownGo = Instantiate(dropdownPrefab, parent);
+            var dropdown = dropdownGo.GetComponentInChildren<TMP_Dropdown>();
+            dropdown.options.Clear();
+            foreach (var enumName in fieldInfo.FieldType.GetEnumNames())
+            {
+                dropdown.options.Add(new TMP_Dropdown.OptionData(enumName));
+            }
+            dropdown.value = (int)fieldInfo.GetValue(parameters);
+            dropdown.onValueChanged.AddListener((value) => OnGameSettingsDropdownValueChanged(parameters, fieldInfo, parameter, value));
+        }
+
+        private void OnGameSettingsDropdownValueChanged(GameParameters parameters, FieldInfo fieldInfo, string parameter, int value)
+        {
+            fieldInfo.SetValue(parameters, value);
+            EventManager.TriggerEvent($"UpdateGameParameter:{parameter}", value);
+        }
+
         private void OnGameSettingsToggleValueChanged(GameParameters parameters, FieldInfo fieldInfo, string gameParameter, bool isOn)
         {
             fieldInfo.SetValue(parameters, isOn);

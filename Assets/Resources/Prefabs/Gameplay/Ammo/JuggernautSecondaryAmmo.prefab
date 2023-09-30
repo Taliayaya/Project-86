@@ -63,9 +63,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07cacc55dab8c4042b81c5647d4ea172, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 0
-  origin: {x: 0, y: 0, z: 0}
-  explosionPrefab: {fileID: 100002, guid: 99c73c92ac40473459640b165473206f, type: 3}
 --- !u!96 &6656166727061531327
 TrailRenderer:
   serializedVersion: 2
@@ -111,7 +108,7 @@ TrailRenderer:
   m_Time: 0.05
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 4
+    widthMultiplier: 1
     widthCurve:
       serializedVersion: 2
       m_Curve:

@@ -22,6 +22,7 @@ namespace Gameplay
         [SerializeField] private float spawnDistance = 8;
         [SerializeField] private float maxRaycastDistance = 4000;
         [SerializeField] private LayerMask raycastLayerMask;
+        [SerializeField] private bool respawnScavengerOnDeath = true;
         
        
         [Header("References")] [SerializeField]

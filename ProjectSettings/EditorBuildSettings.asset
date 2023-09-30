@@ -6,9 +6,21 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/Scenes/BaseQuest.unity
+    guid: e3e79d0d8ead19b4d841b50aa387c7b9
+  - enabled: 0
+    path: Assets/TerrainDemoScene_URP/Scenes/TerrainDemoScene.unity
+    guid: 9a18cc5d35536fd428eb6e90b3402589
+  - enabled: 0
+    path: Assets/Scenes/test.unity
+    guid: 9cf6779293321134fbb728667473c661
+  - enabled: 0
+    path: Assets/Scenes/TestMap.unity
+    guid: dd6aaa7822b4a82469e39d2d6c3c91f0
+  - enabled: 0
+    path: Assets/Scenes/Core Scene.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Control.unity
     guid: ace587c31b2d8a0408ea732dbd78a7ca
   m_configObjects: {}

@@ -75,8 +75,10 @@ namespace Gameplay.Mecha
                 {
                     case Zoom.Default:
                         zoomValue = 60;
+                        zoomCamera.enabled = false;
                         break;
                     case Zoom.X2:
+                        zoomCamera.enabled = true;
                         zoomValue = 30;
                         break;
                     case Zoom.X4:
@@ -118,6 +120,7 @@ namespace Gameplay.Mecha
             MaxHealth = juggernautParameters.health;
             _rigidbody = GetComponent<Rigidbody>();
             EventManager.TriggerEvent("OnUpdateHealth", 1f);
+            PlayerManager.Player = this;
         }
 
         protected override void OnEnable()
@@ -208,7 +211,7 @@ namespace Gameplay.Mecha
         {
             _yVelocity += gravity * Time.fixedDeltaTime;
             if (_isGrounded)
-                _yVelocity = -0.1f;
+                _yVelocity = gravity;
             _rigidbody.AddForce(Vector3.up * (_yVelocity), ForceMode.Force);
         }
 

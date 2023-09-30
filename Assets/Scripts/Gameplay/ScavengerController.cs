@@ -153,8 +153,14 @@ namespace Gameplay
         
         private void Follow()
         {
+            if (!master)
+            {
+                State = ScavengerState.Idle;
+                return;
+            }
+
             var distance = Vector3.Distance(transform.position, master.transform.position);
-            if (!master || distance < followDistance)
+            if (distance < followDistance)
             {
                 State = ScavengerState.Idle;
                 return;

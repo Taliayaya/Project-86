@@ -16,7 +16,10 @@ namespace Editor
             if (GUILayout.Button("Set Settings To Current Layout"))
             {
                 foreach (var hudWindow in hudWindows)
+                {
                     hudWindow.SetPreset();
+                    EditorUtility.SetDirty(hudWindow);
+                }
             }
 
             if (GUILayout.Button("Delete Save"))
@@ -24,8 +27,10 @@ namespace Editor
                 foreach (var hudWindow in hudWindows)
                     hudWindow.DeleteSave();
             }
-
-            serializedObject.ApplyModifiedProperties();
+            
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            Debug.Log("Saved");
         }
     }
 }

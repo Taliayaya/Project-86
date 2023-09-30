@@ -73,6 +73,11 @@ namespace Gameplay.Units
             if (patrolWaypoints != null)
                 Tree.blackBoard.SetValue("waypoints", patrolWaypoints);
         }
+        
+        public void AddDestinationGoal(Vector3 destination)
+        {
+            Tree.blackBoard.SetValue("goal", destination);
+        }
 
 
         #region AI Coroutines

@@ -76,6 +76,7 @@ namespace Editor
                         }
 
                         AssetDatabase.SaveAssets();
+                        AssetDatabase.Refresh();
                     }
 
                     EditorGUILayout.EndHorizontal();

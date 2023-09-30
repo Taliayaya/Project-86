@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100008, guid: 337943813ac55274db17d9c4dfcaf5ea, type: 3}
       propertyPath: m_Name
-      value: Exploson3
+      value: Exploson3 Variant
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: 337943813ac55274db17d9c4dfcaf5ea, type: 3}
       propertyPath: m_ConstrainProportionsScale
@@ -187,6 +187,38 @@ PrefabInstance:
       propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minCurve.m_Curve.Array.data[1].value
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 19800004, guid: 337943813ac55274db17d9c4dfcaf5ea, type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.maxCurve.m_Curve.Array.data[0].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800004, guid: 337943813ac55274db17d9c4dfcaf5ea, type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.maxCurve.m_Curve.Array.data[1].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800004, guid: 337943813ac55274db17d9c4dfcaf5ea, type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minCurve.m_Curve.Array.data[0].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800004, guid: 337943813ac55274db17d9c4dfcaf5ea, type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minCurve.m_Curve.Array.data[1].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800004, guid: 337943813ac55274db17d9c4dfcaf5ea, type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.maxCurve.m_Curve.Array.data[0].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800004, guid: 337943813ac55274db17d9c4dfcaf5ea, type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.maxCurve.m_Curve.Array.data[1].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800004, guid: 337943813ac55274db17d9c4dfcaf5ea, type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minCurve.m_Curve.Array.data[0].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800004, guid: 337943813ac55274db17d9c4dfcaf5ea, type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minCurve.m_Curve.Array.data[1].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
     - target: {fileID: 19900000, guid: 337943813ac55274db17d9c4dfcaf5ea, type: 3}
       propertyPath: m_Materials.Array.size
       value: 1
@@ -348,7 +380,8 @@ AudioSource:
   m_GameObject: {fileID: 3491704534616517876}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 8843940232986239663, guid: 86627ef9b19d90447a04b809d9fb5949,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: e14b1275d29f0ad479b5f1d48a20bcdc, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1

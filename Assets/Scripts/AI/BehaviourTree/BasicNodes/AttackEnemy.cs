@@ -67,7 +67,6 @@ namespace AI.BehaviourTree.BasicNodes
 
         private Coroutine ShootAtEnemy(WeaponModule weaponModule)
         {
-            Debug.Log("Created Coroutine");
             if (weaponModule.HoldFire)
             {
                 return weaponModule.StartCoroutine(weaponModule.ShootHoldDuringTime(timeBeforeSpotExpired,
@@ -78,6 +77,8 @@ namespace AI.BehaviourTree.BasicNodes
 
         public bool EnemyInRange()
         {
+            if (!_closestTarget)
+                return false;
             var direction = _closestTarget.transform.position - _transform.position;
             var angle = Vector3.Angle(direction, _transform.forward);
 

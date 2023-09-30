@@ -9,11 +9,14 @@ namespace AI.BehaviourTree.BasicNodes
         private NavMeshAgent _agent;
         private bool _isSet = false;
         public int wanderRadius = 20;
+        
+        private Vector3? _goal;
         protected override void OnStart()
         {
             if (!_isSet)
             {
                 _agent = blackBoard.GetValue<NavMeshAgent>("navMeshAgent");
+                blackBoard.TryGetValue("goal", out _goal);
                 _isSet = true;
             }
             
@@ -36,7 +39,13 @@ namespace AI.BehaviourTree.BasicNodes
             _agent.updateRotation = true;
             _agent.angularSpeed = 120;
             Vector3 randomDirection = Random.insideUnitSphere * wanderRadius;
-            randomDirection += _agent.transform.position;
+            if (_goal.HasValue)
+            {
+                randomDirection += _goal.Value;
+                blackBoard.RemoveValue("goal"); // we don't want to be stuck on the same goal
+            }
+            else
+                randomDirection += _agent.transform.position;
             NavMeshHit hit;
             NavMesh.SamplePosition(randomDirection, out hit, wanderRadius, 1);
             Vector3 finalPosition = hit.position;
