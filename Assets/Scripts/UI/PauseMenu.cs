@@ -1,11 +1,14 @@
 ﻿using System;
+using ScriptableObjects;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace UI
 {
     public class PauseMenu : MonoBehaviour
     {
         [SerializeField] private GameObject pauseMenuPanel;
+        [SerializeField] private SceneData mainMenuSceneData;
 
         private void OnEnable()
         {
@@ -40,11 +43,10 @@ namespace UI
 
         public void Quit()
         {
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-#else
-            Application.Quit();
-#endif
+            GameManager.Instance.Pause(false);
+            SceneHandler.LoadScene(mainMenuSceneData);
+            return;
+
         }
     }
 }

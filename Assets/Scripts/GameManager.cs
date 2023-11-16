@@ -25,7 +25,7 @@ public class GameManager : Singleton<GameManager>
         DataHandler.LoadGameData();
         Screen.SetResolution(1920, 1080, FullScreenMode.FullScreenWindow);
         
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
 
         Application.quitting += () => EventManager.TriggerEvent("OnApplicationQuit");
     }
@@ -51,6 +51,12 @@ public class GameManager : Singleton<GameManager>
         GameIsPaused = true;
         Time.timeScale = 0;
         Cursor.lockState = CursorLockMode.None;
+    }
+    
+    public void Pause(bool pause)
+    {
+        GameIsPaused = pause;
+        Time.timeScale = pause ? 0 : 1;
     }
 
     private void OnResumeGame()

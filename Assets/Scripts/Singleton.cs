@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -54,16 +55,18 @@ public abstract class Singleton<T> : Singleton where T : MonoBehaviour
     /// </summary>
     private void Awake()
     {
-        if (_instance)
+        if (_instance != null)
         {
             Debug.LogWarning($"[{nameof(Singleton)}<{typeof(T)}>] Attempted to create a {nameof(Singleton)} of" +
                              $" type {typeof(T)} when one already existed, destroying");
             Destroy(this);
             return;
         }
+        _instance = this as T;
         if (persistent)
-            DontDestroyOnLoad(gameObject);
-        OnAwake();
+            DontDestroyOnLoad(_instance!.gameObject);
+        if (!Quitting)
+            OnAwake();
     }
 
     /// <summary>
@@ -71,12 +74,22 @@ public abstract class Singleton<T> : Singleton where T : MonoBehaviour
     /// It is the basic Awake of Unity
     /// </summary>
     protected virtual void OnAwake() { }
-    
+
+    protected void OnDestroy()
+    {
+        if (_instance == this)
+        {
+            Debug.Log($"[{nameof(Singleton)}<{typeof(T)}>] Instance was destroyed, setting _instance to null");
+            _instance = null;
+        }
+    }
+
     #endregion
 }
 
 public abstract class Singleton : MonoBehaviour
 {
+    public bool Quitting { get; private set; }
     #region  Methods
     private void OnApplicationQuit()
     {
@@ -85,8 +98,8 @@ public abstract class Singleton : MonoBehaviour
 
     protected virtual void OnApplicationQuitting()
     {
-        
+        Quitting = true;
     }
-    
+
     #endregion
 }
