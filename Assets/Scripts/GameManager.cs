@@ -17,6 +17,7 @@ public class GameManager : Singleton<GameManager>
 
     protected override void OnAwake()
     {
+        Debug.Log("[GameManager] Awake");
         GameParameters[] gameParametersArray = Resources.LoadAll<GameParameters>("ScriptableObjects/Parameters");
         foreach (var parameter in gameParametersArray)
         {
@@ -74,4 +75,6 @@ public class GameManager : Singleton<GameManager>
         DataHandler.SaveGameData();
 #endif
     }
+    
+    
 }

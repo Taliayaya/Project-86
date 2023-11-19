@@ -1776,6 +1776,7 @@ MonoBehaviour:
   raycastLayerMask:
     serializedVersion: 2
     m_Bits: 1
+  respawnScavengerOnDeath: 1
   goToTargetIndicatorPrefab: {fileID: 3435485861080877356, guid: e5258522085098d4d812fe8ebf2996ee,
     type: 3}
   juggCamera: {fileID: 1915203270723828997}
@@ -2351,6 +2352,7 @@ MonoBehaviour:
   gunTransform: {fileID: 2425518220896484196}
   gunAudioSource: {fileID: 2425518220990468993}
   cameraTransform: {fileID: 1915203270723828997}
+  muzzleTransform: {fileID: 0}
   myParentColliderToIgnore: {fileID: 1272649634}
   ammoLeftOrRight: Left
   canFire: 1
@@ -2758,6 +2760,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2454295433268468797, guid: 48660cbbbff3f6942babc11f0af5b319,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2454295433268468797, guid: 48660cbbbff3f6942babc11f0af5b319,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.232
+      objectReference: {fileID: 0}
     - target: {fileID: 7492193195463254585, guid: 48660cbbbff3f6942babc11f0af5b319,
         type: 3}
       propertyPath: m_Name
@@ -2932,6 +2944,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2454295433268468797, guid: 48660cbbbff3f6942babc11f0af5b319,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.031
+      objectReference: {fileID: 0}
+    - target: {fileID: 2454295433268468797, guid: 48660cbbbff3f6942babc11f0af5b319,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.282
       objectReference: {fileID: 0}
     - target: {fileID: 7492193195463254585, guid: 48660cbbbff3f6942babc11f0af5b319,
         type: 3}

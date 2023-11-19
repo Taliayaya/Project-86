@@ -1,15 +1,32 @@
 ﻿using System;
 using System.Collections;
 using ScriptableObjects;
+using ScriptableObjects.GameParameters;
 using UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SceneHandler : Singleton<SceneHandler>
 {
+    [SerializeField] private GraphicsParameters graphicsParameters;
     private class LoadingMonoBehaviour : MonoBehaviour
     {
     }
+
+    private void OnEnable()
+    {
+        EventManager.AddListener("LoadingScene", OnLoadingScene);
+        EventManager.AddListener($"UpdateGameParameter:{nameof(graphicsParameters.detailsDensity)}", UpdateGrassDensity);
+        EventManager.AddListener("ReloadScene", ReloadScene);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.RemoveListener("LoadingScene", OnLoadingScene);
+        EventManager.RemoveListener($"UpdateGameParameter:{nameof(graphicsParameters.detailsDensity)}", UpdateGrassDensity);
+        EventManager.RemoveListener("ReloadScene", ReloadScene);
+    }
+
     public static void ReloadScene()
     {
         WindowManager.CloseAll();
@@ -70,5 +87,41 @@ public class SceneHandler : Singleton<SceneHandler>
             onLoaderCallback();
             onLoaderCallback = null;
         }
+    }
+
+    private void OnLoadingScene(object data)
+    {
+        Debug.Log("LoadingScene");
+        if (data is (SceneData sceneData, AsyncOperation asyncOperation))
+        {
+            asyncOperation.completed += operation =>
+            {
+                Debug.Log("LoadingScene completed");
+                var terrains =
+                    GameObject.FindObjectsByType<Terrain>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+                ApplyGrassSettings(terrains);
+            };
+        }
+    }
+
+    private static void ApplyGrassSettings(Terrain[] terrains)
+    {
+        foreach (var terrain in terrains)
+        {
+            terrain.detailObjectDensity = Instance.graphicsParameters.detailsDensity / 100f;
+        }
+    }
+
+    private void OnReloadScene()
+    {
+        Debug.Log("ReloadingScene");
+        var terrains = GameObject.FindObjectsByType<Terrain>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+        ApplyGrassSettings(terrains);
+    }
+
+    private void UpdateGrassDensity(object data)
+    {
+        var terrains = GameObject.FindObjectsByType<Terrain>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+        ApplyGrassSettings(terrains);
     }
 }
