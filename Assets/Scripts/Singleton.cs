@@ -15,9 +15,9 @@ public abstract class Singleton<T> : Singleton where T : MonoBehaviour
 {
     #region Fields
 
-    [CanBeNull] private static T _instance;
+    [NonSerialized] [CanBeNull] protected static T _instance;
 
-    [NotNull] private static readonly object Lock = new();
+    [NotNull] protected static readonly object Lock = new();
     
     [Tooltip("Is it in DontDestroyOnLoad?")]
     [SerializeField] private bool persistent = true;
@@ -25,6 +25,8 @@ public abstract class Singleton<T> : Singleton where T : MonoBehaviour
     #endregion
     
     #region  Properties
+    
+    protected static bool AllowAutoCreation => true;
 
     public static bool HasInstance => _instance != null;
     
@@ -38,6 +40,8 @@ public abstract class Singleton<T> : Singleton where T : MonoBehaviour
                 if (_instance)
                     return _instance;
 
+                if (!AllowAutoCreation)
+                    return null;
                 Debug.Log($"[{nameof(Singleton)}<{typeof(T)}>] An instance is needed in the scene and no existing instances were found, so a new instance will be created.");
                 return _instance = new GameObject($"({nameof(Singleton)}){typeof(T)}")
                     .AddComponent<T>();
