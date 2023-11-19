@@ -8,7 +8,7 @@ namespace Gameplay
     {
         public Vector3 DeathPosition;
     }
-    public class RespawnManager : MonoBehaviour
+    public class RespawnManager : Singleton<RespawnManager>
     {
         private GameObject[] _respawnPoints;
         
@@ -37,6 +37,18 @@ namespace Gameplay
         public void Respawn(GameObject prefab, int spawnPointIndex)
         {
             Instantiate(prefab, _respawnPoints[spawnPointIndex].transform.position, _respawnPoints[spawnPointIndex].transform.rotation);
+        }
+
+        public static Vector3 GetClosestRespawnPoint(Vector3 origin)
+        {
+            return Instance._GetClosestRespawnPointPos(origin);
+        }
+
+        private Vector3 _GetClosestRespawnPointPos(Vector3 origin)
+        {
+            var closestSpawnPoint = _respawnPoints.Min(x => Vector3.Distance(x.transform.position, origin));
+            var spawnPoint = _respawnPoints.First(x => Math.Abs(Vector3.Distance(x.transform.position, origin) - closestSpawnPoint) < 0.5);
+            return spawnPoint.transform.position;
         }
 
         public void Respawn(GameObject prefab, Vector3 position)

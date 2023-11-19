@@ -9,6 +9,7 @@ namespace UI
 {
     public class SettingsUI : MonoBehaviour
     {
+        [SerializeField] private bool closeOnStart = true;
         [Header("Prefabs")] 
         [SerializeField] private GameObject menuButtonPrefab;
         
@@ -45,7 +46,8 @@ namespace UI
         private void Start()
         {
             onMenuCategoryGenerated.Invoke(this);
-            CloseGameSettingsPanel();
+            if (closeOnStart)
+                CloseGameSettingsPanel();
         }
 
         public void OpenGameSettingsPanel()

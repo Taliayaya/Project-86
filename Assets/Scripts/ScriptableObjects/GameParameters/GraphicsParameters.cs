@@ -16,6 +16,7 @@ namespace ScriptableObjects.GameParameters
     public class GraphicsParameters : GameParameters
     {
         public GraphicsQuality quality = GraphicsQuality.Medium;
+        [Range(0, 100)] public int detailsDensity = 100;
         public override string GetParametersName => "Graphics";
 
         private void OnEnable()
@@ -39,5 +40,7 @@ namespace ScriptableObjects.GameParameters
             base.LoadFromFile();
             QualitySettings.SetQualityLevel((int) quality, true);
         }
+        
+        
     }
 }

@@ -27,6 +27,7 @@ namespace Gameplay.Mecha
         [SerializeField] private Transform gunTransform;
         [SerializeField] private AudioSource gunAudioSource;
         [SerializeField] private Transform cameraTransform;
+        [SerializeField] private Transform muzzleTransform;
 
         [SerializeField] private Collider myParentColliderToIgnore;
 
@@ -246,6 +247,13 @@ namespace Gameplay.Mecha
             {
                 Debug.DrawRay(gunTransform.position, bulletDirection * 100, Color.green, 1f);
             }
+
+            if (ammo.muzzleFlashPrefab != null)
+            {
+                var muzzle =Instantiate(ammo.muzzleFlashPrefab, muzzleTransform);
+                muzzle.transform.localPosition = Vector3.zero;
+            }
+
 
             var bullet = Instantiate(ammo.prefab, gunTransform.position, Quaternion.identity);
             var bulletCollider = bullet.GetComponentInChildren<Collider>();

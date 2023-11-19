@@ -2,6 +2,7 @@
 using Gameplay;
 using ScriptableObjects.UI;
 using UI;
+using UI.MainMenu;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -224,5 +225,41 @@ public class InputManager : Singleton<InputManager>
                 break;
         }
     }
-        
+
+    #region MainMenu Action Map
+
+    private void OnClose()
+    {
+        EventManager.TriggerEvent("OnClose");
+        if (WindowManager.WindowOpenedCount > 0)
+            WindowManager.Close();
+        else
+            MainMenuManager.Instance.ToMainMenu();
+    }
+    
+    private void OnToMainMenu()
+    {
+        EventManager.TriggerEvent("OnToMainMenu");
+        MainMenuManager.Instance.ToMainMenu();
+    }
+    
+    private void OnToSettingsMode()
+    {
+        EventManager.TriggerEvent("OnToSettings");
+        MainMenuManager.Instance.ToSettingsMode();
+    }
+    
+    private void OnToGameMode()
+    {
+        EventManager.TriggerEvent("OnToGameMode");
+        MainMenuManager.Instance.ToGameMode();
+    }
+
+    #endregion
+
+    public static void SwitchCurrentActionMap(string actionMap)
+    {
+        Instance._playerInput.SwitchCurrentActionMap(actionMap);
+    }
+
 }

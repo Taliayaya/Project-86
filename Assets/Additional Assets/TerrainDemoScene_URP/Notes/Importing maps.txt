@@ -1,0 +1,3 @@
+We created the geography for this scene using an external terrain authoring package -- one of the many tools available to simulate weathering, erosion, and common landforms. 
+
+We exported height maps and splat maps, which control the application of materials in the scene, and imported them using the Unity [Terrain_Tools](https://docs.unity3d.com/Packages/com.unity.terrain-tools@4.0/manual/index.html) package to create a grid of terrain meshes.

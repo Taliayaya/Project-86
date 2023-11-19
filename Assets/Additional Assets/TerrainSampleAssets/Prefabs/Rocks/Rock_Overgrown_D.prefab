@@ -1,0 +1,213 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5765318996808861906
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7849306212195148954}
+  m_Layer: 0
+  m_Name: Rock_Overgrown_I_Anchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7849306212195148954
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5765318996808861906}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.56, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1766490383188478063}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &6771550624443949941
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -6188022329426506116, guid: d162d260ab0c07b43b7e7e90d954b83a,
+        type: 3}
+      propertyPath: m_ProbeAnchor
+      value: 
+      objectReference: {fileID: 7849306212195148954}
+    - target: {fileID: -6188022329426506116, guid: d162d260ab0c07b43b7e7e90d954b83a,
+        type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -6188022329426506116, guid: d162d260ab0c07b43b7e7e90d954b83a,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 799e8ee0a2f8df54892652191374349d, type: 2}
+    - target: {fileID: -4848345666740517008, guid: d162d260ab0c07b43b7e7e90d954b83a,
+        type: 3}
+      propertyPath: m_ReceiveGI
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -4848345666740517008, guid: d162d260ab0c07b43b7e7e90d954b83a,
+        type: 3}
+      propertyPath: m_ProbeAnchor
+      value: 
+      objectReference: {fileID: 7849306212195148954}
+    - target: {fileID: -4848345666740517008, guid: d162d260ab0c07b43b7e7e90d954b83a,
+        type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4848345666740517008, guid: d162d260ab0c07b43b7e7e90d954b83a,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 799e8ee0a2f8df54892652191374349d, type: 2}
+    - target: {fileID: -4216859302048453862, guid: d162d260ab0c07b43b7e7e90d954b83a,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: d162d260ab0c07b43b7e7e90d954b83a,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: d162d260ab0c07b43b7e7e90d954b83a,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: d162d260ab0c07b43b7e7e90d954b83a,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: d162d260ab0c07b43b7e7e90d954b83a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: d162d260ab0c07b43b7e7e90d954b83a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: d162d260ab0c07b43b7e7e90d954b83a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3912640345146306263, guid: d162d260ab0c07b43b7e7e90d954b83a,
+        type: 3}
+      propertyPath: m_Name
+      value: Rock_Overgrown_I_LOD02
+      objectReference: {fileID: 0}
+    - target: {fileID: -3497775262241607021, guid: d162d260ab0c07b43b7e7e90d954b83a,
+        type: 3}
+      propertyPath: m_ProbeAnchor
+      value: 
+      objectReference: {fileID: 7849306212195148954}
+    - target: {fileID: -3497775262241607021, guid: d162d260ab0c07b43b7e7e90d954b83a,
+        type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3497775262241607021, guid: d162d260ab0c07b43b7e7e90d954b83a,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 799e8ee0a2f8df54892652191374349d, type: 2}
+    - target: {fileID: -3285076448780485497, guid: d162d260ab0c07b43b7e7e90d954b83a,
+        type: 3}
+      propertyPath: m_Name
+      value: Rock_Overgrown_I_LOD01
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: d162d260ab0c07b43b7e7e90d954b83a,
+        type: 3}
+      propertyPath: m_Name
+      value: Rock_Overgrown_D
+      objectReference: {fileID: 0}
+    - target: {fileID: 5551014577142218206, guid: d162d260ab0c07b43b7e7e90d954b83a,
+        type: 3}
+      propertyPath: m_FadeMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5551014577142218206, guid: d162d260ab0c07b43b7e7e90d954b83a,
+        type: 3}
+      propertyPath: m_AnimateCrossFading
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5551014577142218206, guid: d162d260ab0c07b43b7e7e90d954b83a,
+        type: 3}
+      propertyPath: m_LODs.Array.data[0].screenRelativeHeight
+      value: 0.70078856
+      objectReference: {fileID: 0}
+    - target: {fileID: 5551014577142218206, guid: d162d260ab0c07b43b7e7e90d954b83a,
+        type: 3}
+      propertyPath: m_LODs.Array.data[1].screenRelativeHeight
+      value: 0.29893953
+      objectReference: {fileID: 0}
+    - target: {fileID: 5551014577142218206, guid: d162d260ab0c07b43b7e7e90d954b83a,
+        type: 3}
+      propertyPath: m_LODs.Array.data[2].screenRelativeHeight
+      value: 0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 6262911446799437038, guid: d162d260ab0c07b43b7e7e90d954b83a,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6262911446799437038, guid: d162d260ab0c07b43b7e7e90d954b83a,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6587968777864303310, guid: d162d260ab0c07b43b7e7e90d954b83a,
+        type: 3}
+      propertyPath: m_Name
+      value: Rock_Overgrown_I_LOD00
+      objectReference: {fileID: 0}
+    - target: {fileID: 6587968777864303310, guid: d162d260ab0c07b43b7e7e90d954b83a,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 123
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d162d260ab0c07b43b7e7e90d954b83a, type: 3}
+--- !u!1 &474087254138630587 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6587968777864303310, guid: d162d260ab0c07b43b7e7e90d954b83a,
+    type: 3}
+  m_PrefabInstance: {fileID: 6771550624443949941}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &6639335282804476673
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 474087254138630587}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2955239641061319786, guid: d162d260ab0c07b43b7e7e90d954b83a, type: 3}
+--- !u!4 &1766490383188478063 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: d162d260ab0c07b43b7e7e90d954b83a,
+    type: 3}
+  m_PrefabInstance: {fileID: 6771550624443949941}
+  m_PrefabAsset: {fileID: 0}

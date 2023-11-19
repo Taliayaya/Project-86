@@ -1,0 +1,11 @@
+The sample pack contains a variety of trees created in [SpeedTree_for_Unity](https://unity.com/products/speedtree) , a modeler that lets you create and customize plant models with procedural generators and manual art tools. Trees made with the modeler can have a wind animation, built in LODS and seasonal changes.
+
+The trees from this project were modeled in SpeedTree and painted onto the terrain using the Paint Trees Tool.    
+
+The goal for this project was interchangeable vegetation that could work in both HDRP and URP using a single asset. With that in mind, the trees were customized in the Unity shader graph. 
+
+In the shader, a spherical ambient occlusion was added to enhance the lighting. There were also changes to the subsurface scattering in the billboards to keep them feeling dimensional. 
+
+This scene relies on the dynamic [SpeedTree_LODS](https://docs9.speedtree.com/modeler/doku.php?id=kcgameslod) for an optimized runtime experience. As the model decreases in complexity, parts of the tree will be removed intelligently but keep the transition seamless and smooth. The farthest trees are simple billboards. 
+
+In SpeedTree a [wind_animation](https://docs9.speedtree.com/modeler/doku.php?id=windlegacy&s[]=unity&s[]=wind) is controlled by editing the properties on the [Fan_object](https://docs9.speedtree.com/modeler/doku.php?id=fanvfx) You’ll be able to preview the wind speed on a 0 to 1 scale before exporting the tree.  In the Unity project, the wind is toggled on and the intensity is controlled by the addition of a wind zone.   

@@ -1,0 +1,5 @@
+Starting with Unity 2021, the Unity engine now uses the power of your GPU to bring your scenes to life with [instanced_details](https://youtu.be/gonFJQrNe_c).  
+
+Using instanced details, you can fill your terrain with foliage and other naturalistic models, using the same [painting_workflows](https://docs.unity3d.com/Manual/terrain-Grass.html) you're already familiar with. On most PC platforms, you can render millions of instanced details at well over 60fps (in the high-end version of this scene, there are more than 30 million triangles in most views). On lower end platforms, you can reduce the Detail Density in the Terrain settings to render less details on screen for better performance.
+
+You can animate your detail models using [Shader_Graph](https://docs.unity3d.com/Packages/com.unity.shadergraph@12.0/manual/Getting-Started.html) Enter play mode in this scene to see the vegetation ripple in the wind. A Shader Graph animation produces the ripple effect.  

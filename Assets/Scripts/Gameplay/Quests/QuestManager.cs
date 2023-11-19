@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using DefaultNamespace;
+using DefaultNamespace.Sound;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Events;
@@ -9,6 +10,7 @@ namespace Gameplay.Quests
 {
     public class QuestManager : Singleton<QuestManager>
     {
+        [SerializeField] private AudioClip questStartSound;
         protected override void OnAwake()
         {
             base.OnAwake();
@@ -50,6 +52,7 @@ namespace Gameplay.Quests
                 quest.OnStatusChanged += OnQuestStatusChanged;
                 if (CurrentQuest == null && quest.Activate())
                 {
+                    SoundManager.PlayOneShot(questStartSound);
                     CurrentQuest = quest;
                 }
             }
@@ -69,6 +72,7 @@ namespace Gameplay.Quests
             {
                 if (quest == CurrentQuest)
                 {
+                    SoundManager.PlayOneShot(questStartSound);
                     CurrentQuest = null;
                     foreach (var q in quests)
                     {

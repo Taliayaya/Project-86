@@ -519,6 +519,94 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "MainMenu",
+            "id": "387a05fb-308b-4aa0-a75e-5f0b5d1e0f7f",
+            "actions": [
+                {
+                    "name": "Close",
+                    "type": "Button",
+                    "id": "19291383-a549-4dbd-8846-c74f82d725c9",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ToMainMenu",
+                    "type": "Button",
+                    "id": "ce9e70bc-3fda-422b-9820-bb9bf1140894",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ToGameMode",
+                    "type": "Button",
+                    "id": "026eaead-304a-4afb-809d-bc56aa328218",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ToSettingsMode",
+                    "type": "Button",
+                    "id": "cab535c0-8c23-4547-a7a3-904c134b167d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "04fd04b6-a4af-436f-8c92-8079cb983d25",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Close",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9f2d5b47-902a-4fdb-90fa-23dccc7c3e85",
+                    "path": "<Keyboard>/f1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToMainMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f458d848-4a7a-4b06-b457-5debf9cae838",
+                    "path": "<Keyboard>/f3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToSettingsMode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "653a7e8a-fc3b-4b55-8ad5-b7c4cdfadb51",
+                    "path": "<Keyboard>/f2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToGameMode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
