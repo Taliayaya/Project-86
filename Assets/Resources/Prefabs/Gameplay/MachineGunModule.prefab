@@ -27,10 +27,42 @@ Transform:
   m_LocalPosition: {x: 0.00000037252906, y: 1.161, z: -0.0000012417636}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2454295433268468797}
   m_Father: {fileID: 2359892556476822541}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!1 &3507276722296222372
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2454295433268468797}
+  m_Layer: 0
+  m_Name: MuzzleTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2454295433268468797
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3507276722296222372}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0, z: -0.251}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 206984805398388775}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7492193195463254585
 GameObject:
   m_ObjectHideFlags: 0
@@ -155,6 +187,7 @@ MonoBehaviour:
   gunTransform: {fileID: 206984805398388775}
   gunAudioSource: {fileID: 5952406706035772804}
   cameraTransform: {fileID: 0}
+  muzzleTransform: {fileID: 2454295433268468797}
   myParentColliderToIgnore: {fileID: 0}
   ammoLeftOrRight: Left
   canFire: 1

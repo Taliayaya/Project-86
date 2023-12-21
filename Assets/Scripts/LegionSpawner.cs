@@ -15,7 +15,7 @@ public class LegionSpawner : MonoBehaviour
     
     public void SpawnLegion(GameObject prefab)
     {
-        var point = Random.insideUnitSphere * demoParameters.spawnRadius;
+        var point = transform.position + Random.insideUnitSphere * demoParameters.spawnRadius;
         if (NavMesh.SamplePosition(point, out var hit, 500, -1))
             Instantiate(prefab, hit.position , Quaternion.Euler(0, Random.Range(0, 360), 0));
         else

@@ -8,6 +8,7 @@ using ScriptableObjects.AI;
 using ScriptableObjects.GameParameters;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 
 namespace Gameplay.Units
 {
@@ -23,6 +24,27 @@ namespace Gameplay.Units
         public Color frontViewColor = Color.blue;
         public Color sideViewColor = Color.cyan;
     }
+
+    public enum OrderPriority
+    {
+        Low,
+        Medium,
+        High
+    }
+    
+    public class TargetInfo
+    {
+        public Unit Unit;
+        public float RemainingTimeBeforeExpiring;
+        
+        public TargetInfo(Unit unit, float remainingTimeBeforeExpiring)
+        {
+            Unit = unit;
+            RemainingTimeBeforeExpiring = remainingTimeBeforeExpiring;
+        }
+        
+        public Vector3 Position => Unit.transform.position;
+    }
     
     [RequireComponent(typeof(NavMeshAgent), typeof(BehaviourTreeRunner), typeof(AudioSource))]
     public class AIAgent : Unit
@@ -32,6 +54,8 @@ namespace Gameplay.Units
         private AudioSource _audioSource;
 
         [SerializeField] private AgentSO agentSo;
+        
+        public OrderPriority orderPriority = OrderPriority.Low;
 
         [SerializeField] private DebugAgent debugAgent;
         [SerializeField] [CanBeNull] private List<Transform> patrolWaypoints = null;
@@ -41,6 +65,17 @@ namespace Gameplay.Units
         
         private Coroutine _rotateCoroutine;
 
+        [CanBeNull] private TargetInfo _target;
+        [CanBeNull]
+        public TargetInfo Target
+        {
+            get => _target;
+            set
+            {
+                _target = value;
+                _target?.Unit.onUnitDeath.AddListener((_) => Target = null);
+            }
+        }
         public override void Awake()
         {
             base.Awake();
@@ -85,12 +120,12 @@ namespace Gameplay.Units
         
 
         [HideInInspector] public bool isRotating;
-        public void RotateTowardsEnemy(Transform closestTarget)
+        public void RotateTowardsEnemy()
         {
             StopRotating();
             isRotating = true;
             _agent.updateRotation = false;
-            _rotateCoroutine = StartCoroutine(RotateTowardsEnemyCoroutine(closestTarget));
+            _rotateCoroutine = StartCoroutine(RotateTowardsEnemyCoroutine());
         }
 
         public void StopRotating()
@@ -101,13 +136,16 @@ namespace Gameplay.Units
             _agent.updateRotation = true;
         }
         
-        IEnumerator RotateTowardsEnemyCoroutine(Transform closestTarget)
+        IEnumerator RotateTowardsEnemyCoroutine()
         {
             while (true)
             {
-                if (!closestTarget)
+                if (Target == null)
+                {
                     yield break;
-                var direction = (closestTarget.position - transform.position).normalized;
+                }
+
+                var direction = (Target.Position - transform.position).normalized;
                 var lookRotation = Quaternion.LookRotation(direction);
                 transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * agentSo.rotationSpeed);
                 yield return null;

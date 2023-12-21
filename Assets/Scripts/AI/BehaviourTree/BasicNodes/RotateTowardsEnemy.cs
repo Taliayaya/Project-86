@@ -57,7 +57,7 @@ namespace AI.BehaviourTree.BasicNodes
                 if (!_aiAgent.isRotating)
                 {
                     _navMeshAgent.angularSpeed = 0;
-                    _aiAgent.RotateTowardsEnemy(_enemyTransform);
+                    _aiAgent.RotateTowardsEnemy();
                 }
             }
             else

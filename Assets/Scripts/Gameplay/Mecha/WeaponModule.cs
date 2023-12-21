@@ -5,6 +5,7 @@ using UI;
 using UI.HUD;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.VFX;
 
 namespace Gameplay.Mecha
 {
@@ -27,7 +28,10 @@ namespace Gameplay.Mecha
         [SerializeField] private Transform gunTransform;
         [SerializeField] private AudioSource gunAudioSource;
         [SerializeField] private Transform cameraTransform;
-        [SerializeField] private Transform muzzleTransform;
+        
+        [Header(("Muzzle"))]
+        [SerializeField] private VisualEffect muzzleFlash;
+        [SerializeField] private Light muzzleLight;
 
         [SerializeField] private Collider myParentColliderToIgnore;
 
@@ -235,23 +239,36 @@ namespace Gameplay.Mecha
             Shoot(cameraTransform);
         }
 
+        private IEnumerator MuzzleFlash()
+        {
+            muzzleFlash.Play();
+            muzzleLight.enabled = false;
+            yield return new WaitForSeconds(0.1f);
+            muzzleLight.enabled = true;
+            yield return new WaitForSeconds(0.1f);
+            muzzleLight.enabled = false;
+        }
+        
+        private Coroutine _muzzleFlashCoroutine;
+        
         private void FireBullet(Transform origin)
         {
             var bulletDirection = origin.forward;
             if (Physics.Raycast(origin.position, origin.forward, out var hit, 500f, fireBulletLayerMask))
             {
                 bulletDirection = (hit.point - gunTransform.position).normalized;
-                Debug.DrawRay(gunTransform.position, bulletDirection * 100, Color.red, 1f);
+                //Debug.DrawRay(gunTransform.position, bulletDirection * 100, Color.red, 1f);
             }
             else
             {
-                Debug.DrawRay(gunTransform.position, bulletDirection * 100, Color.green, 1f);
+                //Debug.DrawRay(gunTransform.position, bulletDirection * 100, Color.green, 1f);
             }
 
-            if (ammo.muzzleFlashPrefab != null)
+            if (muzzleFlash)
             {
-                var muzzle =Instantiate(ammo.muzzleFlashPrefab, muzzleTransform);
-                muzzle.transform.localPosition = Vector3.zero;
+                if (_muzzleFlashCoroutine != null)
+                    StopCoroutine(_muzzleFlashCoroutine);
+                _muzzleFlashCoroutine = StartCoroutine(MuzzleFlash());
             }
 
 
