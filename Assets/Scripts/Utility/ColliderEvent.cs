@@ -24,7 +24,6 @@ namespace Utility
 
         protected void OnTriggerEnter(Collider other)
         {
-            Debug.Log($"[ColliderEvent] OnTriggerEnter: {other.gameObject.name}");
             onTriggerEnter?.Invoke(other);
         }
         

@@ -1,22 +1,3 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4987ed07734493ba0959dbbd7c31b85, type: 3}
-  m_Name: Sound Parameters
-  m_EditorClassIdentifier: 
-  fieldsToSerialize:
-  - musicVolume
-  - sfxVolume
-  fieldsToShowInGame:
-  - musicVolume
-  - sfxVolume
-  musicVolume: -12
-  sfxVolume: 0
+version https://git-lfs.github.com/spec/v1
+oid sha256:976d66ed05b119744f0197144f097cac4cf62de689cad8823dd67384dbf78575
+size 542

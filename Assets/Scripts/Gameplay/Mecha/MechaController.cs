@@ -240,8 +240,8 @@ namespace Gameplay.Mecha
         
         #region Input Callbacks
         
-        public const float MinXRotation = -25f;
-        public const float MaxXRotation = 25f;
+        public const float MinXRotation = -50f;
+        public const float MaxXRotation = 50f;
         
 
         private void OnLookAround(object data)

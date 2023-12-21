@@ -8,10 +8,9 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: OverGrown
-  m_Shader: {fileID: 10511, guid: 0000000000000000f000000000000000, type: 0}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_Shader: {fileID: 4800000, guid: 99134b1f0c27d54469a840832a28fadf, type: 3}
+  m_ValidKeywords:
+  - _WINDQUALITY_NONE
   m_InvalidKeywords:
   - _ALPHATEST_ON
   m_LightmapFlags: 4
@@ -20,7 +19,6 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
-  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -44,7 +42,15 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _DetailTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ExtraTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -80,6 +86,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SubsurfaceTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _TranslucencyMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -94,7 +104,10 @@ Material:
     - _Ambient90deg: 0.5
     - _AmbientAmount: 0.5
     - _BaseLight: 0.4
+    - _BillboardKwToggle: 0
+    - _BillboardShadowFade: 0.5
     - _BumpScale: 1
+    - _Cull: 2
     - _Cutoff: 0.23
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -102,11 +115,13 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.02
     - _GlossyReflections: 1
+    - _HueVariationKwToggle: 0
     - _Intensity: 0.62
     - _Lambert180deg: 0.8
     - _Lambert90deg: 0.6
     - _Metallic: 1
     - _Mode: 1
+    - _NormalMapKwToggle: 0
     - _Occlusion: 0.2
     - _OcclusionStrength: 1
     - _OffsetAmbient: -0.1
@@ -119,7 +134,11 @@ Material:
     - _Speed: 0.31
     - _SquashAmount: 1
     - _SrcBlend: 1
+    - _SubsurfaceIndirect: 0.25
+    - _SubsurfaceKwToggle: 0
+    - _TwoSided: 2
     - _UVSec: 0
+    - _WindQuality: 0
     - _ZWrite: 1
     - _b_influence: 1
     - _branches_disp: 0.3
@@ -134,8 +153,24 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _HueVariation: {r: 1, g: 0.5, b: 0, a: 0.1}
+    - _HueVariationColor: {r: 1, g: 0.5, b: 0, a: 0.1}
+    - _SubsurfaceColor: {r: 1, g: 1, b: 1, a: 1}
     - _Tint: {r: 1, g: 1, b: 1, a: 1}
     - _TreeInstanceColor: {r: 1, g: 1, b: 1, a: 1}
     - _TreeInstanceScale: {r: 1, g: 1, b: 1, a: 1}
     - _wind_dir: {r: 0.5, g: 0.05, b: 0.5, a: 0}
   m_BuildTextureStacks: []
+--- !u!114 &9196226411861650900
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 5

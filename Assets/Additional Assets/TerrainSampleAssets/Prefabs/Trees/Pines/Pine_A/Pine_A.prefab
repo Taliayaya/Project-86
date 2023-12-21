@@ -83,19 +83,19 @@ LODGroup:
   m_AnimateCrossFading: 1
   m_LastLODIsBillboard: 1
   m_LODs:
-  - screenRelativeHeight: 0.5
+  - screenRelativeHeight: 0.72090566
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 8904699161477053419}
-  - screenRelativeHeight: 0.25
+  - screenRelativeHeight: 0.36068028
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 4355044319688019953}
-  - screenRelativeHeight: 0.07945386
+  - screenRelativeHeight: 0.13123141
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 4116794191508068702}
-  - screenRelativeHeight: 0.01
+  - screenRelativeHeight: 0.029563842
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 2343456729541041366}
@@ -205,7 +205,8 @@ Tree:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3923590717123692241}
-  m_SpeedTreeWindAsset: {fileID: 22800000, guid: 664f5d5d981c0f24ca0f9d731d77a36c, type: 3}
+  m_SpeedTreeWindAsset: {fileID: 22800000, guid: 664f5d5d981c0f24ca0f9d731d77a36c,
+    type: 3}
   m_TreeData: {fileID: 0}
 --- !u!1 &4150731702417443317
 GameObject:
@@ -299,7 +300,8 @@ Tree:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4150731702417443317}
-  m_SpeedTreeWindAsset: {fileID: 22800000, guid: 664f5d5d981c0f24ca0f9d731d77a36c, type: 3}
+  m_SpeedTreeWindAsset: {fileID: 22800000, guid: 664f5d5d981c0f24ca0f9d731d77a36c,
+    type: 3}
   m_TreeData: {fileID: 0}
 --- !u!1 &4182696702778868163
 GameObject:
@@ -393,7 +395,8 @@ Tree:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4182696702778868163}
-  m_SpeedTreeWindAsset: {fileID: 22800000, guid: 664f5d5d981c0f24ca0f9d731d77a36c, type: 3}
+  m_SpeedTreeWindAsset: {fileID: 22800000, guid: 664f5d5d981c0f24ca0f9d731d77a36c,
+    type: 3}
   m_TreeData: {fileID: 0}
 --- !u!1 &5502598730257886902
 GameObject:
@@ -486,5 +489,6 @@ Tree:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5502598730257886902}
-  m_SpeedTreeWindAsset: {fileID: 22800000, guid: 664f5d5d981c0f24ca0f9d731d77a36c, type: 3}
+  m_SpeedTreeWindAsset: {fileID: 22800000, guid: 664f5d5d981c0f24ca0f9d731d77a36c,
+    type: 3}
   m_TreeData: {fileID: 0}

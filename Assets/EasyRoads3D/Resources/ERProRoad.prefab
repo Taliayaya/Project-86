@@ -1,0 +1,248 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &100000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 400000}
+  - component: {fileID: 11400000}
+  m_Layer: 0
+  m_Name: ERProRoad
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &400000
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100000}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -216737829, guid: f56d46228aee4734f9114056c53bb57e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseScript: {fileID: 0}
+  roadName: 
+  locked: 0
+  roadType: 0
+  isCustomRoadSet: 0
+  isCustomRoad: 0
+  markers: []
+  tmpMarkers: []
+  markersExt: []
+  tmpMarkersExt: []
+  tValues: []
+  roadWidth: 5
+  faceDistance: 2
+  angleTreshold: 45
+  closedTrack: 0
+  minNodeDistance: 5
+  nodeWithinRange: -1
+  uvTiling: 1
+  planarUVs: 0
+  flipNormals: 0
+  randomnessFlag: 0
+  randomnessMarkerFlag: 0
+  randomYPosition: 0
+  randomMinYPosition: -0.02
+  randomMaxYPosition: 0.02
+  minRandomYPositionDistance: 15
+  maxRandomYPositionDistance: 35
+  randomMinRotation: 0
+  randomMaxRotation: 0
+  minRandomRotationDistance: 15
+  maxRandomRotationDistance: 35
+  vegetationStudioGrassPerimeter: 2
+  vegetationStudioPlantPerimeter: 3
+  vegetationStudioTreePerimeter: 4
+  vegetationStudioObjectPerimeter: 3
+  vegetationStudioLargeObjectPerimeter: 4
+  vertsStats: 0
+  trisStats: 0
+  indent: 2
+  surrounding: 5
+  followTerrainContours: 0
+  terrainContoursOffset: 5
+  roadShape: []
+  roadShapeIntsStart: 
+  roadShapeIntsEnd: 
+  roadShapeIntsStartFull: 
+  roadShapeIntsEndFull: 
+  roadShapeString: 
+  roadShapeReversedString: 
+  roadShapeMatchCount: 0
+  geoReversed: -1
+  roadShapeCols: 0
+  subSegments: 1
+  nodeDistance: []
+  roadShapeUVs: []
+  roadShapeUVs2: []
+  doConnectionTri: 
+  randomRotations: []
+  hardEdge: 
+  roadShapeMaterialInts: 
+  subMeshCount: 1
+  roadShapeMaterialIntCounts: 
+  controlPoints: []
+  splinePoints: []
+  distances: []
+  markerInts: 
+  insertSplinePoints: []
+  soSplinePoints: []
+  soSplinePointsLeft: []
+  soSplinePointsRight: []
+  ODDQCOQCCQ: []
+  OCOODCDQCQ: []
+  meshVecs: []
+  meshUVs: []
+  meshUVs2: []
+  surfaceMeshVecs: []
+  leftIndentVecs: []
+  rightIndentVecs: []
+  middleIndentVecs: []
+  leftSurroundingVecs: []
+  rightSurroundingVecs: []
+  leftIndentVecsSV: []
+  rightIndentVecsSV: []
+  bridgeElement: 
+  vecsBelowTerrain: []
+  treeVecs: []
+  detailVecs: []
+  vegetationTris: 
+  totalDistance: 0
+  nodeSplinePoint: 
+  totalDistanceString: 
+  startPrefabScript: {fileID: 0}
+  endPrefabScript: {fileID: 0}
+  startConnectionSegment: 0
+  startConnectionFlag: 1
+  endConnectionSegment: 0
+  endConnectionFlag: 1
+  tCrossingConnected: 0
+  roadMaterial: {fileID: 0}
+  roadMaterials: []
+  roadPhysicsMaterial: {fileID: 0}
+  roadPhysicsMaterials: []
+  startDir: {x: 0, y: 0, z: 0}
+  endDir: {x: 0, y: 0, z: 0}
+  startAngle: 0
+  endAngle: 0
+  startbendLeftRight: 0
+  endbendLeftRight: 0
+  pivotp: {x: 0, y: 0, z: 0}
+  p1: {x: 0, y: 0, z: 0}
+  p2: {x: 0, y: 0, z: 0}
+  p3: {x: 0, y: 0, z: 0}
+  p4: {x: 0, y: 0, z: 0}
+  p5: {x: 0, y: 0, z: 0}
+  p6: {x: 0, y: 0, z: 0}
+  p7: {x: 0, y: 0, z: 0}
+  cp1: {x: 0, y: 0, z: 0}
+  cp2: {x: 0, y: 0, z: 0}
+  cp3: {x: 0, y: 0, z: 0}
+  cp4: {x: 0, y: 0, z: 0}
+  cp5: {x: 0, y: 0, z: 0}
+  cp6: {x: 0, y: 0, z: 0}
+  cp7: {x: 0, y: 0, z: 0}
+  cp8: {x: 0, y: 0, z: 0}
+  cp9: {x: 0, y: 0, z: 0}
+  cpcenter: {x: 0, y: 0, z: 0}
+  p1Circle: {x: 0, y: 0, z: 0}
+  p2Circle: {x: 0, y: 0, z: 0}
+  cpradius: 0
+  cpangle: 0
+  dp1: {x: 0, y: 0, z: 0}
+  dp2: {x: 0, y: 0, z: 0}
+  dp3: {x: 0, y: 0, z: 0}
+  dp4: {x: 0, y: 0, z: 0}
+  segPoints: []
+  testPoints: []
+  testPoints2: []
+  OQCQDCCCCD: {x: 0, y: 0, z: 0}
+  OOQODCQCDC: {x: 0, y: 0, z: 0}
+  endLeft: {x: 0, y: 0, z: 0}
+  endRight: {x: 0, y: 0, z: 0}
+  testmesh: {fileID: 0}
+  surfaceMesh: {fileID: 0}
+  sv1: {x: 0, y: 0, z: 0}
+  sv2: {x: 0, y: 0, z: 0}
+  prefabIndentLeft: {x: 0, y: 0, z: 0}
+  prefabIndentRight: {x: 0, y: 0, z: 0}
+  roadIndent1: {x: 0, y: 0, z: 0}
+  tmpPerpCP: {x: 0, y: 0, z: 0}
+  tmpCP: {x: 0, y: 0, z: 0}
+  splinePos: 0
+  camHeight: 5
+  flyOverPoints: []
+  splinePosV3: {x: 0, y: 0, z: 0}
+  markerDistances: []
+  osmRoadType: 
+  soData: []
+  soDataExt: []
+  sideObjectNames: []
+  selectedSO: 0
+  rebuildSos: 0
+  sosCleared: 0
+  isSideObject: 0
+  startOffsetActiveMarker: -1
+  endOffsetActiveMarker: -1
+  leftToCenterPerc: 0
+  splatMapActive: 0
+  splatIndex: 0
+  expandLevel: 0
+  smoothLevel: 1
+  splatOpacity: 1
+  layer: 0
+  tag: 
+  castShadow: 0
+  fadeInFlag: 0
+  fadeInDistance: 0
+  fadeOutFlag: 0
+  fadeOutDistance: 0
+  doSurroundingSurfaces: 0
+  terrainDeformation: 1
+  snapToTerrain: 0
+  snapVertices: 0
+  snapOffset: 0.01
+  hasMeshCollider: 1
+  isUpdated: 0
+  QDDDQODQQDQDQQD: 0
+  uv4Type: 0
+  detailDistance: 50
+  startDecalCollapsed: 0
+  startDecal: {fileID: 0}
+  endDecal: {fileID: 0}
+  startDecalPrefab: {fileID: 0}
+  startDecalPrefabSource: {fileID: 0}
+  endDecalCollapsed: 0
+  endDecalPrefab: {fileID: 0}
+  endDecalPrefabSource: {fileID: 0}
+  startDecalID: -1
+  endDecalID: -1
+  lastForward: {x: 0, y: 0, z: 0}
+  roadUpdate: 0
+  bounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
