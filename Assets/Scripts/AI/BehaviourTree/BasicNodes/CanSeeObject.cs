@@ -24,8 +24,12 @@ namespace AI.BehaviourTree.BasicNodes
         [Tooltip("The tag the AI will try to search for"), SerializeField] private Faction enemyFaction;
         
         [SerializeField] private LayerMask layerMask;
-        [CanBeNull] private Unit _closestTarget;
-
+        [CanBeNull] public Unit _closestTarget;
+        private AIAgent _aiAgent;
+        
+        public float sharePositionSpotTime = 9f;
+        public float discoverSpotTime = 15f;
+        
         [CanBeNull]
         private Unit ClosestTarget
         {
@@ -40,6 +44,7 @@ namespace AI.BehaviourTree.BasicNodes
 
         private bool _isDone;
         private bool _canSeeTarget;
+        private bool _sharingPosition;
         
         private AgentSO _agentSo;
         
@@ -47,25 +52,35 @@ namespace AI.BehaviourTree.BasicNodes
         
         private List<Unit> _spottedTargets = new List<Unit>();
         private IEnumerator _canSeeTargetEnumerator;
+        private IEnumerator _sharePositionEnumerator;
         protected override void OnStart()
         {
             if (!_isSet)
             {
                 _transform = blackBoard.GetValue<Transform>("transform");
                 _agentSo = blackBoard.GetValue<AgentSO>("agentSO");
+                _aiAgent = blackBoard.GetValue<AIAgent>("aiAgent");
                 _targets = Factions.GetMembers(enemyFaction);
                 _isSet = true;
             }
 
+            ClosestTarget = _aiAgent.Target?.Unit;
             _isDone = false;
             _canSeeTarget = false;
             _canSeeTargetEnumerator = CanSeeTarget();
+            if (ClosestTarget && CanSeeSingleTarget(ClosestTarget))
+            {
+                _isDone = true;
+                _canSeeTarget = true;
+            }
+            else
+                ClosestTarget = null;
         }
 
         protected override void OnStop()
         {
         }
-
+        
         protected override State OnUpdate()
         {
             if (_isDone)
@@ -73,20 +88,19 @@ namespace AI.BehaviourTree.BasicNodes
                 return _canSeeTarget ? State.Success : State.Failure;
             }
 
+            if (_canSeeTargetEnumerator.MoveNext())
+                return State.Running;
+
             if (ClosestTarget)
             {
-                if (CanSeeSingleTarget(ClosestTarget))
-                {
-                    _canSeeTarget = true;
-                    _isDone = true;
-                    return State.Success;
-                }
-
-                ClosestTarget = null;
+                if (_sharePositionEnumerator.MoveNext())
+                    return State.Running;
+                _canSeeTarget = true;
+                _isDone = true;
+                return State.Success;
             }
 
-            _canSeeTargetEnumerator.MoveNext();
-            return State.Running;
+            return State.Failure;
         }
 
 
@@ -117,10 +131,17 @@ namespace AI.BehaviourTree.BasicNodes
                     }
                 }
 
-                yield return null;
+                yield return new WaitForSeconds(0.3f);
             }
 
             _isDone = true;
+            if (ClosestTarget)
+            {
+                _aiAgent.Target = new TargetInfo(ClosestTarget, discoverSpotTime);
+                _sharePositionEnumerator = ShareTargetPosition(ClosestTarget);
+            }
+            else
+                _aiAgent.Target = null;
         }
 
         private bool CanSeeSingleTarget(Unit target)
@@ -136,6 +157,33 @@ namespace AI.BehaviourTree.BasicNodes
 
             }
             return false;
+        }
+        
+        private IEnumerator ShareTargetPosition(Unit target)
+        {
+            foreach (var ally in Factions.GetMembers(_aiAgent.Faction))
+            {
+                float distance = Vector3.Distance(ally.transform.position, target.transform.position);
+                if (distance <= _agentSo.shareInformationMaxDistance)
+                {
+                    Debug.Log("[CanSeeObject] Sharing position to " + ally.name + " of " + target.name + " at " + target.transform.position);
+                    SharePosition(target, ally);
+                }
+                // no need to do everything in one frame
+                yield return null;
+            }
+        }
+        
+        private void SharePosition(Unit target, Unit ally)
+        {
+            if (ally is AIAgent aiAgent)
+            {
+                if (aiAgent.Target != null|| aiAgent.orderPriority < _aiAgent.orderPriority)
+                {
+                    TargetInfo targetInfo = new TargetInfo(target, sharePositionSpotTime);
+                    aiAgent.Target = targetInfo;
+                }
+            }
         }
         
         public static bool CanSeeSingleTarget(Transform transform, AgentSO agentSo, GameObject target)
