@@ -26,6 +26,7 @@ This project is made by the community, for the community. Any fan can contribute
   - [Guide](#guide)
   - [Main Menu](#main-menu)
 - [Before Reporting](#before-reporting)
+- [How to Contribute ?](#how-to-contribute)
 - [Disclaimer](#disclaimer)
 - [Contributions](#contributions) 
 ## Project Objectives
@@ -122,6 +123,29 @@ Navigate through screens using F1, F2, and F3.
 ## Before Reporting
 
 Please be aware that juggernaut stats, sounds, and visual effects are temporary and subject to change. Report issues, bugs, or suggest improvements on the Issue page, Discord Community Server, or share your ideas.
+
+## How to Contribute
+
+Project 86 is an open source fan game. Hence, anyone can freely contribute to his project and this part is here to help you to set up.
+First, make sure to join the [discord server](https://discord.gg/ZS4WYyPGgR). By doing so, communications will be made easier and you'll have access to the current tasks. These tasks are not only coding tasks. There are modeling, coding, musics, level design, art, story/lore, etc. Enough to find something you may do!
+
+Secondly, make sure to have Unity. We are currently using `Unity 2021.3.29f1` (this will change with time). Make sure to have the same one. 
+
+Thirdly, you have to download the files. Github seems to have issue making the ZIP file of the project so avoid using it. We recommend you to CLONE the project.
+If you are new to Git and Github, this may seem frightening for you. If you are new to it, you should download the following softwares:
+- [Github Desktop](https://desktop.github.com/) : To simply the use of git if you are new to it.
+- [Git](https://git-scm.com/) : Essential to clone the project and add your modifications (and used by Github Desktop, maybe the software installs Git for you?)
+- [Git LFS](https://git-lfs.com/) : An extension of Git used to manipulate the large files of our project, such as textures and models.
+
+You first want to FORK the project into your github account (by clicking on the fork button on the page). This will create a "copy" of the project to your account where you'll have full rights to manipulate it and being then able to request to add your changes to the main project
+
+>  You can be added to the contributors and directly be able to contribute from the main repository
+
+You then want to clone the project with `git@github.com:Taliayaya/Project-86.git` (your fork URL) or open it with Github Desktop
+![image](https://github.com/Taliayaya/Project-86/assets/84530101/35dbcc61-ffe5-4c93-b25f-08ca13c29324)
+
+When this is done, you simply want to open the root with Unity and the version used. This will generate more files so make sure to have enough space to work on the project (At least 20 Go)
+You then later on want to COMMIT and PUSH your and changes. For that, we advise you to contact us if you're new to all that.
 
 ## Disclaimer
 
