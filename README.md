@@ -133,7 +133,7 @@ Secondly, make sure to have Unity. We are currently using `Unity 2021.3.29f1` (t
 
 Thirdly, you have to download the files. Github seems to have issue making the ZIP file of the project so avoid using it. We recommend you to CLONE the project.
 If you are new to Git and Github, this may seem frightening for you. If you are new to it, you should download the following softwares:
-- [Github Desktop](https://desktop.github.com/) : To simply the use of git if you are new to it.
+- [Github Desktop](https://desktop.github.com/) : To simplify the use of git if you are new to it.
 - [Git](https://git-scm.com/) : Essential to clone the project and add your modifications (and used by Github Desktop, maybe the software installs Git for you?)
 - [Git LFS](https://git-lfs.com/) : An extension of Git used to manipulate the large files of our project, such as textures and models.
 
