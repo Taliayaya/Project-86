@@ -12,7 +12,10 @@ namespace ScriptableObjects.AI
         public float rotationSpeed = 1f;
         [Range(0, 10000)] public float idealDistanceFromEnemy = 40;
         [Range(0, 10000)] public int shareInformationMaxDistance = 100;
-        
+
+        public int minXRotation = -30;
+        public int maxXRotation = 30;
+
         public GameObject deathEffect;
 
     }

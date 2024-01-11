@@ -44,6 +44,7 @@ namespace Gameplay.Units
         }
         
         public Vector3 Position => Unit.transform.position;
+        public Vector3 AimPosition => Unit.transform.position + Vector3.up * Unit.aimiYOffset;
     }
     
     [RequireComponent(typeof(NavMeshAgent), typeof(BehaviourTreeRunner), typeof(AudioSource))]
@@ -83,6 +84,8 @@ namespace Gameplay.Units
             _behaviourTreeRunner = GetComponent<BehaviourTreeRunner>();
             _weaponModules = GetComponentsInChildren<WeaponModule>();
             _audioSource = GetComponent<AudioSource>();
+            
+            _firstChild = transform.GetChild(0);
             if (name.Contains("Lowe"))
             {
                 Health = demoParameters.loweHealth;
@@ -93,6 +96,8 @@ namespace Gameplay.Units
                 Health = demoParameters.ameiseHealth;
                 MaxHealth = demoParameters.ameiseHealth;
             }
+            _xRotation = _firstChild.localRotation.eulerAngles.x;
+            _yRotation = transform.rotation.eulerAngles.y;
 
 
         }
@@ -124,7 +129,7 @@ namespace Gameplay.Units
         {
             StopRotating();
             isRotating = true;
-            _agent.updateRotation = false;
+            _agent.updateRotation = true;
             _rotateCoroutine = StartCoroutine(RotateTowardsEnemyCoroutine());
         }
 
@@ -135,7 +140,10 @@ namespace Gameplay.Units
             isRotating = false;
             _agent.updateRotation = true;
         }
-        
+
+        private Transform _firstChild;
+        private float _xRotation;
+        private float _yRotation;
         IEnumerator RotateTowardsEnemyCoroutine()
         {
             while (true)
@@ -145,9 +153,19 @@ namespace Gameplay.Units
                     yield break;
                 }
 
-                var direction = (Target.Position - transform.position).normalized;
-                var lookRotation = Quaternion.LookRotation(direction);
-                transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * agentSo.rotationSpeed);
+                var direction = (Target.AimPosition - transform.position).normalized;
+                var newRotation = Quaternion.LookRotation(direction).eulerAngles;
+                
+                Debug.Log("Rotation: " + newRotation);
+                
+                _yRotation -= (_yRotation - newRotation.y) * Time.deltaTime * agentSo.rotationSpeed;
+                _xRotation -= (_xRotation - newRotation.x) * Time.deltaTime * agentSo.rotationSpeed;
+                
+                _xRotation = Mathf.Clamp(_xRotation, agentSo.minXRotation, agentSo.maxXRotation);
+                transform.rotation = Quaternion.Euler(0, newRotation.y, 0);
+                _firstChild.localRotation = Quaternion.Euler(newRotation.x, 0, 0);
+                Debug.DrawRay(transform.position, direction * 100, Color.magenta);
+                
                 yield return null;
             }
         }
@@ -174,13 +192,12 @@ namespace Gameplay.Units
                     float distance = Vector3.Distance(transform.position, closestTarget.position);
                     if (distance > agentSo.idealDistanceFromEnemy + 3)
                     {
+                        _agent.isStopped = false;
                         _agent.SetDestination(closestTarget.position);
                     }
                     else if (distance < agentSo.idealDistanceFromEnemy - 3)
                     {
-                        if (NavMesh.SamplePosition(transform.position - transform.forward * agentSo.idealDistanceFromEnemy, out NavMeshHit hit, 10,
-                                NavMesh.AllAreas))
-                            _agent.SetDestination(hit.position);
+                        _agent.isStopped = true;
                     }
                 }
 
