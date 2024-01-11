@@ -171,7 +171,7 @@ namespace Gameplay.Mecha
 
         private void CheckDistanceForward()
         {
-            if (Physics.Raycast(vCamera.transform.position, vCamera.transform.forward, out var hit, 4000, forwardMask))
+            if (Physics.Raycast(vCamera.transform.position, vCamera.transform.forward, out var hit, 2000, forwardMask))
             {
                 EventManager.TriggerEvent("OnDistanceForward", hit.distance);
             }
@@ -185,7 +185,7 @@ namespace Gameplay.Mecha
             int groundNumber = 0;
             for (int i = 0; i < ground.Length; i++)
             {
-                bool grounded = Physics.CheckSphere(ground[i].position, 2, groundMask);
+                bool grounded = Physics.CheckSphere(ground[i].position, 0.3f, groundMask);
                 if (grounded)
                     groundNumber++;
             }
@@ -211,7 +211,7 @@ namespace Gameplay.Mecha
         {
             _yVelocity += gravity * Time.fixedDeltaTime;
             if (_isGrounded)
-                _yVelocity = gravity;
+                _yVelocity = gravity / 10;
             _rigidbody.AddForce(Vector3.up * (_yVelocity), ForceMode.Force);
         }
 

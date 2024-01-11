@@ -25,6 +25,7 @@ namespace Gameplay.Units
         
         [Header("Base Unit Settings")]
         public UnitType unitType = UnitType.None;
+        public float aimiYOffset = 2f;
 
         public UnityEvent<float, float> onHealthChange;
 
