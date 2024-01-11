@@ -37,9 +37,19 @@ namespace Gameplay.Units
         public Unit Unit;
         public float RemainingTimeBeforeExpiring;
         
-        public TargetInfo(Unit unit, float remainingTimeBeforeExpiring)
+        public enum VisibilityStatus
+        {
+            Visible,
+            Network, // Not visible but known by the legion network
+            NotVisible,
+        }
+        
+        public VisibilityStatus Visibility;
+        
+        public TargetInfo(Unit unit, VisibilityStatus visibilityStatus, float remainingTimeBeforeExpiring)
         {
             Unit = unit;
+            Visibility = visibilityStatus;
             RemainingTimeBeforeExpiring = remainingTimeBeforeExpiring;
         }
         
@@ -150,13 +160,19 @@ namespace Gameplay.Units
             {
                 if (Target == null)
                 {
+                    _agent.updateRotation = true;
                     yield break;
+                }
+                if (Target.Visibility == TargetInfo.VisibilityStatus.Network)
+                {
+                    _agent.updateRotation = true;
+                    yield return null;
                 }
 
                 var direction = (Target.AimPosition - transform.position).normalized;
                 var newRotation = Quaternion.LookRotation(direction).eulerAngles;
                 
-                Debug.Log("Rotation: " + newRotation);
+                //Debug.Log("Rotation: " + newRotation);
                 
                 _yRotation -= (_yRotation - newRotation.y) * Time.deltaTime * agentSo.rotationSpeed;
                 _xRotation -= (_xRotation - newRotation.x) * Time.deltaTime * agentSo.rotationSpeed;
@@ -164,7 +180,7 @@ namespace Gameplay.Units
                 _xRotation = Mathf.Clamp(_xRotation, agentSo.minXRotation, agentSo.maxXRotation);
                 transform.rotation = Quaternion.Euler(0, newRotation.y, 0);
                 _firstChild.localRotation = Quaternion.Euler(newRotation.x, 0, 0);
-                Debug.DrawRay(transform.position, direction * 100, Color.magenta);
+                //Debug.DrawRay(transform.position, direction * 100, Color.magenta);
                 
                 yield return null;
             }

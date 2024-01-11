@@ -8,7 +8,6 @@ namespace AI.BehaviourTree.BasicNodes
 {
     public class RotateTowardsEnemy : ActionNode
     {
-        private Transform _enemyTransform;
         private NavMeshAgent _navMeshAgent;
         private AIAgent _aiAgent;
 
@@ -37,8 +36,6 @@ namespace AI.BehaviourTree.BasicNodes
                 
                 _navMeshAgent.updateRotation = false;
             }
-            if (!blackBoard.TryGetValue("closestTarget", out _enemyTransform))
-                return;
         }
 
         protected override void OnStop()
@@ -50,7 +47,7 @@ namespace AI.BehaviourTree.BasicNodes
         protected override State OnUpdate()
         {
             _navMeshAgent.angularSpeed = _angularSpeed;
-            if (startRotating && !_enemyTransform)
+            if (startRotating && _aiAgent.Target?.Visibility == TargetInfo.VisibilityStatus.NotVisible)
                 return State.Failure;
             if (startRotating)
             {

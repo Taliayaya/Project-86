@@ -45,6 +45,7 @@ namespace Gameplay
             DamageAudioClip = Ammo.onHitSound
          };
          
+         //Debug.Log("bullet hit " + other.gameObject.name);
          // commented to avoid damaging twice
          if (other.gameObject.TryGetComponent(out IHealth health) && Ammo.explosionRadius == 0)
          {

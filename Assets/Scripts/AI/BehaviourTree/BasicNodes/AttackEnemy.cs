@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Gameplay.Mecha;
+using Gameplay.Units;
 using ScriptableObjects.AI;
 using UnityEngine;
 
@@ -16,7 +17,8 @@ namespace AI.BehaviourTree.BasicNodes
     public class AttackEnemy : ActionNode
     {
         private Transform _transform;
-        private Transform _closestTarget;
+        
+        private AIAgent _aiAgent;
         
         [SerializeField] private float timeBeforeSpotExpired = 5f;
         public float angleToShoot = 15f;
@@ -33,14 +35,13 @@ namespace AI.BehaviourTree.BasicNodes
             {
                 _transform = blackBoard.GetValue<Transform>("transform");
                 _weaponModules = blackBoard.GetValue<WeaponModule[]>("weaponModules");
+                _aiAgent = blackBoard.GetValue<AIAgent>("aiAgent");
                 _coroutines = new Coroutine[_weaponModules.Length];
                 _isSet = true;
                 Debug.Log("Weapon Module : " +_weaponModules.Length);
             }
 
             // closest target is set in CanSeeObject and can change
-            _closestTarget = blackBoard.GetValue<Transform>("closestTarget");
-
             if (_coroutines[0] is not null)
                 for (int i = 0; i < _weaponModules.Length; i++)
                 {
@@ -59,7 +60,7 @@ namespace AI.BehaviourTree.BasicNodes
 
         protected override State OnUpdate()
         {
-            if (!_closestTarget)
+            if (_aiAgent.Target?.Visibility == TargetInfo.VisibilityStatus.NotVisible)
                 return State.Failure;
             
             return State.Success;
@@ -77,9 +78,9 @@ namespace AI.BehaviourTree.BasicNodes
 
         public bool EnemyInRange()
         {
-            if (!_closestTarget)
+            if (_aiAgent.Target?.Visibility != TargetInfo.VisibilityStatus.Visible)
                 return false;
-            var direction = _closestTarget.transform.position - _transform.position;
+            var direction = _aiAgent.Target.Position - _transform.position;
             var angle = Vector3.Angle(direction, _transform.forward);
 
             return angle < angleToShoot * 0.5f;

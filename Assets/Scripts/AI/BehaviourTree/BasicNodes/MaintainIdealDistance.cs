@@ -8,7 +8,6 @@ namespace AI.BehaviourTree.BasicNodes
     public class MaintainIdealDistance : ActionNode
     {
 
-        private Transform _closestTarget;
         private bool _isSet = false;
         private AIAgent _aiAgent;
         
@@ -20,7 +19,6 @@ namespace AI.BehaviourTree.BasicNodes
                 _aiAgent = blackBoard.GetValue<AIAgent>("aiAgent");
                 _isSet = true;
             }
-            blackBoard.TryGetValue<Transform>("closestTarget", out _closestTarget);
         }
 
         protected override void OnStop()
@@ -31,11 +29,11 @@ namespace AI.BehaviourTree.BasicNodes
         {
             if (!startMaintainingDistance)
                 _aiAgent.StopMaintainIdealDistance();
-            if (!_closestTarget)
+            if (_aiAgent.Target is null || _aiAgent.Target.Visibility == TargetInfo.VisibilityStatus.NotVisible)
                 return State.Failure;
-            
+
             if (startMaintainingDistance)
-                _aiAgent.StartMaintainIdealDistance(_closestTarget);
+                _aiAgent.StartMaintainIdealDistance(_aiAgent.Target.Unit.transform);
 
             return State.Success;
         }

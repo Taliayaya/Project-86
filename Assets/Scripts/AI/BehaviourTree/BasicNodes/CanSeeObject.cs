@@ -64,17 +64,32 @@ namespace AI.BehaviourTree.BasicNodes
                 _isSet = true;
             }
 
-            ClosestTarget = _aiAgent.Target?.Unit;
+            if (_aiAgent.Target is not null)
+            {
+                if (_aiAgent.Target.Visibility == TargetInfo.VisibilityStatus.Visible && !CanSeeSingleTarget(_aiAgent.Target.Unit))
+                {
+                    ClosestTarget = null;
+                    _aiAgent.Target = null;
+                    _isDone = true;
+                    _canSeeTarget = false;
+                    return;
+                }
+                if (_aiAgent.Target.Visibility == TargetInfo.VisibilityStatus.Network)
+                {
+                    ClosestTarget = _aiAgent.Target.Unit;
+                    if (CanSeeSingleTarget(ClosestTarget))
+                        _aiAgent.Target.Visibility = TargetInfo.VisibilityStatus.Visible;
+                    _isDone = true;
+                    _canSeeTarget = true;
+                    return;
+                }
+                ClosestTarget = null;
+                _aiAgent.Target = null;
+            }
+            
             _isDone = false;
             _canSeeTarget = false;
             _canSeeTargetEnumerator = CanSeeTarget();
-            if (ClosestTarget && CanSeeSingleTarget(ClosestTarget))
-            {
-                _isDone = true;
-                _canSeeTarget = true;
-            }
-            else
-                ClosestTarget = null;
         }
 
         protected override void OnStop()
@@ -137,7 +152,7 @@ namespace AI.BehaviourTree.BasicNodes
             _isDone = true;
             if (ClosestTarget)
             {
-                _aiAgent.Target = new TargetInfo(ClosestTarget, discoverSpotTime);
+                _aiAgent.Target = new TargetInfo(ClosestTarget, TargetInfo.VisibilityStatus.Visible, discoverSpotTime);
                 _sharePositionEnumerator = ShareTargetPosition(ClosestTarget);
             }
             else
@@ -178,9 +193,10 @@ namespace AI.BehaviourTree.BasicNodes
         {
             if (ally is AIAgent aiAgent)
             {
-                if (aiAgent.Target != null|| aiAgent.orderPriority < _aiAgent.orderPriority)
+                if (aiAgent.Target is null || aiAgent.orderPriority < _aiAgent.orderPriority)
                 {
-                    TargetInfo targetInfo = new TargetInfo(target, sharePositionSpotTime);
+                    Debug.Log("[CanSeeObject] " + ally.name + " already has a target or has a higher priority");
+                    TargetInfo targetInfo = new TargetInfo(target, TargetInfo.VisibilityStatus.Network, sharePositionSpotTime);
                     aiAgent.Target = targetInfo;
                 }
             }
