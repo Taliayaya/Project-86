@@ -192,7 +192,13 @@ namespace Gameplay.Mecha
             while (Time.time - startTime < time)
             {
                 if (!canShoot())
-                    yield return new WaitForSeconds(0.1f);
+                {
+                    gunAudioSource.Pause();
+                    yield return new WaitForSeconds(1f);
+                    continue;
+                }
+                gunAudioSource.UnPause();
+
                 Shoot(cameraTransform);
                 yield return new WaitForSeconds(1/ammo.fireRate);
             }
@@ -256,6 +262,7 @@ namespace Gameplay.Mecha
             var bulletDirection = origin.forward;
             if (Physics.Raycast(origin.position, origin.forward, out var hit, 500f, fireBulletLayerMask))
             {
+                //Debug.Log("hit " + hit.transform.name);
                 bulletDirection = (hit.point - gunTransform.position).normalized;
                 //Debug.DrawRay(gunTransform.position, bulletDirection * 100, Color.red, 1f);
             }
