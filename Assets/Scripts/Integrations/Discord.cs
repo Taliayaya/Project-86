@@ -32,7 +32,9 @@ namespace Integrations
 
         public static void Start()
         {
+#if ENABLE_INTEGRATION_DISCORD
             Instance = new Discord();
+#endif
         }
 
         /// <summary>
