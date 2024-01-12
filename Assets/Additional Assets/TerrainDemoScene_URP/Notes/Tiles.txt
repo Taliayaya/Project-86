@@ -1,7 +1,0 @@
-A terrain object’s resolution affects memory and performance, particularly in open world settings. 
-
-Instead of creating ever-larger objects, Unity Terrain allows you to split your world into a grid of smaller Terrain objects. This allows the running game to cull the Terrain objects, along with the details and trees, more efficiently. The system automatically manages the seams between adjacent Terrains so you can paint height maps and [Terrain_Layers](https://docs.unity3d.com/2021.1/Documentation/Manual/class-TerrainLayer.html) across boundaries.
-
-In this scene, we used the Unity [Terrain_Tools](https://docs.unity3d.com/Packages/com.unity.terrain-tools@4.0/manual/index) package to import the terrain into a 4 X 4 grid of objects. Each object measures one thousand units across, and has a resolution of 2048 pixels, or a little less than two pixels per meter.  This creates a huge space (16 square kilometers!) at a reasonable resolution which still runs at framerate.  
-
-It's usually a good idea to use multiple small Terrains rather than a single large one. Of course, profiling is the most accurate way to find out what your particular project requires.
