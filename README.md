@@ -147,6 +147,12 @@ You then want to clone the project with `git@github.com:Taliayaya/Project-86.git
 When this is done, you simply want to open the root with Unity and the version used. This will generate more files so make sure to have enough space to work on the project (At least 20 Go)
 You then later on want to COMMIT and PUSH your and changes. For that, we advise you to contact us if you're new to all that.
 
+To download the `Additional Assets` folder to fully open this project, please download it from this link: https://drive.google.com/drive/folders/1pkRBIPXqGKoHKCeHJVrc5NJOGXjXa1D8?usp=sharing
+and extract it so that it is at the root of the `Assets` folder (the final path should be `Assets/Additional Assets`)
+
+> Note: Previously, the `Additional Assets` folder was tracked using `Git LFS`. However, the bandwidth was consumed too fast (within a week). Hence, as this folder was taking 90% of the storage, it was removed from it.
+> This file shouldn't have much modification or breaking change but should still be updated once in a while. (follow the discord for more information)
+
 ## Disclaimer
 
 This project is still at a testing state and does not represent the complete game. Project 86 is a community-based fan game of the 86: Eighty Six license, developed in English.
