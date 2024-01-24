@@ -1,3 +1,8 @@
+[![Total Download badge](https://img.shields.io/github/downloads/Taliayaya/Project-86/total)](https://github.com/Taliayaya/Project-86/releases/latest)
+[![Version badge](https://img.shields.io/github/v/release/Taliayaya/Project-86)](https://github.com/Taliayaya/Project-86/releases/latest)
+[![Discord](https://img.shields.io/badge/Discord-5865F2)](https://discord.gg/ZS4WYyPGgR)
+[![Unity](https://img.shields.io/badge/Unity-555555)]()
+
 # Project 86
 
 <p align="center">
