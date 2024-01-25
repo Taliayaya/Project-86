@@ -16,10 +16,10 @@ namespace AI.BehaviourTree.BasicNodes
             if (!_isSet)
             {
                 _agent = blackBoard.GetValue<NavMeshAgent>("navMeshAgent");
-                blackBoard.TryGetValue("goal", out _goal);
                 _isSet = true;
             }
             
+            blackBoard.TryGetValue("goal", out _goal);
         }
 
         protected override void OnStop()
@@ -36,13 +36,15 @@ namespace AI.BehaviourTree.BasicNodes
         
         private void WanderAround()
         {
-            _agent.updateRotation = true;
             _agent.angularSpeed = 120;
             Vector3 randomDirection = Random.insideUnitSphere * wanderRadius;
             if (_goal.HasValue)
             {
+                Debug.Log("Wander: " + _goal.Value);
+                Debug.DrawRay(_goal.Value, Vector3.up * 100, Color.red, 10);
                 randomDirection += _goal.Value;
-                blackBoard.RemoveValue("goal"); // we don't want to be stuck on the same goal
+                //blackBoard.RemoveValue("goal"); // we don't want to be stuck on the same goal
+                //_goal = null;
             }
             else
                 randomDirection += _agent.transform.position;

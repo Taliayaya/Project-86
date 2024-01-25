@@ -46,23 +46,23 @@ namespace AI.BehaviourTree.BasicNodes
         private float _angularSpeed;
         protected override State OnUpdate()
         {
-            _navMeshAgent.angularSpeed = _angularSpeed;
-            if (startRotating && _aiAgent.Target?.Visibility == TargetInfo.VisibilityStatus.NotVisible)
-                return State.Failure;
-            if (startRotating)
-            {
-                if (!_aiAgent.isRotating)
-                {
-                    _navMeshAgent.angularSpeed = 0;
-                    _aiAgent.RotateTowardsEnemy();
-                }
-            }
-            else
-            {
-                _navMeshAgent.angularSpeed = _angularSpeed;
-                _aiAgent.StopRotating();
-            }
-
+//            _navMeshAgent.angularSpeed = _angularSpeed;
+//            if (startRotating && _aiAgent.Target?.Visibility == TargetInfo.VisibilityStatus.NotVisible)
+//                return State.Failure;
+//            if (startRotating)
+//            {
+//                if (!_aiAgent.isRotating)
+//                {
+//                    _navMeshAgent.angularSpeed = 0;
+//                    _aiAgent.RotateTowardsEnemy();
+//                }
+//            }
+//            else
+//            {
+//                _navMeshAgent.angularSpeed = _angularSpeed;
+//                _aiAgent.StopRotating();
+//            }
+//
             return State.Success;
         }
     }

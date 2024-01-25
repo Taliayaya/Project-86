@@ -53,6 +53,7 @@ namespace AI.BehaviourTree.BasicNodes
         private List<Unit> _spottedTargets = new List<Unit>();
         private IEnumerator _canSeeTargetEnumerator;
         private IEnumerator _sharePositionEnumerator;
+        public bool canSharePosition = true;
         protected override void OnStart()
         {
             if (!_isSet)
@@ -108,7 +109,7 @@ namespace AI.BehaviourTree.BasicNodes
 
             if (ClosestTarget)
             {
-                if (_sharePositionEnumerator.MoveNext())
+                if (canSharePosition && _sharePositionEnumerator.MoveNext())
                     return State.Running;
                 _canSeeTarget = true;
                 _isDone = true;
@@ -153,7 +154,8 @@ namespace AI.BehaviourTree.BasicNodes
             if (ClosestTarget)
             {
                 _aiAgent.Target = new TargetInfo(ClosestTarget, TargetInfo.VisibilityStatus.Visible, discoverSpotTime);
-                _sharePositionEnumerator = ShareTargetPosition(ClosestTarget);
+                if (canSharePosition)
+                    _sharePositionEnumerator = ShareTargetPosition(ClosestTarget);
             }
             else
                 _aiAgent.Target = null;

@@ -65,7 +65,7 @@ namespace Gameplay.Units
         private AudioSource _audioSource;
 
         [SerializeField] private AgentSO agentSo;
-        
+        [SerializeField] private bool isAutonomous = true;
         public OrderPriority orderPriority = OrderPriority.Low;
 
         [SerializeField] private DebugAgent debugAgent;
@@ -73,7 +73,7 @@ namespace Gameplay.Units
         private WeaponModule[] _weaponModules;
         public BehaviourTree Tree => _behaviourTreeRunner.tree;
         public DemoParameters demoParameters;
-        
+
         private Coroutine _rotateCoroutine;
 
         [CanBeNull] private TargetInfo _target;
@@ -106,27 +106,42 @@ namespace Gameplay.Units
                 Health = demoParameters.ameiseHealth;
                 MaxHealth = demoParameters.ameiseHealth;
             }
-            _xRotation = _firstChild.localRotation.eulerAngles.x;
-            _yRotation = transform.rotation.eulerAngles.y;
-
-
         }
 
         protected override void Start()
         {
             base.Start();
+            Debug.Log("AI agent is autonomous");
             Tree.blackBoard.SetValue("navMeshAgent", _agent);
-            Tree.blackBoard.SetValue("transform", transform);
+            Tree.blackBoard.SetValue("transform", _firstChild);
             Tree.blackBoard.SetValue("agentSO", agentSo);
             Tree.blackBoard.SetValue("weaponModules", _weaponModules);
             Tree.blackBoard.SetValue("aiAgent", this);
             if (patrolWaypoints != null)
                 Tree.blackBoard.SetValue("waypoints", patrolWaypoints);
+            if (isAutonomous)
+                _behaviourTreeRunner.StartAI();
+            RotateTowardsEnemy();
         }
         
         public void AddDestinationGoal(Vector3 destination)
         {
             Tree.blackBoard.SetValue("goal", destination);
+        }
+        
+        public void AddDestinationGoal(Transform destination)
+        {
+            Tree.blackBoard.SetValue("goal", destination.position);
+        }
+        
+        public void SetDestination(Vector3 destination)
+        {
+            _agent.SetDestination(destination);
+        }
+        
+        public void SetDestination(Transform destination)
+        {
+            _agent.SetDestination(destination.position);
         }
 
 
@@ -139,7 +154,6 @@ namespace Gameplay.Units
         {
             StopRotating();
             isRotating = true;
-            _agent.updateRotation = true;
             _rotateCoroutine = StartCoroutine(RotateTowardsEnemyCoroutine());
         }
 
@@ -148,42 +162,38 @@ namespace Gameplay.Units
             if (_rotateCoroutine != null)
                 StopCoroutine(_rotateCoroutine);
             isRotating = false;
-            _agent.updateRotation = true;
         }
 
         private Transform _firstChild;
-        private float _xRotation;
-        private float _yRotation;
+        private Vector3 _lastPosition;
         IEnumerator RotateTowardsEnemyCoroutine()
         {
             while (true)
             {
-                if (Target == null)
+                Vector3 direction;
+                if (Target == null || Target.Visibility == TargetInfo.VisibilityStatus.Network)
                 {
-                    _agent.updateRotation = true;
-                    yield break;
+                    Vector3 velocity = _agent.velocity.normalized;
+                    if (velocity == Vector3.zero)
+                        direction = _firstChild.forward;
+                    else
+                        direction = velocity;
                 }
-                if (Target.Visibility == TargetInfo.VisibilityStatus.Network)
-                {
-                    _agent.updateRotation = true;
-                    yield return null;
-                }
+                else
+                    direction = (Target.AimPosition - transform.position).normalized;
+                var newRotation = Quaternion.LookRotation(direction);
 
-                var direction = (Target.AimPosition - transform.position).normalized;
-                var newRotation = Quaternion.LookRotation(direction).eulerAngles;
+                Quaternion current = _firstChild.localRotation;
+                _firstChild.localRotation = Quaternion.Slerp(current, newRotation, Time.deltaTime * agentSo.rotationSpeed);
+                transform.localRotation = Quaternion.Euler(0, 0, 0);
                 
-                //Debug.Log("Rotation: " + newRotation);
-                
-                _yRotation -= (_yRotation - newRotation.y) * Time.deltaTime * agentSo.rotationSpeed;
-                _xRotation -= (_xRotation - newRotation.x) * Time.deltaTime * agentSo.rotationSpeed;
-                
-                _xRotation = Mathf.Clamp(_xRotation, agentSo.minXRotation, agentSo.maxXRotation);
-                transform.rotation = Quaternion.Euler(0, newRotation.y, 0);
-                _firstChild.localRotation = Quaternion.Euler(newRotation.x, 0, 0);
-                //Debug.DrawRay(transform.position, direction * 100, Color.magenta);
-                
-                yield return null;
+                yield return new WaitForFixedUpdate();
             }
+        }
+        
+        public void StartAI()
+        {
+            _behaviourTreeRunner.StartAI();
         }
 
         public void StartMaintainIdealDistance(Transform closestTarget)
