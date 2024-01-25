@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Gameplay.Units;
 using UnityEngine;
@@ -57,7 +58,8 @@ namespace Gameplay.Quests.Tasks.TaskHelper.TasksModules
             var enemy = Instantiate(unitPrefab, hit.position , Quaternion.Euler(0, Random.Range(0, 360), 0));
             return enemy;
         }
-        private void SpawnEnemies()
+
+        private IEnumerator SpawnEnemiesCoroutine()
         {
             _enemies = new GameObject[spawnCount];
             for (int i = 0; i < enemiesPrefabs.Count; i++)
@@ -65,21 +67,35 @@ namespace Gameplay.Quests.Tasks.TaskHelper.TasksModules
                 for (int j = 0; j < spawnCount / enemiesPrefabs.Count; j++)
                 {
                     _enemies[i * (spawnCount / enemiesPrefabs.Count) + j] = SpawnUnit(enemiesPrefabs[i], spawnRadius);
+                    yield return null;
                 }
             }
-            
+
             if (areaAsGoal)
                 SetEnemiesGoal(_enemies);
             if (!killOnComplete)
                 _enemies = null;
         }
-        
-        public void SetEnemiesGoal(GameObject[] enemies)
+
+        public void SpawnEnemies()
         {
+            StartCoroutine(SpawnEnemiesCoroutine());
+        }
+        
+        private IEnumerator SetEnemiesGoalCoroutine(GameObject[] enemies)
+        {
+            yield return new WaitForSeconds(0.1f);
             foreach (var enemy in enemies)
             {
                 enemy.GetComponent<AIAgent>().AddDestinationGoal(enemyGoal.position);
+                Debug.Log("Set goal of " + enemy.name + " to " + enemyGoal.position  );
+                yield return new WaitForSeconds(0.1f);
             }
+        }
+        
+        public void SetEnemiesGoal(GameObject[] enemies)
+        {
+            StartCoroutine(SetEnemiesGoalCoroutine(enemies));
         }
 
         public override void OnComplete(Task task)

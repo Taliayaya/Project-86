@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Quests.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
 using Task = Gameplay.Quests.Tasks.Task;
 using TaskStatus = Gameplay.Quests.Tasks.TaskStatus;
 
@@ -62,7 +63,9 @@ namespace Gameplay.Quests
         [Header("Conditions")]
         public Quest[] requiredFinishedQuests = Array.Empty<Quest>();
         
-        
+        [Header("Events")]
+        public UnityEvent<Quest> onActivate;
+        public UnityEvent<Quest> onComplete;
         public bool IsCompleted => Status == QuestStatus.Completed;
         
         public bool CanActivate()
@@ -107,6 +110,7 @@ namespace Gameplay.Quests
                 return;
             Debug.Log($"[Quest] Complete(): Quest {name} completed");
             Status = QuestStatus.Completed;
+            onComplete?.Invoke(this);
             CompleteCompletableTasks(forceComplete);
             foreach (Transform child in transform)
                 child.gameObject.SetActive(false);
@@ -129,9 +133,9 @@ namespace Gameplay.Quests
                     {
                         if (task.Status == TaskStatus.Inactive)
                         {
+                            task.Owner = this;
                             task.Activate();
                             task.RegisterEvents();
-                            task.Owner = this;
                             break;
                         }
                     }
@@ -139,8 +143,8 @@ namespace Gameplay.Quests
                 case TaskOrder.Parallel:
                     foreach (var task in Tasks)
                     {
-                        task.Activate();
                         task.Owner = this;
+                        task.Activate();
                     }
                     break;
                 default:
@@ -153,6 +157,7 @@ namespace Gameplay.Quests
             if (!CanActivate())
                 return false;
             Status = QuestStatus.Active;
+            onActivate?.Invoke(this);
             ActivateTasks();
             return true;
         }

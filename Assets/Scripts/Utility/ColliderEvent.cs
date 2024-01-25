@@ -22,12 +22,12 @@ namespace Utility
             onCollisionExit?.Invoke(collision);
         }
 
-        protected void OnTriggerEnter(Collider other)
+        protected virtual void OnTriggerEnter(Collider other)
         {
             onTriggerEnter?.Invoke(other);
         }
         
-        protected void OnTriggerExit(Collider other)
+        protected virtual void OnTriggerExit(Collider other)
         {
             onTriggerExit?.Invoke(other);
         }

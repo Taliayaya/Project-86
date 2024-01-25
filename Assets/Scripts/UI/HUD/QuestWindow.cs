@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Gameplay.Quests;
 using Gameplay.Quests.Tasks;
@@ -39,7 +40,15 @@ namespace UI.HUD
                 return;
             }
             transform.GetChild(0).gameObject.SetActive(true);
+            StartCoroutine(NewTasksCoroutine(quest));
+        }
+        
+        IEnumerator NewTasksCoroutine(Quest quest)
+        {
+            yield return new WaitForSeconds(0.5f);
             DestroyTasksTexts();
+            yield return null;
+            
             foreach (var task in quest.Tasks)
             {
                 TMP_Text text = Instantiate(questDescriptionPrefab, questDescriptionTransform).GetComponent<TMP_Text>();
@@ -49,17 +58,18 @@ namespace UI.HUD
                     text.text += $"[Optional] ";
                 text.text += task;
                 SetTextColorDependingStatus(task.Status, text);
+                yield return null;
             }
             quest.OnTaskProgressChanged += OnTaskProgressUpdate;
             quest.OnTaskStatusChanged += OnTaskStatusChanged;
-
         }
 
         private void OnTaskStatusChanged(TaskStatus oldstatus, Task task)
         {
-            for (int i = 0; i < _tasksTexts.Count; i++)
+            for (int i = 0; i < _tasksTexts.Count && i < task.Owner.Tasks.Count; i++)
             {
                 var text = _tasksTexts[i];
+                Debug.Log("task: " + task.name);
                 var currentTask = task.Owner.Tasks[i];
                 SetTextColorDependingStatus(currentTask.Status, text);
             }

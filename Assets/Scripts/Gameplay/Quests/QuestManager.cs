@@ -32,8 +32,8 @@ namespace Gameplay.Quests
                 if (Instance._currentQuest != null)
                     Instance._currentQuest.OnStatusChanged -= Instance.OnQuestStatusChanged;
                 Instance._currentQuest = value;
-                if (value != null)
-                    value.OnStatusChanged += Instance.OnQuestStatusChanged;
+                //if (value != null)
+                //    value.OnStatusChanged += Instance.OnQuestStatusChanged;
 
                 EventManager.TriggerEvent("QuestChanged", value);
             }
@@ -49,7 +49,7 @@ namespace Gameplay.Quests
         {
             foreach (var quest in quests)
             {
-                quest.OnStatusChanged += OnQuestStatusChanged;
+                quest.OnStatusChanged += OnQuestStatusChanged; //Already added in CurrentQuest setter
                 if (CurrentQuest == null && quest.Activate())
                 {
                     SoundManager.PlayOneShot(questStartSound);
