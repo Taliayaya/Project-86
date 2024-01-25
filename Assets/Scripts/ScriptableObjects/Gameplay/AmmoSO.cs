@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace ScriptableObjects
 {
@@ -20,7 +21,7 @@ namespace ScriptableObjects
 
         [Header("Ammo Prefabs")]
         public GameObject prefab;
-        public AudioClip fireSound;
+        public List<AudioClip> fireSounds;
         public AudioClip reloadSound;
         public GameObject explosionPrefab;
         public GameObject muzzleFlashPrefab;
@@ -29,6 +30,10 @@ namespace ScriptableObjects
         public AudioClip onHitSound;
         public GameObject missEffect;
 
+        public AudioClip GetRandomFireSound()
+        {
+            return fireSounds[Random.Range(0, fireSounds.Count)];
+        }
         public float Damage(int time) => damageCurve.Evaluate(time);
 
     }
