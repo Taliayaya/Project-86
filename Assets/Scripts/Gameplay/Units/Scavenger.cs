@@ -19,6 +19,13 @@ namespace Gameplay.Units
         public UnityEvent<DamagePackage> onTakeDamage = new UnityEvent<DamagePackage>();
         
         [SerializeField] private bool emitEvents;
+        
+        public AudioClip idleSound;
+        public AudioClip followSound;
+        public AudioClip reloadSound;
+        public AudioClip goToSound;
+        public AudioClip hideSound;
+        public AudioSource audioSource;
 
         public override float Priority => 1;
 

@@ -84,7 +84,6 @@ namespace Gameplay.Mecha
 
         private void OnTriggerEnter(Collider other)
         {
-            Debug.Log("OnTriggerEnter" + other.name);
             var scavenger = other.GetComponentInParent<Scavenger>();
             if (scavenger)
             {
