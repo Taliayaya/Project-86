@@ -108,7 +108,7 @@ TrailRenderer:
   m_Time: 0.05
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 3
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -159,7 +159,7 @@ TrailRenderer:
     textureMode: 0
     shadowBias: 0.5
     generateLightingData: 0
-  m_MinVertexDistance: 0.1
+  m_MinVertexDistance: 0.05
   m_Autodestruct: 1
   m_Emitting: 1
 --- !u!1 &6852552667330722183

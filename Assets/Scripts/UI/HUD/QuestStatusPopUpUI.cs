@@ -26,7 +26,7 @@ namespace UI.HUD
         private void Awake()
         {
             
-            EventManager.AddListener("QuestStatusChanged", OnQuestStatusChange);
+            //EventManager.AddListener("QuestStatusChanged", OnQuestStatusChange);
         }
 
         private void OnEnable()
@@ -44,6 +44,7 @@ namespace UI.HUD
 
         private void OnQuestStatusChange(object arg0)
         {
+            Debug.Log("OnQuestStatusChange");
             var quest = (Quest) arg0;
             if (quest.Status is not QuestStatus.Inactive and not QuestStatus.Locked)
             {

@@ -36,13 +36,17 @@ namespace Gameplay
         {
             if (autoCreateScavenger && !scavengerOwned)
             {
-                scavengerOwned = Instantiate(scavengerPrefab, transform.position + Vector3.right * spawnDistance, transform.rotation).GetComponent<Scavenger>();
+                scavengerOwned = Instantiate(scavengerPrefab, transform.position + Vector3.back * spawnDistance, transform.rotation).GetComponent<Scavenger>();
                 if (!scavengerOwned.TryGetComponent(out _scavengerController))
                     _scavengerController = scavengerOwned.gameObject.AddComponent<ScavengerController>();
+                Debug.Log("Scavenger created" +_scavengerController.gameObject.name);
                 _scavengerController.master = this;         
                 InitListeners();
             }
-           
+
+            if (emitOrListen)
+                StartCoroutine(ScavengerDistanceCoroutine());
+
         }
 
         private void InitListeners()
@@ -68,19 +72,25 @@ namespace Gameplay
 
         private void OnEnable()
         {
-            EventManager.AddListener("OnCallScavenger", OnCallScavenger);
-            EventManager.AddListener("OnStopScavenger", OnStopScavenger);
-            EventManager.AddListener("OnOrderScavenger", OnOrderScavenger);
-            EventManager.AddListener("OnOrderScavengerSubmit", OnPrimaryFire);
+            if (emitOrListen)
+            {
+                EventManager.AddListener("OnCallScavenger", OnCallScavenger);
+                EventManager.AddListener("OnStopScavenger", OnStopScavenger);
+                EventManager.AddListener("OnOrderScavenger", OnOrderScavenger);
+                EventManager.AddListener("OnOrderScavengerSubmit", OnPrimaryFire);
+            }
 
         }
 
         private void OnDisable()
         {
-            EventManager.RemoveListener("OnCallScavenger", OnCallScavenger);
-            EventManager.RemoveListener("OnStopScavenger", OnStopScavenger);
-            EventManager.RemoveListener("OnOrderScavenger", OnOrderScavenger);
-            EventManager.RemoveListener("OnOrderScavengerSubmit", OnPrimaryFire);
+            if (emitOrListen)
+            {
+                EventManager.RemoveListener("OnCallScavenger", OnCallScavenger);
+                EventManager.RemoveListener("OnStopScavenger", OnStopScavenger);
+                EventManager.RemoveListener("OnOrderScavenger", OnOrderScavenger);
+                EventManager.RemoveListener("OnOrderScavengerSubmit", OnPrimaryFire);
+            }
         }
 
         private void OnDrawGizmosSelected()
@@ -89,12 +99,18 @@ namespace Gameplay
             Gizmos.DrawWireSphere(transform.position + Vector3.right * spawnDistance, 0.5f);
         }
         
-        private void Update()
+        IEnumerator ScavengerDistanceCoroutine()
         {
-            if (scavengerOwned)
+            while (true)
             {
-                var distanceFromScavenger = Vector3.Distance(transform.position, scavengerOwned.transform.position);
-                EventManager.TriggerEvent("OnScavengerDistanceChange", distanceFromScavenger);
+                if (scavengerOwned)
+                {
+                    Debug.Log("Scavenger distance: " + scavengerOwned.name + " " + transform.name + Vector3.Distance(transform.position, scavengerOwned.transform.position));
+                    var distanceFromScavenger = Vector3.Distance(transform.position, scavengerOwned.transform.position);
+                    EventManager.TriggerEvent("OnScavengerDistanceChange", distanceFromScavenger);
+                }
+
+                yield return new WaitForSeconds(1);
             }
         }
         

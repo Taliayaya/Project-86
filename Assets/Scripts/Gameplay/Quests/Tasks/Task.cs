@@ -32,6 +32,10 @@ namespace Gameplay.Quests.Tasks
             }
         }
 
+        private void Awake()
+        {
+        }
+
         [NonSerialized]
         private DateTime? _startTime;
         public DateTime? StartTime
@@ -46,6 +50,7 @@ namespace Gameplay.Quests.Tasks
 
         public virtual void Activate()
         {
+            Debug.Log("[Task] Awake(): Task created" + name + " "+ Owner.Tasks.Count );
             if (Status == TaskStatus.Inactive)
             {
                 _startTime = DateTime.Now;

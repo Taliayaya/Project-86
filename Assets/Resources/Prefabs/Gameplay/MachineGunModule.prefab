@@ -187,7 +187,8 @@ MonoBehaviour:
   gunTransform: {fileID: 206984805398388775}
   gunAudioSource: {fileID: 5952406706035772804}
   cameraTransform: {fileID: 0}
-  muzzleTransform: {fileID: 2454295433268468797}
+  muzzleFlash: {fileID: 0}
+  muzzleLight: {fileID: 0}
   myParentColliderToIgnore: {fileID: 0}
   ammoLeftOrRight: Left
   canFire: 1
@@ -214,7 +215,7 @@ AudioSource:
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
-  Pan2D: 0
+  Pan2D: -0.3
   rolloffMode: 2
   BypassEffects: 0
   BypassListenerEffects: 0

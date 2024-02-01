@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Gameplay.Units;
 using UnityEngine;
 using UnityEngine.AI;
@@ -23,25 +24,33 @@ namespace Gameplay
         
         public UnityEvent<ScavengerState> onScavengerStateChange = new UnityEvent<ScavengerState>();
         [Header("Settings")]
-        [SerializeField] private float followDistance = 30;
+        [SerializeField] private float followDistance = 10;
 
         public ScavengerMaster master;
         private ScavengerState _state = ScavengerState.Idle;
+        
+        
 
+        private ScavengerState _previousState = ScavengerState.Idle;
         public ScavengerState State
         {
             get => _state;
             set
             {
+                _previousState = _state;
                 _state = value;
                 if (!gameObject.activeSelf)
                     return;
                 switch (_state)
                 {
                     case ScavengerState.Hide:
+                        if (State != _previousState && _scavenger.hideSound)
+                            _scavenger.audioSource.PlayOneShot(_scavenger.hideSound);
                         _scavengerAgent.isStopped = false;
                         break;
                     case ScavengerState.Idle:
+                        if (State != _previousState && _scavenger.idleSound) 
+                            _scavenger.audioSource.PlayOneShot(_scavenger.idleSound);
                         _scavengerAgent.isStopped = true;
                         _scavengerAgent.ResetPath();
                         break;
@@ -50,6 +59,9 @@ namespace Gameplay
                         _scavengerAgent.ResetPath();
                         break;
                     case ScavengerState.Follow:
+                        
+                        if (State != _previousState && _scavenger.followSound)
+                            _scavenger.audioSource.PlayOneShot(_scavenger.followSound);
                         _scavengerAgent.isStopped = false;
                         break;
                     case ScavengerState.GoTo:
@@ -70,6 +82,11 @@ namespace Gameplay
             _scavenger = GetComponent<Scavenger>();
             _scavenger.onTakeDamage.AddListener(OnHealthChange);
         }
+        
+        private void Start()
+        {
+            StartCoroutine(ScavengerActions());
+        }
 
         private Vector3 _enemyOrigin;
         private void OnHealthChange(DamagePackage arg0)
@@ -86,28 +103,39 @@ namespace Gameplay
                 return;
             _scavengerAgent.SetDestination(hit1.position);
         }
-
-        private void Update()
+        
+        public void GoTo(Transform target)
         {
-            switch (State)
+            _scavengerAgent.SetDestination(target.position);
+            if (_scavenger.goToSound)
+                _scavenger.audioSource.PlayOneShot(_scavenger.goToSound);
+        }
+
+        private IEnumerator ScavengerActions()
+        {
+            while (true)
             {
-                case ScavengerState.Hide:
-                    Hide();
-                    break;
-                case ScavengerState.Idle:
-                    Idle();
-                    break;
-                case ScavengerState.Follow:
-                    Follow();
-                    break;
-                case ScavengerState.Reloading:
-                    Reloading();
-                    break;
-                case ScavengerState.GoTo:
-                    GoTo();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                switch (State)
+                {
+                    case ScavengerState.Hide:
+                        Hide();
+                        break;
+                    case ScavengerState.Idle:
+                        Idle();
+                        break;
+                    case ScavengerState.Follow:
+                        Follow();
+                        break;
+                    case ScavengerState.Reloading:
+                        Reloading();
+                        break;
+                    case ScavengerState.GoTo:
+                        GoTo();
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+                yield return new WaitForSeconds(0.5f);
             }
         }
 
@@ -119,6 +147,7 @@ namespace Gameplay
             Vector3 position = transform.position;
             Vector3 fleeVector = _enemyOrigin - position;
             Seek(position - fleeVector);
+            
             
         }
         
@@ -134,6 +163,7 @@ namespace Gameplay
                 State = ScavengerState.Reloading;
                 return;
             }
+            
         }
         
         private void GoTo()
@@ -143,12 +173,15 @@ namespace Gameplay
                 State = ScavengerState.Idle;
                 return;
             }
+            
         }
 
         public void GoTo(Vector3 dest)
         {
             State = ScavengerState.GoTo;
             _scavengerAgent.SetDestination(dest);
+            if (_scavenger.goToSound)
+                _scavenger.audioSource.PlayOneShot(_scavenger.goToSound);
         }
         
         private void Follow()
@@ -166,6 +199,7 @@ namespace Gameplay
                 return;
             }
             _scavengerAgent.SetDestination(master.transform.position);
+            
         }
         
         private void Reloading()
@@ -175,6 +209,8 @@ namespace Gameplay
                 State = ScavengerState.Idle;
                 return;
             }
+            if (State != _previousState && _scavenger.reloadSound)
+                _scavenger.audioSource.PlayOneShot(_scavenger.reloadSound);
         }
 
         #endregion

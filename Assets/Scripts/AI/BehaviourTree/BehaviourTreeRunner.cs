@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -14,11 +15,25 @@ namespace AI.BehaviourTree
             tree.Bind();
         }
         
-        
-        private void Update()
+        private IEnumerator AIUpdate()
         {
-            if (!GameManager.GameIsPaused)
-                tree.Update();
+            while (true)
+            {
+                if (!GameManager.GameIsPaused)
+                    tree.Update();
+                yield return null;
+            }
         }
+        
+        public void StartAI()
+        {
+            StartCoroutine(AIUpdate());
+        }
+        
+        public void StopAI()
+        {
+            StopAllCoroutines();
+        }
+       
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Gameplay.Dialogue
 {
@@ -7,8 +8,11 @@ namespace Gameplay.Dialogue
     public class DialogueSO : ScriptableObject
     {
         public AudioClip voice;
-        public string[] dialogues;
+        [TextArea] public string[] dialogues;
         public float[] dialoguesEndTime;
         public string speaker;
+        public bool ignorePreviousDialogue = false; // this dialogue will be played even if there is a dialogue playing
+        
+        public UnityEvent<DialogueSO> dialogueStartedEvent = new UnityEvent<DialogueSO>();
     }
 }

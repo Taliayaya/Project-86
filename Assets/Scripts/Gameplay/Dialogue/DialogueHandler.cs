@@ -9,6 +9,7 @@ namespace Gameplay.Dialogue
     public class DialogueHandler : MonoBehaviour
     {
         [Header("References")]
+        [SerializeField] private GameObject dialoguePanel;
         [SerializeField] private TMP_Text dialogueText;
         [SerializeField] private TMP_Text speakerText;
         [SerializeField] private AudioSource audioSource;
@@ -30,6 +31,8 @@ namespace Gameplay.Dialogue
 
         IEnumerator PlayCoroutine(DialogueSO dialogue)
         {
+            dialogue.dialogueStartedEvent?.Invoke(dialogue);
+            dialoguePanel.SetActive(true);
             _isPlaying = true;
             speakerText.text = dialogue.speaker;
             audioSource.clip = dialogue.voice;
@@ -40,19 +43,17 @@ namespace Gameplay.Dialogue
             {
                 string line = dialogue.dialogues[k];
                 dialogueText.text = "";
-                float time = 0;
                 // display one character every 0.03s
                 for (int i = 0; i < line.Length; ++i)
                 {
                     dialogueText.text += line[i];
                     yield return new WaitForSeconds(1/charPerSecond);
-                    time += 1/charPerSecond;
                 }
-                float deltaTime = dialogue.dialoguesEndTime[k] - time;
-                if (deltaTime > 0)
-                    yield return new WaitForSeconds(deltaTime);
+
+                yield return new WaitForSeconds(dialogue.dialoguesEndTime[k]);
             }
 
+            dialoguePanel.SetActive(false);
             _isPlaying = false;
             if (_dialogueQueue.TryDequeue(out var nextDialogue))
                 yield return StartCoroutine(PlayCoroutine(nextDialogue));
@@ -60,6 +61,12 @@ namespace Gameplay.Dialogue
 
         private void Play(DialogueSO dialogueSo)
         {
+            if (dialogueSo.ignorePreviousDialogue)
+            {
+                _isPlaying = false;
+                StopAllCoroutines();
+                _dialogueQueue.Clear();
+            }
             if (!_isPlaying && _dialogueQueue.Count == 0)
             {
                 StartCoroutine(PlayCoroutine(dialogueSo));

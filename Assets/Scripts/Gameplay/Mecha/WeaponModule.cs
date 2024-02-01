@@ -27,6 +27,7 @@ namespace Gameplay.Mecha
         [Header("References")]
         [SerializeField] private Transform gunTransform;
         [SerializeField] private AudioSource gunAudioSource;
+        [SerializeField] private AudioSource reloadAudioSource;
         [SerializeField] private Transform cameraTransform;
         
         [Header(("Muzzle"))]
@@ -72,14 +73,32 @@ namespace Gameplay.Mecha
         {
             _gunTransformCollider = gunTransform.parent.GetComponent<Collider>();
             CurrentAmmoRemaining = ammo.maxAmmo;
-            gunAudioSource.loop = holdFire;
+            //gunAudioSource.loop = holdFire;
         }
 
         private void OnEnable()
         {
             EventManager.AddListener("OnPause", OnPause);
             EventManager.AddListener("OnResume", OnResume);
+            if (!listenOrTriggersEvents) return; 
+            Debug.Log($"OnEnable {transform.name}, {listenOrTriggersEvents}");
+            RegisterPlayerEvents();
+            
+        }
+
+        
+
+        private void OnDisable()
+        {
+            EventManager.RemoveListener("OnPause", OnPause);
+            EventManager.RemoveListener("OnResume", OnResume);
             if (!listenOrTriggersEvents) return;
+            UnRegisterPlayerEvents();
+            
+        }
+        
+        private void RegisterPlayerEvents()
+        {
             switch (weaponType)
             {
                 case WeaponType.Primary:
@@ -91,16 +110,9 @@ namespace Gameplay.Mecha
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            
         }
-
-        
-
-        private void OnDisable()
+        private void UnRegisterPlayerEvents()
         {
-            EventManager.RemoveListener("OnPause", OnPause);
-            EventManager.RemoveListener("OnResume", OnResume);
-            if (!listenOrTriggersEvents) return;
             switch (weaponType)
             {
                 case WeaponType.Primary:
@@ -112,7 +124,6 @@ namespace Gameplay.Mecha
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            
         }
 
         #endregion
@@ -146,15 +157,14 @@ namespace Gameplay.Mecha
                 yield break;
             }
 
-            PlayBulletSound(false);
             while (_isHeld && _currentAmmoRemaining > 0)
             {
+                PlayBulletSound(false);
                 Shoot();
                 yield return new WaitForSeconds(1/ammo.fireRate);
             }
 
             yield return new WaitForSeconds(0.1f);
-            gunAudioSource.Stop();
         }
 
 
@@ -186,25 +196,21 @@ namespace Gameplay.Mecha
         /// <returns></returns>
         public IEnumerator ShootHoldDuringTime(float time, Func<bool> canShoot)
         {
-            PlayBulletSound(false);
             var startTime = Time.time;
             
             while (Time.time - startTime < time)
             {
                 if (!canShoot())
                 {
-                    gunAudioSource.Pause();
                     yield return new WaitForSeconds(1f);
                     continue;
                 }
-                gunAudioSource.UnPause();
-
                 Shoot(cameraTransform);
+                PlayBulletSound();
                 yield return new WaitForSeconds(1/ammo.fireRate);
             }
             
             yield return new WaitForSeconds(0.1f);
-            gunAudioSource.Stop();
             
         }
 
@@ -225,6 +231,12 @@ namespace Gameplay.Mecha
                 else
                 {
                     Shoot();
+                    if (listenOrTriggersEvents)
+                    {
+                        EventManager.TriggerEvent("OnShoot:" + weaponType, ammo);
+                        Debug.Log("OnShoot:" + weaponType);
+                    }
+
                     PlayBulletSound();
                 }
             }
@@ -302,16 +314,16 @@ namespace Gameplay.Mecha
 
         private void PlayReloadSound()
         {
-            gunAudioSource.PlayOneShot(ammo.reloadSound);
+            reloadAudioSource.PlayOneShot(ammo.reloadSound);
         }
 
         private void PlayBulletSound(bool oneShot = true)
         {
             if (oneShot)
-                gunAudioSource.PlayOneShot(ammo.fireSound);
+                gunAudioSource.PlayOneShot(ammo.GetRandomFireSound());
             else
             {
-                gunAudioSource.clip = ammo.fireSound;
+                gunAudioSource.clip = ammo.GetRandomFireSound();
                 gunAudioSource.Play();
             }
         }
@@ -337,6 +349,14 @@ namespace Gameplay.Mecha
         public void ResetAmmo()
         {
             CurrentAmmoRemaining = ammo.maxAmmo;
+        }
+        
+        public void CanShoot(bool canShoot)
+        {
+            listenOrTriggersEvents = canShoot;
+            UnRegisterPlayerEvents();
+            if (listenOrTriggersEvents)
+                RegisterPlayerEvents();
         }
         
     }

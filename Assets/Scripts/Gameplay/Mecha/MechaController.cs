@@ -40,6 +40,11 @@ namespace Gameplay.Mecha
         [SerializeField]
         private Transform[] ground;
         [SerializeField] private LayerMask groundMask;
+        
+        [Header("Main Recoil")]
+        [SerializeField] private float recoilStrength = 1f;
+        [SerializeField] private float recoilDuration = 0.1f;
+        [SerializeField] private float recoilCounterForce = 1f;
         #endregion
 
         #region Private Fields
@@ -133,7 +138,10 @@ namespace Gameplay.Mecha
             EventManager.AddListener("OnZoomIn", OnZoomIn);
             EventManager.AddListener("OnZoomOut", OnZoomOut);
             EventManager.AddListener("OnRun", OnRun);
+            EventManager.AddListener("OnShoot:Primary", OnShoot);
         }
+
+        
 
         protected override void OnDisable()
         {
@@ -143,6 +151,7 @@ namespace Gameplay.Mecha
             EventManager.RemoveListener("OnZoomIn", OnZoomIn);
             EventManager.RemoveListener("OnZoomOut", OnZoomOut);
             EventManager.RemoveListener("OnRun", OnRun);
+            EventManager.RemoveListener("OnShoot:Primary", OnShoot);
         }
 
         private void FixedUpdate()
@@ -163,6 +172,7 @@ namespace Gameplay.Mecha
         {
             base.Start();
             EventManager.TriggerEvent("RegisterMinimapTarget", transform);
+            Cursor.lockState = CursorLockMode.Locked;
         }
 
         #endregion
@@ -211,7 +221,7 @@ namespace Gameplay.Mecha
         {
             _yVelocity += gravity * Time.fixedDeltaTime;
             if (_isGrounded)
-                _yVelocity = gravity / 10;
+                _yVelocity = gravity / 2;
             _rigidbody.AddForce(Vector3.up * (_yVelocity), ForceMode.Force);
         }
 
@@ -233,6 +243,11 @@ namespace Gameplay.Mecha
                 var limitedVel = flatVel.normalized * MovementSpeed;
                 _rigidbody.velocity = new Vector3(limitedVel.x, _rigidbody.velocity.y, limitedVel.z);
             }
+        }
+        
+        public void CanMove(bool canMove)
+        {
+            _rigidbody.constraints = canMove ? RigidbodyConstraints.FreezeRotation : RigidbodyConstraints.FreezeAll;
         }
 
         
@@ -334,5 +349,14 @@ namespace Gameplay.Mecha
         }
         
         #endregion
+        
+        [SerializeField] private CinemachineImpulseSource impulseSource;
+
+        private void OnShoot(object arg0)
+        {
+            Debug.Log("OnShoot");
+            impulseSource.GenerateImpulse(Vector3.forward * recoilStrength);
+            _rigidbody.AddForce(-transform.forward * recoilCounterForce, ForceMode.Impulse);
+        }
     }
 }
