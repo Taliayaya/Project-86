@@ -17,6 +17,7 @@ namespace ScriptableObjects.AI
         public int maxXRotation = 30;
 
         public GameObject deathEffect;
+        public GameObject deadPrefab;
 
     }
 }

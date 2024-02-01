@@ -248,7 +248,8 @@ namespace Gameplay.Units
             if (agentSo.deathEffect != null)
                 Instantiate(agentSo.deathEffect, transform.position, Quaternion.identity);
             base.Die();
-            
+            if (agentSo.deadPrefab != null)
+                Instantiate(agentSo.deadPrefab, transform.position, transform.rotation);
         }
 
         #region Debug
