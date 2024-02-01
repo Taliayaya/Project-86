@@ -1,3 +1,8 @@
+[![Total Download badge](https://img.shields.io/github/downloads/Taliayaya/Project-86/total)](https://github.com/Taliayaya/Project-86/releases/latest)
+[![Version badge](https://img.shields.io/github/v/release/Taliayaya/Project-86)](https://github.com/Taliayaya/Project-86/releases/latest)
+[![Discord](https://img.shields.io/badge/Discord-5865F2)](https://discord.gg/ZS4WYyPGgR)
+[![Unity](https://img.shields.io/badge/Unity-555555)]()
+
 # Project 86
 
 <p align="center">
@@ -63,7 +68,7 @@ The game is not on Steam (yet) and players have two ways to download the game fo
 
 A launcher was made so that players do not have to go through the pain of re-downloading every new version. The launcher is not as powerful as Steam update system, yet it already avoids redownloading unchanged files and can hence make the download lighter.
 
-- [Download the launcher](https://github.com/Taliayaya/Project-86/releases/download/v1.0.0-alpha/Project-86-Launcher-Setup_v1.0.1.msi)
+- [Download the launcher](https://github.com/Taliayaya/Project-86/releases/download/v1.0.0-alpha/Project-86-Launcher-Setup_v1.1.1.msi)
 - Execute the launcher
 > Your computer will treat this EXE file as a virus. This is because we do not hold a certificate for it yet. This EXE is a compiled installer made from Visual Studio and [the app publicly available here](https://github.com/Taliayaya/Project-86-Launcher)
 - After installation, the game will be installed in `%Appdata%/Project-86-Community/Build/`. It is not possible with the current launcher to change the download folder. ([You can contribute and improve the launcher](https://github.com/Taliayaya/Project-86-Launcher)
@@ -146,6 +151,12 @@ You then want to clone the project with `git@github.com:Taliayaya/Project-86.git
 
 When this is done, you simply want to open the root with Unity and the version used. This will generate more files so make sure to have enough space to work on the project (At least 20 Go)
 You then later on want to COMMIT and PUSH your and changes. For that, we advise you to contact us if you're new to all that.
+
+To download the `Additional Assets` folder to fully open this project, please download it from this link: https://drive.google.com/drive/folders/1pkRBIPXqGKoHKCeHJVrc5NJOGXjXa1D8?usp=sharing
+and extract it so that it is at the root of the `Assets` folder (the final path should be `Assets/Additional Assets`)
+
+> Note: Previously, the `Additional Assets` folder was tracked using `Git LFS`. However, the bandwidth was consumed too fast (within a week). Hence, as this folder was taking 90% of the storage, it was removed from it.
+> This file shouldn't have much modification or breaking change but should still be updated once in a while. (follow the discord for more information)
 
 ## Disclaimer
 
