@@ -30,6 +30,8 @@ namespace Gameplay.Units
         public UnityEvent<float, float> onHealthChange;
 
         private Rigidbody _rb;
+        [Tooltip("If the armor value is bigger than the bullet, damages are neglected.")]
+        public float armor = 10;
         
         public UnityEvent<Unit> onUnitDeath;
         
@@ -38,6 +40,7 @@ namespace Gameplay.Units
         [SerializeField] private EngineAudioSO engineAudioSo;
         
         public virtual float Health { get; set; } = 100;
+        public virtual float Armor { get; set; } = 10;
         public float MaxHealth { get; set; } = 100;
         [SerializeField] private Faction faction;
         public Faction Faction { get => faction; set => faction = value; }
@@ -110,6 +113,7 @@ namespace Gameplay.Units
      
         public virtual void OnTakeDamage(DamagePackage damagePackage)
         {
+            
             onHealthChange?.Invoke(Health, MaxHealth);
         }
 
@@ -139,6 +143,7 @@ namespace Gameplay.Units
 
         public virtual void Awake()
         {
+            Armor = armor;
             Factions.AddMember(faction, this);
         }
     }

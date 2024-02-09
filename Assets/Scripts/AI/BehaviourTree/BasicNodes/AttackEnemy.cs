@@ -38,7 +38,6 @@ namespace AI.BehaviourTree.BasicNodes
                 _aiAgent = blackBoard.GetValue<AIAgent>("aiAgent");
                 _coroutines = new Coroutine[_weaponModules.Length];
                 _isSet = true;
-                Debug.Log("Weapon Module : " +_weaponModules.Length);
             }
 
             // closest target is set in CanSeeObject and can change
@@ -73,7 +72,8 @@ namespace AI.BehaviourTree.BasicNodes
                 return weaponModule.StartCoroutine(weaponModule.ShootHoldDuringTime(timeBeforeSpotExpired,
                     EnemyInRange));
             }
-            return weaponModule.StartCoroutine(weaponModule.ShootDuringTime(timeBeforeSpotExpired, EnemyInRange));
+            
+            return weaponModule.StartShootDuringTime(timeBeforeSpotExpired, EnemyInRange);
         }
 
         public bool EnemyInRange()

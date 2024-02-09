@@ -9,11 +9,14 @@ namespace Gameplay
         public Faction Faction;
         public Vector3 DamageSourcePosition;
         public AudioClip DamageAudioClip;
+        public bool IsBullet;
+        public float BulletSize;
     }
     public interface IHealth
     {
         public float Health { get; set; }
         public float MaxHealth { get; set; }
+        public float Armor { get; set; }
         
         public Faction Faction { get; set; }
 
@@ -21,6 +24,8 @@ namespace Gameplay
 
         public void TakeDamage(DamagePackage damagePackage)
         {
+            if (damagePackage.IsBullet && damagePackage.BulletSize < Armor)
+                return;
             Health = Mathf.Clamp(Health - damagePackage.DamageAmount, 0, MaxHealth);
             OnTakeDamage(damagePackage);
             

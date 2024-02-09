@@ -42,14 +42,19 @@ namespace Gameplay
             Faction = _factionOrigin,
             DamageAmount = Damage,
             DamageSourcePosition = _origin,
-            DamageAudioClip = Ammo.onHitSound
+            DamageAudioClip = Ammo.onHitSound,
+            BulletSize = Ammo.bulletSize,
+            IsBullet = true
          };
          
-         Debug.Log("bullet hit " + other.gameObject.name);
+         Debug.Log("bullet hit " + other.gameObject.name + other.collider.name);
          // commented to avoid damaging twice
          if (other.gameObject.TryGetComponent(out IHealth health) && Ammo.explosionRadius == 0)
          {
+            if (other.collider.CompareTag("NonHitbox"))
+                return;
             health.TakeDamage(_damagePackage);
+            return;
          }
          else
          {
