@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
@@ -15,10 +16,14 @@ public class NLegProceduralAnimation : MonoBehaviour
     [SerializeField] private int smoothness = 1;
     [SerializeField] private bool bodyOrientation = true;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Rigidbody rb;
+    [SerializeField] private NavMeshAgent agent;
+    [SerializeField] private Vector3 legOffset = new Vector3(0, 0.0f, 0);
     
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip[] stepSounds;
+    
     
 
     private Vector3[,] _defaultLegPositions;
@@ -40,7 +45,7 @@ public class NLegProceduralAnimation : MonoBehaviour
         Vector3[] res = new Vector3[2];
         RaycastHit hit;
         Ray ray = new Ray(point + halfRange * up, -up);
-        if (Physics.Raycast(ray, out hit, 2 * halfRange, layerMask))
+        if (Physics.Raycast(ray, out hit, 3 * halfRange, layerMask))
         {
             res[0] = hit.point;
             res[1] = hit.normal;
@@ -76,7 +81,8 @@ public class NLegProceduralAnimation : MonoBehaviour
 
     private void FixedUpdate()
     {
-        UpdateVelocity();
+        _velocity = rb ? rb.velocity : agent.velocity;
+        //UpdateVelocity();
             
         (int legToMove, int leftLeg) = LegToMove();
         
@@ -110,14 +116,12 @@ public class NLegProceduralAnimation : MonoBehaviour
             {
                 if (_legMoving[i, j])
                     continue;
-                _desiredLegPositions[i, j] = transform.TransformPoint(_defaultLegPositions[i, j]);
+                _desiredLegPositions[i, j] = transform.TransformPoint(_defaultLegPositions[i, j]) + legOffset;
 
                 Vector3 direction = Vector3.ProjectOnPlane(
                     _desiredLegPositions[i, j] + _velocity * velocityMultiplier - _lastLegPositions[i, j],
                     transform.up);
-                Debug.DrawRay(_lastLegPositions[i, j], direction * 2, Color.red, 0.1f);
                 float distance = direction.magnitude;
-                Debug.Log("Distance " + i + " " + j + " " + distance);
                 if (distance > maxDistance)
                 {
                     maxDistance = distance;
@@ -151,7 +155,6 @@ public class NLegProceduralAnimation : MonoBehaviour
         {
             return;
         }
-        Debug.Log("Moving leg " + legToMove + " " + leftLeg);
 
         Vector3 targetPoint = _desiredLegPositions[legToMove, leftLeg] +
                               Mathf.Clamp(_velocity.magnitude * velocityMultiplier, 0f, 1.5f) *
@@ -159,7 +162,7 @@ public class NLegProceduralAnimation : MonoBehaviour
                               _velocity * velocityMultiplier;
         _legMoving[legToMove, leftLeg] = true;
         Vector3[] positionAndNormal = MatchToSurfaceFromAbove(targetPoint, RaycastRange, transform.up, groundLayer);
-        StartCoroutine(MoveLegCoroutine(legToMove, leftLeg, positionAndNormal[0]));
+        StartCoroutine(MoveLegCoroutine(legToMove, leftLeg, positionAndNormal[0] + legOffset));
     }
 
     private void StickLegsToGround()
@@ -188,8 +191,12 @@ public class NLegProceduralAnimation : MonoBehaviour
             legTargets[legToMoveIndex].position += transform.up * (Mathf.Sin((float)i / (smoothness + 1f) * Mathf.PI) * stepHeight);
             yield return new WaitForFixedUpdate();
         }
-        if (Physics.Raycast(legTargets[legToMoveIndex].position, Vector3.down, out RaycastHit hit, 1f, groundLayer))
-            audioSource.PlayOneShot(stepSounds[Random.Range(0, stepSounds.Length)], 1 / (float)_soundQueue );
+
+        if (Physics.Raycast(legTargets[legToMoveIndex].position, Vector3.down, out RaycastHit hit, 1.5f, groundLayer))
+        {
+            audioSource.PlayOneShot(stepSounds[Random.Range(0, stepSounds.Length)], 1 / (float)_soundQueue);
+        }
+
         legTargets[legToMoveIndex].position = targetPoint;
         _lastLegPositions[legToMove, leftLeg] = targetPoint;
         _legMoving[legToMove, leftLeg] = false;
