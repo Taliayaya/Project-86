@@ -107,7 +107,10 @@ namespace Gameplay.Quests.Tasks
         
         public virtual void UnregisterEvents()
         {
-            
+            foreach (var taskModule in GetComponentsInChildren<TaskModule>())
+            {
+                taskModule.DeActivate(this);
+            }
         } 
 
 

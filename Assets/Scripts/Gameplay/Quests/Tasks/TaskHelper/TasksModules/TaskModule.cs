@@ -29,6 +29,12 @@ namespace Gameplay.Quests.Tasks.TaskHelper.TasksModules
                     throw new ArgumentOutOfRangeException(nameof(oldStatus), oldStatus, null);
             }
         }
+        
+        
+        public virtual void DeActivate(Task task)
+        {
+            task.OnStatusChanged -= OnStatusChanged;
+        }
 
         public virtual void OnComplete(Task task)
         {
