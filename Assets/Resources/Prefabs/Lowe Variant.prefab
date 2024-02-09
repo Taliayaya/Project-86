@@ -338,13 +338,28 @@ PrefabInstance:
     - target: {fileID: 5408784206191323767, guid: c60559b31bc453d4592bc5925d48232c,
         type: 3}
       propertyPath: stepSounds.Array.size
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5408784206191323767, guid: c60559b31bc453d4592bc5925d48232c,
         type: 3}
       propertyPath: stepSounds.Array.data[0]
       value: 
-      objectReference: {fileID: 8300000, guid: cf87b5d8f7aef9d4d9cf5bea9c4a422a, type: 3}
+      objectReference: {fileID: 8300000, guid: c3ae1c1bee8d3f7438462e061aba84ed, type: 3}
+    - target: {fileID: 5408784206191323767, guid: c60559b31bc453d4592bc5925d48232c,
+        type: 3}
+      propertyPath: stepSounds.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: b6272d4ea44a5e84cb026fdb9fb43853, type: 3}
+    - target: {fileID: 5408784206191323767, guid: c60559b31bc453d4592bc5925d48232c,
+        type: 3}
+      propertyPath: stepSounds.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: 02584afb3ec53644c932dff56d552a3c, type: 3}
+    - target: {fileID: 5408784206191323767, guid: c60559b31bc453d4592bc5925d48232c,
+        type: 3}
+      propertyPath: stepSounds.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: a6fdd23d5f7afd447a1c587d5e4e4481, type: 3}
     - target: {fileID: 5731111181258434148, guid: c60559b31bc453d4592bc5925d48232c,
         type: 3}
       propertyPath: m_Size.x
@@ -390,7 +405,7 @@ PrefabInstance:
         type: 3}
       propertyPath: cameraTransform
       value: 
-      objectReference: {fileID: 3966715626092183528}
+      objectReference: {fileID: 5018161523303669036}
     - target: {fileID: 7611585064415259500, guid: c60559b31bc453d4592bc5925d48232c,
         type: 3}
       propertyPath: fireBulletLayerMask.m_Bits
@@ -398,10 +413,25 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7611585064415259503, guid: c60559b31bc453d4592bc5925d48232c,
         type: 3}
+      propertyPath: MaxDistance
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 7611585064415259503, guid: c60559b31bc453d4592bc5925d48232c,
+        type: 3}
+      propertyPath: MinDistance
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 7611585064415259503, guid: c60559b31bc453d4592bc5925d48232c,
+        type: 3}
       propertyPath: OutputAudioMixerGroup
       value: 
       objectReference: {fileID: 8843940232986239663, guid: 86627ef9b19d90447a04b809d9fb5949,
         type: 2}
+    - target: {fileID: 7611585064415259503, guid: c60559b31bc453d4592bc5925d48232c,
+        type: 3}
+      propertyPath: spreadCustomCurve.m_Curve.Array.data[0].value
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7611585065316723255, guid: c60559b31bc453d4592bc5925d48232c,
         type: 3}
       propertyPath: m_Name
@@ -479,6 +509,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c60559b31bc453d4592bc5925d48232c, type: 3}
+--- !u!4 &5018161523303669036 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5353758238150073999, guid: c60559b31bc453d4592bc5925d48232c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1146246996048069539}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5021754724701317188 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5357193115234724839, guid: c60559b31bc453d4592bc5925d48232c,
