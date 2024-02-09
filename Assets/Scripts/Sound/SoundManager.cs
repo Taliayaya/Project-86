@@ -86,11 +86,22 @@ namespace DefaultNamespace.Sound
         {
             Instance.audioSource.clip = clip;
             Instance.audioSource.Play();
+            Debug.Log("Changed Music");
         }
         
         public static void PlayOneShot(AudioClip clip)
         {
             Instance.audioSource.PlayOneShot(clip);
+        }
+        
+        public static void StopMusic(float fadeTime)
+        {
+            Instance.StartCoroutine(Instance.FadeOutMusic());
+        }
+        
+        public static void StopMusicLoop()
+        {
+            Instance.audioSource.loop = false;
         }
         
         private void OnLoadingScene()

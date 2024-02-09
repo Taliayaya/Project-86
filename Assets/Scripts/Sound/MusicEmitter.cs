@@ -19,5 +19,15 @@ namespace Sound
         {
             SoundManager.ChangeMusic(music);
         }
+        
+        public void Stop()
+        {
+            SoundManager.StopMusic(3f);
+        }
+        
+        public void StopLoop()
+        {
+            SoundManager.StopMusicLoop();
+        }
     }
 }
