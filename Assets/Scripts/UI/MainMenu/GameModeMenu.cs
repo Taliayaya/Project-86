@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DefaultNamespace.Sound;
 using ScriptableObjects.UI;
 using TMPro;
+using Unity.Services.Analytics;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -71,6 +72,10 @@ namespace UI.MainMenu
             {
                 SoundManager.PlayOneShot(onClickSound);
                 SceneHandler.LoadScene(regionPointsSo.scene);
+                AnalyticsService.Instance.CustomData("levelStarted", new Dictionary<string, object>()
+                {
+                    {"levelName", regionPointsSo.regionName}
+                });
             });
         }
 

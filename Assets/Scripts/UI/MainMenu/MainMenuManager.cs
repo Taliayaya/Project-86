@@ -18,6 +18,8 @@ namespace UI.MainMenu
         {
             base.OnAwake();
             _currentCamera = mainMenuCamera;
+            gameModeCamera.enabled = false;
+            settingsCamera.enabled = false;
         }
 
         public void ToGameMode()
