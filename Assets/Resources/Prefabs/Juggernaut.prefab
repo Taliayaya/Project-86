@@ -1941,7 +1941,6 @@ GameObject:
   - component: {fileID: 872406501}
   - component: {fileID: 872406502}
   - component: {fileID: 2061892155}
-  - component: {fileID: 1263398715}
   m_Layer: 7
   m_Name: Juggernaut
   m_TagString: Untagged
@@ -2027,7 +2026,7 @@ MonoBehaviour:
   recoilDuration: 0.1
   recoilCounterForce: 5000
   _state: 0
-  impulseSource: {fileID: 1263398715}
+  impulseSource: {fileID: 1977434489}
 --- !u!135 &1272649634
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2098,7 +2097,7 @@ AudioSource:
     type: 2}
   m_audioClip: {fileID: 8300000, guid: ce719d3f6dfcb754fbc40d7ccf517b01, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.2
+  m_Volume: 0.8
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -2182,59 +2181,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1263398715
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2425518220724238009}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ImpulseDefinition:
-    m_ImpulseChannel: 1
-    m_ImpulseShape: 1
-    m_CustomImpulseShape:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    m_ImpulseDuration: 1
-    m_ImpulseType: 0
-    m_DissipationRate: 0.25
-    m_RawSignal: {fileID: 0}
-    m_AmplitudeGain: 1
-    m_FrequencyGain: 1
-    m_RepeatMode: 0
-    m_Randomize: 1
-    m_TimeEnvelope:
-      m_AttackShape:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      m_DecayShape:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      m_AttackTime: 0
-      m_SustainTime: 0.2
-      m_DecayTime: 0.7
-      m_ScaleWithImpact: 1
-      m_HoldForever: 0
-    m_ImpactRadius: 100
-    m_DirectionMode: 0
-    m_DissipationMode: 2
-    m_DissipationDistance: 100
-    m_PropagationSpeed: 343
-  m_DefaultVelocity: {x: -2, y: -1, z: 0}
 --- !u!1 &2425518220896484195
 GameObject:
   m_ObjectHideFlags: 0
