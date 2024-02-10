@@ -1,4 +1,5 @@
 ﻿using System;
+using Gameplay.Mecha;
 using ScriptableObjects.Sound;
 using UnityEngine;
 using UnityEngine.Events;
@@ -54,6 +55,7 @@ namespace Gameplay.Units
             set
             {
                 if (value == _engineStatus) return;
+                engineAudioSource.Stop();
                 engineAudioSource.clip = value switch
                 {
                     EngineStatus.Idle => engineAudioSo.engineIdle,
@@ -65,9 +67,8 @@ namespace Gameplay.Units
                     ? engineAudioSo.engineAcceleration
                     : engineAudioSo.engineDeceleration, 0.5f);
 
-                engineAudioSource.loop = true;
+                ////engineAudioSource.loop = true;
                 engineAudioSource.Play();
-                
                 _engineStatus = value;
             }
         }
@@ -82,7 +83,7 @@ namespace Gameplay.Units
             onHealthChange.Invoke(Health, MaxHealth); // Initialize health bar
             
             _rb = GetComponent<Rigidbody>();
-            engineAudioSource.clip = engineAudioSo.engineIdle;
+            engineAudioSource.clip = engineAudioSo.engineSpeeding;
             engineAudioSource.loop = true;
             engineAudioSource.Play();
         }
@@ -120,12 +121,17 @@ namespace Gameplay.Units
         protected virtual void Update()
         {
             //Debug.Log("Velocity of " + name + " is " + _rb.velocity.magnitude + " and engine status is " + EngineStatus);
+        }
+
+        protected virtual void FixedUpdate()
+        {
             EngineStatus = _rb.velocity.magnitude switch
             {
                 < 5 => EngineStatus.Idle,
-                < 40 => EngineStatus.Walking,
+                < 20 => EngineStatus.Walking,
                 _ => EngineStatus.Running
             };
+            //engineAudioSource.pitch = Mathf.Clamp(_rb.velocity.magnitude / 30, 0.5f, 1.5f);
         }
 
 

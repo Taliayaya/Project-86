@@ -1063,6 +1063,7 @@ MonoBehaviour:
     m_Bits: 1
   rb: {fileID: 0}
   agent: {fileID: 1860889347541268491}
+  legOffset: {x: 0, y: 0, z: 0}
   audioSource: {fileID: 1860889348233460758}
   stepSounds:
   - {fileID: 8300000, guid: cf87b5d8f7aef9d4d9cf5bea9c4a422a, type: 3}
@@ -4983,7 +4984,7 @@ PrefabInstance:
     - target: {fileID: 5952406706035772804, guid: 48660cbbbff3f6942babc11f0af5b319,
         type: 3}
       propertyPath: m_Volume
-      value: 0.2
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 5952406706035772804, guid: 48660cbbbff3f6942babc11f0af5b319,
         type: 3}
@@ -5326,7 +5327,7 @@ PrefabInstance:
     - target: {fileID: 5952406706035772804, guid: 48660cbbbff3f6942babc11f0af5b319,
         type: 3}
       propertyPath: m_Volume
-      value: 0.2
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 5952406706035772804, guid: 48660cbbbff3f6942babc11f0af5b319,
         type: 3}

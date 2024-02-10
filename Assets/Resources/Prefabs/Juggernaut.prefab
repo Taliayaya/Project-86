@@ -2103,7 +2103,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 155
+  Priority: 128
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -2141,7 +2141,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -3902,7 +3902,7 @@ PrefabInstance:
     - target: {fileID: 5952406706035772804, guid: 48660cbbbff3f6942babc11f0af5b319,
         type: 3}
       propertyPath: m_Volume
-      value: 0.5
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 7492193195463254585, guid: 48660cbbbff3f6942babc11f0af5b319,
         type: 3}
@@ -4112,7 +4112,7 @@ PrefabInstance:
     - target: {fileID: 5952406706035772804, guid: 48660cbbbff3f6942babc11f0af5b319,
         type: 3}
       propertyPath: m_Volume
-      value: 0.5
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 7492193195463254585, guid: 48660cbbbff3f6942babc11f0af5b319,
         type: 3}
