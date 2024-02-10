@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace ScriptableObjects.GameParameters
@@ -5,6 +6,7 @@ namespace ScriptableObjects.GameParameters
     [CreateAssetMenu(fileName = "DataCollectionParameters", menuName = "Scriptable Objects/GameParameters/DataCollectionParameters")]
     public class DataCollectionParameters : GameParameters
     {
+        [Serializable]
         public enum DataCollectionAgreement
         {
             Agreed,

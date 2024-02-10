@@ -19,7 +19,9 @@ public class AnalyticsManager : Singleton<AnalyticsManager>
         base.OnAwake();
         _dataCollectionParameters =
             Resources.Load<DataCollectionParameters>("ScriptableObjects/Parameters/DataCollectionParameters");
-        Debug.Log("[AnalyticsManager] Awake");
+        Debug.Log("[AnalyticsManager] _dataCollectionParameters: " + _dataCollectionParameters.agreement);
+        _dataCollectionParameters.LoadFromFile();
+        Debug.Log("[AnalyticsManager] Awake" + _dataCollectionParameters.agreement);
     }
 
     private void Start()
@@ -56,8 +58,13 @@ public class AnalyticsManager : Singleton<AnalyticsManager>
     private void OnUpdateAgreement(object data)
     {
         var agreement = (DataCollectionParameters.DataCollectionAgreement)data;
+        Debug.Log("[AnalyticsManager] Agreement updated: " + agreement);
+        Debug.Log("[AnalyticsManager] Agreement parameter" + _dataCollectionParameters.agreement);
         _dataCollectionParameters.agreement = agreement;
         _dataCollectionParameters.SaveToFile();
+        _dataCollectionParameters.agreement = DataCollectionParameters.DataCollectionAgreement.NotAsked;
+        _dataCollectionParameters.LoadFromFile();
+        Debug.Log("[AnalyticsManager] Agreement saved" + _dataCollectionParameters.agreement);
         UpdateDataCollection();
     }
 
