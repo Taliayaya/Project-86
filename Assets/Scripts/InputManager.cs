@@ -35,6 +35,7 @@ public class InputManager : Singleton<InputManager>
         EventManager.AddListener("OnDeath", OnDeath);
         EventManager.AddListener("RebindStarted", OnRebindStarted);
         EventManager.AddListener("DeleteSave", OnDeleteSave);
+        EventManager.AddListener("OnResume", OnResumeFollow);
     }
         
     private void OnDisable()
@@ -42,6 +43,7 @@ public class InputManager : Singleton<InputManager>
         EventManager.RemoveListener("OnDeath", OnDeath);
         EventManager.RemoveListener("RebindStarted", OnRebindStarted);
         EventManager.RemoveListener("DeleteSave", OnDeleteSave);
+        EventManager.RemoveListener("OnResume", OnResumeFollow);
     }
 
     #region Juggernaut Action Map
@@ -83,7 +85,10 @@ public class InputManager : Singleton<InputManager>
     {
         var data = inputValue.Get<float>();
         if (data > 0)
+        {
+            Debug.Log("OnZoomIn");
             EventManager.TriggerEvent("OnZoomIn", data);
+        }
     }
         
     private void OnZoomOut(InputValue inputValue)
@@ -168,12 +173,14 @@ public class InputManager : Singleton<InputManager>
     private bool _pauseCd = false;
     public void OnResume()
     {
+        EventManager.TriggerEvent("OnResume");
+    }
+    
+    private void OnResumeFollow()
+    {
         WindowManager.Close();
         if (WindowManager.WindowOpenedCount > 0)
             return;
-        Debug.Log("OnResume");
-
-        EventManager.TriggerEvent("OnResume");
         _playerInput.SwitchCurrentActionMap("Juggernaut");
     }
 

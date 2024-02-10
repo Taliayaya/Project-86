@@ -15,10 +15,21 @@ namespace UI.HUD
         private Transform questDescriptionTransform;
         [FormerlySerializedAs("_questDescriptionPrefab")] [SerializeField] private GameObject questDescriptionPrefab;
         
+        private Quest _currentQuest;
+        
         private List<TMP_Text> _tasksTexts = new List<TMP_Text>();
         private void Awake()
         {
             
+        }
+        
+        private void UnsubscribeFromEvents()
+        {
+            if (_currentQuest != null)
+            {
+                _currentQuest.OnTaskProgressChanged -= OnTaskProgressUpdate;
+                _currentQuest.OnTaskStatusChanged -= OnTaskStatusChanged;
+            }
         }
 
         private void OnEnable()
@@ -33,7 +44,9 @@ namespace UI.HUD
 
         private void OnQuestChanged(object questArg)
         {
+            UnsubscribeFromEvents();
             var quest = (Quest) questArg;
+            _currentQuest = quest;
             if (quest == null)
             {
                 transform.GetChild(0).gameObject.SetActive(false);

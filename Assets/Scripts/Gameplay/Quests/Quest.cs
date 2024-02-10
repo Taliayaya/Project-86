@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Quests.Tasks;
+using Unity.Services.Analytics;
 using UnityEngine;
 using UnityEngine.Events;
 using Task = Gameplay.Quests.Tasks.Task;
@@ -112,8 +113,12 @@ namespace Gameplay.Quests
             Status = QuestStatus.Completed;
             onComplete?.Invoke(this);
             CompleteCompletableTasks(forceComplete);
+            UnregisterTaskEvents();
             foreach (Transform child in transform)
                 child.gameObject.SetActive(false);
+            
+            EventManager.TriggerEvent(Constants.Events.Analytics.QuestCompleted, questName);
+            
 
         }
         
@@ -145,6 +150,7 @@ namespace Gameplay.Quests
                     {
                         task.Owner = this;
                         task.Activate();
+                        task.RegisterEvents();
                     }
                     break;
                 default:
@@ -195,7 +201,6 @@ namespace Gameplay.Quests
             {
                 task.OnStatusChanged += NotifyTaskStatusChanged;
                 task.OnTaskProgressChanged += NotifyTaskProgressChanged;
-                task.RegisterEvents();
             }
         }
         
@@ -205,6 +210,7 @@ namespace Gameplay.Quests
             {
                 task.OnStatusChanged -= NotifyTaskStatusChanged;
                 task.OnTaskProgressChanged -= NotifyTaskProgressChanged;
+                task.UnregisterEvents();
             }
         }
 

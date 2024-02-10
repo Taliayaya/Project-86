@@ -910,7 +910,7 @@ AudioSource:
   m_GameObject: {fileID: 1518378079009413692}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 4391838872661691230, guid: 86627ef9b19d90447a04b809d9fb5949,
+  OutputAudioMixerGroup: {fileID: 2279387248451868261, guid: 86627ef9b19d90447a04b809d9fb5949,
     type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
@@ -1054,16 +1054,20 @@ MonoBehaviour:
   - {fileID: 1860889349433567840}
   - {fileID: 1860889347623382827}
   - {fileID: 1860889347333889345}
-  stepSize: 1.5
-  stepHeight: 0.7
-  smoothness: 1
+  stepSize: 1
+  stepHeight: 1.2
+  smoothness: 6
   bodyOrientation: 0
   groundLayer:
     serializedVersion: 2
     m_Bits: 1
+  rb: {fileID: 0}
+  agent: {fileID: 1860889347541268491}
+  legOffset: {x: 0, y: 0, z: 0}
   audioSource: {fileID: 1860889348233460758}
   stepSounds:
   - {fileID: 8300000, guid: cf87b5d8f7aef9d4d9cf5bea9c4a422a, type: 3}
+  velocityMultiplier: 0.08
 --- !u!114 &761358363160916634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1565,8 +1569,8 @@ NavMeshAgent:
   m_GameObject: {fileID: 1860889347541268500}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 2
-  m_Speed: 15
+  m_Radius: 1.5
+  m_Speed: 10
   m_Acceleration: 25
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -1733,6 +1737,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  armor: 10
   onUnitDeath:
     m_PersistentCalls:
       m_Calls: []
@@ -4979,7 +4984,7 @@ PrefabInstance:
     - target: {fileID: 5952406706035772804, guid: 48660cbbbff3f6942babc11f0af5b319,
         type: 3}
       propertyPath: m_Volume
-      value: 0.5
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 5952406706035772804, guid: 48660cbbbff3f6942babc11f0af5b319,
         type: 3}
@@ -5025,7 +5030,7 @@ PrefabInstance:
         type: 3}
       propertyPath: cameraTransform
       value: 
-      objectReference: {fileID: 1860889347541268501}
+      objectReference: {fileID: 2186933566467260550}
     - target: {fileID: 7673167084498494577, guid: 48660cbbbff3f6942babc11f0af5b319,
         type: 3}
       propertyPath: listenOrTriggersEvents
@@ -5322,7 +5327,7 @@ PrefabInstance:
     - target: {fileID: 5952406706035772804, guid: 48660cbbbff3f6942babc11f0af5b319,
         type: 3}
       propertyPath: m_Volume
-      value: 0.5
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 5952406706035772804, guid: 48660cbbbff3f6942babc11f0af5b319,
         type: 3}
@@ -5358,7 +5363,7 @@ PrefabInstance:
         type: 3}
       propertyPath: cameraTransform
       value: 
-      objectReference: {fileID: 1860889347541268501}
+      objectReference: {fileID: 2186933566467260550}
     - target: {fileID: 7673167084498494577, guid: 48660cbbbff3f6942babc11f0af5b319,
         type: 3}
       propertyPath: listenOrTriggersEvents

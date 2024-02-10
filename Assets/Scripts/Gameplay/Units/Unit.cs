@@ -1,4 +1,5 @@
 ﻿using System;
+using Gameplay.Mecha;
 using ScriptableObjects.Sound;
 using UnityEngine;
 using UnityEngine.Events;
@@ -30,6 +31,8 @@ namespace Gameplay.Units
         public UnityEvent<float, float> onHealthChange;
 
         private Rigidbody _rb;
+        [Tooltip("If the armor value is bigger than the bullet, damages are neglected.")]
+        public float armor = 10;
         
         public UnityEvent<Unit> onUnitDeath;
         
@@ -38,6 +41,7 @@ namespace Gameplay.Units
         [SerializeField] private EngineAudioSO engineAudioSo;
         
         public virtual float Health { get; set; } = 100;
+        public virtual float Armor { get; set; } = 10;
         public float MaxHealth { get; set; } = 100;
         [SerializeField] private Faction faction;
         public Faction Faction { get => faction; set => faction = value; }
@@ -51,6 +55,7 @@ namespace Gameplay.Units
             set
             {
                 if (value == _engineStatus) return;
+                engineAudioSource.Stop();
                 engineAudioSource.clip = value switch
                 {
                     EngineStatus.Idle => engineAudioSo.engineIdle,
@@ -62,9 +67,8 @@ namespace Gameplay.Units
                     ? engineAudioSo.engineAcceleration
                     : engineAudioSo.engineDeceleration, 0.5f);
 
-                engineAudioSource.loop = true;
+                ////engineAudioSource.loop = true;
                 engineAudioSource.Play();
-                
                 _engineStatus = value;
             }
         }
@@ -79,7 +83,7 @@ namespace Gameplay.Units
             onHealthChange.Invoke(Health, MaxHealth); // Initialize health bar
             
             _rb = GetComponent<Rigidbody>();
-            engineAudioSource.clip = engineAudioSo.engineIdle;
+            engineAudioSource.clip = engineAudioSo.engineSpeeding;
             engineAudioSource.loop = true;
             engineAudioSource.Play();
         }
@@ -110,18 +114,24 @@ namespace Gameplay.Units
      
         public virtual void OnTakeDamage(DamagePackage damagePackage)
         {
+            
             onHealthChange?.Invoke(Health, MaxHealth);
         }
 
         protected virtual void Update()
         {
             //Debug.Log("Velocity of " + name + " is " + _rb.velocity.magnitude + " and engine status is " + EngineStatus);
+        }
+
+        protected virtual void FixedUpdate()
+        {
             EngineStatus = _rb.velocity.magnitude switch
             {
                 < 5 => EngineStatus.Idle,
-                < 40 => EngineStatus.Walking,
+                < 20 => EngineStatus.Walking,
                 _ => EngineStatus.Running
             };
+            //engineAudioSource.pitch = Mathf.Clamp(_rb.velocity.magnitude / 30, 0.5f, 1.5f);
         }
 
 
@@ -139,6 +149,7 @@ namespace Gameplay.Units
 
         public virtual void Awake()
         {
+            Armor = armor;
             Factions.AddMember(faction, this);
         }
     }

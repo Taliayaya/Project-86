@@ -37,7 +37,7 @@ namespace ScriptableObjects
             }
         }
 
-        private static bool IsTypeSerializable(Type tested) => SerializableTypes.Contains(tested) || tested.IsArray || SerializableTypes.Contains(tested.GetElementType());
+        private static bool IsTypeSerializable(Type tested) => SerializableTypes.Contains(tested) || tested.IsArray || tested.IsEnum || SerializableTypes.Contains(tested.GetElementType());
 
         public static bool Serialize(FieldInfo field, object data, out object value) =>
             SerializeValue(field.FieldType, field.GetValue(data), out value);

@@ -25,6 +25,16 @@ public static class Constants
         /// FIXME: This event seems to only be called in their typed counterpart
         /// </summary>
         public const string OnRespawn = "OnRespawn";
+
+        public const string OnAskDataCollectionAgreement = "OnAskDataCollectionAgreement";
+        public const string OnDataCollectionAgreement = "OnDataCollectionAgreement";
+        
+        public static class Analytics
+        {
+            public const string LevelFinished = "AnalyticsLevelFinished";
+            public const string QuestCompleted = "AnalyticsQuestCompleted";
+            
+        }
     }
     /// <summary>
     /// All the typed event names

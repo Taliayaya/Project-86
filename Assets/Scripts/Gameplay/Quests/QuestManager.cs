@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DefaultNamespace;
 using DefaultNamespace.Sound;
 using JetBrains.Annotations;
+using Unity.Services.Analytics;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -70,6 +71,7 @@ namespace Gameplay.Quests
             EventManager.TriggerEvent("QuestStatusChanged", quest);
             if (quest.IsCompleted)
             {
+                quest.OnStatusChanged -= OnQuestStatusChanged;
                 if (quest == CurrentQuest)
                 {
                     SoundManager.PlayOneShot(questStartSound);
@@ -83,6 +85,10 @@ namespace Gameplay.Quests
                         }
                     }
                 }
+            }
+            if (CurrentQuest == null)
+            {
+                EventManager.TriggerEvent(Constants.Events.Analytics.LevelFinished);
             }
         }
     }

@@ -154,8 +154,9 @@ namespace Gameplay.Mecha
             EventManager.RemoveListener("OnShoot:Primary", OnShoot);
         }
 
-        private void FixedUpdate()
+        protected override void FixedUpdate()
         {
+            base.FixedUpdate();
             CheckGround();
             ApplyGravity(); // Currently using the rigidbody gravity
             LimitSpeed();

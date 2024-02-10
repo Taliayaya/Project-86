@@ -3,7 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using DefaultNamespace;
 using ScriptableObjects.GameParameters;
+using Unity.Services.Analytics;
+using Unity.Services.Core;
 using UnityEngine;
+using UnityEngine.Analytics;
 
 /// <summary>
 /// Game Manager is the main class of the game. It is a singleton that is not destroyed on load.

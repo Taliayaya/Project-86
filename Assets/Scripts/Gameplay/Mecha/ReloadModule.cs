@@ -107,7 +107,9 @@ namespace Gameplay.Mecha
             Debug.Log("Reload");
             _scavenger = GetClosestScavenger();
             if (_scavenger)
-                _scavenger.Reload(weaponModules, unit);
+            {
+                _scavenger.Reload(weaponModules, unit, true);
+            }
 
         }
     }

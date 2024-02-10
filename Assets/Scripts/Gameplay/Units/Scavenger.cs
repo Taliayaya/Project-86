@@ -82,7 +82,7 @@ namespace Gameplay.Units
             
         }
 
-        public void Reload(WeaponModule[] weaponModules, Unit unit)
+        public void Reload(WeaponModule[] weaponModules, Unit unit, bool emitEventsForce = false)
         {
             if (IsReloading)
                 return;
@@ -90,16 +90,16 @@ namespace Gameplay.Units
             unit.State = UnitState.Reloading;
             foreach (var weaponModule in weaponModules)
                 weaponModule.canFire = false;
-            StartCoroutine(ReloadCoroutine(weaponModules, unit));
+            StartCoroutine(ReloadCoroutine(weaponModules, unit, emitEventsForce));
         }
 
-        private IEnumerator ReloadCoroutine(WeaponModule[] weaponModules, Unit unit)
+        private IEnumerator ReloadCoroutine(WeaponModule[] weaponModules, Unit unit, bool emitEventsForce = false)
         {
             IsReloading = true;
             for (int i = 0; i < weaponModules.Length; i++)
             {
                 var weaponModule = weaponModules[i];
-                if (emitEvents)
+                if (emitEvents || emitEventsForce)
                     EventManager.TriggerEvent("OnReloadWeaponModule", new ReloadModuleData(i, weaponModules.Length, this, weaponModule.WeaponName, weaponModule.ReloadTime));
                 yield return new WaitForSeconds(weaponModule.ReloadTime);
                 Reload(weaponModule);

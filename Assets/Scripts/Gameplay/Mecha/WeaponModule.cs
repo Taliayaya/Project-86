@@ -168,6 +168,12 @@ namespace Gameplay.Mecha
         }
 
 
+        public Coroutine StartShootDuringTime(float time, Func<bool> canShoot)
+        {
+            _shootCoroutine = StartCoroutine(ShootDuringTime(time, canShoot));
+            return _shootCoroutine;
+        }
+        private Coroutine _shootCoroutine;
         /// <summary>
         /// AI related method
         /// </summary>
@@ -178,14 +184,26 @@ namespace Gameplay.Mecha
         public IEnumerator ShootDuringTime(float time, Func<bool> canShoot)
         {
             var startTime = Time.time;
+            float fireRate = 1/ammo.fireRate;
+            yield return new WaitForSeconds(fireRate - (startTime - _lastShotTime));
             while (Time.time - startTime < time)
             {
                 if (!canShoot())
-                    yield return new WaitForSeconds(0.1f);
+                {
+                    yield return new WaitForSeconds(1f);
+                    continue;
+                }
+
+                _lastShotTime = Time.time;
                 Shoot(cameraTransform);
-                yield return new WaitForSeconds(1/ammo.fireRate);
+                PlayBulletSound();
+                yield return new WaitForSeconds(fireRate);
             }
+
+            yield return new WaitForSeconds(0.1f);
         }
+        
+        private float _lastShotTime;
 
         /// <summary>
         /// AI related method
@@ -198,6 +216,9 @@ namespace Gameplay.Mecha
         {
             var startTime = Time.time;
             
+            float fireRate = 1/ammo.fireRate;
+            yield return new WaitForSeconds(fireRate - (startTime - _lastShotTime));
+
             while (Time.time - startTime < time)
             {
                 if (!canShoot())
@@ -205,9 +226,10 @@ namespace Gameplay.Mecha
                     yield return new WaitForSeconds(1f);
                     continue;
                 }
+                _lastShotTime = Time.time;
                 Shoot(cameraTransform);
                 PlayBulletSound();
-                yield return new WaitForSeconds(1/ammo.fireRate);
+                yield return new WaitForSeconds(fireRate);
             }
             
             yield return new WaitForSeconds(0.1f);
@@ -234,7 +256,6 @@ namespace Gameplay.Mecha
                     if (listenOrTriggersEvents)
                     {
                         EventManager.TriggerEvent("OnShoot:" + weaponType, ammo);
-                        Debug.Log("OnShoot:" + weaponType);
                     }
 
                     PlayBulletSound();
@@ -293,7 +314,8 @@ namespace Gameplay.Mecha
 
             var bullet = Instantiate(ammo.prefab, gunTransform.position, Quaternion.identity);
             var bulletCollider = bullet.GetComponentInChildren<Collider>();
-            Physics.IgnoreCollision(bulletCollider, _gunTransformCollider, true);
+            if (_gunTransformCollider != null)
+                Physics.IgnoreCollision(bulletCollider, _gunTransformCollider, true);
             if (myParentColliderToIgnore != null)
                 Physics.IgnoreCollision(bulletCollider, myParentColliderToIgnore, true);
             var bulletScript = bullet.GetComponent<Bullet>();
