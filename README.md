@@ -7,8 +7,8 @@
 
 <p align="center">
   Welcome aboard the new Project 86!<br><br>
-
-<img src="https://github.com/Taliayaya/Project-86/blob/main/Assets/Resources/Sprites/TutorialsSprites/scavenger_tuto.png">
+  
+<img src="https://github.com/Taliayaya/Project-86/assets/84530101/c56e2e3f-5b5f-46a3-a914-6257da6864b9">
 </p>
 
 ## Project Overview
