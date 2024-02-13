@@ -110,8 +110,9 @@ namespace Gameplay.Quests
             if (!CanComplete() && !forceComplete)
                 return;
             Debug.Log($"[Quest] Complete(): Quest {name} completed");
-            Status = QuestStatus.Completed;
+            
             onComplete?.Invoke(this);
+            Status = QuestStatus.Completed;
             CompleteCompletableTasks(forceComplete);
             UnregisterTaskEvents();
             foreach (Transform child in transform)

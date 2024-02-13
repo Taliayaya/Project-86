@@ -55,6 +55,8 @@ namespace UI.HUD
             if (!IsContextActive)
             {
                 _hudWindow.Opacity = 1;
+                _hudWindow.transform.SetAsLastSibling();
+                _hudWindow.settings.orderInLayer = _hudWindow.transform.GetSiblingIndex();
             }
         }
         
@@ -73,6 +75,12 @@ namespace UI.HUD
         public void SetActiveWindow(bool value)
         {
             _hudWindow.IsActivated = value;
+        }
+        
+        public void SendBackward()
+        {
+            _hudWindow.transform.SetSiblingIndex(_hudWindow.transform.GetSiblingIndex() - 1);
+            _hudWindow.settings.orderInLayer = _hudWindow.transform.GetSiblingIndex();
         }
 
         public void ResetWindow()
