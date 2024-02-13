@@ -151,18 +151,18 @@ namespace Gameplay.Mecha
         /// <returns></returns>
         private IEnumerator FireOnHeld()
         {
-            if (_currentAmmoRemaining <= 0)
-            {
-                TriggerNoAmmoPopUp();
-                yield break;
-            }
-
+            
             while (_isHeld && _currentAmmoRemaining > 0)
             {
                 PlayBulletSound(false);
                 Shoot();
                 yield return new WaitForSeconds(1/ammo.fireRate);
             }
+            if (_currentAmmoRemaining <= 0)
+            {
+                TriggerNoAmmoPopUp();
+            }
+
 
             yield return new WaitForSeconds(0.1f);
         }
