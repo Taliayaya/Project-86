@@ -41,7 +41,7 @@ namespace AI.BehaviourTree.BasicNodes
             }
 
             // closest target is set in CanSeeObject and can change
-            if (_coroutines[0] is not null)
+            if (_coroutines.Length > 0 && _coroutines[0] is not null)
                 for (int i = 0; i < _weaponModules.Length; i++)
                 {
                     _weaponModules[i].StopCoroutine(_coroutines[i]);

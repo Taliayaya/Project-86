@@ -24,6 +24,8 @@ namespace Gameplay.Mecha
         [SerializeField] private bool holdFire = false;
         [SerializeField] private AmmoSO ammo;
         [SerializeField] private LayerMask fireBulletLayerMask = 1;
+        [SerializeField] private float maxRaycastDistance = 500;
+        public bool aiIgnore = false;
         
         [Header("References")]
         [SerializeField] private Transform gunTransform;
@@ -70,14 +72,14 @@ namespace Gameplay.Mecha
 
         #region Unity Callbacks
 
-        private void Awake()
+        protected virtual void Awake()
         {
             _gunTransformCollider = gunTransform.parent.GetComponent<Collider>();
             CurrentAmmoRemaining = ammo.maxAmmo;
             //gunAudioSource.loop = holdFire;
         }
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             EventManager.AddListener("OnPause", OnPause);
             EventManager.AddListener("OnResume", OnResume);
@@ -89,7 +91,7 @@ namespace Gameplay.Mecha
 
         
 
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
             EventManager.RemoveListener("OnPause", OnPause);
             EventManager.RemoveListener("OnResume", OnResume);
@@ -294,15 +296,15 @@ namespace Gameplay.Mecha
         private void FireBullet(Transform origin)
         {
             var bulletDirection = origin.forward;
-            if (Physics.Raycast(origin.position, origin.forward, out var hit, 500f, fireBulletLayerMask))
+            if (Physics.Raycast(origin.position, origin.forward, out var hit, maxRaycastDistance, fireBulletLayerMask))
             {
                 //Debug.Log("hit " + hit.transform.name);
                 bulletDirection = (hit.point - gunTransform.position).normalized;
-                //Debug.DrawRay(gunTransform.position, bulletDirection * 100, Color.red, 1f);
+                Debug.DrawRay(gunTransform.position, bulletDirection * 100, Color.red, 1f);
             }
             else
             {
-                //Debug.DrawRay(gunTransform.position, bulletDirection * 100, Color.green, 1f);
+                Debug.DrawRay(gunTransform.position, bulletDirection * 100, Color.green, 1f);
             }
 
             if (muzzleFlash)

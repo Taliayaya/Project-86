@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using AI.BehaviourTree;
 using Gameplay.Mecha;
 using JetBrains.Annotations;
@@ -75,6 +76,8 @@ namespace Gameplay.Units
         public DemoParameters demoParameters;
 
         private Coroutine _rotateCoroutine;
+        
+        [SerializeField] protected UnityEvent<TargetInfo> onTargetChanged;
 
         [CanBeNull] private TargetInfo _target;
         [CanBeNull]
@@ -84,6 +87,7 @@ namespace Gameplay.Units
             set
             {
                 _target = value;
+                onTargetChanged?.Invoke(_target);
                 _target?.Unit.onUnitDeath.AddListener((_) => Target = null);
             }
         }
@@ -92,7 +96,7 @@ namespace Gameplay.Units
             base.Awake();
             _agent = GetComponent<NavMeshAgent>();
             _behaviourTreeRunner = GetComponent<BehaviourTreeRunner>();
-            _weaponModules = GetComponentsInChildren<WeaponModule>();
+            _weaponModules = GetComponentsInChildren<WeaponModule>().ToList().FindAll(module => !module.aiIgnore).ToArray();
             _audioSource = GetComponent<AudioSource>();
             
             _firstChild = transform.GetChild(0);
@@ -250,6 +254,7 @@ namespace Gameplay.Units
             base.Die();
             if (agentSo.deadPrefab != null)
             {
+                // TODO: use rotation of the rotating object (first child)
                 var dead = Instantiate(agentSo.deadPrefab, transform.position, transform.rotation);
                 dead.transform.GetChild(0).rotation = transform.GetChild(0).rotation;
             }
