@@ -41,6 +41,7 @@ namespace Gameplay.Mecha
         private Transform modelTransform;
         public bool canRotate = true;
         [SerializeField] private Camera zoomCamera;
+        [SerializeField] private Camera tpsZoomCamera;
         [SerializeField] private CinemachineVirtualCamera vCamera;
         [SerializeField] private CinemachineVirtualCamera tpsCamera;
         [SerializeField] private CinemachineFreeLook freeLookCamera;
@@ -99,16 +100,17 @@ namespace Gameplay.Mecha
             get => _zoom;
             set
             {
+                Camera zoomCameraUsed = CameraView == View.FirstPerson ? zoomCamera : tpsZoomCamera;
                 _zoom = value;
                 float zoomValue;
                 switch (_zoom)
                 {
                     case Zoom.Default:
                         zoomValue = 60;
-                        zoomCamera.enabled = false;
+                        zoomCameraUsed.enabled = false;
                         break;
                     case Zoom.X2:
-                        zoomCamera.enabled = true;
+                        zoomCameraUsed.enabled = true;
                         zoomValue = 30;
                         break;
                     case Zoom.X4:
@@ -121,7 +123,7 @@ namespace Gameplay.Mecha
                         throw new ArgumentOutOfRangeException();
                 }
 
-                zoomCamera.fieldOfView = zoomValue;
+                zoomCameraUsed.fieldOfView = zoomValue;
                 EventManager.TriggerEvent("OnZoomChange", _zoom);
             }
         } 
