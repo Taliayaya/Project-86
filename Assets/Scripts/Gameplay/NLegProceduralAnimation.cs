@@ -3,12 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Animations.Rigging;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class NLegProceduralAnimation : MonoBehaviour
 {
     [SerializeField] private Transform[] legTargets;
+    public bool isGrounded;
     
     [Header("Settings")]
     [SerializeField] private float stepSize = 1f;
@@ -23,6 +26,8 @@ public class NLegProceduralAnimation : MonoBehaviour
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip[] stepSounds;
+
+    [Header("Events")] public UnityEvent<bool> onIsGrounded = new UnityEvent<bool>();
     
     
 
@@ -39,6 +44,8 @@ public class NLegProceduralAnimation : MonoBehaviour
     
     [SerializeField] private float velocityMultiplier = 20f;
     private bool[,] _legMoving;
+
+    private int _groundedCount = 0;
 
     private static Vector3[] MatchToSurfaceFromAbove(Vector3 point, float halfRange, Vector3 up, LayerMask layerMask)
     {
@@ -83,15 +90,17 @@ public class NLegProceduralAnimation : MonoBehaviour
     {
         _velocity = rb ? rb.velocity : agent.velocity;
         //UpdateVelocity();
-            
+
         (int legToMove, int leftLeg) = LegToMove();
-        
+
         MoveLeg(legToMove, leftLeg);
-        StickLegsToGround();
-        
+        if (_groundedCount > 0)
+            StickLegsToGround();
+
         _lastBodyPosition = transform.position;
         if (_nbLegs > 3 && bodyOrientation)
             ApplyBodyOrientation();
+        CheckGround();
     }
 
     private void UpdateVelocity()
@@ -156,17 +165,25 @@ public class NLegProceduralAnimation : MonoBehaviour
             return;
         }
 
+        _legMoving[legToMove, leftLeg] = true;
+        if (_groundedCount == 0)
+        {
+            StartCoroutine(MoveLegCoroutine(legToMove, leftLeg,
+                transform.TransformPoint(_defaultLegPositions[legToMove, leftLeg])));
+            return;
+        }
+
         Vector3 targetPoint = _desiredLegPositions[legToMove, leftLeg] +
                               Mathf.Clamp(_velocity.magnitude * velocityMultiplier, 0f, 1.5f) *
                               (_desiredLegPositions[legToMove, leftLeg] - legTargets[legToMove * 2 + leftLeg].position) + 
                               _velocity * velocityMultiplier;
-        _legMoving[legToMove, leftLeg] = true;
         Vector3[] positionAndNormal = MatchToSurfaceFromAbove(targetPoint, RaycastRange, transform.up, groundLayer);
         StartCoroutine(MoveLegCoroutine(legToMove, leftLeg, positionAndNormal[0] + legOffset));
     }
 
     private void StickLegsToGround()
     {
+        
         for (int i = 0; i < _nbLegs; i++)
         {
             for (int j = 0; j < 2; j++)
@@ -202,6 +219,21 @@ public class NLegProceduralAnimation : MonoBehaviour
         _legMoving[legToMove, leftLeg] = false;
         _soundQueue--;
     }
+
+    private void CheckGround()
+    {
+        _groundedCount = 0;
+        for (int i = 0; i < legTargets.Length; i++)
+        {
+            bool grounded = Physics.CheckSphere(legTargets[i].position, 0.3f, groundLayer);
+            if (grounded)
+                _groundedCount++;
+        }
+
+        isGrounded = (_groundedCount * 2 >= legTargets.Length); // 50% of legs on ground == grounded
+        onIsGrounded?.Invoke(isGrounded);
+    }
+
 
     private void OnDrawGizmos()
     {
