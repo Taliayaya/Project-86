@@ -30,6 +30,11 @@ public class InputManager : Singleton<InputManager>
             _playerInput.actions.LoadBindingOverridesFromJson(keybindsSave);
     }
 
+    private void OnDashLeft()
+    {
+        Debug.Log("Dash left!!!!");
+    }
+
     private void OnEnable()
     {
         EventManager.AddListener("OnDeath", OnDeath);
@@ -78,7 +83,7 @@ public class InputManager : Singleton<InputManager>
     private void OnLookAround(InputValue inputValue)
     {
         var data = inputValue.Get<Vector2>();
-        EventManager.TriggerEvent("OnLookAround", data);
+        EventManager.TriggerEvent(Constants.TypedEvents.Inputs.OnLookAround, data);
     }
 
     private void OnZoomIn(InputValue inputValue)
@@ -117,6 +122,17 @@ public class InputManager : Singleton<InputManager>
     private void OnReload(InputValue inputValue)
     {
         EventManager.TriggerEvent("OnReload");
+    }
+
+    private void OnFreeLook(InputValue inputValue)
+    {
+        Debug.Log("OnFreeLook " + inputValue.isPressed);
+        EventManager.TriggerEvent(Constants.TypedEvents.Inputs.OnFreeLook, inputValue.isPressed);
+    }
+
+    private void OnChangeView(InputValue inputValue)
+    {
+        EventManager.TriggerEvent(Constants.Events.Inputs.OnChangeView);
     }
 
     #region Scavenger Inputs

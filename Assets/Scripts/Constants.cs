@@ -28,6 +28,11 @@ public static class Constants
 
         public const string OnAskDataCollectionAgreement = "OnAskDataCollectionAgreement";
         public const string OnDataCollectionAgreement = "OnDataCollectionAgreement";
+
+        public static class Inputs
+        {
+            public const string OnChangeView = "OnChangeView";
+        }
         
         public static class Analytics
         {
@@ -44,6 +49,14 @@ public static class Constants
     /// </remarks>
     public static class TypedEvents
     {
+        public static class Inputs
+        {
+            public const string OnFreeLook = "OnFreeLook";
+            public const string OnLookAround = "OnLookAround";
+        }
+        
+        
+        public const string OnToggleCockpitView = "OnToggleCockpitView";
         // TODO : Add all the typed event names cause i couldnt be bothered -nemo
     }
     
