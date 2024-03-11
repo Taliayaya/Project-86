@@ -195,6 +195,10 @@ namespace Gameplay
             hitOut = hit;
             return true;
         }
-        
+
+        public void SetJuggCamera(CinemachineVirtualCamera playerCam)
+        {
+            juggCamera = playerCam.transform;
+        }
     }
 }

@@ -2664,7 +2664,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4781548307874533479}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
@@ -3733,7 +3733,7 @@ GameObject:
   - component: {fileID: 4781548308717753438}
   m_Layer: 7
   m_Name: Juggernaut 1
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3811,6 +3811,21 @@ MonoBehaviour:
   recoilStrength: 1
   recoilDuration: 0.1
   recoilCounterForce: 1000
+  onCameraViewChanged:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4781548308717753438}
+        m_TargetAssemblyTypeName: Gameplay.ScavengerMaster, Assembly-CSharp
+        m_MethodName: SetJuggCamera
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _state: 0
   impulseSource: {fileID: 4781548307381713080}
 --- !u!82 &4781548308717753424
@@ -3921,8 +3936,8 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.5
-  m_Center: {x: 0, y: 1.7, z: 0}
+  m_Radius: 1.2
+  m_Center: {x: 0, y: 1.1, z: 0}
 --- !u!114 &4781548308717753437
 MonoBehaviour:
   m_ObjectHideFlags: 0

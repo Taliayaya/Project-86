@@ -4,6 +4,7 @@ using Gameplay.Units;
 using ScriptableObjects;
 using ScriptableObjects.GameParameters;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 
 namespace Gameplay.Mecha
@@ -51,6 +52,8 @@ namespace Gameplay.Mecha
         [SerializeField] private float recoilStrength = 1f;
         [SerializeField] private float recoilDuration = 0.1f;
         [SerializeField] private float recoilCounterForce = 1f;
+
+        [Header("Events")] [SerializeField] private UnityEvent<CinemachineVirtualCamera> onCameraViewChanged;
         #endregion
 
         #region Private Fields
@@ -87,6 +90,7 @@ namespace Gameplay.Mecha
                 vCamera.gameObject.SetActive(value == View.FirstPerson);
                 freeLookCamera.gameObject.SetActive(value == View.FreeLook);
                 tpsCamera.gameObject.SetActive(value == View.ThirdPerson);
+                onCameraViewChanged?.Invoke(value == View.FirstPerson ? vCamera : tpsCamera);
                 EventManager.TriggerEvent(Constants.TypedEvents.OnToggleCockpitView, value == View.FirstPerson && juggernautParameters.toggleCockpitView);
                 
             }
