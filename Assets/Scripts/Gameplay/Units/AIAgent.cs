@@ -136,12 +136,13 @@ namespace Gameplay.Units
         
         public void SetDestination(Vector3 destination)
         {
-            _agent.SetDestination(destination);
+            if (NavMesh.SamplePosition(destination, out var hit, 15f, -1))
+                _agent.SetDestination(hit.position);
         }
         
         public void SetDestination(Transform destination)
         {
-            _agent.SetDestination(destination.position);
+            SetDestination(destination.position);
         }
 
 

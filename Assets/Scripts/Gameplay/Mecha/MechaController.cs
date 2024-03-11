@@ -4,6 +4,7 @@ using Gameplay.Units;
 using ScriptableObjects;
 using ScriptableObjects.GameParameters;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 
 namespace Gameplay.Mecha
@@ -19,8 +20,15 @@ namespace Gameplay.Mecha
             X8,
         }
 
+        public enum View
+        {
+            FirstPerson,
+            ThirdPerson,
+            FreeLook
+        }
 
-        
+
+
 
         #region Serialized Fields
 
@@ -32,19 +40,20 @@ namespace Gameplay.Mecha
 
         [SerializeField]
         private Transform modelTransform;
+        public bool canRotate = true;
         [SerializeField] private Camera zoomCamera;
+        [SerializeField] private Camera tpsZoomCamera;
         [SerializeField] private CinemachineVirtualCamera vCamera;
+        [SerializeField] private CinemachineVirtualCamera tpsCamera;
+        [SerializeField] private CinemachineFreeLook freeLookCamera;
         [SerializeField] private LayerMask forwardMask;
 
-        [Header("Ground Check")] 
-        [SerializeField]
-        private Transform[] ground;
-        [SerializeField] private LayerMask groundMask;
-        
         [Header("Main Recoil")]
         [SerializeField] private float recoilStrength = 1f;
         [SerializeField] private float recoilDuration = 0.1f;
         [SerializeField] private float recoilCounterForce = 1f;
+
+        [Header("Events")] [SerializeField] private UnityEvent<CinemachineVirtualCamera> onCameraViewChanged;
         #endregion
 
         #region Private Fields
@@ -66,6 +75,27 @@ namespace Gameplay.Mecha
         #endregion
 
         #region Properties
+
+        private View _cameraView = View.FirstPerson;
+        private View _cameraPreviousView = View.FirstPerson;
+        public View CameraView
+        {
+            get => _cameraView;
+            set
+            {
+                if (_cameraView == value)
+                    return;
+                _cameraPreviousView = _cameraView;
+                _cameraView = value;
+                vCamera.gameObject.SetActive(value == View.FirstPerson);
+                freeLookCamera.gameObject.SetActive(value == View.FreeLook);
+                tpsCamera.gameObject.SetActive(value == View.ThirdPerson);
+                onCameraViewChanged?.Invoke(value == View.FirstPerson ? vCamera : tpsCamera);
+                EventManager.TriggerEvent(Constants.TypedEvents.OnToggleCockpitView, value == View.FirstPerson && juggernautParameters.toggleCockpitView);
+                
+            }
+
+        }
         
         public float MovementSpeed => _isRunning ? juggernautParameters.runSpeed : juggernautParameters.walkSpeed;
 
@@ -74,16 +104,17 @@ namespace Gameplay.Mecha
             get => _zoom;
             set
             {
+                Camera zoomCameraUsed = CameraView == View.FirstPerson ? zoomCamera : tpsZoomCamera;
                 _zoom = value;
                 float zoomValue;
                 switch (_zoom)
                 {
                     case Zoom.Default:
                         zoomValue = 60;
-                        zoomCamera.enabled = false;
+                        zoomCameraUsed.enabled = false;
                         break;
                     case Zoom.X2:
-                        zoomCamera.enabled = true;
+                        zoomCameraUsed.enabled = true;
                         zoomValue = 30;
                         break;
                     case Zoom.X4:
@@ -96,7 +127,7 @@ namespace Gameplay.Mecha
                         throw new ArgumentOutOfRangeException();
                 }
 
-                zoomCamera.fieldOfView = zoomValue;
+                zoomCameraUsed.fieldOfView = zoomValue;
                 EventManager.TriggerEvent("OnZoomChange", _zoom);
             }
         } 
@@ -125,6 +156,7 @@ namespace Gameplay.Mecha
             MaxHealth = juggernautParameters.health;
             _rigidbody = GetComponent<Rigidbody>();
             EventManager.TriggerEvent("OnUpdateHealth", 1f);
+            EventManager.TriggerEvent(Constants.TypedEvents.OnToggleCockpitView, juggernautParameters.toggleCockpitView);
             PlayerManager.Player = this;
         }
 
@@ -133,31 +165,33 @@ namespace Gameplay.Mecha
             base.OnEnable();
             if (!_rigidbody)
                 _rigidbody = GetComponent<Rigidbody>();
-            EventManager.AddListener("OnLookAround", OnLookAround);
+            EventManager.AddListener(Constants.TypedEvents.Inputs.OnLookAround, OnLookAround);
             EventManager.AddListener("OnMove", OnMove);
             EventManager.AddListener("OnZoomIn", OnZoomIn);
             EventManager.AddListener("OnZoomOut", OnZoomOut);
             EventManager.AddListener("OnRun", OnRun);
             EventManager.AddListener("OnShoot:Primary", OnShoot);
+            EventManager.AddListener(Constants.TypedEvents.Inputs.OnFreeLook, OnFreeLook);
+            EventManager.AddListener(Constants.Events.Inputs.OnChangeView, OnChangeView);
         }
 
-        
 
         protected override void OnDisable()
         {
             base.OnDisable();
-            EventManager.RemoveListener("OnLookAround", OnLookAround);
+            EventManager.RemoveListener(Constants.TypedEvents.Inputs.OnLookAround, OnLookAround);
             EventManager.RemoveListener("OnMove", OnMove);
             EventManager.RemoveListener("OnZoomIn", OnZoomIn);
             EventManager.RemoveListener("OnZoomOut", OnZoomOut);
             EventManager.RemoveListener("OnRun", OnRun);
             EventManager.RemoveListener("OnShoot:Primary", OnShoot);
+            EventManager.RemoveListener(Constants.TypedEvents.Inputs.OnFreeLook, OnFreeLook);
+            EventManager.RemoveListener(Constants.Events.Inputs.OnChangeView, OnChangeView);
         }
 
         protected override void FixedUpdate()
         {
             base.FixedUpdate();
-            CheckGround();
             ApplyGravity(); // Currently using the rigidbody gravity
             LimitSpeed();
             CheckDistanceForward();
@@ -191,18 +225,9 @@ namespace Gameplay.Mecha
         }
         
 
-        private void CheckGround()
+        public void CheckGround(bool isGrounded)
         {
-            int groundNumber = 0;
-            for (int i = 0; i < ground.Length; i++)
-            {
-                bool grounded = Physics.CheckSphere(ground[i].position, 0.3f, groundMask);
-                if (grounded)
-                    groundNumber++;
-            }
-
-            _isGrounded = (groundNumber * 2 >= ground.Length); // 50% of legs on ground == grounded
-            
+            _isGrounded = isGrounded; // 50% of legs on ground == grounded
             
             if (_isGrounded)
                 _rigidbody.drag = groundDrag;
@@ -262,7 +287,7 @@ namespace Gameplay.Mecha
 
         private void OnLookAround(object data)
         {
-            if (data is not Vector2 pos)
+            if (data is not Vector2 pos || !canRotate)
                 return;
             _xRotation -= pos.y * juggernautParameters.MouseSensitivity * Time.fixedDeltaTime;
             _yRotation += pos.x * juggernautParameters.MouseSensitivity * Time.fixedDeltaTime;
@@ -272,6 +297,34 @@ namespace Gameplay.Mecha
             EventManager.TriggerEvent("OnUpdateXRotation", _xRotation);
             
 
+        }
+        
+
+        private void OnFreeLook(object data)
+        {
+            if (data is not bool on)
+                return;
+            canRotate = !on;
+            CameraView = on ? View.FreeLook : _cameraPreviousView;
+
+        }
+        
+        private void OnChangeView()
+        {
+            // swap between third and first person
+            switch (CameraView)
+            {
+                case View.FirstPerson:
+                    CameraView = View.ThirdPerson;
+                    break;
+                case View.ThirdPerson:
+                    CameraView = View.FirstPerson;
+                    break;
+                case View.FreeLook:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         private void OnMove(object data)
@@ -317,16 +370,6 @@ namespace Gameplay.Mecha
         private void ResetZoomCd()
         {
             _zoomCd = false;
-        }
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.blue;
-            for (int i = 0; i < ground.Length; i++)
-            {
-                Gizmos.DrawSphere(ground[i].position, 2f);
-            }
-
         }
 
         #region Health Manager
