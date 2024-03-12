@@ -4,6 +4,7 @@ using System.Globalization;
 using Gameplay.Mecha;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace UI.HUD
 {
@@ -14,6 +15,9 @@ namespace UI.HUD
         [SerializeField] private GameObject reloadPanel; 
         [SerializeField] private TextMeshProUGUI weaponNameText;
         [SerializeField] private TextMeshProUGUI reloadingCooldownText;
+        [SerializeField] private RawImage ammoImage;
+        [SerializeField] private Texture2D mainAmmoImage;
+        [SerializeField] private Texture2D secondaryAmmoImage;
 
         #region Unity Callbacks
 
@@ -46,6 +50,10 @@ namespace UI.HUD
         {
             float timeRemaining = reloadModuleData.ReloadTime;
             weaponNameText.text = reloadModuleData.WeaponName;
+            ammoImage.texture = reloadModuleData.Type == WeaponModule.WeaponType.Primary
+                ? mainAmmoImage
+                : secondaryAmmoImage;
+            
             while (timeRemaining > 0)
             {
                 string secondsText = timeRemaining.ToString("F1", new CultureInfo("en-US"));
