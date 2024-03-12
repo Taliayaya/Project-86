@@ -22,7 +22,7 @@ namespace UI.HUD
         {
             EventManager.AddListener("OnScavengerStateChange", OnScavengerStateChange);
             EventManager.AddListener("OnScavengerHealthChange", OnScavengerHealthChange);
-            EventManager.AddListener("OnScavengerNameChange", OnScavengerNameChange);
+            //EventManager.AddListener("OnScavengerNameChange", OnScavengerNameChange);
             EventManager.AddListener("OnScavengerDistanceChange", OnScavengerDistanceChange);
         }
         
@@ -30,7 +30,7 @@ namespace UI.HUD
         {
             EventManager.RemoveListener("OnScavengerStateChange", OnScavengerStateChange);
             EventManager.RemoveListener("OnScavengerHealthChange", OnScavengerHealthChange);
-            EventManager.RemoveListener("OnScavengerNameChange", OnScavengerNameChange);
+            //EventManager.RemoveListener("OnScavengerNameChange", OnScavengerNameChange);
             EventManager.RemoveListener("OnScavengerDistanceChange", OnScavengerDistanceChange);
         }
 
@@ -65,7 +65,7 @@ namespace UI.HUD
 
         private void OnScavengerStateChange(object arg0)
         {
-            actionText.text = arg0.ToString();
+            actionText.text = "Status: " + arg0;
         }
     }
 }

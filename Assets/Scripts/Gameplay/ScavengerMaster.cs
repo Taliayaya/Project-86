@@ -178,7 +178,7 @@ namespace Gameplay
                     _targetPosition = navMeshHit.position;
                 if (!_targetIndicator)
                     _targetIndicator = Instantiate(goToTargetIndicatorPrefab);
-                _targetIndicator.transform.position = _targetPosition + Vector3.up * 0.1f;
+                _targetIndicator.transform.position = _targetPosition + Vector3.up * 0.05f;
                 yield return null;
             }
             if (_targetIndicator)
