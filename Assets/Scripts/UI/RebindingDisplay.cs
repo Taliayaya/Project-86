@@ -53,6 +53,7 @@ public class RebindingDisplay : MonoBehaviour
         }).OnMatchWaitForAnother(0.1f).OnComplete(operation =>
         {
             UpdateKeyText();
+            EventManager.TriggerEvent(Constants.TypedEvents.RebindKey + Keybind.Name, Keybind);
             startRebindButton.SetActive(true);
             operation.Dispose();
             EventManager.TriggerEvent("RebindStarted", false);

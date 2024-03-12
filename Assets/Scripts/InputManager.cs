@@ -126,13 +126,22 @@ public class InputManager : Singleton<InputManager>
 
     private void OnFreeLook(InputValue inputValue)
     {
-        Debug.Log("OnFreeLook " + inputValue.isPressed);
         EventManager.TriggerEvent(Constants.TypedEvents.Inputs.OnFreeLook, inputValue.isPressed);
     }
 
     private void OnChangeView(InputValue inputValue)
     {
         EventManager.TriggerEvent(Constants.Events.Inputs.OnChangeView);
+    }
+
+    private void OnToggleMap(InputValue inputValue)
+    {
+        EventManager.TriggerEvent(Constants.TypedEvents.Inputs.OnToggleMap, inputValue.isPressed);
+    }
+    
+    private void OnToggleObjective(InputValue inputValue)
+    {
+        EventManager.TriggerEvent(Constants.TypedEvents.Inputs.OnToggleObjective, inputValue.isPressed);
     }
 
     #region Scavenger Inputs
@@ -160,6 +169,7 @@ public class InputManager : Singleton<InputManager>
     private bool _isEditingHUD = false;
     private void OnEditHUD(InputValue inputValue)
     {
+        return; // disabled for now
         _isEditingHUD = !_isEditingHUD;
         if (_isEditingHUD)
         {
