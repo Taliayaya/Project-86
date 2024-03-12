@@ -12,16 +12,26 @@ namespace Utility
         public string eventName;
         public UnityEvent repeatEvent;
         public UnityEvent<bool> boolEvent;
+        public bool isToggleBool;
         
         public void Invoke()
         {
             repeatEvent.Invoke();
         }
-        
+
+        private bool _toggleOn;
         public void InvokeTyped(object value)
         {
             if (value is bool boolValue)
-                boolEvent.Invoke(boolValue);
+            {
+                if (isToggleBool)
+                {
+                    _toggleOn = !_toggleOn;
+                    boolEvent.Invoke(_toggleOn);
+                }
+                else
+                    boolEvent.Invoke(boolValue);
+            }
         }
     }
     public class OnEventRepeater : MonoBehaviour

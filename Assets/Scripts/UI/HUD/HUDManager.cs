@@ -7,6 +7,7 @@ using Gameplay.Mecha;
 using Gameplay.Units;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace UI.HUD
@@ -202,15 +203,15 @@ namespace UI.HUD
                     FadeZoom(1, 0.2f);
                     //crosshair.CrossFadeAlpha(0.9f, 0.2f, false);
                     //FadeReticle(0.2f, 0.2f);
-                    zoomGrid.pixelsPerUnitMultiplier = 1;
+                    //zoomGrid.pixelsPerUnitMultiplier = 1;
                     zoomText.text = "ZOOM   2.0 X";
                     break;
                 case MechaController.Zoom.X4:
-                    zoomGrid.pixelsPerUnitMultiplier = 0.5f;
+                    //zoomGrid.pixelsPerUnitMultiplier = 0.5f;
                     zoomText.text = "ZOOM   4.0 X";
                     break;
                 case MechaController.Zoom.X8:
-                    zoomGrid.pixelsPerUnitMultiplier = 0.25f;
+                    //zoomGrid.pixelsPerUnitMultiplier = 0.25f;
                     zoomText.text = "ZOOM   8.0 X";
                     break;
                 default:
@@ -263,18 +264,17 @@ namespace UI.HUD
 
         #region Side bar angles UI
         
-        [Header("Side bar angles UI")] [SerializeField]
-        private RawImage sideBarAnglesImageLeft;
-        [SerializeField] private RawImage sideBarAnglesImageRight;
+        [FormerlySerializedAs("sideBarAnglesImageLeft")] [Header("Side bar angles UI")] [SerializeField]
+        private Transform sideBarAnglesLeft;
+        [SerializeField] private Transform sideBarAnglesRight;
         [SerializeField] private TextMeshProUGUI topIndicatorText;
         
         private void OnUpdateSideBarAngles(object playerXRotation)
         {
             if (GameManager.GameIsPaused || _playedMechaState != UnitState.Default)
                 return;
-            float maxAngles = MechaController.MaxXRotation - MechaController.MinXRotation;
-            sideBarAnglesImageLeft.uvRect = new Rect( 0,1 - (float)playerXRotation / maxAngles,  1, 1);
-            sideBarAnglesImageRight.uvRect = new Rect(0, 1 -(float)playerXRotation / maxAngles,  1, 1);
+            sideBarAnglesRight.eulerAngles = new Vector3(180, 0, -180 - (float)playerXRotation / 4);
+            sideBarAnglesLeft.eulerAngles = new Vector3(0, 0, -(float)playerXRotation / 4);
             topIndicatorText.text = (-(float)playerXRotation).ToString("F1", new CultureInfo("en-US"));
         }
         

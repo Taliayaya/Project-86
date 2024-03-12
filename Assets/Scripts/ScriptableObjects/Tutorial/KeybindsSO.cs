@@ -16,6 +16,8 @@ namespace ScriptableObjects.Keybinds
         
         public int Count => inputActionReference.action.bindings.Count;
         public string EffectivePath => inputActionReference.action.bindings[0].effectivePath;
+        
+        public string KeyValue => InputControlPath.ToHumanReadableString(EffectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice);
     }
     [CreateAssetMenu(fileName = "Keybinds", menuName = "Scriptable Objects/Keybinds" )]
     public class KeybindsSO : ScriptableObject

@@ -53,7 +53,12 @@ public static class Constants
         {
             public const string OnFreeLook = "OnFreeLook";
             public const string OnLookAround = "OnLookAround";
+            public const string OnToggleMap = "OnToggleMap";
+            public const string OnToggleObjective = "OnToggleObjective";
         }
+
+        // /!\ this is used as NAME:keyName
+        public const string RebindKey = "RebindKey:";
         
         
         public const string OnToggleCockpitView = "OnToggleCockpitView";

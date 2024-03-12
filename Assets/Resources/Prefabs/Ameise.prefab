@@ -1054,6 +1054,7 @@ MonoBehaviour:
   - {fileID: 1860889349433567840}
   - {fileID: 1860889347623382827}
   - {fileID: 1860889347333889345}
+  isGrounded: 0
   stepSize: 1
   stepHeight: 1.2
   smoothness: 6
@@ -1067,6 +1068,9 @@ MonoBehaviour:
   audioSource: {fileID: 1860889348233460758}
   stepSounds:
   - {fileID: 8300000, guid: cf87b5d8f7aef9d4d9cf5bea9c4a422a, type: 3}
+  onIsGrounded:
+    m_PersistentCalls:
+      m_Calls: []
   velocityMultiplier: 0.08
 --- !u!114 &761358363160916634
 MonoBehaviour:
@@ -1877,14 +1881,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1860889347602417254}
-  m_LocalRotation: {x: 0.7069834, y: -0, z: -0, w: 0.7072302}
-  m_LocalPosition: {x: 0, y: 0, z: 2.2653906}
-  m_LocalScale: {x: 7.930196, y: 7.930196, z: 7.930196}
+  m_LocalRotation: {x: 0, y: 0.7072302, z: -0.7069834, w: 0}
+  m_LocalPosition: {x: 0, y: 0.05, z: 0}
+  m_LocalScale: {x: 25, y: 25, z: 25}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2186933566467260550}
   m_RootOrder: 9
-  m_LocalEulerAnglesHint: {x: 89.98, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 89.98, y: 180, z: 0}
 --- !u!212 &1860889347602417240
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1926,8 +1930,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 5313a58976e252d44aaf59790275197d, type: 3}
-  m_Color: {r: 1, g: 0.056943767, b: 0, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 1ba5bbce93235d64698239e0cfa16f0e, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

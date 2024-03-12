@@ -20,17 +20,21 @@ namespace Editor
                     hudWindow.SetPreset();
                     EditorUtility.SetDirty(hudWindow);
                 }
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+                
+                Debug.Log("Saved");
             }
 
             if (GUILayout.Button("Delete Save"))
             {
                 foreach (var hudWindow in hudWindows)
                     hudWindow.DeleteSave();
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
             }
             
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
-            Debug.Log("Saved");
+            
         }
     }
 }

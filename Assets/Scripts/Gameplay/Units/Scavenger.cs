@@ -100,7 +100,7 @@ namespace Gameplay.Units
             {
                 var weaponModule = weaponModules[i];
                 if (emitEvents || emitEventsForce)
-                    EventManager.TriggerEvent("OnReloadWeaponModule", new ReloadModuleData(i, weaponModules.Length, this, weaponModule.WeaponName, weaponModule.ReloadTime));
+                    EventManager.TriggerEvent("OnReloadWeaponModule", new ReloadModuleData(i, weaponModules.Length, this, weaponModule.WeaponName, weaponModule.ReloadTime, weaponModule.Type));
                 yield return new WaitForSeconds(weaponModule.ReloadTime);
                 Reload(weaponModule);
             }

@@ -13,14 +13,16 @@ namespace Gameplay.Mecha
         public Scavenger Scavenger;
         public string WeaponName;
         public float ReloadTime;
+        public WeaponModule.WeaponType Type;
         
-        public ReloadModuleData(int weaponIndex, int weaponCount, Scavenger scavenger, string weaponName, float reloadTime)
+        public ReloadModuleData(int weaponIndex, int weaponCount, Scavenger scavenger, string weaponName, float reloadTime, WeaponModule.WeaponType type)
         {
             WeaponIndex = weaponIndex;
             WeaponCount = weaponCount;
             Scavenger = scavenger;
             WeaponName = weaponName;
             ReloadTime = reloadTime;
+            Type = type;
         }
     }
     [RequireComponent(typeof(SphereCollider))]
