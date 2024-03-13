@@ -216,7 +216,7 @@ namespace Gameplay.Mecha
 
         private void CheckDistanceForward()
         {
-            if (Physics.Raycast(vCamera.transform.position, vCamera.transform.forward, out var hit, 2000, forwardMask))
+            if (Physics.Raycast(vCamera.transform.position, vCamera.transform.forward, out var hit, 5000, forwardMask))
             {
                 EventManager.TriggerEvent("OnDistanceForward", hit.distance);
             }
@@ -246,8 +246,9 @@ namespace Gameplay.Mecha
         private void ApplyGravity()
         {
             _yVelocity += gravity * Time.fixedDeltaTime;
+            Debug.Log(_yVelocity);
             if (_isGrounded)
-                _yVelocity = gravity / 2;
+                _yVelocity = gravity / 4;
             _rigidbody.AddForce(Vector3.up * (_yVelocity), ForceMode.Force);
         }
 
