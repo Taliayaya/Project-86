@@ -134,7 +134,9 @@ Please be aware that juggernaut stats, sounds, and visual effects are temporary 
 Project 86 is an open source fan game. Hence, anyone can freely contribute to his project and this part is here to help you to set up.
 First, make sure to join the [discord server](https://discord.gg/ZS4WYyPGgR). By doing so, communications will be made easier and you'll have access to the current tasks. These tasks are not only coding tasks. There are modeling, coding, musics, level design, art, story/lore, etc. Enough to find something you may do!
 
-Secondly, make sure to have Unity. We are currently using `Unity 2021.3.29f1` (this will change with time). Make sure to have the same one. 
+Secondly, make sure to have Unity. We are currently using `Unity 2022.3.22f1` (this will change with time). Make sure to have the same one. 
+
+> We recently upgraded from 2021.3.29f1, make sure your Unity Version is up to date!!!
 
 Thirdly, you have to download the files. Github seems to have issue making the ZIP file of the project so avoid using it. We recommend you to CLONE the project.
 If you are new to Git and Github, this may seem frightening for you. If you are new to it, you should download the following softwares:
