@@ -57,6 +57,8 @@ public static class Constants
             public const string OnToggleObjective = "OnToggleObjective";
         }
 
+        public const string OnSceneLoadingCompleted = "OnSceneLoadingCompleted";
+
         // /!\ this is used as NAME:keyName
         public const string RebindKey = "RebindKey:";
         

@@ -47,7 +47,7 @@ namespace Gameplay
             IsBullet = true
          };
          
-         Debug.Log("bullet hit " + other.gameObject.name + other.collider.name);
+         //Debug.Log("bullet hit " + other.gameObject.name + other.collider.name);
          // commented to avoid damaging twice
          if (other.gameObject.TryGetComponent(out IHealth health) && Ammo.explosionRadius == 0)
          {
@@ -59,7 +59,13 @@ namespace Gameplay
          else
          {
             if (Ammo.missEffect != null)
-               Instantiate(Ammo.missEffect, transform.position, Quaternion.LookRotation(transform.position - _origin));
+            {
+               if (Ammo.missEffectLookTop)
+                  Instantiate(Ammo.missEffect, transform.position, Quaternion.Euler(-90, 0, 0));
+               else
+                  Instantiate(Ammo.missEffect, transform.position,
+                      Quaternion.LookRotation(transform.position - _origin));
+            }
          }
 
          if (Ammo.explosionRadius == 0)

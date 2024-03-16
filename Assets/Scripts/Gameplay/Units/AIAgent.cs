@@ -111,7 +111,6 @@ namespace Gameplay.Units
         protected override void Start()
         {
             base.Start();
-            Debug.Log("AI agent is autonomous");
             Tree.blackBoard.SetValue("navMeshAgent", _agent);
             Tree.blackBoard.SetValue("transform", _firstChild);
             Tree.blackBoard.SetValue("agentSO", agentSo);

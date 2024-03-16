@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DefaultNamespace;
 using ScriptableObjects.GameParameters;
+using ScriptableObjects.UI;
 using Unity.Services.Analytics;
 using Unity.Services.Core;
 using UnityEngine;
@@ -15,6 +16,12 @@ using UnityEngine.Analytics;
 public class GameManager : Singleton<GameManager>
 {
     public static bool GameIsPaused { get; private set; } = false;
+    private RegionPointsSO _mission;
+    public static RegionPointsSO Mission
+    {
+        get => Instance._mission;
+        set => Instance._mission = value;
+    }
 
     #region Unity Callbacks
 

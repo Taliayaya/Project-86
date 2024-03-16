@@ -30,11 +30,6 @@ public class InputManager : Singleton<InputManager>
             _playerInput.actions.LoadBindingOverridesFromJson(keybindsSave);
     }
 
-    private void OnDashLeft()
-    {
-        Debug.Log("Dash left!!!!");
-    }
-
     private void OnEnable()
     {
         EventManager.AddListener("OnDeath", OnDeath);

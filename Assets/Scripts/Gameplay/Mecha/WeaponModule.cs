@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Cinemachine;
 using ScriptableObjects;
 using UI;
 using UI.HUD;
@@ -380,6 +381,10 @@ namespace Gameplay.Mecha
             if (listenOrTriggersEvents)
                 RegisterPlayerEvents();
         }
-        
+
+        public void SetCamera(CinemachineVirtualCamera cam)
+        {
+            cameraTransform = cam.transform;
+        }
     }
 }

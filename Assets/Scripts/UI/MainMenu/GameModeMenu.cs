@@ -71,7 +71,8 @@ namespace UI.MainMenu
             startButton.onClick.AddListener(() =>
             {
                 SoundManager.PlayOneShot(onClickSound);
-                SceneHandler.LoadScene(regionPointsSo.scene);
+                SceneHandler.LoadScene(regionPointsSo.scene, regionPointsSo);
+                GameManager.Mission = regionPointsSo;
                 AnalyticsService.Instance.CustomData("levelStarted", new Dictionary<string, object>()
                 {
                     {"levelName", regionPointsSo.regionName}

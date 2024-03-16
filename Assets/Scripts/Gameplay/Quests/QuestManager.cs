@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DefaultNamespace;
 using DefaultNamespace.Sound;
 using JetBrains.Annotations;
+using ScriptableObjects.UI;
 using Unity.Services.Analytics;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,15 +12,36 @@ namespace Gameplay.Quests
 {
     public class QuestManager : Singleton<QuestManager>
     {
+        [Serializable]
+        public struct QuestMission
+        {
+            public RegionPointsSO mission;
+            public List<Quest> quests;
+            [Tooltip("Start this mission automatically (for testing purposes)")]
+            public bool defaultMission;
+        }
         [SerializeField] private AudioClip questStartSound;
         protected override void OnAwake()
         {
             base.OnAwake();
-            
+            EventManager.AddListener(Constants.TypedEvents.OnSceneLoadingCompleted, OnSceneLoaded);   
         }
-        
-        public List<Quest> quests = new List<Quest>();
-        public static List<Quest> Quests => Instance.quests;
+
+        private void OnEnable()
+        {
+            EventManager.RemoveListener(Constants.TypedEvents.OnSceneLoadingCompleted, OnSceneLoaded);
+            EventManager.AddListener(Constants.TypedEvents.OnSceneLoadingCompleted, OnSceneLoaded);
+        }
+
+        private void OnDisable()
+        {
+             EventManager.RemoveListener(Constants.TypedEvents.OnSceneLoadingCompleted, OnSceneLoaded);
+        }
+
+        public List<QuestMission> questMissions;
+
+        public static List<Quest> Quests => Instance._quests;
+        private List<Quest> _quests;
 
         [CanBeNull] private Quest _currentQuest;
         [CanBeNull]
@@ -43,12 +65,18 @@ namespace Gameplay.Quests
 
         private void Start()
         {
+            foreach (var questMission in questMissions)
+                if (questMission.defaultMission)
+                {
+                    _quests = questMission.quests;
+                    break;
+                }
             SelectFirstQuestAndRegister();
         }
 
         private void SelectFirstQuestAndRegister()
         {
-            foreach (var quest in quests)
+            foreach (var quest in _quests)
             {
                 quest.OnStatusChanged += OnQuestStatusChanged; //Already added in CurrentQuest setter
                 if (CurrentQuest == null && quest.Activate())
@@ -63,7 +91,7 @@ namespace Gameplay.Quests
         
         public static void AddQuest(Quest quest)
         {
-            Instance.quests.Add(quest);
+            Instance._quests.Add(quest);
         }
         
         public void OnQuestStatusChanged(QuestStatus oldStatus, Quest quest)
@@ -76,7 +104,7 @@ namespace Gameplay.Quests
                 {
                     SoundManager.PlayOneShot(questStartSound);
                     CurrentQuest = null;
-                    foreach (var q in quests)
+                    foreach (var q in _quests)
                     {
                         if (q.Activate())
                         {
@@ -89,6 +117,26 @@ namespace Gameplay.Quests
             if (CurrentQuest == null)
             {
                 EventManager.TriggerEvent(Constants.Events.Analytics.LevelFinished);
+            }
+        }
+        
+        private void OnSceneLoaded(object arg0)
+        {
+            if (arg0 is not RegionPointsSO mission)
+                return;
+            SelectMission(mission);
+        }
+
+        private void SelectMission(RegionPointsSO mission)
+        {
+            foreach (var questMission in questMissions)
+            {
+                if (questMission.mission.regionName == mission.regionName)
+                {
+                    _quests = questMission.quests;
+                    SelectFirstQuestAndRegister();
+                    return;
+                }
             }
         }
     }
