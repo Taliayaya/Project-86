@@ -2,13 +2,16 @@
 using System.Collections;
 using ScriptableObjects;
 using ScriptableObjects.GameParameters;
+using ScriptableObjects.UI;
 using UI;
+using UI.MainMenu;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SceneHandler : Singleton<SceneHandler>
 {
     [SerializeField] private GraphicsParameters graphicsParameters;
+    private static SceneData _activeSceneData;
     private class LoadingMonoBehaviour : MonoBehaviour
     {
     }
@@ -32,25 +35,27 @@ public class SceneHandler : Singleton<SceneHandler>
         WindowManager.CloseAll();
         EventManager.TriggerEvent("ReloadScene");
         EventManager.TriggerEvent("OnResume");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        LoadScene(_activeSceneData, GameManager.Mission);
     }
     
     private static Action onLoaderCallback;
     private static AsyncOperation _loadingAsyncOperation;
 
-    public static void LoadScene(SceneData sceneData)
+    public static void LoadScene(SceneData sceneData, object dataOnComplete = null)
     {
+        _activeSceneData = sceneData;
         WindowManager.CloseAll();
         onLoaderCallback = () =>
         {
             GameObject loader = new GameObject("Loader");
-            loader.AddComponent<LoadingMonoBehaviour>().StartCoroutine(LoadSceneAsync(sceneData));
+            loader.AddComponent<LoadingMonoBehaviour>().StartCoroutine(LoadSceneAsync(sceneData, dataOnComplete));
         };
         EventManager.TriggerEvent("LoadingLoadingScene");
         SceneManager.LoadScene("LoadingScene");
     }
+
     
-    private static IEnumerator LoadSceneAsync(SceneData sceneData)
+    private static IEnumerator LoadSceneAsync(SceneData sceneData, object dataOnComplete = null)
     {
         yield return null;
         _loadingAsyncOperation = SceneManager.LoadSceneAsync(sceneData.SceneName);
@@ -62,6 +67,7 @@ public class SceneHandler : Singleton<SceneHandler>
                 InputManager.SwitchCurrentActionMap(sceneData.inputActionMap);
 
             _loadingAsyncOperation = null;
+            EventManager.TriggerEvent(Constants.TypedEvents.OnSceneLoadingCompleted, dataOnComplete);
             Debug.Log("Scene loaded");
         };
 
