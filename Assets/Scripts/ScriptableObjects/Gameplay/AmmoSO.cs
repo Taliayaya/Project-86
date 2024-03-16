@@ -30,6 +30,8 @@ namespace ScriptableObjects
         
         public AudioClip onHitSound;
         public GameObject missEffect;
+        // if the miss effect should always look upward or the player
+        public bool missEffectLookTop = false;
 
         public AudioClip GetRandomFireSound()
         {
