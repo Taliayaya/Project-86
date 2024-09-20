@@ -246,7 +246,7 @@ namespace Gameplay.Mecha
         private void ApplyGravity()
         {
             _yVelocity += gravity * Time.fixedDeltaTime;
-            Debug.Log(_yVelocity);
+            //Debug.Log(_yVelocity);
             if (_isGrounded)
                 _yVelocity = gravity / 4;
             _rigidbody.AddForce(Vector3.up * (_yVelocity), ForceMode.Force);

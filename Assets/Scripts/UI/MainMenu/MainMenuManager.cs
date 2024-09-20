@@ -11,6 +11,8 @@ namespace UI.MainMenu
         [SerializeField] private CinemachineVirtualCamera settingsCamera;
         [SerializeField] private Button toMainLeftButton;
         [SerializeField] private Button toMainRightButton;
+
+        [SerializeField] private PersonalMarksMenu personalMarksMenu;
         
         private CinemachineVirtualCamera _currentCamera;
 
@@ -47,6 +49,11 @@ namespace UI.MainMenu
             _currentCamera.enabled = false;
             mainMenuCamera.enabled = true;
             _currentCamera = mainMenuCamera;
+        }
+
+        public void OpenCosmetic()
+        {
+            WindowManager.Open(personalMarksMenu.Open, personalMarksMenu.Close, true);
         }
 
         public void Quit()
