@@ -105,7 +105,7 @@ namespace Gameplay
             {
                 if (scavengerOwned)
                 {
-                    Debug.Log("Scavenger distance: " + scavengerOwned.name + " " + transform.name + Vector3.Distance(transform.position, scavengerOwned.transform.position));
+                    //Debug.Log("Scavenger distance: " + scavengerOwned.name + " " + transform.name + Vector3.Distance(transform.position, scavengerOwned.transform.position));
                     var distanceFromScavenger = Vector3.Distance(transform.position, scavengerOwned.transform.position);
                     EventManager.TriggerEvent("OnScavengerDistanceChange", distanceFromScavenger);
                 }
