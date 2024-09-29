@@ -26,5 +26,12 @@ namespace ScriptableObjects.Skins
             _personalMarkSo =
                 Resources.Load<PersonalMarkSO>($"ScriptableObjects/Skins/PersonalMarks/{personalMarkFileName}");
         }
+
+        public override void LoadFromFile()
+        {
+            base.LoadFromFile();
+            _personalMarkSo =
+                Resources.Load<PersonalMarkSO>($"ScriptableObjects/Skins/PersonalMarks/{personalMarkFileName}");
+        }
     }
 }
