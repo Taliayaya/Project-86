@@ -3905,9 +3905,45 @@ MonoBehaviour:
   onCameraViewChanged:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 4781548308575646615}
+        m_TargetAssemblyTypeName: Gameplay.Mecha.WeaponModule, Assembly-CSharp
+        m_MethodName: SetCameraTransform
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 4781548308717753438}
         m_TargetAssemblyTypeName: Gameplay.ScavengerMaster, Assembly-CSharp
         m_MethodName: SetJuggCamera
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4781548307414292248}
+        m_TargetAssemblyTypeName: Gameplay.Mecha.WeaponModule, Assembly-CSharp
+        m_MethodName: SetCameraTransform
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4781548308789497192}
+        m_TargetAssemblyTypeName: Gameplay.Mecha.WeaponModule, Assembly-CSharp
+        m_MethodName: SetCameraTransform
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
