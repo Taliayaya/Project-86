@@ -50,7 +50,10 @@ namespace AI.BehaviourTree.BasicNodes
             {
                 Vector3 finalPosition = hit.position;
                 if (_agent.SetDestination(finalPosition))
+                {
                     _goal = null;
+                    blackBoard.RemoveValue("goal");
+                }
 
             }
         }
