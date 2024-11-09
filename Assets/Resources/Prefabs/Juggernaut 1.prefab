@@ -2402,6 +2402,8 @@ MonoBehaviour:
   fireBulletLayerMask:
     serializedVersion: 2
     m_Bits: 129
+  maxRaycastDistance: 500
+  aiIgnore: 0
   gunTransform: {fileID: 4781548307218277694}
   gunAudioSource: {fileID: 4781548307414292249}
   reloadAudioSource: {fileID: 0}
@@ -2738,7 +2740,7 @@ Transform:
   m_GameObject: {fileID: 4781548307874533479}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.167, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -2787,6 +2789,7 @@ MonoBehaviour:
   rb: {fileID: 4781548308717753426}
   agent: {fileID: 0}
   legOffset: {x: 0, y: 0, z: 0}
+  groundedRaycastRange: 0.3
   audioSource: {fileID: 4781548307874533476}
   stepSounds:
   - {fileID: 8300000, guid: cf87b5d8f7aef9d4d9cf5bea9c4a422a, type: 3}
@@ -3594,6 +3597,8 @@ MonoBehaviour:
   fireBulletLayerMask:
     serializedVersion: 2
     m_Bits: 129
+  maxRaycastDistance: 500
+  aiIgnore: 0
   gunTransform: {fileID: 4781548307218277694}
   gunAudioSource: {fileID: 4781548308575646632}
   reloadAudioSource: {fileID: 4781548308575646614}
@@ -3843,7 +3848,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4781548308717753427}
   serializedVersion: 4
-  m_Mass: 100
+  m_Mass: 500
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -3861,7 +3866,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 1
+  m_CollisionDetection: 2
 --- !u!114 &4781548308717753439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4072,8 +4077,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1.2
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 1.4
+  m_Center: {x: 0, y: 0.2, z: 0}
 --- !u!114 &4781548308717753437
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4227,6 +4232,8 @@ MonoBehaviour:
   fireBulletLayerMask:
     serializedVersion: 2
     m_Bits: 129
+  maxRaycastDistance: 500
+  aiIgnore: 0
   gunTransform: {fileID: 4781548308265642722}
   gunAudioSource: {fileID: 4781548308789497175}
   reloadAudioSource: {fileID: 0}
@@ -5080,9 +5087,9 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 2959467708922500008, guid: 09c8b97c02210ac45882a9b0b6759e35, type: 3}
 --- !u!4 &7084083307528356118 stripped

@@ -9,6 +9,7 @@ namespace ScriptableObjects.GameParameters
         [DefaultValue(100f), Range(20, 1000)] public float spawnRadius = 100f;
         [DefaultValue(300), Range(100, 1000)] public int ameiseHealth = 300;
         [DefaultValue(1000), Range(100, 1500)] public int loweHealth = 1000;
+        [Range(100, 1500)] public int dinosauriaHealth = 5000;
         [DefaultValue(66), Range(0, 100)] public int ameiseLoweRatio = 66;
         public GameObject ameisePrefab;
         public GameObject lowePrefab;
