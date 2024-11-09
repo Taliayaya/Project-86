@@ -10,7 +10,7 @@ namespace Gameplay
       private Faction _factionOrigin; // To avoid killing each other
       public AmmoSO Ammo { get; set; }
       
-      private float Damage => Ammo.damageCurve.Evaluate(_lifeTime);
+      private float Damage => Ammo.damageCurve.Evaluate((_origin - transform.position).magnitude);
 
       private DamagePackage _damagePackage;
       private float _lifeTime;
@@ -47,24 +47,44 @@ namespace Gameplay
             IsBullet = true
          };
          
-         //Debug.Log("bullet hit " + other.gameObject.name + other.collider.name);
+        //Debug.Log("bullet hit " + other.gameObject.name + other.collider.name);
          // commented to avoid damaging twice
          if (other.gameObject.TryGetComponent(out IHealth health) && Ammo.explosionRadius == 0)
          {
+            // If the bullet hit a non-hitbox, don't damage it and play a special effect
+            // like the bullet ricocheting off the armor
             if (other.collider.CompareTag("NonHitbox"))
-                return;
+            {
+               if (Ammo.armorMissEffect != null)
+               {
+                  Vector3 reflectedAngle = Vector3.Reflect(transform.forward, other.contacts[0].normal);
+                  var effect = Instantiate(Ammo.armorMissEffect, other.contacts[0].point, Quaternion.LookRotation(reflectedAngle));
+                  effect.transform.localScale *= Ammo.armorMissEffectSizeMult;
+                  Debug.Log("Armor Miss Effect");
+               }
+               Debug.Log("Armor Hit" + other.collider.name + " on " + other.gameObject.name + " for " + _damagePackage.DamageAmount + " damage");
+               Destroy(gameObject);
+               return;
+            }
+
+            Debug.Log("Bullet hit " + other.collider.name + " on " + other.gameObject.name + " for " + _damagePackage.DamageAmount + " damage");
             health.TakeDamage(_damagePackage);
+            
+            // implement on it effect
+            Destroy(gameObject);
             return;
          }
          else
          {
             if (Ammo.missEffect != null)
             {
+               GameObject missEffect;
                if (Ammo.missEffectLookTop)
-                  Instantiate(Ammo.missEffect, transform.position, Quaternion.Euler(-90, 0, 0));
+                  missEffect = Instantiate(Ammo.missEffect, transform.position, Quaternion.Euler(-90, 0, 0));
                else
-                  Instantiate(Ammo.missEffect, transform.position,
+                  missEffect = Instantiate(Ammo.missEffect, transform.position,
                       Quaternion.LookRotation(transform.position - _origin));
+               missEffect.transform.localScale *= Ammo.missEffectSizeMult;
             }
          }
 
