@@ -24,9 +24,10 @@ namespace Gameplay
 
         public void TakeDamage(DamagePackage damagePackage)
         {
-            if (damagePackage.IsBullet && damagePackage.BulletSize < Armor)
+            if (damagePackage.IsBullet && damagePackage.DamageAmount < Armor)
                 return;
             Health = Mathf.Clamp(Health - damagePackage.DamageAmount, 0, MaxHealth);
+            Debug.Log($"{Faction} took {damagePackage.DamageAmount} damage. Health: {Health}");
             OnTakeDamage(damagePackage);
             
             if (!Alive)
