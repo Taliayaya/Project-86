@@ -502,7 +502,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -1845,7 +1845,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -5076,6 +5076,7 @@ MonoBehaviour:
   muzzleLight: {fileID: 6919442979133725194}
   myParentColliderToIgnore: {fileID: 3497183056657770614}
   ammoLeftOrRight: Left
+  gunCheckCanShoot: {fileID: 0}
   canFire: 1
 --- !u!82 &5362928667904857419
 AudioSource:
@@ -5524,6 +5525,7 @@ MonoBehaviour:
   muzzleLight: {fileID: 989063814864177706}
   myParentColliderToIgnore: {fileID: 0}
   ammoLeftOrRight: Left
+  gunCheckCanShoot: {fileID: 0}
   canFire: 0
   minAngleToShoot: 15
   target: {fileID: 0}
@@ -8633,6 +8635,7 @@ MonoBehaviour:
   muzzleLight: {fileID: 1791164840641275790}
   myParentColliderToIgnore: {fileID: 3497183056657770614}
   ammoLeftOrRight: Left
+  gunCheckCanShoot: {fileID: 0}
   canFire: 1
 --- !u!82 &5956000857413621988
 AudioSource:
@@ -9231,6 +9234,7 @@ MonoBehaviour:
   muzzleLight: {fileID: 6353822975992870893}
   myParentColliderToIgnore: {fileID: 0}
   ammoLeftOrRight: Left
+  gunCheckCanShoot: {fileID: 0}
   canFire: 0
   minAngleToShoot: 15
   target: {fileID: 0}
