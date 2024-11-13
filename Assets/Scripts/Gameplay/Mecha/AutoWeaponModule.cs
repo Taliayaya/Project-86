@@ -16,12 +16,12 @@ namespace Gameplay.Mecha
             StartCoroutine(ShootIfEnemyInSight());
         }
 
-        public bool EnemyInRange()
+        public bool EnemyInRange(Transform turret)
         {
             if (target == null)
                 return false;
-            var direction = target.transform.position - transform.position;
-            var angle = Vector3.Angle(direction, transform.forward);
+            var direction = target.transform.position - turret.position;
+            var angle = Vector3.Angle(direction, turret.forward);
 
             return angle < minAngleToShoot * 0.5f;
         }
