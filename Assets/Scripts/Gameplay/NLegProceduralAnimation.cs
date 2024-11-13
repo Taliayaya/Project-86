@@ -55,7 +55,6 @@ public class NLegProceduralAnimation : MonoBehaviour
         Ray ray = new Ray(point + halfRange * up, -up);
         if (Physics.Raycast(ray, out hit, 3 * halfRange, layerMask) && !hit.collider.CompareTag("NonHitbox"))
         {
-            Debug.Log($"leghit: {hit.collider.gameObject.name} on {hit.transform.name}");
             res[0] = hit.point;
             res[1] = hit.normal;
         }
