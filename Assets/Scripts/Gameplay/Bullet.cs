@@ -9,7 +9,7 @@ namespace Gameplay
       private Vector3 _origin;
       private Faction _factionOrigin; // To avoid killing each other
       public AmmoSO Ammo { get; set; }
-      
+
       private float Damage => Ammo.damageCurve.Evaluate((_origin - transform.position).magnitude);
 
       private DamagePackage _damagePackage;
@@ -23,7 +23,7 @@ namespace Gameplay
          var layer = LayerMask.NameToLayer("Projectiles");
          Physics.IgnoreLayerCollision(layer, layer, true);
       }
-      
+
       public void Init(AmmoSO ammoSo, Faction factionOrigin)
       {
          Ammo = ammoSo;
@@ -46,8 +46,8 @@ namespace Gameplay
             BulletSize = Ammo.bulletSize,
             IsBullet = true
          };
-         
-        //Debug.Log("bullet hit " + other.gameObject.name + other.collider.name);
+
+         //Debug.Log("bullet hit " + other.gameObject.name + other.collider.name);
          // commented to avoid damaging twice
          if (other.gameObject.TryGetComponent(out IHealth health) && Ammo.explosionRadius == 0)
          {
@@ -55,21 +55,19 @@ namespace Gameplay
             // like the bullet ricocheting off the armor
             if (other.collider.CompareTag("NonHitbox"))
             {
-               if (Ammo.armorMissEffect != null)
-               {
-                  Vector3 reflectedAngle = Vector3.Reflect(transform.forward, other.contacts[0].normal);
-                  var effect = Instantiate(Ammo.armorMissEffect, other.contacts[0].point, Quaternion.LookRotation(reflectedAngle));
-                  effect.transform.localScale *= Ammo.armorMissEffectSizeMult;
-                  Debug.Log("Armor Miss Effect");
-               }
-               Debug.Log("Armor Hit" + other.collider.name + " on " + other.gameObject.name + " for " + _damagePackage.DamageAmount + " damage");
-               Destroy(gameObject);
+               DeflectBullet(other);
                return;
             }
 
-            Debug.Log("Bullet hit " + other.collider.name + " on " + other.gameObject.name + " for " + _damagePackage.DamageAmount + " damage");
-            health.TakeDamage(_damagePackage);
-            
+            Debug.Log("Bullet hit " + other.collider.name + " on " + other.gameObject.name + " for " +
+                      _damagePackage.DamageAmount + " damage");
+            DamageResponse response = health.TakeDamage(_damagePackage);
+            if (response.Status == DamageResponse.DamageStatus.Deflected)
+            {
+               DeflectBullet(other);
+               return;
+            }
+
             // implement on it effect
             Destroy(gameObject);
             return;
@@ -83,7 +81,7 @@ namespace Gameplay
                   missEffect = Instantiate(Ammo.missEffect, transform.position, Quaternion.Euler(-90, 0, 0));
                else
                   missEffect = Instantiate(Ammo.missEffect, transform.position,
-                      Quaternion.LookRotation(transform.position - _origin));
+                     Quaternion.LookRotation(transform.position - _origin));
                missEffect.transform.localScale *= Ammo.missEffectSizeMult;
             }
          }
@@ -93,11 +91,12 @@ namespace Gameplay
             Destroy(gameObject);
             return;
          }
+
          var colliders = new Collider[5];
          var position = other.contacts[0].point;
          var size = Physics.OverlapSphereNonAlloc(position, Ammo.explosionRadius, colliders, Ammo.explosionLayerMask);
          Debug.DrawLine(position, position + Vector3.up * 10, Color.red, 10f);
-         for(int i = 0; i < size; i++)
+         for (int i = 0; i < size; i++)
          {
             var col = colliders[i];
             if (col.TryGetComponent(out IHealth health2))
@@ -106,7 +105,23 @@ namespace Gameplay
             }
          }
 
-         Instantiate(Ammo.explosionPrefab, position,  Quaternion.LookRotation(position - _origin));
+         Instantiate(Ammo.explosionPrefab, position, Quaternion.LookRotation(position - _origin));
+         Destroy(gameObject);
+      }
+
+      private void DeflectBullet(Collision other)
+      {
+         if (Ammo.armorMissEffect != null)
+         {
+            Vector3 reflectedAngle = Vector3.Reflect(transform.forward, other.contacts[0].normal);
+            var effect = Instantiate(Ammo.armorMissEffect, other.contacts[0].point,
+               Quaternion.LookRotation(reflectedAngle));
+            effect.transform.localScale *= Ammo.armorMissEffectSizeMult;
+            Debug.Log("Armor Miss Effect");
+         }
+
+         Debug.Log("Armor Hit" + other.collider.name + " on " + other.gameObject.name + " for " +
+                   _damagePackage.DamageAmount + " damage");
          Destroy(gameObject);
       }
 
