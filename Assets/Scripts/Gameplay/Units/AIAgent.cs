@@ -107,6 +107,11 @@ namespace Gameplay.Units
                 Health = demoParameters.loweHealth;
                 MaxHealth = demoParameters.loweHealth;
             }
+            else if (name.Contains("Dinosauria"))
+            {
+                Health = demoParameters.dinosauriaHealth;
+                MaxHealth = demoParameters.dinosauriaHealth;
+            }
             else
             {
                 Health = demoParameters.ameiseHealth;

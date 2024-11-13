@@ -2412,6 +2412,7 @@ MonoBehaviour:
   muzzleLight: {fileID: 4781548308505812112}
   myParentColliderToIgnore: {fileID: 2115739441}
   ammoLeftOrRight: Left
+  gunCheckCanShoot: {fileID: 0}
   canFire: 1
 --- !u!82 &4781548307414292249
 AudioSource:
@@ -3607,6 +3608,7 @@ MonoBehaviour:
   muzzleLight: {fileID: 4781548308242623090}
   myParentColliderToIgnore: {fileID: 2115739441}
   ammoLeftOrRight: Left
+  gunCheckCanShoot: {fileID: 0}
   canFire: 1
 --- !u!82 &4781548308575646632
 AudioSource:
@@ -3848,9 +3850,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4781548308717753427}
   serializedVersion: 4
-  m_Mass: 500
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Mass: 300
+  m_Drag: 1
+  m_AngularDrag: 5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -3884,7 +3886,7 @@ MonoBehaviour:
   onHealthChange:
     m_PersistentCalls:
       m_Calls: []
-  armor: 10
+  armor: 8
   onUnitDeath:
     m_PersistentCalls:
       m_Calls: []
@@ -3893,8 +3895,8 @@ MonoBehaviour:
   faction: 0
   juggernautParameters: {fileID: 11400000, guid: 6c4a4c7a46816b44b895f909655cdc26,
     type: 2}
-  gravity: -5000
-  groundDrag: 0.2
+  gravity: -100
+  groundDrag: 3
   modelTransform: {fileID: 4781548307874533478}
   canRotate: 1
   zoomCamera: {fileID: 4781548308949938339}
@@ -3907,7 +3909,7 @@ MonoBehaviour:
     m_Bits: 129
   recoilStrength: 1
   recoilDuration: 0.1
-  recoilCounterForce: 1000
+  recoilCounterForce: 0
   onCameraViewChanged:
     m_PersistentCalls:
       m_Calls:
@@ -4242,6 +4244,7 @@ MonoBehaviour:
   muzzleLight: {fileID: 4781548307546494868}
   myParentColliderToIgnore: {fileID: 2115739441}
   ammoLeftOrRight: Right
+  gunCheckCanShoot: {fileID: 0}
   canFire: 1
 --- !u!82 &4781548308789497175
 AudioSource:

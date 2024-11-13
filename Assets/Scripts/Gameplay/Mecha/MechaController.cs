@@ -250,7 +250,7 @@ namespace Gameplay.Mecha
             //Debug.Log(_yVelocity);
             if (_isGrounded)
                 _yVelocity = gravity / 4;
-            _rigidbody.AddForce(Vector3.up * (_yVelocity), ForceMode.Force);
+            _rigidbody.AddForce(Vector3.up * (_yVelocity), ForceMode.Acceleration);
         }
 
         private void RotateJuggernaut()

@@ -13,6 +13,7 @@ namespace ScriptableObjects.GameParameters
         [DefaultValue(66), Range(0, 100)] public int ameiseLoweRatio = 66;
         public GameObject ameisePrefab;
         public GameObject lowePrefab;
+        public GameObject dinosauriaPrefab;
         public override string GetParametersName => "Demo Settings";
     }
 }

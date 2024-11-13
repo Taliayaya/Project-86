@@ -75,6 +75,9 @@ public class WaveLegionSpawner : MonoBehaviour
             case UnitType.Scavenger:
                 SpawnLegion(prefab);
                 break;
+            case UnitType.Dinosauria:
+                SpawnLegion(demoParameters.dinosauriaPrefab);
+                break;
             case UnitType.Legion:
                 break;
             case UnitType.Republic:
