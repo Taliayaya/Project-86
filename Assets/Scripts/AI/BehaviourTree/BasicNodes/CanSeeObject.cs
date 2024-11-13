@@ -67,12 +67,11 @@ namespace AI.BehaviourTree.BasicNodes
 
             if (_aiAgent.Target is not null)
             {
-                if (_aiAgent.Target.Visibility == TargetInfo.VisibilityStatus.Visible && !CanSeeSingleTarget(_aiAgent.Target.Unit))
+                if (_aiAgent.Target.Visibility == TargetInfo.VisibilityStatus.Visible && CanSeeSingleTarget(_aiAgent.Target.Unit))
                 {
-                    ClosestTarget = null;
-                    _aiAgent.Target = null;
+                    ClosestTarget = _aiAgent.Target.Unit;
                     _isDone = true;
-                    _canSeeTarget = false;
+                    _canSeeTarget = true;
                     return;
                 }
                 if (_aiAgent.Target.Visibility == TargetInfo.VisibilityStatus.Network)
@@ -193,14 +192,16 @@ namespace AI.BehaviourTree.BasicNodes
         
         private void SharePosition(Unit target, Unit ally)
         {
-            if (ally is AIAgent aiAgent)
+            if (ally is AIAgent allyAgent)
             {
-                if (aiAgent.Target is null || aiAgent.orderPriority < _aiAgent.orderPriority)
+                if (allyAgent.Target is null || allyAgent.orderPriority < _aiAgent.orderPriority)
                 {
                     Debug.Log("[CanSeeObject] " + ally.name + " already has a target or has a higher priority");
                     TargetInfo targetInfo = new TargetInfo(target, TargetInfo.VisibilityStatus.Network, sharePositionSpotTime);
-                    aiAgent.Target = targetInfo;
+                    allyAgent.Target = targetInfo;
                 }
+                else
+                    Debug.Log("[CanSeeObject] " + ally.name + " already has a target or has a higher priority");
             }
         }
         
