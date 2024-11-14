@@ -79,8 +79,9 @@ namespace AI.BehaviourTree.BasicNodes
                     ClosestTarget = _aiAgent.Target.Unit;
                     if (CanSeeSingleTarget(ClosestTarget))
                         _aiAgent.Target.Visibility = TargetInfo.VisibilityStatus.Visible;
-                    _isDone = true;
                     _canSeeTarget = true;
+                    _isDone = false;
+                    _canSeeTargetEnumerator = CanSeeTarget();
                     return;
                 }
                 ClosestTarget = null;
@@ -156,7 +157,7 @@ namespace AI.BehaviourTree.BasicNodes
                 if (canSharePosition)
                     _sharePositionEnumerator = ShareTargetPosition(ClosestTarget);
             }
-            else
+            else if (_aiAgent.Target is null || _aiAgent.Target.Visibility == TargetInfo.VisibilityStatus.Visible)
                 _aiAgent.Target = null;
         }
 

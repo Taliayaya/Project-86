@@ -1,4 +1,5 @@
 using System;
+using Cinemachine;
 using ScriptableObjects;
 using UnityEngine;
 
@@ -14,12 +15,14 @@ namespace Gameplay
 
       private DamagePackage _damagePackage;
       private float _lifeTime;
+      private CinemachineImpulseSource _impulseSource;
 
       #region Unity Callbacks
 
       private void Start()
       {
          _origin = transform.position;
+         _impulseSource = GetComponent<CinemachineImpulseSource>();
          var layer = LayerMask.NameToLayer("Projectiles");
          Physics.IgnoreLayerCollision(layer, layer, true);
       }
@@ -34,6 +37,27 @@ namespace Gameplay
       {
          Invoke(nameof(Expire), lifeTime);
       }
+      
+      private void ApplyCameraShake()
+      {
+         if (_impulseSource == null) return;
+         _impulseSource.GenerateImpulse(Ammo.explosionForce);
+      }
+
+      private void ApplyExplosionQuake(Vector3 origin)
+      {
+         Collider[] results = new Collider[20];
+         var size = Physics.OverlapSphereNonAlloc(origin, Ammo.explosionRadiusQuake, results);
+         for (int i = 0; i < size; i++)
+         {
+            var col = results[i];
+            if (col.TryGetComponent(out Rigidbody rb))
+            {
+               rb.AddExplosionForce(Ammo.explosionForce, origin, Ammo.explosionRadiusQuake);
+            }
+         }
+      }
+      
 
       private void OnCollisionEnter(Collision other)
       {
@@ -46,10 +70,14 @@ namespace Gameplay
             BulletSize = Ammo.bulletSize,
             IsBullet = true
          };
+         ApplyCameraShake();
 
          //Debug.Log("bullet hit " + other.gameObject.name + other.collider.name);
          // commented to avoid damaging twice
-         if (other.gameObject.TryGetComponent(out IHealth health) && Ammo.explosionRadius == 0)
+         bool isHealthComponent = other.collider.CompareTag("HealthComponent");
+         IHealth health;
+         if (((isHealthComponent && other.collider.TryGetComponent(out health)) ||
+              other.gameObject.TryGetComponent(out health)) && Ammo.explosionRadius == 0)
          {
             // If the bullet hit a non-hitbox, don't damage it and play a special effect
             // like the bullet ricocheting off the armor

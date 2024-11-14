@@ -249,7 +249,7 @@ MonoBehaviour:
   engineAudioSo: {fileID: 11400000, guid: cdbf35fdc54510f4e8c98c65ac06db71, type: 2}
   faction: 0
   agentSo: {fileID: 11400000, guid: 831d2b915ee58de4aaf062221eef3d3c, type: 2}
-  isAutonomous: 0
+  isAutonomous: 1
   orderPriority: 0
   debugAgent:
     debug: 1
@@ -288,7 +288,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: -1372625422
   m_Radius: 0.5
-  m_Speed: 40
+  m_Speed: 10
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120

@@ -465,6 +465,7 @@ MonoBehaviour:
   muzzleLight: {fileID: 293691076599437794}
   myParentColliderToIgnore: {fileID: 0}
   ammoLeftOrRight: Left
+  gunCheckCanShoot: {fileID: 0}
   canFire: 1
 --- !u!82 &2987575834911625274
 AudioSource:
@@ -1222,7 +1223,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: -1372625422
   m_Radius: 4
-  m_Speed: 7
+  m_Speed: 10
   m_Acceleration: 3
   avoidancePriority: 50
   m_AngularSpeed: 20
@@ -3263,6 +3264,7 @@ MonoBehaviour:
   muzzleLight: {fileID: 3006746194649822652}
   myParentColliderToIgnore: {fileID: 5836937867256135592}
   ammoLeftOrRight: Left
+  gunCheckCanShoot: {fileID: 0}
   canFire: 1
 --- !u!82 &6852200685316878366
 AudioSource:

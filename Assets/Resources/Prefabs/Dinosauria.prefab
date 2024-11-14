@@ -5074,7 +5074,7 @@ MonoBehaviour:
   cameraTransform: {fileID: 4734491908410458219}
   muzzleFlash: {fileID: 1861677871566011835}
   muzzleLight: {fileID: 6919442979133725194}
-  myParentColliderToIgnore: {fileID: 3497183056657770614}
+  myParentColliderToIgnore: {fileID: 4311907113561008}
   ammoLeftOrRight: Left
   gunCheckCanShoot: {fileID: 0}
   canFire: 1
@@ -5375,9 +5375,11 @@ GameObject:
   - component: {fileID: 6622733535373117374}
   - component: {fileID: 2493301193770834983}
   - component: {fileID: 6510746446421015335}
+  - component: {fileID: 672618347538776845}
+  - component: {fileID: 5149205352119902070}
   m_Layer: 0
   m_Name: 12.7mmCannonRight
-  m_TagString: Untagged
+  m_TagString: HealthComponent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5520,16 +5522,63 @@ MonoBehaviour:
   gunTransform: {fileID: 8951626537550282793}
   gunAudioSource: {fileID: 2493301193770834983}
   reloadAudioSource: {fileID: 0}
-  cameraTransform: {fileID: 6622733535373117374}
+  cameraTransform: {fileID: 8951626537550282793}
   muzzleFlash: {fileID: 1115137928650154318}
   muzzleLight: {fileID: 989063814864177706}
-  myParentColliderToIgnore: {fileID: 0}
+  myParentColliderToIgnore: {fileID: 672618347538776845}
   ammoLeftOrRight: Left
   gunCheckCanShoot: {fileID: 0}
   canFire: 0
   minAngleToShoot: 15
   target: {fileID: 0}
   holdFireTime: 2
+--- !u!65 &672618347538776845
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5050140004811493266}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 0.5, z: 3}
+  m_Center: {x: 0, y: 0, z: -2.5}
+--- !u!114 &5149205352119902070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5050140004811493266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a217dc66f374f58b656bdd45a4421dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100
+  armor: 10
+  faction: 1
+  deathEffect: {fileID: 3864062806111491170, guid: 1844f0f572007844ab48cb99e5199b97,
+    type: 3}
+  componentsToDisableOnDeath:
+  - {fileID: 6510746446421015335}
+  - {fileID: 3605702921532991427}
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHealthChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &5169436415036910297
 GameObject:
   m_ObjectHideFlags: 0
@@ -6058,6 +6107,59 @@ Transform:
   - {fileID: 5292967076001316314}
   m_Father: {fileID: 8603318022376488478}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5738220029252053113
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2814198007119285584}
+  - component: {fileID: 4311907113561008}
+  m_Layer: 7
+  m_Name: FrontCollider
+  m_TagString: NonHitbox
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2814198007119285584
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5738220029252053113}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4629914174119710313}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &4311907113561008
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5738220029252053113}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.65, y: 24.13, z: 2.34}
+  m_Center: {x: 0.42, y: -12.245829, z: -0.21}
 --- !u!1 &5763650830006072447
 GameObject:
   m_ObjectHideFlags: 0
@@ -6919,7 +7021,6 @@ GameObject:
   - component: {fileID: 4629914174119710313}
   - component: {fileID: 8330856756411286589}
   - component: {fileID: 1052440225743066035}
-  - component: {fileID: 3497183056657770614}
   - component: {fileID: 6373200499927206496}
   m_Layer: 0
   m_Name: main gun.001
@@ -6940,7 +7041,8 @@ Transform:
   m_LocalPosition: {x: 0.0027496729, y: -0.010482215, z: 0.0040732333}
   m_LocalScale: {x: 0.01, y: 0.0100000035, z: 0.01}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2814198007119285584}
   m_Father: {fileID: 6710241616282670562}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8330856756411286589
@@ -6993,27 +7095,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &3497183056657770614
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6715644304607982622}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2.65, y: 24.13, z: 2.34}
-  m_Center: {x: -0.91, y: -12.245829, z: -0.21}
 --- !u!65 &6373200499927206496
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8633,7 +8714,7 @@ MonoBehaviour:
   cameraTransform: {fileID: 4734491908410458219}
   muzzleFlash: {fileID: 6552960006258499151}
   muzzleLight: {fileID: 1791164840641275790}
-  myParentColliderToIgnore: {fileID: 3497183056657770614}
+  myParentColliderToIgnore: {fileID: 4311907113561008}
   ammoLeftOrRight: Left
   gunCheckCanShoot: {fileID: 0}
   canFire: 1
@@ -9084,9 +9165,11 @@ GameObject:
   - component: {fileID: 1977337148938291624}
   - component: {fileID: 6393537424463033257}
   - component: {fileID: 6875158011072826948}
+  - component: {fileID: 1257541744289890202}
+  - component: {fileID: 504756711481300514}
   m_Layer: 0
   m_Name: 12.7mmCannonLeft
-  m_TagString: Untagged
+  m_TagString: HealthComponent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9229,16 +9312,63 @@ MonoBehaviour:
   gunTransform: {fileID: 8354253488568226460}
   gunAudioSource: {fileID: 6393537424463033257}
   reloadAudioSource: {fileID: 0}
-  cameraTransform: {fileID: 1977337148938291624}
+  cameraTransform: {fileID: 8354253488568226460}
   muzzleFlash: {fileID: 8545698271373150350}
   muzzleLight: {fileID: 6353822975992870893}
-  myParentColliderToIgnore: {fileID: 0}
+  myParentColliderToIgnore: {fileID: 504756711481300514}
   ammoLeftOrRight: Left
   gunCheckCanShoot: {fileID: 0}
   canFire: 0
   minAngleToShoot: 15
   target: {fileID: 0}
   holdFireTime: 2
+--- !u!114 &1257541744289890202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8986929794912389422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a217dc66f374f58b656bdd45a4421dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100
+  armor: 10
+  faction: 1
+  deathEffect: {fileID: 3864062806111491170, guid: 1844f0f572007844ab48cb99e5199b97,
+    type: 3}
+  componentsToDisableOnDeath:
+  - {fileID: 6875158011072826948}
+  - {fileID: 426679574127038773}
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHealthChange:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!65 &504756711481300514
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8986929794912389422}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 0.5, z: 3}
+  m_Center: {x: 0, y: 0, z: -2.5}
 --- !u!1 &8987649843177698632
 GameObject:
   m_ObjectHideFlags: 0

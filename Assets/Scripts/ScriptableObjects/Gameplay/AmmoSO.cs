@@ -38,6 +38,9 @@ namespace ScriptableObjects
         public GameObject armorMissEffect;
         public float armorMissEffectSizeMult = 1f;
 
+        [Header("Explosion quake")] public float explosionForce = 0;
+        public float explosionRadiusQuake = 0;
+
         public AudioClip GetRandomFireSound()
         {
             return fireSounds[Random.Range(0, fireSounds.Count)];
