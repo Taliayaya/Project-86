@@ -76,12 +76,12 @@ namespace AI.BehaviourTree.BasicNodes
             return weaponModule.StartShootDuringTime(timeBeforeSpotExpired, EnemyInRange);
         }
 
-        public bool EnemyInRange()
+        public bool EnemyInRange(Transform turret)
         {
             if (_aiAgent.Target?.Visibility != TargetInfo.VisibilityStatus.Visible)
                 return false;
-            var direction = _aiAgent.Target.Position - _transform.position;
-            var angle = Vector3.Angle(direction, _transform.forward);
+            var direction = _aiAgent.Target.Position - turret.position;
+            var angle = Vector3.Angle(direction, turret.forward);
 
             return angle < angleToShoot * 0.5f;
         }

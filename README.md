@@ -1,6 +1,6 @@
 [![Total Download badge](https://img.shields.io/github/downloads/Taliayaya/Project-86/total)](https://github.com/Taliayaya/Project-86/releases/latest)
 [![Version badge](https://img.shields.io/github/v/release/Taliayaya/Project-86)](https://github.com/Taliayaya/Project-86/releases/latest)
-[![Discord](https://img.shields.io/badge/Discord-5865F2)](https://discord.gg/ZS4WYyPGgR)
+[![Discord](https://img.shields.io/badge/Discord-5865F2)](https://discord.gg/Yh2TQH97yA)
 [![Unity](https://img.shields.io/badge/Unity-555555)]()
 
 # Project 86
@@ -14,7 +14,7 @@
 ## Project Overview
 
 This Project 86 fan game is in its early stages, with the primary goal of delivering a functional beta swiftly. We invite players to actively participate and provide feedback, steering the game in the right direction.
-This project is made by the community, for the community. Any fan can contribute to it, both in term of coding, modeling or testing. As all the game files are available on this repository, contribution has been made easier. To discuss more about the project, [feel free to join the discord server](https://discord.gg/ZS4WYyPGgR)
+This project is made by the community, for the community. Any fan can contribute to it, both in term of coding, modeling or testing. As all the game files are available on this repository, contribution has been made easier. To discuss more about the project, [feel free to join the discord server](https://discord.gg/Yh2TQH97yA)
 
 ## Table of contents
 - [Project Objectives](#project-objectives)
@@ -85,7 +85,7 @@ If downloading the launcher is too much for you, you can simply download the lat
 
 > This method can also be a work-around if your computer does not let you download the launcher.
 
-> `Mono not found`? Ensure that the download was done correctly and that the install path does not contain special character (only alphanumeric ones) as it may cause issues. If you have an error, you can [ask help on the discord server](https://discord.gg/ZS4WYyPGgR)
+> `Mono not found`? Ensure that the download was done correctly and that the install path does not contain special character (only alphanumeric ones) as it may cause issues. If you have an error, you can [ask help on the discord server](https://discord.gg/Yh2TQH97yA)
 
 ## Key Bindings
 A non-exhaustive list of the available keybinds. Note that these are the default ones.
@@ -132,7 +132,7 @@ Please be aware that juggernaut stats, sounds, and visual effects are temporary 
 ## How to Contribute
 
 Project 86 is an open source fan game. Hence, anyone can freely contribute to his project and this part is here to help you to set up.
-First, make sure to join the [discord server](https://discord.gg/ZS4WYyPGgR). By doing so, communications will be made easier and you'll have access to the current tasks. These tasks are not only coding tasks. There are modeling, coding, musics, level design, art, story/lore, etc. Enough to find something you may do!
+First, make sure to join the [discord server](https://discord.gg/Yh2TQH97yA). By doing so, communications will be made easier and you'll have access to the current tasks. These tasks are not only coding tasks. There are modeling, coding, musics, level design, art, story/lore, etc. Enough to find something you may do!
 
 Secondly, make sure to have Unity. We are currently using `Unity 2022.3.22f1` (this will change with time). Make sure to have the same one. 
 

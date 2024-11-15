@@ -71,6 +71,7 @@ namespace Gameplay.Units
 
         [SerializeField] private DebugAgent debugAgent;
         [SerializeField] [CanBeNull] private List<Transform> patrolWaypoints = null;
+        [SerializeField] private bool rotateMainBodyTowardsEnemy = true;
         private WeaponModule[] _weaponModules;
         public BehaviourTree Tree => _behaviourTreeRunner.tree;
         public DemoParameters demoParameters;
@@ -99,11 +100,17 @@ namespace Gameplay.Units
             _weaponModules = GetComponentsInChildren<WeaponModule>().ToList().FindAll(module => !module.aiIgnore).ToArray();
             _audioSource = GetComponent<AudioSource>();
             
-            _firstChild = transform.GetChild(0);
+            if (_firstChild == null)
+                _firstChild = transform.GetChild(0);
             if (name.Contains("Lowe"))
             {
                 Health = demoParameters.loweHealth;
                 MaxHealth = demoParameters.loweHealth;
+            }
+            else if (name.Contains("Dinosauria"))
+            {
+                Health = demoParameters.dinosauriaHealth;
+                MaxHealth = demoParameters.dinosauriaHealth;
             }
             else
             {
@@ -124,7 +131,8 @@ namespace Gameplay.Units
                 Tree.blackBoard.SetValue("waypoints", patrolWaypoints);
             if (isAutonomous)
                 _behaviourTreeRunner.StartAI();
-            RotateTowardsEnemy();
+            if (rotateMainBodyTowardsEnemy)
+                RotateTowardsEnemy();
         }
         
         public void AddDestinationGoal(Vector3 destination)
@@ -168,7 +176,7 @@ namespace Gameplay.Units
             isRotating = false;
         }
 
-        private Transform _firstChild;
+        [SerializeField] private Transform _firstChild;
         private Vector3 _lastPosition;
         IEnumerator RotateTowardsEnemyCoroutine()
         {

@@ -65,6 +65,8 @@ public class SceneHandler : Singleton<SceneHandler>
             Cursor.lockState = sceneData.cursorLockMode;
             if (sceneData.inputActionMap != "")
                 InputManager.SwitchCurrentActionMap(sceneData.inputActionMap);
+            // this line was added to fix an issue where somehow loaded settings were reset to default after a scene change
+            DataHandler.LoadGameData();
 
             _loadingAsyncOperation = null;
             EventManager.TriggerEvent(Constants.TypedEvents.OnSceneLoadingCompleted, dataOnComplete);

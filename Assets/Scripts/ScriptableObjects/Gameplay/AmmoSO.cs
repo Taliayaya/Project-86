@@ -30,8 +30,16 @@ namespace ScriptableObjects
         
         public AudioClip onHitSound;
         public GameObject missEffect;
+        public float missEffectSizeMult = 1f;
         // if the miss effect should always look upward or the player
         public bool missEffectLookTop = false;
+        
+        [Header("Armor Miss Effect")]
+        public GameObject armorMissEffect;
+        public float armorMissEffectSizeMult = 1f;
+
+        [Header("Explosion quake")] public float explosionForce = 0;
+        public float explosionRadiusQuake = 0;
 
         public AudioClip GetRandomFireSound()
         {

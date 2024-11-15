@@ -241,16 +241,16 @@ namespace Gameplay.Mecha
             var move = _rigidbody.transform.forward * (_lastMovement.y) + _rigidbody.transform.right * (_lastMovement.x);
                                     
             //_rigidbody.MovePosition(_rigidbody.position + move * Time.fixedDeltaTime);
-            _rigidbody.AddForce(move.normalized * (MovementSpeed * 1000f), ForceMode.Force);
+            _rigidbody.AddForce(move.normalized * (MovementSpeed * 1000), ForceMode.Force);
         }
 
         private void ApplyGravity()
         {
-            _yVelocity += gravity * Time.fixedDeltaTime;
+            _yVelocity += - gravity * gravity * Time.fixedDeltaTime;
             //Debug.Log(_yVelocity);
             if (_isGrounded)
-                _yVelocity = gravity / 4;
-            _rigidbody.AddForce(Vector3.up * (_yVelocity), ForceMode.Force);
+                _yVelocity = gravity * 4;
+            _rigidbody.AddForce(Vector3.up * (_yVelocity), ForceMode.Acceleration);
         }
 
         private void RotateJuggernaut()
@@ -266,6 +266,7 @@ namespace Gameplay.Mecha
         private void LimitSpeed()
         {
             var flatVel = new Vector3(_rigidbody.velocity.x, 0f, _rigidbody.velocity.z);
+            Debug.Log("speed in km/h: " + flatVel.magnitude * 3.6f);
             if (flatVel.magnitude > MovementSpeed)
             {
                 var limitedVel = flatVel.normalized * MovementSpeed;
