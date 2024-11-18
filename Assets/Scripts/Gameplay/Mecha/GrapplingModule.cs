@@ -1,4 +1,5 @@
 using System;
+using Cinemachine;
 using ScriptableObjects.GameParameters;
 using UI;
 using UI.HUD;
@@ -224,6 +225,11 @@ namespace Gameplay.Mecha
         private void StopGrappleFail()
         {
             StopGrapple(false);
+        }
+        
+        public void SetCamera(CinemachineVirtualCamera vcam)
+        {
+            cam = vcam.transform;
         }
     }
 }
