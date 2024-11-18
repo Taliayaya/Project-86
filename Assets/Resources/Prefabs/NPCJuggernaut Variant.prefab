@@ -12,6 +12,21 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1790118130816210933, guid: 95f4efd5279b9094da54c69047e49be4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2183940422992912760, guid: 95f4efd5279b9094da54c69047e49be4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3977186219418268406, guid: 95f4efd5279b9094da54c69047e49be4,
+        type: 3}
+      propertyPath: listenOrTriggersEvents
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4781548307381713082, guid: 95f4efd5279b9094da54c69047e49be4,
         type: 3}
       propertyPath: m_IsActive
@@ -21,7 +36,7 @@ PrefabInstance:
         type: 3}
       propertyPath: cameraTransform
       value: 
-      objectReference: {fileID: 8913735905355636279}
+      objectReference: {fileID: 0}
     - target: {fileID: 4781548307414292248, guid: 95f4efd5279b9094da54c69047e49be4,
         type: 3}
       propertyPath: listenOrTriggersEvents
@@ -71,7 +86,7 @@ PrefabInstance:
         type: 3}
       propertyPath: cameraTransform
       value: 
-      objectReference: {fileID: 8913735905355636279}
+      objectReference: {fileID: 0}
     - target: {fileID: 4781548308575646615, guid: 95f4efd5279b9094da54c69047e49be4,
         type: 3}
       propertyPath: listenOrTriggersEvents
@@ -171,8 +186,18 @@ PrefabInstance:
         type: 3}
       propertyPath: cameraTransform
       value: 
-      objectReference: {fileID: 8913735905355636279}
+      objectReference: {fileID: 0}
     - target: {fileID: 4781548308789497192, guid: 95f4efd5279b9094da54c69047e49be4,
+        type: 3}
+      propertyPath: listenOrTriggersEvents
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5009670203228888221, guid: 95f4efd5279b9094da54c69047e49be4,
+        type: 3}
+      propertyPath: finalScaleReference
+      value: 0.027995314
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332846349530842250, guid: 95f4efd5279b9094da54c69047e49be4,
         type: 3}
       propertyPath: listenOrTriggersEvents
       value: 0
@@ -183,6 +208,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7217428090894736871, guid: 95f4efd5279b9094da54c69047e49be4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850892043745419341, guid: 95f4efd5279b9094da54c69047e49be4,
+        type: 3}
+      propertyPath: listenOrTriggersEvents
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8621593056905522393, guid: 95f4efd5279b9094da54c69047e49be4,
         type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -206,12 +241,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1678518791}
   m_SourcePrefab: {fileID: 100100000, guid: 95f4efd5279b9094da54c69047e49be4, type: 3}
---- !u!4 &8913735905355636279 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4781548307874533478, guid: 95f4efd5279b9094da54c69047e49be4,
-    type: 3}
-  m_PrefabInstance: {fileID: 4172738222342098513}
-  m_PrefabAsset: {fileID: 0}
 --- !u!82 &8913735906525485569 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 4781548308717753424, guid: 95f4efd5279b9094da54c69047e49be4,
@@ -249,7 +278,7 @@ MonoBehaviour:
   engineAudioSo: {fileID: 11400000, guid: cdbf35fdc54510f4e8c98c65ac06db71, type: 2}
   faction: 0
   agentSo: {fileID: 11400000, guid: 831d2b915ee58de4aaf062221eef3d3c, type: 2}
-  isAutonomous: 1
+  isAutonomous: 0
   orderPriority: 0
   debugAgent:
     debug: 1
