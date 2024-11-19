@@ -244,7 +244,8 @@ namespace AI.BehaviourTree.BasicNodes
             Debug.DrawRay(_transform.position, direction.normalized * _agentSo.viewDistance, Color.yellow);
             if (Physics.Raycast(_transform.position, direction.normalized, out hit, _agentSo.viewDistance, layerMask))
             {
-                if (hit.collider.gameObject == target.gameObject)
+                bool isDirectTarget = hit.collider.gameObject == target.gameObject; 
+                if (isDirectTarget || (hit.rigidbody != null && hit.rigidbody.gameObject == target.gameObject))
                 {
                     Debug.DrawLine(_transform.position, target.transform.position, Color.green);
                     _canSeeTarget = true;

@@ -176,8 +176,8 @@ namespace AI
             Debug.DrawRay(transform.position, direction.normalized * viewDistance, Color.yellow, 2);
             if (Physics.Raycast(transform.position, direction.normalized, out hit, viewDistance, layerMask))
             {
-                Debug.Log("hit: " + hit.collider.gameObject.name);
-                if (hit.collider.gameObject == target.gameObject)
+                bool isDirectTarget = hit.collider.gameObject == target.gameObject;
+                if (isDirectTarget || (hit.rigidbody != null && hit.rigidbody.gameObject == target.gameObject))
                 {
                     Debug.DrawLine(transform.position, target.transform.position, Color.green);
                     _canSeeTarget = true;

@@ -193,6 +193,7 @@ namespace Gameplay.Mecha
         protected override void FixedUpdate()
         {
             base.FixedUpdate();
+            CheckGround(false);
             ApplyGravity(); // Currently using the rigidbody gravity
             LimitSpeed();
             CheckDistanceForward();
@@ -228,7 +229,7 @@ namespace Gameplay.Mecha
 
         public void CheckGround(bool isGrounded)
         {
-            _isGrounded = isGrounded; // 50% of legs on ground == grounded
+            _isGrounded = Physics.Raycast(transform.position, Vector3.down, out var hit, 3f, forwardMask);
             
             if (_isGrounded)
                 _rigidbody.drag = groundDrag;
@@ -266,7 +267,6 @@ namespace Gameplay.Mecha
         private void LimitSpeed()
         {
             var flatVel = new Vector3(_rigidbody.velocity.x, 0f, _rigidbody.velocity.z);
-            Debug.Log("speed in km/h: " + flatVel.magnitude * 3.6f);
             if (flatVel.magnitude > MovementSpeed)
             {
                 var limitedVel = flatVel.normalized * MovementSpeed;

@@ -303,7 +303,9 @@ namespace Gameplay.Mecha
             if (Physics.Raycast(origin.position, origin.forward, out var hit, maxRaycastDistance, fireBulletLayerMask))
             {
                 //Debug.Log("hit " + hit.transform.name);
-                bulletDirection = (hit.point - gunTransform.position).normalized;
+                var direction = (hit.point - gunTransform.position).normalized;
+                if (Vector3.Angle(bulletDirection, direction) < 45)
+                    bulletDirection = direction;
                 Debug.DrawRay(gunTransform.position, bulletDirection * 100, Color.red, 1f);
             }
             else
