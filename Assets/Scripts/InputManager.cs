@@ -55,7 +55,7 @@ public class InputManager : Singleton<InputManager>
     }
     private void OnDash(InputValue inputValue)
     {
-        EventManager.TriggerEvent("OnDash", inputValue.isPressed);
+        EventManager.TriggerEvent(Constants.TypedEvents.Inputs.OnDash, inputValue.isPressed);
     }
 
     private void OnRun(InputValue inputValue)
