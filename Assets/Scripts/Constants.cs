@@ -61,6 +61,7 @@ public static class Constants
             // Fox's events, unorganised
 
             public const string OnDash = "OnDash";
+            public const string OnJump = "OnJump";
         }
 
         public const string OnChangedPersonalMark = "OnChangedPersonalMark";

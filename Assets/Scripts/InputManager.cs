@@ -62,7 +62,13 @@ public class InputManager : Singleton<InputManager>
     {
         EventManager.TriggerEvent("OnRun", inputValue.isPressed);
     }
-        
+    
+    
+    private void OnJump(InputValue inputValue)
+    {
+        EventManager.TriggerEvent(Constants.TypedEvents.Inputs.OnJump, inputValue.isPressed);
+    }
+
     private void OnPrimaryFire(InputValue inputValue)
     {
         if (_isOrderingScavenger)

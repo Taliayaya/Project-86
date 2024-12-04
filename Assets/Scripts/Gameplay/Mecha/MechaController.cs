@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 
+
 namespace Gameplay.Mecha
 {
     [RequireComponent(typeof(Rigidbody))]
@@ -73,10 +74,13 @@ namespace Gameplay.Mecha
 
         private Zoom _zoom = Zoom.Default;
         private bool _isRunning;
+        // Fox's var's unorganised
 
         private bool isDashing = false;                      
         private bool canDash = true;                 
-        private Coroutine dashCoroutine = null;               
+        private Coroutine dashCoroutine = null;
+
+        private bool canJump = true;
         #endregion
 
         #region Properties
@@ -138,7 +142,7 @@ namespace Gameplay.Mecha
                         MovementSpeed = 10f; // juggernautParameters.slowSpeed
                         break;
                     case MovementMode.Dashing:
-                        MovementSpeed = 1000f; // this is practically useless, guess just a set mode
+                        MovementSpeed = juggernautParameters.dashSpeed; // made it useful, just a small tweak
                         break;
                 }
             }
@@ -215,6 +219,7 @@ namespace Gameplay.Mecha
             EventManager.AddListener(Constants.TypedEvents.Inputs.OnLookAround, OnLookAround);
             EventManager.AddListener("OnMove", OnMove);
             EventManager.AddListener(Constants.TypedEvents.Inputs.OnDash, OnDash);
+            EventManager.AddListener(Constants.TypedEvents.Inputs.OnJump, OnJump);
             EventManager.AddListener("OnZoomIn", OnZoomIn);
             EventManager.AddListener("OnZoomOut", OnZoomOut);
             EventManager.AddListener("OnRun", OnRun);
@@ -381,6 +386,33 @@ namespace Gameplay.Mecha
                     throw new ArgumentOutOfRangeException();
             }
         }
+        // Coroutines for these two scripts are not organised yet, jump / dash.
+        private void OnJump(object data)
+        {
+            Debug.Log("Jump attempted");
+
+
+            StartCoroutine(JumpCoroutine());
+        }
+
+        private IEnumerator JumpCoroutine()
+        {
+            if(!canJump || !_isGrounded)
+                yield break;
+
+            // jump is now off for CD
+            canJump = false;
+
+            // applies a jump force
+            _rigidbody.AddForce(Vector3.up * juggernautParameters.jumpPower, ForceMode.Impulse);
+            yield return null;
+
+            // starts the cd
+            yield return new WaitForSeconds(juggernautParameters.jumpCooldown);
+            canJump = true;
+
+        }
+
 
         private void OnMove(object data)
         {
@@ -394,8 +426,10 @@ namespace Gameplay.Mecha
                 return;
 
             Debug.Log("Dash input received!");
-            StartCoroutine(DashCoroutine());
+           StartCoroutine(DashCoroutine());
         }
+
+        public float test = 1000f;
 
         private IEnumerator DashCoroutine()
         {
@@ -410,7 +444,8 @@ namespace Gameplay.Mecha
             CurrentMovementMode = MovementMode.Dashing;
 
             // Disable any changes in movement speed during dash
-            float dashSpeed = juggernautParameters.dashSpeed;
+            float dashSpeed = MovementSpeed;
+
             Vector3 dashDirection = (_rigidbody.transform.forward * _lastMovement.y) +
                                     (_rigidbody.transform.right * _lastMovement.x);
             dashDirection.Normalize();
@@ -428,6 +463,11 @@ namespace Gameplay.Mecha
 
                 // Gradually reduce speed using a smooth easing function
                 float currentSpeed = Mathf.Lerp(dashSpeed, 30f, EaseOutQuad(t));  // Lerp from full speed to 0, will freeze you momentarily
+
+
+                Vector3 currentVelocity = dashDirection * currentSpeed;
+                _rigidbody.AddForce(Vector3.down * test, ForceMode.Acceleration);
+                Debug.Log(($"Y value: {currentVelocity}"));
 
                 // Velocity based on current speed
                 _rigidbody.velocity = dashDirection * currentSpeed;
