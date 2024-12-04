@@ -138,7 +138,7 @@ namespace Gameplay.Mecha
                         MovementSpeed = 10f; // juggernautParameters.slowSpeed
                         break;
                     case MovementMode.Dashing:
-                        MovementSpeed = 100f; 
+                        MovementSpeed = 1000f; // this is practically useless, guess just a set mode
                         break;
                 }
             }
@@ -399,7 +399,7 @@ namespace Gameplay.Mecha
 
         private IEnumerator DashCoroutine()
         {
-            if (!canDash || isDashing)
+            if (!canDash || isDashing || !_isGrounded)
                 yield break;
 
             Debug.Log("Dash started!");
@@ -427,7 +427,7 @@ namespace Gameplay.Mecha
                 float t = elapsedTime / juggernautParameters.dashDuration;
 
                 // Gradually reduce speed using a smooth easing function
-                float currentSpeed = Mathf.Lerp(dashSpeed, 0f, EaseOutQuad(t));  // Lerp from full speed to 0, will freeze you momentarily
+                float currentSpeed = Mathf.Lerp(dashSpeed, 30f, EaseOutQuad(t));  // Lerp from full speed to 0, will freeze you momentarily
 
                 // Velocity based on current speed
                 _rigidbody.velocity = dashDirection * currentSpeed;
