@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using AI.BehaviourTree;
 using Gameplay.Mecha;
 using JetBrains.Annotations;
@@ -70,11 +71,14 @@ namespace Gameplay.Units
 
         [SerializeField] private DebugAgent debugAgent;
         [SerializeField] [CanBeNull] private List<Transform> patrolWaypoints = null;
+        [SerializeField] private bool rotateMainBodyTowardsEnemy = true;
         private WeaponModule[] _weaponModules;
         public BehaviourTree Tree => _behaviourTreeRunner.tree;
         public DemoParameters demoParameters;
 
         private Coroutine _rotateCoroutine;
+        
+        [SerializeField] protected UnityEvent<TargetInfo> onTargetChanged;
 
         [CanBeNull] private TargetInfo _target;
         [CanBeNull]
@@ -84,6 +88,7 @@ namespace Gameplay.Units
             set
             {
                 _target = value;
+                onTargetChanged?.Invoke(_target);
                 _target?.Unit.onUnitDeath.AddListener((_) => Target = null);
             }
         }
@@ -92,14 +97,20 @@ namespace Gameplay.Units
             base.Awake();
             _agent = GetComponent<NavMeshAgent>();
             _behaviourTreeRunner = GetComponent<BehaviourTreeRunner>();
-            _weaponModules = GetComponentsInChildren<WeaponModule>();
+            _weaponModules = GetComponentsInChildren<WeaponModule>().ToList().FindAll(module => !module.aiIgnore).ToArray();
             _audioSource = GetComponent<AudioSource>();
             
-            _firstChild = transform.GetChild(0);
+            if (_firstChild == null)
+                _firstChild = transform.GetChild(0);
             if (name.Contains("Lowe"))
             {
                 Health = demoParameters.loweHealth;
                 MaxHealth = demoParameters.loweHealth;
+            }
+            else if (name.Contains("Dinosauria"))
+            {
+                Health = demoParameters.dinosauriaHealth;
+                MaxHealth = demoParameters.dinosauriaHealth;
             }
             else
             {
@@ -120,7 +131,8 @@ namespace Gameplay.Units
                 Tree.blackBoard.SetValue("waypoints", patrolWaypoints);
             if (isAutonomous)
                 _behaviourTreeRunner.StartAI();
-            RotateTowardsEnemy();
+            if (rotateMainBodyTowardsEnemy)
+                RotateTowardsEnemy();
         }
         
         public void AddDestinationGoal(Vector3 destination)
@@ -164,7 +176,7 @@ namespace Gameplay.Units
             isRotating = false;
         }
 
-        private Transform _firstChild;
+        [SerializeField] private Transform _firstChild;
         private Vector3 _lastPosition;
         IEnumerator RotateTowardsEnemyCoroutine()
         {
@@ -250,6 +262,7 @@ namespace Gameplay.Units
             base.Die();
             if (agentSo.deadPrefab != null)
             {
+                // TODO: use rotation of the rotating object (first child)
                 var dead = Instantiate(agentSo.deadPrefab, transform.position, transform.rotation);
                 dead.transform.GetChild(0).rotation = transform.GetChild(0).rotation;
             }

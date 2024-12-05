@@ -5,10 +5,26 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 462571988, guid: 95f4efd5279b9094da54c69047e49be4, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1790118130816210933, guid: 95f4efd5279b9094da54c69047e49be4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2183940422992912760, guid: 95f4efd5279b9094da54c69047e49be4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3977186219418268406, guid: 95f4efd5279b9094da54c69047e49be4,
+        type: 3}
+      propertyPath: listenOrTriggersEvents
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4781548307381713082, guid: 95f4efd5279b9094da54c69047e49be4,
@@ -20,7 +36,7 @@ PrefabInstance:
         type: 3}
       propertyPath: cameraTransform
       value: 
-      objectReference: {fileID: 8913735905355636279}
+      objectReference: {fileID: 0}
     - target: {fileID: 4781548307414292248, guid: 95f4efd5279b9094da54c69047e49be4,
         type: 3}
       propertyPath: listenOrTriggersEvents
@@ -70,7 +86,7 @@ PrefabInstance:
         type: 3}
       propertyPath: cameraTransform
       value: 
-      objectReference: {fileID: 8913735905355636279}
+      objectReference: {fileID: 0}
     - target: {fileID: 4781548308575646615, guid: 95f4efd5279b9094da54c69047e49be4,
         type: 3}
       propertyPath: listenOrTriggersEvents
@@ -139,7 +155,7 @@ PrefabInstance:
     - target: {fileID: 4781548308717753427, guid: 95f4efd5279b9094da54c69047e49be4,
         type: 3}
       propertyPath: m_Name
-      value: NPCJuggernaut
+      value: NPCJuggernaut Variant
       objectReference: {fileID: 0}
     - target: {fileID: 4781548308717753427, guid: 95f4efd5279b9094da54c69047e49be4,
         type: 3}
@@ -170,8 +186,18 @@ PrefabInstance:
         type: 3}
       propertyPath: cameraTransform
       value: 
-      objectReference: {fileID: 8913735905355636279}
+      objectReference: {fileID: 0}
     - target: {fileID: 4781548308789497192, guid: 95f4efd5279b9094da54c69047e49be4,
+        type: 3}
+      propertyPath: listenOrTriggersEvents
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5009670203228888221, guid: 95f4efd5279b9094da54c69047e49be4,
+        type: 3}
+      propertyPath: finalScaleReference
+      value: 0.027995314
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332846349530842250, guid: 95f4efd5279b9094da54c69047e49be4,
         type: 3}
       propertyPath: listenOrTriggersEvents
       value: 0
@@ -186,16 +212,35 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7850892043745419341, guid: 95f4efd5279b9094da54c69047e49be4,
+        type: 3}
+      propertyPath: listenOrTriggersEvents
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8621593056905522393, guid: 95f4efd5279b9094da54c69047e49be4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4781548308717753439, guid: 95f4efd5279b9094da54c69047e49be4, type: 3}
     - {fileID: 4781548308717753437, guid: 95f4efd5279b9094da54c69047e49be4, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4781548308717753427, guid: 95f4efd5279b9094da54c69047e49be4,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1678518789}
+    - targetCorrespondingSourceObject: {fileID: 4781548308717753427, guid: 95f4efd5279b9094da54c69047e49be4,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1678518790}
+    - targetCorrespondingSourceObject: {fileID: 4781548308717753427, guid: 95f4efd5279b9094da54c69047e49be4,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1678518791}
   m_SourcePrefab: {fileID: 100100000, guid: 95f4efd5279b9094da54c69047e49be4, type: 3}
---- !u!4 &8913735905355636279 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4781548307874533478, guid: 95f4efd5279b9094da54c69047e49be4,
-    type: 3}
-  m_PrefabInstance: {fileID: 4172738222342098513}
-  m_PrefabAsset: {fileID: 0}
 --- !u!82 &8913735906525485569 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 4781548308717753424, guid: 95f4efd5279b9094da54c69047e49be4,
@@ -242,8 +287,13 @@ MonoBehaviour:
     frontViewColor: {r: 0, g: 0, b: 1, a: 1}
     sideViewColor: {r: 0, g: 1, b: 1, a: 1}
   patrolWaypoints: []
+  rotateMainBodyTowardsEnemy: 1
   demoParameters: {fileID: 11400000, guid: 54207af3f0293d54a84e4a6024f5506d, type: 2}
+  onTargetChanged:
+    m_PersistentCalls:
+      m_Calls: []
   isRotating: 0
+  _firstChild: {fileID: 0}
 --- !u!114 &1678518790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265,9 +315,9 @@ NavMeshAgent:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8913735906525485570}
   m_Enabled: 1
-  m_AgentTypeID: 0
+  m_AgentTypeID: -1372625422
   m_Radius: 0.5
-  m_Speed: 40
+  m_Speed: 10
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120

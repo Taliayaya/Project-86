@@ -24,6 +24,8 @@ namespace Gameplay.Mecha
         [SerializeField] private bool holdFire = false;
         [SerializeField] private AmmoSO ammo;
         [SerializeField] private LayerMask fireBulletLayerMask = 1;
+        [SerializeField] private float maxRaycastDistance = 500;
+        public bool aiIgnore = false;
         
         [Header("References")]
         [SerializeField] private Transform gunTransform;
@@ -42,6 +44,7 @@ namespace Gameplay.Mecha
              "Specify the side of the weapon, it will be used to update the right ammo counter. Only works with Secondary Weapons"),
          SerializeField]
         private string ammoLeftOrRight = "Left";
+        [SerializeField] private Transform gunCheckCanShoot;
         
         public bool canFire = true;
         private Collider _gunTransformCollider;
@@ -70,14 +73,16 @@ namespace Gameplay.Mecha
 
         #region Unity Callbacks
 
-        private void Awake()
+        protected virtual void Awake()
         {
+            if (gunCheckCanShoot == null)
+                gunCheckCanShoot = transform;
             _gunTransformCollider = gunTransform.parent.GetComponent<Collider>();
             CurrentAmmoRemaining = ammo.maxAmmo;
             //gunAudioSource.loop = holdFire;
         }
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             EventManager.AddListener("OnPause", OnPause);
             EventManager.AddListener("OnResume", OnResume);
@@ -89,7 +94,7 @@ namespace Gameplay.Mecha
 
         
 
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
             EventManager.RemoveListener("OnPause", OnPause);
             EventManager.RemoveListener("OnResume", OnResume);
@@ -169,7 +174,7 @@ namespace Gameplay.Mecha
         }
 
 
-        public Coroutine StartShootDuringTime(float time, Func<bool> canShoot)
+        public Coroutine StartShootDuringTime(float time, Func<Transform, bool> canShoot)
         {
             _shootCoroutine = StartCoroutine(ShootDuringTime(time, canShoot));
             return _shootCoroutine;
@@ -182,14 +187,14 @@ namespace Gameplay.Mecha
         /// <param name="time"></param>
         /// <param name="canShoot"></param>
         /// <returns></returns>
-        public IEnumerator ShootDuringTime(float time, Func<bool> canShoot)
+        public IEnumerator ShootDuringTime(float time, Func<Transform, bool> canShoot)
         {
             var startTime = Time.time;
             float fireRate = 1/ammo.fireRate;
             yield return new WaitForSeconds(fireRate - (startTime - _lastShotTime));
             while (Time.time - startTime < time)
             {
-                if (!canShoot())
+                if (!canShoot(gunCheckCanShoot))
                 {
                     yield return new WaitForSeconds(1f);
                     continue;
@@ -213,28 +218,29 @@ namespace Gameplay.Mecha
         /// <param name="time"></param>
         /// <param name="canShoot"></param>
         /// <returns></returns>
-        public IEnumerator ShootHoldDuringTime(float time, Func<bool> canShoot)
+        public IEnumerator ShootHoldDuringTime(float time, Func<Transform, bool> canShoot)
         {
             var startTime = Time.time;
-            
-            float fireRate = 1/ammo.fireRate;
+
+            float fireRate = 1 / ammo.fireRate;
             yield return new WaitForSeconds(fireRate - (startTime - _lastShotTime));
 
             while (Time.time - startTime < time)
             {
-                if (!canShoot())
+                if (!canShoot(gunCheckCanShoot))
                 {
+                    Debug.Log(transform.name + " can't shoot");
                     yield return new WaitForSeconds(1f);
                     continue;
                 }
+
                 _lastShotTime = Time.time;
                 Shoot(cameraTransform);
                 PlayBulletSound();
                 yield return new WaitForSeconds(fireRate);
             }
-            
+
             yield return new WaitForSeconds(0.1f);
-            
         }
 
 
@@ -294,15 +300,17 @@ namespace Gameplay.Mecha
         private void FireBullet(Transform origin)
         {
             var bulletDirection = origin.forward;
-            if (Physics.Raycast(origin.position, origin.forward, out var hit, 500f, fireBulletLayerMask))
+            if (Physics.Raycast(origin.position, origin.forward, out var hit, maxRaycastDistance, fireBulletLayerMask))
             {
                 //Debug.Log("hit " + hit.transform.name);
-                bulletDirection = (hit.point - gunTransform.position).normalized;
-                //Debug.DrawRay(gunTransform.position, bulletDirection * 100, Color.red, 1f);
+                var direction = (hit.point - gunTransform.position).normalized;
+                if (Vector3.Angle(bulletDirection, direction) < 45)
+                    bulletDirection = direction;
+                Debug.DrawRay(gunTransform.position, bulletDirection * 100, Color.red, 1f);
             }
             else
             {
-                //Debug.DrawRay(gunTransform.position, bulletDirection * 100, Color.green, 1f);
+                Debug.DrawRay(gunTransform.position, bulletDirection * 100, Color.green, 1f);
             }
 
             if (muzzleFlash)
@@ -342,6 +350,7 @@ namespace Gameplay.Mecha
 
         private void PlayBulletSound(bool oneShot = true)
         {
+            Debug.Log($"{name}: {ammo.GetRandomFireSound().name}");
             if (oneShot)
                 gunAudioSource.PlayOneShot(ammo.GetRandomFireSound());
             else
