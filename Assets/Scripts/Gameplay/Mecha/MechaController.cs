@@ -295,6 +295,9 @@ namespace Gameplay.Mecha
             if (isDashing)
                 return;
 
+            if (!_isGrounded)
+                return;
+
             Debug.Log(_movementmode);
 
             var move = _rigidbody.transform.forward * (_lastMovement.y) + _rigidbody.transform.right * (_lastMovement.x);
