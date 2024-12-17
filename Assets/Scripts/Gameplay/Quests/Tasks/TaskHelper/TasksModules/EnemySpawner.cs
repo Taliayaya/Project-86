@@ -66,7 +66,10 @@ namespace Gameplay.Quests.Tasks.TaskHelper.TasksModules
             {
                 for (int j = 0; j < spawnCount / enemiesPrefabs.Count; j++)
                 {
-                    _enemies[i * (spawnCount / enemiesPrefabs.Count) + j] = SpawnUnit(enemiesPrefabs[i], spawnRadius);
+                    var unit = SpawnUnit(enemiesPrefabs[i], spawnRadius);
+                    _enemies[i * (spawnCount / enemiesPrefabs.Count) + j] = unit;
+                    if (areaAsGoal)
+                        unit.GetComponent<AIAgent>().AddDestinationGoal(enemyGoal.position);
                     yield return null;
                 }
             }
