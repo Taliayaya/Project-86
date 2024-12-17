@@ -22,6 +22,8 @@ public static class DataHandler
     {
         var gameParametersArray = Resources.LoadAll<GameParameters>("ScriptableObjects/Parameters");
         foreach (var parameter in gameParametersArray)
+        {
             parameter.LoadFromFile();
+        }
     }
 }

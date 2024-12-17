@@ -10,9 +10,10 @@ namespace Gameplay.Units
         Lowe = 2,
         Juggernaut = 4,
         Scavenger = 8,
+        Dinosauria = 16,
         
         
-        Legion = Ameise | Lowe,
+        Legion = Ameise | Lowe | Dinosauria,
         Republic = Juggernaut | Scavenger,
     }
 }

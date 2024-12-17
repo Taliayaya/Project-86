@@ -22,6 +22,7 @@ public class NLegProceduralAnimation : MonoBehaviour
     [SerializeField] private Rigidbody rb;
     [SerializeField] private NavMeshAgent agent;
     [SerializeField] private Vector3 legOffset = new Vector3(0, 0.0f, 0);
+    [SerializeField] private float groundedRaycastRange = 0.3f;
     
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
@@ -52,7 +53,7 @@ public class NLegProceduralAnimation : MonoBehaviour
         Vector3[] res = new Vector3[2];
         RaycastHit hit;
         Ray ray = new Ray(point + halfRange * up, -up);
-        if (Physics.Raycast(ray, out hit, 3 * halfRange, layerMask))
+        if (Physics.Raycast(ray, out hit, 3 * halfRange, layerMask) && !hit.collider.CompareTag("NonHitbox"))
         {
             res[0] = hit.point;
             res[1] = hit.normal;
@@ -78,7 +79,7 @@ public class NLegProceduralAnimation : MonoBehaviour
         {
             for (int j = 0; j < 2; j++)
             {
-                _defaultLegPositions[i, j] = legTargets[i * 2 + j].localPosition;
+                _defaultLegPositions[i, j] = transform.InverseTransformPoint(legTargets[i * 2 + j].position);
                 _lastLegPositions[i, j] = legTargets[i * 2 + j].position;
             }
         }
@@ -225,7 +226,7 @@ public class NLegProceduralAnimation : MonoBehaviour
         _groundedCount = 0;
         for (int i = 0; i < legTargets.Length; i++)
         {
-            bool grounded = Physics.CheckSphere(legTargets[i].position, 0.3f, groundLayer);
+            bool grounded = Physics.CheckSphere(legTargets[i].position - legOffset, groundedRaycastRange, groundLayer);
             if (grounded)
                 _groundedCount++;
         }
@@ -249,6 +250,7 @@ public class NLegProceduralAnimation : MonoBehaviour
                 Gizmos.DrawSphere(_desiredLegPositions[i, j], 0.5f);
                 Gizmos.color = Color.blue;
                 Gizmos.DrawSphere(_lastLegPositions[i, j], 0.5f);
+                Gizmos.DrawWireSphere(legTargets[i * 2 + j].position - legOffset, groundedRaycastRange);
             }
         }
     }

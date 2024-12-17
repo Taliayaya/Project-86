@@ -37,6 +37,11 @@ public class LegionSpawner : MonoBehaviour
         SpawnLegion(demoParameters.spawnCount);
     }
     
+    public void SpawnOneDinosauria()
+    {
+        SpawnLegion(demoParameters.dinosauriaPrefab);
+    }
+    
     private void KillAllLegions()
     {
         foreach (var legion in new List<Unit>(Factions.GetMembers(Faction.Legion)))

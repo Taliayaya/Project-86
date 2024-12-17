@@ -67,12 +67,11 @@ namespace AI.BehaviourTree.BasicNodes
 
             if (_aiAgent.Target is not null)
             {
-                if (_aiAgent.Target.Visibility == TargetInfo.VisibilityStatus.Visible && !CanSeeSingleTarget(_aiAgent.Target.Unit))
+                if (_aiAgent.Target.Visibility == TargetInfo.VisibilityStatus.Visible && CanSeeSingleTarget(_aiAgent.Target.Unit))
                 {
-                    ClosestTarget = null;
-                    _aiAgent.Target = null;
+                    ClosestTarget = _aiAgent.Target.Unit;
                     _isDone = true;
-                    _canSeeTarget = false;
+                    _canSeeTarget = true;
                     return;
                 }
                 if (_aiAgent.Target.Visibility == TargetInfo.VisibilityStatus.Network)
@@ -80,8 +79,9 @@ namespace AI.BehaviourTree.BasicNodes
                     ClosestTarget = _aiAgent.Target.Unit;
                     if (CanSeeSingleTarget(ClosestTarget))
                         _aiAgent.Target.Visibility = TargetInfo.VisibilityStatus.Visible;
-                    _isDone = true;
                     _canSeeTarget = true;
+                    _isDone = false;
+                    _canSeeTargetEnumerator = CanSeeTarget();
                     return;
                 }
                 ClosestTarget = null;
@@ -157,7 +157,7 @@ namespace AI.BehaviourTree.BasicNodes
                 if (canSharePosition)
                     _sharePositionEnumerator = ShareTargetPosition(ClosestTarget);
             }
-            else
+            else if (_aiAgent.Target is null || _aiAgent.Target.Visibility == TargetInfo.VisibilityStatus.Visible)
                 _aiAgent.Target = null;
         }
 
@@ -193,14 +193,16 @@ namespace AI.BehaviourTree.BasicNodes
         
         private void SharePosition(Unit target, Unit ally)
         {
-            if (ally is AIAgent aiAgent)
+            if (ally is AIAgent allyAgent)
             {
-                if (aiAgent.Target is null || aiAgent.orderPriority < _aiAgent.orderPriority)
+                if (allyAgent.Target is null || allyAgent.orderPriority < _aiAgent.orderPriority)
                 {
                     Debug.Log("[CanSeeObject] " + ally.name + " already has a target or has a higher priority");
                     TargetInfo targetInfo = new TargetInfo(target, TargetInfo.VisibilityStatus.Network, sharePositionSpotTime);
-                    aiAgent.Target = targetInfo;
+                    allyAgent.Target = targetInfo;
                 }
+                else
+                    Debug.Log("[CanSeeObject] " + ally.name + " already has a target or has a higher priority");
             }
         }
         
@@ -242,7 +244,8 @@ namespace AI.BehaviourTree.BasicNodes
             Debug.DrawRay(_transform.position, direction.normalized * _agentSo.viewDistance, Color.yellow);
             if (Physics.Raycast(_transform.position, direction.normalized, out hit, _agentSo.viewDistance, layerMask))
             {
-                if (hit.collider.gameObject == target.gameObject)
+                bool isDirectTarget = hit.collider.gameObject == target.gameObject; 
+                if (isDirectTarget || (hit.rigidbody != null && hit.rigidbody.gameObject == target.gameObject))
                 {
                     Debug.DrawLine(_transform.position, target.transform.position, Color.green);
                     _canSeeTarget = true;
