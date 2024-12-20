@@ -48,7 +48,7 @@ namespace Integrations
             if (Instance is not null)
                 throw new ApplicationException();
 
-            _discord = new global::Discord.Discord(Constants.Integrations.Discord.AppID, (ulong)CreateFlags.Default);
+            _discord = new global::Discord.Discord(Constants.Integrations.Discord.AppID, (ulong)CreateFlags.NoRequireDiscord);
             _activityManager = _discord.GetActivityManager();
             
             Application.wantsToQuit += OnApplicationQuit;

@@ -34,12 +34,12 @@ public class TypePassword : MonoBehaviour
         }
 
         yield return new WaitForSeconds(1.5f);
-        virtualCamera.gameObject.SetActive(false);
-        loginCanvas.SetActive(false);
-        foreach (var screen in screensCanvas)
-        {
-            screen.SetActive(true);
-        }
+        //virtualCamera.gameObject.SetActive(false);
+        //loginCanvas.SetActive(false);
+        //foreach (var screen in screensCanvas)
+        //{
+        //    screen.SetActive(true);
+        //}
     }
 
     public void StartType()
