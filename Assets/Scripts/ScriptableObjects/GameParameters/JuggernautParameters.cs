@@ -7,6 +7,15 @@ namespace ScriptableObjects.GameParameters
     [CreateAssetMenu(fileName = "JuggernautParameters", menuName = "Scriptable Objects/GameParameters/JuggernautParameters")]
     public class JuggernautParameters : GameParameters
     {
+        
+        public float dashSpeed = 100f;   // Dash force applied during dash
+        public float dashDuration = 0.5f;  // How long dash lasts
+        public float dashCooldown = 1f;    // CD time before next dash
+
+        public float jumpPower = 1000f;
+        public float jumpCooldown = 1f;
+ 
+
         [Range(1, 100), DefaultValue(10f)]
         public float mouseSensitivity = 10f;
         [Range(1f, 100f), DefaultValue(25)]
