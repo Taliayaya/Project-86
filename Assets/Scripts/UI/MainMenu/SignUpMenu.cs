@@ -1,3 +1,5 @@
+using System;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using TMPro;
 using Unity.Services.Authentication;
@@ -17,9 +19,9 @@ namespace UI.MainMenu
 
         [SerializeField] private Button registerButton;
 
+        [SerializeField] private TMP_InputField emailInput;
         [SerializeField] private TMP_InputField usernameInput;
         [SerializeField] private TMP_InputField passwordInput;
-        [SerializeField] private TMP_InputField passwordConfInput;
 
         [SerializeField] private UnityEvent onRegisterSuccess;
 
@@ -27,7 +29,7 @@ namespace UI.MainMenu
         {
             try
             {
-                await AuthenticationService.Instance.SignUpWithUsernamePasswordAsync(username, password);
+                var res = await NetworkManager.AuthClient.CreateUserWithEmailAndPasswordAsync(username, password);
                 feedbackText.text = "Account created successfully.";
                 feedbackText.color = successColor;
                 Debug.Log("SignUp is successful.");
@@ -53,28 +55,47 @@ namespace UI.MainMenu
 
         public async void OnRegisterButtonClicked()
         {
+            Debug.Log("Register button clicked.");
             registerButton.interactable = false;
-            if (passwordInput.text != passwordConfInput.text)
+            try
             {
-                feedbackText.text = "Passwords do not match.";
-                feedbackText.color = errorColor;
-            }
-            else if (string.IsNullOrEmpty(usernameInput.text) || string.IsNullOrEmpty(passwordInput.text))
-            {
-                feedbackText.text = "Username and password cannot be empty.";
-                feedbackText.color = errorColor;
-            }
-            else
-            {
-#if ALLOW_SIGNUP
-                await SignUpWithUsernamePasswordAsync(usernameInput.text, passwordInput.text);
-#else
-                feedbackText.text = "Sign up is disabled.";
-                feedbackText.color = errorColor;
-#endif
-            }
 
-            registerButton.interactable = true;
+                if (string.IsNullOrEmpty(usernameInput.text) || string.IsNullOrEmpty(passwordInput.text) ||
+                    string.IsNullOrEmpty(emailInput.text))
+                {
+                    feedbackText.text = "Personal Name, email and password cannot be empty.";
+                    feedbackText.color = errorColor;
+                }
+                else
+                {
+                    MailAddress mailAddress = new MailAddress(emailInput.text);
+                    if (mailAddress.Address != emailInput.text)
+                    {
+                        feedbackText.text = "Email is not valid.";
+                        feedbackText.color = errorColor;
+                    }
+                    else
+                    {
+#if ALLOW_SIGNUP
+                        feedbackText.text = "";
+                        await NetworkManager.Instance.CreateUserWithEmailAndPasswordAsync(emailInput.text,
+                            passwordInput.text, usernameInput.text);
+#else
+                        feedbackText.text = "Sign up is disabled.";
+                        feedbackText.color = errorColor;
+#endif
+                    }
+                }
+            }
+            catch (FormatException)
+            {
+                feedbackText.text = "Email is not valid.";
+                feedbackText.color = errorColor;
+            }
+            finally
+            {
+                registerButton.interactable = true;
+            }
         }
     }
 }

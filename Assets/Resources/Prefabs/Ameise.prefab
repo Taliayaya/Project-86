@@ -80,7 +80,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 440560973}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -547,7 +547,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2049292794}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -2101,7 +2101,7 @@ MonoBehaviour:
   baseTransform: {fileID: 0}
   Hips: {fileID: 4883470621962889078}
   ScaleReferenceMode: 3
-  finalScaleReference: 0.4411961
+  finalScaleReference: 0.44119522
   finalScaleReferenceSqrt: 0.1
   customScaleReferenceValue: 0.5
   DelayedInitialization: 0
@@ -2754,7 +2754,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  armor: 10
+  armor: 5
   onUnitDeath:
     m_PersistentCalls:
       m_Calls: []
