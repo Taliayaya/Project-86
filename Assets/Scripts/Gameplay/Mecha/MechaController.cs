@@ -4,6 +4,7 @@ using Cinemachine;
 using Gameplay.Units;
 using ScriptableObjects;
 using ScriptableObjects.GameParameters;
+using UI.HUD;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
@@ -218,7 +219,7 @@ namespace Gameplay.Mecha
                 _rigidbody = GetComponent<Rigidbody>();
             EventManager.AddListener(Constants.TypedEvents.Inputs.OnLookAround, OnLookAround);
             EventManager.AddListener("OnMove", OnMove);
-            EventManager.AddListener(Constants.TypedEvents.Inputs.OnDash, OnDash);
+            //EventManager.AddListener(Constants.TypedEvents.Inputs.OnDash, OnDash);
             EventManager.AddListener(Constants.TypedEvents.Inputs.OnJump, OnJump);
             EventManager.AddListener("OnZoomIn", OnZoomIn);
             EventManager.AddListener("OnZoomOut", OnZoomOut);
@@ -234,7 +235,7 @@ namespace Gameplay.Mecha
             base.OnDisable();
             EventManager.RemoveListener(Constants.TypedEvents.Inputs.OnLookAround, OnLookAround);
             EventManager.RemoveListener("OnMove", OnMove);
-            EventManager.RemoveListener("OnDash", OnDash);
+            //EventManager.RemoveListener("OnDash", OnDash);
             EventManager.RemoveListener("OnZoomIn", OnZoomIn);
             EventManager.RemoveListener("OnZoomOut", OnZoomOut);
             EventManager.RemoveListener("OnRun", OnRun);
@@ -314,7 +315,7 @@ namespace Gameplay.Mecha
             _yVelocity += - gravity * gravity * Time.fixedDeltaTime;
             //Debug.Log(_yVelocity);
             if (_isGrounded)
-                _yVelocity = gravity * 4;
+                _yVelocity = gravity;
             _rigidbody.AddForce(Vector3.up * (_yVelocity), ForceMode.Acceleration);
         }
 
@@ -426,6 +427,9 @@ namespace Gameplay.Mecha
             if (data is not Vector2 movement)
                 return;
             _lastMovement = movement;
+            // if moving slowly / not moving then run is off
+            if (movement.magnitude < 0.1f)
+                CurrentMovementMode = MovementMode.Walking;
         }
         private void OnDash(object data)
         {
@@ -443,11 +447,19 @@ namespace Gameplay.Mecha
             if (!canDash || isDashing || !_isGrounded)
                 yield break;
 
+            EventManager.TriggerEvent(Constants.TypedEvents.OnDash,
+                new ModuleData()
+                {
+                    name = "Dash",
+                    cooldown = juggernautParameters.dashCooldown,
+                    status = ModuleStatus.Active
+                });
             Debug.Log("Dash started!");
 
             // Set the flag for dashing and block further dashes for now
             isDashing = true;
             canDash = false;
+            MovementMode previousMovementMode = CurrentMovementMode;
             CurrentMovementMode = MovementMode.Dashing;
 
             // Disable any changes in movement speed during dash
@@ -488,8 +500,15 @@ namespace Gameplay.Mecha
             Debug.Log("Dash ended!");
 
             // Ensure that we return to walking or running after the dash
-            CurrentMovementMode = MovementMode.Walking;  // Only using walk then run since energy cost
+            CurrentMovementMode = previousMovementMode;  // Only using walk then run since energy cost
 
+            EventManager.TriggerEvent(Constants.TypedEvents.OnDash,
+                new ModuleData()
+                {
+                    name = "Dash",
+                    cooldown = juggernautParameters.dashCooldown,
+                    status = ModuleStatus.Cooldown
+                });
             // Wait for cooldown before allowing another dash
             yield return new WaitForSeconds(juggernautParameters.dashCooldown);
             canDash = true;
@@ -530,10 +549,10 @@ namespace Gameplay.Mecha
 
         private void OnRun(object data)
         {
-            if (data is not bool run)
+            if (data is not bool run || CurrentMovementMode == MovementMode.Dashing)
                 return;
-            
-            CurrentMovementMode = run ? MovementMode.Running : MovementMode.Walking;
+            CurrentMovementMode = MovementMode.Running;
+            StartCoroutine(DashCoroutine());
         }
 
 

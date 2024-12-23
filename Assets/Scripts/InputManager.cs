@@ -53,10 +53,6 @@ public class InputManager : Singleton<InputManager>
         var data = inputValue.Get<Vector2>();
         EventManager.TriggerEvent("OnMove", data);
     }
-    private void OnDash(InputValue inputValue)
-    {
-        EventManager.TriggerEvent(Constants.TypedEvents.Inputs.OnDash, inputValue.isPressed);
-    }
 
     private void OnRun(InputValue inputValue)
     {

@@ -1,4 +1,3 @@
-using UnityEditor.AdaptivePerformance.Editor;
 
 public static class Constants
 {
@@ -60,10 +59,10 @@ public static class Constants
 
             // Fox's events, unorganised
 
-            public const string OnDash = "OnDash";
             public const string OnJump = "OnJump";
         }
 
+        public const string OnDash = "OnDash";
         public const string OnChangedPersonalMark = "OnChangedPersonalMark";
 
         public const string OnSceneLoadingCompleted = "OnSceneLoadingCompleted";
