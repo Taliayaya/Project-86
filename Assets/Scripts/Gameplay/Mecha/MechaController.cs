@@ -4,9 +4,11 @@ using Cinemachine;
 using Gameplay.Units;
 using ScriptableObjects;
 using ScriptableObjects.GameParameters;
+using UI.HUD;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
+
 
 namespace Gameplay.Mecha
 {
@@ -54,6 +56,7 @@ namespace Gameplay.Mecha
         [SerializeField] private float recoilDuration = 0.1f;
         [SerializeField] private float recoilCounterForce = 1f;
 
+
         [Header("Events")] [SerializeField] private UnityEvent<CinemachineVirtualCamera> onCameraViewChanged;
         #endregion
 
@@ -72,7 +75,13 @@ namespace Gameplay.Mecha
 
         private Zoom _zoom = Zoom.Default;
         private bool _isRunning;
-        
+        // Fox's var's unorganised
+
+        private bool isDashing = false;                      
+        private bool canDash = true;                 
+        private Coroutine dashCoroutine = null;
+
+        private bool canJump = true;
         #endregion
 
         #region Properties
@@ -97,8 +106,50 @@ namespace Gameplay.Mecha
             }
 
         }
+
+        // public float MovementSpeed => _isRunning ? juggernautParameters.runSpeed : juggernautParameters.walkSpeed;
+        public enum MovementMode // basically the equivalant of "modes"
+        {
+            Walking,
+            Running,
+            Slowed, // terrain difficulties
+            Dashing
+            // potentially DamagedWalking (and equivalant for other types)
+
+            // Enum is a read only
+        }
+
+
+        public float MovementSpeed { get; private set; }
+        private MovementMode _movementmode;
+
+        public MovementMode CurrentMovementMode
+        {
+            get => _movementmode;
+            set
+            {
+                Console.WriteLine($"Setting movement mode to: {value}");
+                _movementmode = value; // Set the new value to the private backing field first
+                switch (value) // <-- Use "value" here instead of "_movementmode"
+                {
+                    case MovementMode.Walking:
+                        Debug.Log("You reached me");
+                        MovementSpeed = juggernautParameters.walkSpeed;
+                        break;
+                    case MovementMode.Running :
+                        MovementSpeed = juggernautParameters.runSpeed;
+                        break;
+                    case MovementMode.Slowed:
+                        MovementSpeed = 10f; // juggernautParameters.slowSpeed
+                        break;
+                    case MovementMode.Dashing:
+                        MovementSpeed = juggernautParameters.dashSpeed; // made it useful, just a small tweak
+                        break;
+                }
+            }
+        }
         
-        public float MovementSpeed => _isRunning ? juggernautParameters.runSpeed : juggernautParameters.walkSpeed;
+
 
         private Zoom CameraZoom
         {
@@ -168,6 +219,8 @@ namespace Gameplay.Mecha
                 _rigidbody = GetComponent<Rigidbody>();
             EventManager.AddListener(Constants.TypedEvents.Inputs.OnLookAround, OnLookAround);
             EventManager.AddListener("OnMove", OnMove);
+            //EventManager.AddListener(Constants.TypedEvents.Inputs.OnDash, OnDash);
+            EventManager.AddListener(Constants.TypedEvents.Inputs.OnJump, OnJump);
             EventManager.AddListener("OnZoomIn", OnZoomIn);
             EventManager.AddListener("OnZoomOut", OnZoomOut);
             EventManager.AddListener("OnRun", OnRun);
@@ -182,6 +235,7 @@ namespace Gameplay.Mecha
             base.OnDisable();
             EventManager.RemoveListener(Constants.TypedEvents.Inputs.OnLookAround, OnLookAround);
             EventManager.RemoveListener("OnMove", OnMove);
+            //EventManager.RemoveListener("OnDash", OnDash);
             EventManager.RemoveListener("OnZoomIn", OnZoomIn);
             EventManager.RemoveListener("OnZoomOut", OnZoomOut);
             EventManager.RemoveListener("OnRun", OnRun);
@@ -239,18 +293,29 @@ namespace Gameplay.Mecha
 
         private void MoveJuggernaut()
         {
+            // If dashing, don't apply any other movement mode logic
+            if (isDashing)
+                return;
+
+            if (!_isGrounded)
+                return;
+
+            Debug.Log(_movementmode);
+
             var move = _rigidbody.transform.forward * (_lastMovement.y) + _rigidbody.transform.right * (_lastMovement.x);
-                                    
+            
+            _rigidbody.AddForce(move.normalized * (MovementSpeed * 1000f), ForceMode.Force);
             //_rigidbody.MovePosition(_rigidbody.position + move * Time.fixedDeltaTime);
-            _rigidbody.AddForce(move.normalized * (MovementSpeed * 1000), ForceMode.Force);
+
         }
+
 
         private void ApplyGravity()
         {
             _yVelocity += - gravity * gravity * Time.fixedDeltaTime;
             //Debug.Log(_yVelocity);
             if (_isGrounded)
-                _yVelocity = gravity * 4;
+                _yVelocity = gravity;
             _rigidbody.AddForce(Vector3.up * (_yVelocity), ForceMode.Acceleration);
         }
 
@@ -329,13 +394,134 @@ namespace Gameplay.Mecha
                     throw new ArgumentOutOfRangeException();
             }
         }
+        // Coroutines for these two scripts are not organised yet, jump / dash.
+        private void OnJump(object data)
+        {
+            Debug.Log("Jump attempted");
+
+
+            StartCoroutine(JumpCoroutine());
+        }
+
+        private IEnumerator JumpCoroutine()
+        {
+            if(!canJump || !_isGrounded)
+                yield break;
+
+            // jump is now off for CD
+            canJump = false;
+
+            // applies a jump force
+            _rigidbody.AddForce(Vector3.up * juggernautParameters.jumpPower, ForceMode.Impulse);
+            yield return null;
+
+            // starts the cd
+            yield return new WaitForSeconds(juggernautParameters.jumpCooldown);
+            canJump = true;
+
+        }
+
 
         private void OnMove(object data)
         {
             if (data is not Vector2 movement)
                 return;
             _lastMovement = movement;
+            // if moving slowly / not moving then run is off
+            if (movement.magnitude < 0.1f)
+                CurrentMovementMode = MovementMode.Walking;
         }
+        private void OnDash(object data)
+        {
+            if (data is not bool dashInput || !dashInput)
+                return;
+
+            Debug.Log("Dash input received!");
+           StartCoroutine(DashCoroutine());
+        }
+
+        public float test = 1000f;
+
+        private IEnumerator DashCoroutine()
+        {
+            if (!canDash || isDashing || !_isGrounded)
+                yield break;
+
+            EventManager.TriggerEvent(Constants.TypedEvents.OnDash,
+                new ModuleData()
+                {
+                    name = "Dash",
+                    cooldown = juggernautParameters.dashCooldown,
+                    status = ModuleStatus.Active
+                });
+            Debug.Log("Dash started!");
+
+            // Set the flag for dashing and block further dashes for now
+            isDashing = true;
+            canDash = false;
+            MovementMode previousMovementMode = CurrentMovementMode;
+            CurrentMovementMode = MovementMode.Dashing;
+
+            // Disable any changes in movement speed during dash
+            float dashSpeed = MovementSpeed;
+
+            Vector3 dashDirection = (_rigidbody.transform.forward * _lastMovement.y) +
+                                    (_rigidbody.transform.right * _lastMovement.x);
+            dashDirection.Normalize();
+
+            // Store the initial velocity of the Mecha to make sure we're overriding it
+            Vector3 initialVelocity = _rigidbody.velocity;
+
+            // Time management for smooth deceleration
+            float elapsedTime = 0f;
+
+            while (elapsedTime < juggernautParameters.dashDuration)
+            {
+                // Best reccomendation for elapsedtime..
+                float t = elapsedTime / juggernautParameters.dashDuration;
+
+                // Gradually reduce speed using a smooth easing function
+                float currentSpeed = Mathf.Lerp(dashSpeed, 30f, EaseOutQuad(t));  // Lerp from full speed to 0, will freeze you momentarily
+
+
+                Vector3 currentVelocity = dashDirection * currentSpeed;
+                _rigidbody.AddForce(Vector3.down * test, ForceMode.Acceleration);
+                Debug.Log(($"Y value: {currentVelocity}"));
+
+                // Velocity based on current speed
+                _rigidbody.velocity = dashDirection * currentSpeed;
+
+                elapsedTime += Time.deltaTime;  
+                yield return null;  
+            }
+
+            // Reset after dash is finished
+            isDashing = false;
+            Debug.Log("Dash ended!");
+
+            // Ensure that we return to walking or running after the dash
+            CurrentMovementMode = previousMovementMode;  // Only using walk then run since energy cost
+
+            EventManager.TriggerEvent(Constants.TypedEvents.OnDash,
+                new ModuleData()
+                {
+                    name = "Dash",
+                    cooldown = juggernautParameters.dashCooldown,
+                    status = ModuleStatus.Cooldown
+                });
+            // Wait for cooldown before allowing another dash
+            yield return new WaitForSeconds(juggernautParameters.dashCooldown);
+            canDash = true;
+        }
+
+
+        // deacceleration was just kind of messing around tbh
+        private float EaseOutQuad(float t)
+        {
+            return t * (2 - t);  
+        }
+
+
 
         private bool _zoomCd = false;
         [SerializeField] private UnitState _state;
@@ -360,13 +546,15 @@ namespace Gameplay.Mecha
             Invoke(nameof(ResetZoomCd), juggernautParameters.scrollSensitivity / 100);
 
         }
-        
+
         private void OnRun(object data)
         {
-            if (data is not bool run)
+            if (data is not bool run || CurrentMovementMode == MovementMode.Dashing)
                 return;
-            _isRunning = run;
+            CurrentMovementMode = MovementMode.Running;
+            StartCoroutine(DashCoroutine());
         }
+
 
         #endregion
 

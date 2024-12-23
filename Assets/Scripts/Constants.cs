@@ -1,3 +1,4 @@
+
 public static class Constants
 {
     /// <summary>
@@ -55,8 +56,13 @@ public static class Constants
             public const string OnLookAround = "OnLookAround";
             public const string OnToggleMap = "OnToggleMap";
             public const string OnToggleObjective = "OnToggleObjective";
+
+            // Fox's events, unorganised
+
+            public const string OnJump = "OnJump";
         }
 
+        public const string OnDash = "OnDash";
         public const string OnChangedPersonalMark = "OnChangedPersonalMark";
 
         public const string OnSceneLoadingCompleted = "OnSceneLoadingCompleted";
@@ -67,6 +73,7 @@ public static class Constants
         
         public const string OnToggleCockpitView = "OnToggleCockpitView";
         // TODO : Add all the typed event names cause i couldnt be bothered -nemo
+
     }
     
     public static class Integrations

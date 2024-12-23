@@ -1448,7 +1448,7 @@ MonoBehaviour:
   gunTip: {fileID: 6864043951974421832}
   whatIsGrappleable:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 129
   maxGrappleDistance: 300
   grappleDelayTime: 0.5
   grapplePullSpeed: 20
@@ -1935,7 +1935,7 @@ MonoBehaviour:
   gunTip: {fileID: 2836126709342092043}
   whatIsGrappleable:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 129
   maxGrappleDistance: 300
   grappleDelayTime: 0.5
   grapplePullSpeed: 20
@@ -2901,6 +2901,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  test: 1000
   _state: 0
   impulseSource: {fileID: 5315611825733000085}
 --- !u!82 &4781548308717753424
