@@ -23,6 +23,8 @@ namespace UI.HUD
             var maskableIcon = iconParent.GetComponentsInChildren<MaskableGraphic>();
             //reticleImages.AddRange(maskableIcon);
             FadeZoom(0, 0);
+            EventManager.AddListener(Constants.Events.Inputs.OnToggleHUD, OnToggleHUD);
+            EventManager.AddListener(Constants.Events.Inputs.OnToggleHUD, OnSetHUD);
         }
 
         private void OnEnable()
@@ -59,7 +61,12 @@ namespace UI.HUD
             EventManager.RemoveListener("OnMechaStateChange", OnMechaStateChange);
         }
 
-        
+        private void OnDestroy()
+        {
+            // for events that must be listened to even when the HUD is disabled
+            EventManager.RemoveListener(Constants.Events.Inputs.OnToggleHUD, OnToggleHUD);
+            EventManager.RemoveListener(Constants.Events.Inputs.OnToggleHUD, OnSetHUD);
+        }
 
         #endregion
         private void OnMechaStateChange(object arg0)
@@ -314,7 +321,16 @@ namespace UI.HUD
         }
 
         #endregion
+        
+        private void OnToggleHUD()
+        {
+            gameObject.SetActive(!gameObject.activeSelf);
+        }
 
+        private void OnSetHUD(object arg0)
+        {
+            gameObject.SetActive((bool)arg0);
+        }
     }
 
     public static class CanvasGroupExtensionMethods

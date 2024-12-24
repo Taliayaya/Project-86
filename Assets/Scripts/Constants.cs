@@ -33,6 +33,17 @@ public static class Constants
         public static class Inputs
         {
             public const string OnChangeView = "OnChangeView";
+            public const string OnToggleHUD = "OnToggleHUD";
+            
+            public static class Juggernaut
+            {
+                public const string OnPhotoMode = "OnPhotoMode";
+            }
+            
+            public static class FreeCamera
+            {
+                public const string OnExitPhotoMode = "OnExitPhotoMode";
+            }
         }
         
         public static class Analytics
@@ -56,6 +67,20 @@ public static class Constants
             public const string OnLookAround = "OnLookAround";
             public const string OnToggleMap = "OnToggleMap";
             public const string OnToggleObjective = "OnToggleObjective";
+            
+            public static class FreeCamera
+            {
+                public const string OnMoveFreeCamera = "OnMoveFreeCamera";
+                public const string OnSpeedFreeCamera = "OnSpeedFreeCamera";
+                public const string OnLookAroundFreeCamera = "OnLookAroundCamera";
+                public const string OnGoDownFreeCamera = "OnGoDownFreeCamera";
+                public const string OnGoUpFreeCamera = "OnGoUpFreeCamera";
+            }
+
+            public static class Juggernaut
+            {
+                public const string OnMove = "OnMove";
+            }
 
             // Fox's events, unorganised
 
@@ -70,6 +95,7 @@ public static class Constants
         // /!\ this is used as NAME:keyName
         public const string RebindKey = "RebindKey:";
         
+        public const string OnToggleHealthBar = "OnToggleHealthBar";
         
         public const string OnToggleCockpitView = "OnToggleCockpitView";
         // TODO : Add all the typed event names cause i couldnt be bothered -nemo
