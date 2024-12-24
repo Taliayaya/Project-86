@@ -1,3 +1,5 @@
+using System;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using TMPro;
 using Unity.Services.Authentication;
@@ -17,7 +19,7 @@ namespace UI.MainMenu
 
         [SerializeField] private Button loginButton;
 
-        [SerializeField] private TMP_InputField usernameInput;
+        [SerializeField] private TMP_InputField emailInput;
         [SerializeField] private TMP_InputField passwordInput;
         
         [SerializeField] private UnityEvent onLoginSuccess;
@@ -26,6 +28,7 @@ namespace UI.MainMenu
         {
             try
             {
+                
                 await AuthenticationService.Instance.SignInWithUsernamePasswordAsync(username, password);
                 feedbackText.text = "Log in successful.";
                 feedbackText.color = successColor;
@@ -51,9 +54,34 @@ namespace UI.MainMenu
 
         public async void OnLoginButtonClicked()
         {
-            loginButton.interactable = false;
-            await SignInWithUsernamePasswordAsync(usernameInput.text, passwordInput.text);
-            loginButton.interactable = true;
+            try
+            {
+                loginButton.interactable = false;
+                if (string.IsNullOrEmpty(emailInput.text) || string.IsNullOrEmpty(passwordInput.text))
+                {
+                    feedbackText.text = "Email and password are required.";
+                    feedbackText.color = errorColor;
+                }
+                else if (new MailAddress(emailInput.text).Address != emailInput.text)
+                {
+                    feedbackText.text = "Invalid email address.";
+                    feedbackText.color = errorColor;
+                }
+                else
+                {
+                    feedbackText.text = "";
+                    await SignInWithUsernamePasswordAsync(emailInput.text, passwordInput.text);
+                }
+            }
+            catch (FormatException)
+            {
+                feedbackText.text = "Invalid email address.";
+                feedbackText.color = errorColor;
+            }
+            finally
+            {
+                loginButton.interactable = true;
+            }
         }
     }
 }

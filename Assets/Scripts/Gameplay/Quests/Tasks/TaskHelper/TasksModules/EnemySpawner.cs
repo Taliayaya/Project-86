@@ -74,8 +74,6 @@ namespace Gameplay.Quests.Tasks.TaskHelper.TasksModules
                 }
             }
 
-            if (areaAsGoal)
-                SetEnemiesGoal(_enemies);
             if (!killOnComplete)
                 _enemies = null;
         }
@@ -85,22 +83,6 @@ namespace Gameplay.Quests.Tasks.TaskHelper.TasksModules
             StartCoroutine(SpawnEnemiesCoroutine());
         }
         
-        private IEnumerator SetEnemiesGoalCoroutine(GameObject[] enemies)
-        {
-            yield return new WaitForSeconds(0.1f);
-            foreach (var enemy in enemies)
-            {
-                enemy.GetComponent<AIAgent>().AddDestinationGoal(enemyGoal.position);
-                Debug.Log("Set goal of " + enemy.name + " to " + enemyGoal.position  );
-                yield return new WaitForSeconds(0.1f);
-            }
-        }
-        
-        public void SetEnemiesGoal(GameObject[] enemies)
-        {
-            StartCoroutine(SetEnemiesGoalCoroutine(enemies));
-        }
-
         public override void OnComplete(Task task)
         {
             Debug.Log("Enemies killed");

@@ -144,6 +144,19 @@ public class InputManager : Singleton<InputManager>
     {
         EventManager.TriggerEvent(Constants.TypedEvents.Inputs.OnToggleObjective, inputValue.isPressed);
     }
+    
+    private void OnToggleHUD(InputValue inputValue)
+    {
+        EventManager.TriggerEvent(Constants.Events.Inputs.OnToggleHUD);
+    }
+    
+    private void OnPhotoMode(InputValue inputValue)
+    {
+        SwitchCurrentActionMap("FreeCamera");
+        EventManager.TriggerEvent(Constants.Events.Inputs.OnToggleHUD, false);
+        EventManager.TriggerEvent(Constants.Events.Inputs.Juggernaut.OnPhotoMode);
+        HealthBar.IsVisible = false;
+    }
 
     #region Scavenger Inputs
 
@@ -259,6 +272,45 @@ public class InputManager : Singleton<InputManager>
                 break;
         }
     }
+
+    #region FreeCamera
+    
+    private void OnMoveFreeCamera(InputValue inputValue)
+    {
+        var data = inputValue.Get<Vector2>();
+        EventManager.TriggerEvent(Constants.TypedEvents.Inputs.FreeCamera.OnMoveFreeCamera, data);
+    }
+    
+    private void OnSpeedFreeCamera(InputValue inputValue)
+    {
+        EventManager.TriggerEvent(Constants.TypedEvents.Inputs.FreeCamera.OnSpeedFreeCamera, inputValue.isPressed);
+    }
+    
+    private void OnLookAroundFreeCamera(InputValue inputValue)
+    {
+        var data = inputValue.Get<Vector2>();
+        EventManager.TriggerEvent(Constants.TypedEvents.Inputs.FreeCamera.OnLookAroundFreeCamera, data);
+    }
+    
+    private void OnGoDownFreeCamera(InputValue inputValue)
+    {
+        EventManager.TriggerEvent(Constants.TypedEvents.Inputs.FreeCamera.OnGoDownFreeCamera, inputValue.isPressed);
+    }
+    
+    private void OnGoUpFreeCamera(InputValue inputValue)
+    {
+        EventManager.TriggerEvent(Constants.TypedEvents.Inputs.FreeCamera.OnGoUpFreeCamera, inputValue.isPressed);
+    }
+
+    private void OnExitPhotoMode(InputValue inputValue)
+    {
+        SwitchCurrentActionMap("Juggernaut");
+        EventManager.TriggerEvent(Constants.Events.Inputs.OnToggleHUD, true);
+        EventManager.TriggerEvent(Constants.Events.Inputs.FreeCamera.OnExitPhotoMode);
+        HealthBar.IsVisible = true;
+    }
+
+    #endregion
 
     #region MainMenu Action Map
 
