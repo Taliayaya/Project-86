@@ -125,19 +125,26 @@ public class AnalyticsManager : Singleton<AnalyticsManager>
         EventManager.RemoveListener(Constants.Events.Analytics.LevelFinished, OnLevelFinished);
         EventManager.RemoveListener(Constants.Events.Analytics.QuestCompleted, OnQuestCompleted);
     }
+    
+    // After migrating to Unity 6.0, the API Changed.
+    // This need to be updated
 
     void OnLevelFinished()
     {
+#if false
         AnalyticsService.Instance.CustomData("levelFinished");
+#endif
     }
     
     void OnQuestCompleted(object data)
     {
         var questName = (string)data;
+#if false
         AnalyticsService.Instance.CustomData("questComplete", new Dictionary<string, object>()
         {
             {"questName", questName},
         });
+#endif
     }
 
     #endregion

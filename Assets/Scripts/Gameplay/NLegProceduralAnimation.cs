@@ -89,7 +89,7 @@ public class NLegProceduralAnimation : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _velocity = rb ? rb.velocity : agent.velocity;
+        _velocity = rb ? rb.linearVelocity : agent.velocity;
         //UpdateVelocity();
 
         (int legToMove, int leftLeg) = LegToMove();
