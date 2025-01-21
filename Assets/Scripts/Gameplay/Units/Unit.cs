@@ -125,7 +125,7 @@ namespace Gameplay.Units
 
         protected virtual void FixedUpdate()
         {
-            EngineStatus = _rb.velocity.magnitude switch
+            EngineStatus = _rb.linearVelocity.magnitude switch
             {
                 < 5 => EngineStatus.Idle,
                 < 20 => EngineStatus.Walking,

@@ -5,9 +5,10 @@ using Gameplay.Units;
 using ScriptableObjects;
 using ScriptableObjects.GameParameters;
 using UI.HUD;
-using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
+
+using UnityEngine;
 
 
 namespace Gameplay.Mecha
@@ -284,11 +285,10 @@ namespace Gameplay.Mecha
         public void CheckGround(bool isGrounded)
         {
             _isGrounded = Physics.Raycast(transform.position, Vector3.down, out var hit, 3f, forwardMask);
-            
             if (_isGrounded)
-                _rigidbody.drag = groundDrag;
+                _rigidbody.linearDamping = groundDrag;
             else
-                _rigidbody.drag = 1;
+                _rigidbody.linearDamping = 1;
         }
 
         private void MoveJuggernaut()
@@ -304,7 +304,7 @@ namespace Gameplay.Mecha
 
             var move = _rigidbody.transform.forward * (_lastMovement.y) + _rigidbody.transform.right * (_lastMovement.x);
             
-            _rigidbody.AddForce(move.normalized * (MovementSpeed * 1000f), ForceMode.Force);
+            _rigidbody.AddForce(move.normalized * (MovementSpeed * 1000f), UnityEngine.ForceMode.Force);
             //_rigidbody.MovePosition(_rigidbody.position + move * Time.fixedDeltaTime);
 
         }
@@ -316,7 +316,7 @@ namespace Gameplay.Mecha
             //Debug.Log(_yVelocity);
             if (_isGrounded)
                 _yVelocity = gravity;
-            _rigidbody.AddForce(Vector3.up * (_yVelocity), ForceMode.Acceleration);
+            _rigidbody.AddForce(Vector3.up * (_yVelocity), UnityEngine.ForceMode.Acceleration);
         }
 
         private void RotateJuggernaut()
@@ -331,11 +331,11 @@ namespace Gameplay.Mecha
 
         private void LimitSpeed()
         {
-            var flatVel = new Vector3(_rigidbody.velocity.x, 0f, _rigidbody.velocity.z);
+            var flatVel = new Vector3(_rigidbody.linearVelocity.x, 0f, _rigidbody.linearVelocity.z);
             if (flatVel.magnitude > MovementSpeed)
             {
                 var limitedVel = flatVel.normalized * MovementSpeed;
-                _rigidbody.velocity = new Vector3(limitedVel.x, _rigidbody.velocity.y, limitedVel.z);
+                _rigidbody.linearVelocity = new Vector3(limitedVel.x, _rigidbody.linearVelocity.y, limitedVel.z);
             }
         }
         
@@ -412,7 +412,7 @@ namespace Gameplay.Mecha
             canJump = false;
 
             // applies a jump force
-            _rigidbody.AddForce(Vector3.up * juggernautParameters.jumpPower, ForceMode.Impulse);
+            _rigidbody.AddForce(Vector3.up * juggernautParameters.jumpPower, UnityEngine.ForceMode.Impulse);
             yield return null;
 
             // starts the cd
@@ -470,7 +470,7 @@ namespace Gameplay.Mecha
             dashDirection.Normalize();
 
             // Store the initial velocity of the Mecha to make sure we're overriding it
-            Vector3 initialVelocity = _rigidbody.velocity;
+            Vector3 initialVelocity = _rigidbody.linearVelocity;
 
             // Time management for smooth deceleration
             float elapsedTime = 0f;
@@ -485,11 +485,11 @@ namespace Gameplay.Mecha
 
 
                 Vector3 currentVelocity = dashDirection * currentSpeed;
-                _rigidbody.AddForce(Vector3.down * test, ForceMode.Acceleration);
+                _rigidbody.AddForce(Vector3.down * test, UnityEngine.ForceMode.Acceleration);
                 Debug.Log(($"Y value: {currentVelocity}"));
 
                 // Velocity based on current speed
-                _rigidbody.velocity = dashDirection * currentSpeed;
+                _rigidbody.linearVelocity = dashDirection * currentSpeed;
 
                 elapsedTime += Time.deltaTime;  
                 yield return null;  

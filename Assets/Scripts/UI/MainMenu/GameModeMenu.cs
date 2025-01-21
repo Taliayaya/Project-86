@@ -73,10 +73,12 @@ namespace UI.MainMenu
                 SoundManager.PlayOneShot(onClickSound);
                 SceneHandler.LoadScene(regionPointsSo.scene, regionPointsSo);
                 GameManager.Mission = regionPointsSo;
+#if false
                 AnalyticsService.Instance.CustomData("levelStarted", new Dictionary<string, object>()
                 {
                     {"levelName", regionPointsSo.regionName}
                 });
+#endif
             });
         }
 
