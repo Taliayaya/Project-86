@@ -64,7 +64,9 @@ The game is not on Steam (yet) and players have two ways to download the game fo
 
 > Concerning Steam, fan games are not allowed without the authorization of the IP. Our goal is to grow a bit more and hope to reach an agreement with them to simply this procedure. 
 
-### Launcher
+### [DEPRECATED] Launcher
+
+> **⚠ The launcher update system is currently Out of Service as we lost our server backend solution. Consider updating by downloading the .zip file through the releases section.**
 
 A launcher was made so that players do not have to go through the pain of re-downloading every new version. The launcher is not as powerful as Steam update system, yet it already avoids redownloading unchanged files and can hence make the download lighter.
 
@@ -134,9 +136,10 @@ Please be aware that juggernaut stats, sounds, and visual effects are temporary 
 Project 86 is an open source fan game. Hence, anyone can freely contribute to his project and this part is here to help you to set up.
 First, make sure to join the [discord server](https://discord.gg/Yh2TQH97yA). By doing so, communications will be made easier and you'll have access to the current tasks. These tasks are not only coding tasks. There are modeling, coding, musics, level design, art, story/lore, etc. Enough to find something you may do!
 
-Secondly, make sure to have Unity. We are currently using `Unity 2022.3.22f1` (this will change with time). Make sure to have the same one. 
+Secondly, make sure to have Unity. We are currently using `Unity 6000.0.32f1` (this will change with time). Make sure to have the same one. 
 
-> We recently upgraded from 2021.3.29f1, make sure your Unity Version is up to date!!!
+> > We recently upgraded from 2021.3.29f1, make sure your Unity Version is up to date!!!
+> We recently upgraded from 2022.3.21f1, make sure your Unity Version is up to date!!!
 
 Thirdly, you have to download the files. Github seems to have issue making the ZIP file of the project so avoid using it. We recommend you to CLONE the project.
 If you are new to Git and Github, this may seem frightening for you. If you are new to it, you should download the following softwares:
@@ -154,8 +157,8 @@ You then want to clone the project with `git@github.com:Taliayaya/Project-86.git
 When this is done, you simply want to open the root with Unity and the version used. This will generate more files so make sure to have enough space to work on the project (At least 20 Go)
 You then later on want to COMMIT and PUSH your and changes. For that, we advise you to contact us if you're new to all that.
 
-To download the `Additional Assets` folder to fully open this project, please download it from this link: https://drive.google.com/drive/folders/1pkRBIPXqGKoHKCeHJVrc5NJOGXjXa1D8?usp=sharing
-and extract it so that it is at the root of the `Assets` folder (the final path should be `Assets/Additional Assets`)
+To download the `Additional Assets` folder and some others to fully open this project, please download it from this link: https://drive.google.com/file/d/1yTOwTFJjrSXIZ2UjOxB6FsIsNqfp8Ad-/view?usp=sharing
+and extract it so that it is at the root of the `Assets` folder 
 
 > Note: Previously, the `Additional Assets` folder was tracked using `Git LFS`. However, the bandwidth was consumed too fast (within a week). Hence, as this folder was taking 90% of the storage, it was removed from it.
 > This file shouldn't have much modification or breaking change but should still be updated once in a while. (follow the discord for more information)
