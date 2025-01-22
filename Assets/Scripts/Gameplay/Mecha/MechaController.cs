@@ -41,6 +41,7 @@ namespace Gameplay.Mecha
 
         [Header("Movement")] 
         [SerializeField] private float groundDrag;
+        [SerializeField] private float groundCleareance = 1.5f;
 
         [SerializeField]
         private Transform modelTransform;
@@ -83,6 +84,11 @@ namespace Gameplay.Mecha
         private Coroutine dashCoroutine = null;
 
         private bool canJump = true;
+
+        // Raycasts
+
+        private Ray groundRay;
+        private RaycastHit groundHitData;
         #endregion
 
         #region Properties
@@ -252,6 +258,8 @@ namespace Gameplay.Mecha
             ApplyGravity(); // Currently using the rigidbody gravity
             LimitSpeed();
             CheckDistanceForward();
+            UpdateGroundRay();
+            ApplyGroundClearenace();
             if (State == UnitState.Default)
             {
                 MoveJuggernaut();
@@ -265,6 +273,7 @@ namespace Gameplay.Mecha
             base.Start();
             EventManager.TriggerEvent("RegisterMinimapTarget", transform);
             Cursor.lockState = CursorLockMode.Locked;
+            groundRay = new Ray(transform.position, Vector3.down);
         }
 
         #endregion
@@ -281,14 +290,29 @@ namespace Gameplay.Mecha
                 EventManager.TriggerEvent("OnDistanceForward", float.NaN);
         }
         
-
+        public void UpdateGroundRay()
+        {
+            groundRay.origin = transform.position;
+            Physics.Raycast(groundRay, out groundHitData);
+            Debug.Log(groundHitData.distance);
+            Debug.Log(groundHitData.distance <= groundCleareance);
+        }
         public void CheckGround(bool isGrounded)
         {
-            _isGrounded = Physics.Raycast(transform.position, Vector3.down, out var hit, 3f, forwardMask);
+            // _isGrounded = Physics.Raycast(transform.position, Vector3.down, out var hit, 3f, forwardMask);
+            _isGrounded = groundHitData.distance <= groundCleareance * 1.2f;
             if (_isGrounded)
                 _rigidbody.linearDamping = groundDrag;
             else
                 _rigidbody.linearDamping = 1;
+        }
+        public void ApplyGroundClearenace()
+        {
+            // Makes the juggernaut hover groundCleareance distance off the ground
+            if (!_isGrounded) { return; }
+            Vector3 new_pos = transform.position;
+            new_pos.y = Mathf.Lerp(transform.position.y, groundHitData.point.y + groundCleareance, 0.4f);
+            transform.position = new_pos; // I hate this, why can't I change the Y value directly...
         }
 
         private void MoveJuggernaut()
@@ -315,7 +339,7 @@ namespace Gameplay.Mecha
             _yVelocity += - gravity * gravity * Time.fixedDeltaTime;
             //Debug.Log(_yVelocity);
             if (_isGrounded)
-                _yVelocity = gravity;
+                _yVelocity = 0; //gravity;
             _rigidbody.AddForce(Vector3.up * (_yVelocity), UnityEngine.ForceMode.Acceleration);
         }
 
