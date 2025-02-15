@@ -33,8 +33,14 @@ namespace Gameplay.Units
 
         private bool _onCooldown;
 
+        private void Awake()
+        {
+            _strikeHappenings.Clear();
+        }
+
         private void OnEnable()
         {
+            _onCooldown = false;
             EventManager.AddListener(Constants.TypedEvents.StrikeRequest, OnStrikeRequested);
         }
 

@@ -146,6 +146,11 @@ namespace Gameplay.Units
             onUnitDeath.Invoke(this);
             Factions.RemoveMember(faction, this);
         }
+        
+        private void OnDestroy()
+        {
+            Factions.RemoveMember(faction, this);
+        }
 
         public virtual void Awake()
         {

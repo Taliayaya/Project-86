@@ -1654,7 +1654,7 @@ MonoBehaviour:
     AlignWithDesiredMoveDirection: 0
   UseHips: 1
   HipsHeightStepBlend: 1
-  HipsHeightStepSpeed: 0.7
+  HipsHeightStepSpeed: 0.2
   HipsAdjustStyle: 0
   StabilizeCenterOfMass: 0.8
   AnimationIsStablePose: 0.75
@@ -2120,9 +2120,9 @@ MonoBehaviour:
   _Editor_EnsureCount: 0
   _Editor_OnValidateTrigger: 1
   _EditorAllowAutoUpdateFeetParams: 1
-  _EditorCategory: 0
-  _EditorSetupCategory: 0
-  _EditorMotionCategory: 0
+  _EditorCategory: 1
+  _EditorSetupCategory: 1
+  _EditorMotionCategory: 1
   _EditorExtraCategory: 0
   setupPose:
     MainHipsPose:
@@ -2139,7 +2139,7 @@ MonoBehaviour:
   baseTransform: {fileID: 0}
   Hips: {fileID: 4883470621962889078}
   ScaleReferenceMode: 3
-  finalScaleReference: 0.44119522
+  finalScaleReference: 0.44119608
   finalScaleReferenceSqrt: 0.1
   customScaleReferenceValue: 0.5
   DelayedInitialization: 0
