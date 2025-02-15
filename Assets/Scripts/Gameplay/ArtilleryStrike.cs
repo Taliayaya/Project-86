@@ -123,6 +123,10 @@ public class ArtilleryStrike : MonoBehaviour
         var shape = _particleSystem.shape;
         shape.radius = strikeRadius_;
         _particleSystem.Play();
+
+        yield return new WaitForSeconds(strikeDuration_);
+        zoneDecalProjector.gameObject.SetActive(false);
+        minimapIcon.gameObject.SetActive(false);
     }
 
     public void SendStrike(float strikeDuration_, float strikesPerSecond_, float strikeRadius_, float delay)

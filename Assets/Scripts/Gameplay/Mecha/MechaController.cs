@@ -431,7 +431,7 @@ namespace Gameplay.Mecha
 
         private void ApplyGravity()
         {
-            _yVelocity += - gravity * gravity * Time.fixedDeltaTime;
+            _yVelocity += -gravity * gravity * 0.3f * Time.fixedDeltaTime;
             if (_isGrounded && _isInclineStable)
                 _yVelocity = 0; //gravity;
             _rigidbody.AddForce(Vector3.up * (_yVelocity), UnityEngine.ForceMode.Acceleration);

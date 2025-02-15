@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Gameplay;
 using Gameplay.Units;
@@ -21,15 +22,17 @@ namespace AI.BehaviourTree.BasicNodes
     public class CanSeeObject : ActionNode
     {
         private Transform _transform;
-        [Tooltip("The tag the AI will try to search for"), SerializeField] private Faction enemyFaction;
-        
+
+        [Tooltip("The tag the AI will try to search for"), SerializeField]
+        private Faction enemyFaction;
+
         [SerializeField] private LayerMask layerMask;
         [CanBeNull] public Unit _closestTarget;
         private AIAgent _aiAgent;
-        
+
         public float sharePositionSpotTime = 9f;
         public float discoverSpotTime = 15f;
-        
+
         [CanBeNull]
         private Unit ClosestTarget
         {
@@ -40,20 +43,22 @@ namespace AI.BehaviourTree.BasicNodes
                 blackBoard.SetValue("closestTarget", _closestTarget ? _closestTarget.transform : null);
             }
         }
+
         private bool _isSet = false;
 
         private bool _isDone;
         private bool _canSeeTarget;
         private bool _sharingPosition;
-        
+
         private AgentSO _agentSo;
-        
+
         private List<Unit> _targets;
-        
+
         private List<Unit> _spottedTargets = new List<Unit>();
         private IEnumerator _canSeeTargetEnumerator;
         private IEnumerator _sharePositionEnumerator;
         public bool canSharePosition = true;
+
         protected override void OnStart()
         {
             if (!_isSet)
@@ -67,13 +72,15 @@ namespace AI.BehaviourTree.BasicNodes
 
             if (_aiAgent.Target is not null)
             {
-                if (_aiAgent.Target.Visibility == TargetInfo.VisibilityStatus.Visible && CanSeeSingleTarget(_aiAgent.Target.Unit))
+                if (_aiAgent.Target.Visibility == TargetInfo.VisibilityStatus.Visible &&
+                    CanSeeSingleTarget(_aiAgent.Target.Unit))
                 {
                     ClosestTarget = _aiAgent.Target.Unit;
                     _isDone = true;
                     _canSeeTarget = true;
                     return;
                 }
+
                 if (_aiAgent.Target.Visibility == TargetInfo.VisibilityStatus.Network)
                 {
                     ClosestTarget = _aiAgent.Target.Unit;
@@ -84,10 +91,11 @@ namespace AI.BehaviourTree.BasicNodes
                     _canSeeTargetEnumerator = CanSeeTarget();
                     return;
                 }
+
                 ClosestTarget = null;
                 _aiAgent.Target = null;
             }
-            
+
             _isDone = false;
             _canSeeTarget = false;
             _canSeeTargetEnumerator = CanSeeTarget();
@@ -96,7 +104,7 @@ namespace AI.BehaviourTree.BasicNodes
         protected override void OnStop()
         {
         }
-        
+
         protected override State OnUpdate()
         {
             if (_isDone)
@@ -104,16 +112,24 @@ namespace AI.BehaviourTree.BasicNodes
                 return _canSeeTarget ? State.Success : State.Failure;
             }
 
-            if (_canSeeTargetEnumerator.MoveNext())
-                return State.Running;
-
-            if (ClosestTarget)
+            try
             {
-                if (canSharePosition && _sharePositionEnumerator.MoveNext())
+                if (_canSeeTargetEnumerator.MoveNext())
                     return State.Running;
-                _canSeeTarget = true;
-                _isDone = true;
-                return State.Success;
+
+                if (ClosestTarget)
+                {
+                    if (canSharePosition && _sharePositionEnumerator.MoveNext())
+                        return State.Running;
+                    _canSeeTarget = true;
+                    _isDone = true;
+                    return State.Success;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+                return State.Failure;
             }
 
             return State.Failure;
@@ -135,13 +151,15 @@ namespace AI.BehaviourTree.BasicNodes
                     continue;
                 var direction = target.transform.position - _transform.position;
                 var angle = Vector3.Angle(direction, _transform.forward);
-                
+
                 Debug.DrawLine(_transform.position, target.transform.position, Color.red);
                 Debug.Log("Angle is " + angle + " " + _agentSo.fieldOfViewAngle * 0.5f);
                 if (angle < _agentSo.fieldOfViewAngle * 0.5f)
                 {
                     Debug.DrawLine(_transform.position, target.transform.position, Color.blue);
-                    if (PerformRaycast(direction, target) && (minDistance > direction.magnitude || (ClosestTarget && ClosestTarget.Priority > target.Priority)))
+                    if (PerformRaycast(direction, target) && (minDistance > direction.magnitude ||
+                                                              (ClosestTarget && ClosestTarget.Priority >
+                                                                  target.Priority)))
                     {
                         minDistance = direction.magnitude;
                         ClosestTarget = target;
@@ -173,11 +191,11 @@ namespace AI.BehaviourTree.BasicNodes
             {
                 Debug.DrawLine(_transform.position, target.transform.position, Color.blue);
                 return PerformRaycast(direction, target);
-
             }
+
             return false;
         }
-        
+
         private IEnumerator ShareTargetPosition(Unit target)
         {
             foreach (var ally in Factions.GetMembers(_aiAgent.Faction))
@@ -185,14 +203,16 @@ namespace AI.BehaviourTree.BasicNodes
                 float distance = Vector3.Distance(ally.transform.position, target.transform.position);
                 if (distance <= _agentSo.shareInformationMaxDistance)
                 {
-                    Debug.Log("[CanSeeObject] Sharing position to " + ally.name + " of " + target.name + " at " + target.transform.position);
+                    Debug.Log("[CanSeeObject] Sharing position to " + ally.name + " of " + target.name + " at " +
+                              target.transform.position);
                     SharePosition(target, ally);
                 }
+
                 // no need to do everything in one frame
                 yield return null;
             }
         }
-        
+
         private void SharePosition(Unit target, Unit ally)
         {
             if (ally is AIAgent allyAgent)
@@ -200,14 +220,15 @@ namespace AI.BehaviourTree.BasicNodes
                 if (allyAgent.Target is null || allyAgent.orderPriority < _aiAgent.orderPriority)
                 {
                     Debug.Log("[CanSeeObject] " + ally.name + " already has a target or has a higher priority");
-                    TargetInfo targetInfo = new TargetInfo(target, TargetInfo.VisibilityStatus.Network, sharePositionSpotTime);
+                    TargetInfo targetInfo =
+                        new TargetInfo(target, TargetInfo.VisibilityStatus.Network, sharePositionSpotTime);
                     allyAgent.Target = targetInfo;
                 }
                 else
                     Debug.Log("[CanSeeObject] " + ally.name + " already has a target or has a higher priority");
             }
         }
-        
+
         public static bool CanSeeSingleTarget(Transform transform, AgentSO agentSo, GameObject target)
         {
             var direction = target.transform.position - transform.position;
@@ -218,11 +239,11 @@ namespace AI.BehaviourTree.BasicNodes
             {
                 Debug.DrawLine(transform.position, target.transform.position, Color.blue);
                 return PerformRaycast(transform, agentSo, direction, target);
-
             }
+
             return false;
         }
-        
+
         public static bool PerformRaycast(Transform transform, AgentSO agentSo, Vector3 direction, GameObject target)
         {
             RaycastHit hit;
@@ -237,7 +258,6 @@ namespace AI.BehaviourTree.BasicNodes
             }
 
             return false;
-
         }
 
         private bool PerformRaycast(Vector3 direction, Unit target)
@@ -248,7 +268,7 @@ namespace AI.BehaviourTree.BasicNodes
             if (Physics.Raycast(_transform.position, direction.normalized, out hit, _agentSo.viewDistance, layerMask))
             {
                 Debug.Log("hit " + hit.transform.name);
-                bool isDirectTarget = hit.collider.gameObject == target.gameObject; 
+                bool isDirectTarget = hit.collider.gameObject == target.gameObject;
                 if (isDirectTarget || (hit.rigidbody != null && hit.rigidbody.gameObject == target.gameObject))
                 {
                     Debug.DrawLine(_transform.position, target.transform.position, Color.green);
@@ -259,7 +279,6 @@ namespace AI.BehaviourTree.BasicNodes
             }
 
             return false;
-
         }
     }
 }

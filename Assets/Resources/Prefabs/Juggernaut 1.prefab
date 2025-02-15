@@ -2846,7 +2846,7 @@ MonoBehaviour:
   gravity: -10
   groundDrag: 3
   airborneHeight: 2.2
-  maxFloorAngle: 40
+  maxFloorAngle: 30
   feetEnds:
   - {fileID: 580562808694063259}
   - {fileID: 7740810250565838929}
@@ -5961,7 +5961,7 @@ MonoBehaviour:
   baseTransform: {fileID: 0}
   Hips: {fileID: 1144192619514177283}
   ScaleReferenceMode: 1
-  finalScaleReference: 0.027995251
+  finalScaleReference: 0.027995316
   finalScaleReferenceSqrt: 0.1
   customScaleReferenceValue: 0.05
   DelayedInitialization: 0
