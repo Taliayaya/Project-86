@@ -128,12 +128,11 @@ namespace Gameplay.Mecha
             get => _movementmode;
             set
             {
-                Console.WriteLine($"Setting movement mode to: {value}");
+                //Console.WriteLine($"Setting movement mode to: {value}");
                 _movementmode = value; // Set the new value to the private backing field first
                 switch (value) // <-- Use "value" here instead of "_movementmode"
                 {
                     case MovementMode.Walking:
-                        Debug.Log("You reached me");
                         MovementSpeed = juggernautParameters.walkSpeed;
                         break;
                     case MovementMode.Running :
@@ -300,7 +299,7 @@ namespace Gameplay.Mecha
             if (!_isGrounded)
                 return;
 
-            Debug.Log(_movementmode);
+            //Debug.Log(_movementmode);
 
             var move = _rigidbody.transform.forward * (_lastMovement.y) + _rigidbody.transform.right * (_lastMovement.x);
             

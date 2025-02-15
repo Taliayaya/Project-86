@@ -128,16 +128,16 @@ public class AnalyticsManager : Singleton<AnalyticsManager>
 
     void OnLevelFinished()
     {
-        AnalyticsService.Instance.CustomData("levelFinished");
+        //AnalyticsService.Instance.CustomData("levelFinished");
     }
     
     void OnQuestCompleted(object data)
     {
         var questName = (string)data;
-        AnalyticsService.Instance.CustomData("questComplete", new Dictionary<string, object>()
-        {
-            {"questName", questName},
-        });
+        //AnalyticsService.Instance.CustomData("questComplete", new Dictionary<string, object>()
+        //{
+        //    {"questName", questName},
+        //});
     }
 
     #endregion
