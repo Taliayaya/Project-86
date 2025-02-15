@@ -102,6 +102,8 @@ namespace Gameplay.Units
             
             if (_firstChild == null)
                 _firstChild = transform.GetChild(0);
+            if (_sensor == null)
+                _sensor = _firstChild;
             if (name.Contains("Lowe"))
             {
                 Health = demoParameters.loweHealth;
@@ -124,6 +126,7 @@ namespace Gameplay.Units
             base.Start();
             Tree.blackBoard.SetValue("navMeshAgent", _agent);
             Tree.blackBoard.SetValue("transform", _firstChild);
+            Tree.blackBoard.SetValue("sensor", _sensor);
             Tree.blackBoard.SetValue("agentSO", agentSo);
             Tree.blackBoard.SetValue("weaponModules", _weaponModules);
             Tree.blackBoard.SetValue("aiAgent", this);
@@ -177,6 +180,7 @@ namespace Gameplay.Units
         }
 
         [SerializeField] private Transform _firstChild;
+        [Tooltip("The transform from which raycast are made")][SerializeField] private Transform _sensor;
         private Vector3 _lastPosition;
         IEnumerator RotateTowardsEnemyCoroutine()
         {

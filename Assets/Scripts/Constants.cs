@@ -87,6 +87,8 @@ public static class Constants
             public const string OnJump = "OnJump";
         }
 
+        public const string StrikeRequest = "StrikeRequest";
+        public const string ShowHUDWarning = "ShowHUDWarning";
         public const string OnDash = "OnDash";
         public const string OnChangedPersonalMark = "OnChangedPersonalMark";
 

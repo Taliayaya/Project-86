@@ -58,7 +58,7 @@ namespace AI.BehaviourTree.BasicNodes
         {
             if (!_isSet)
             {
-                _transform = blackBoard.GetValue<Transform>("transform");
+                _transform = blackBoard.GetValue<Transform>("sensor");
                 _agentSo = blackBoard.GetValue<AgentSO>("agentSO");
                 _aiAgent = blackBoard.GetValue<AIAgent>("aiAgent");
                 _targets = Factions.GetMembers(enemyFaction);
@@ -137,6 +137,7 @@ namespace AI.BehaviourTree.BasicNodes
                 var angle = Vector3.Angle(direction, _transform.forward);
                 
                 Debug.DrawLine(_transform.position, target.transform.position, Color.red);
+                Debug.Log("Angle is " + angle + " " + _agentSo.fieldOfViewAngle * 0.5f);
                 if (angle < _agentSo.fieldOfViewAngle * 0.5f)
                 {
                     Debug.DrawLine(_transform.position, target.transform.position, Color.blue);
@@ -167,6 +168,7 @@ namespace AI.BehaviourTree.BasicNodes
             var angle = Vector3.Angle(direction, _transform.forward);
 
             Debug.DrawLine(_transform.position, target.transform.position, Color.red);
+            Debug.Log("Angle is " + angle + " " + _agentSo.fieldOfViewAngle * 0.5f);
             if (angle < _agentSo.fieldOfViewAngle * 0.5f)
             {
                 Debug.DrawLine(_transform.position, target.transform.position, Color.blue);
@@ -221,13 +223,13 @@ namespace AI.BehaviourTree.BasicNodes
             return false;
         }
         
-        private static bool PerformRaycast(Transform transform, AgentSO agentSo, Vector3 direction, GameObject target)
+        public static bool PerformRaycast(Transform transform, AgentSO agentSo, Vector3 direction, GameObject target)
         {
             RaycastHit hit;
             Debug.DrawRay(transform.position, direction.normalized * agentSo.viewDistance, Color.yellow);
             if (Physics.Raycast(transform.position, direction.normalized, out hit, agentSo.viewDistance))
             {
-                if (hit.collider.gameObject == target)
+                if (hit.collider.gameObject == target || (hit.rigidbody != null && hit.rigidbody.gameObject == target))
                 {
                     Debug.DrawLine(transform.position, target.transform.position, Color.green);
                     return true;
@@ -242,8 +244,10 @@ namespace AI.BehaviourTree.BasicNodes
         {
             RaycastHit hit;
             Debug.DrawRay(_transform.position, direction.normalized * _agentSo.viewDistance, Color.yellow);
+            Debug.Log("Performing raycast " + _agentSo.viewDistance);
             if (Physics.Raycast(_transform.position, direction.normalized, out hit, _agentSo.viewDistance, layerMask))
             {
+                Debug.Log("hit " + hit.transform.name);
                 bool isDirectTarget = hit.collider.gameObject == target.gameObject; 
                 if (isDirectTarget || (hit.rigidbody != null && hit.rigidbody.gameObject == target.gameObject))
                 {
