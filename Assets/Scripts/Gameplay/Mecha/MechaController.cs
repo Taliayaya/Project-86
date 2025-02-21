@@ -315,12 +315,11 @@ namespace Gameplay.Mecha
 
         private void MoveJuggernaut()
         {
-
-            if (!_isGrounded || !_isInclineStable)
-                return;
-
             var move = transform.forward * (_lastMovement.y) + transform.right * (_lastMovement.x);
             move = move.normalized;
+            bool isMovingUp = Vector3.Dot(Vector3.up, move) > 0;
+
+            if (!_isGrounded || (!_isInclineStable && isMovingUp)) { return; }
             if (isDashing) { move *= 0.5f; }
             // gradually decreses speed once GripLossAngle is reached, completely stopping and maxFloorAngle
             float floorAngleMultiplier = math.clamp((maxFloorAngle - floorAngle) / gripLossAngle, 0, 1);
