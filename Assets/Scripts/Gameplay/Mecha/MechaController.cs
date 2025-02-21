@@ -44,10 +44,9 @@ namespace Gameplay.Mecha
 
         [Header("Movement")] 
         [SerializeField] private float groundDrag;
-        //[SerializeField] private float groundCleareance = 1.5f;
         [SerializeField] private float airborneHeight = 2.2f;
+        [SerializeField] private float gripLossAngle = 20f;
         [SerializeField] private float maxFloorAngle = 40f;
-        [SerializeField] private GameObject[] feetEnds;
 
         [SerializeField]
         private Transform modelTransform;
@@ -58,7 +57,6 @@ namespace Gameplay.Mecha
         [SerializeField] private CinemachineVirtualCamera tpsCamera;
         [SerializeField] private CinemachineFreeLook freeLookCamera;
         [SerializeField] private LayerMask forwardMask;
-        //[SerializeField] private GameObject[] feetArray;
 
         [Header("Main Recoil")]
         [SerializeField] private float recoilStrength = 1f;
@@ -92,14 +90,15 @@ namespace Gameplay.Mecha
 
         private bool canJump = true;
 
-        // Movement Overhaul
+        // Movement Overhaul (Nova)
 
+        // instead of using transform.up, use surfaceAlignment.upDirection, it's less eratic since its lerping value is much lower (Nova)
         private Ray groundRay;
         private RaycastHit groundHitData;
-        private Vector3 up_direction = Vector3.up; // is more stable than transfom.up
         private Vector3 rotationLeft = Vector3.zero;
         private float floorAngle = 0f;
         private bool _isInclineStable = true;
+        private SurfaceNormalAlignment surfaceAlignment;
 
         #endregion
 
@@ -270,9 +269,6 @@ namespace Gameplay.Mecha
             ApplyGravity();
             LimitSpeed();
             CheckDistanceForward();
-            UpdateFloorRays();
-
-            MatchGroundAngle();
 
             if (State == UnitState.Default)
             {
@@ -288,26 +284,12 @@ namespace Gameplay.Mecha
             EventManager.TriggerEvent("RegisterMinimapTarget", transform);
             Cursor.lockState = CursorLockMode.Locked;
             groundRay = new Ray(transform.position, Vector3.down);
+            surfaceAlignment = GetComponent("SurfaceNormalAlignment") as SurfaceNormalAlignment;
         }
 
         #endregion
 
         #region Movement and Camera
-
-        private void MatchGroundAngle()
-        {
-            Vector3 normal = Vector3.Slerp(transform.up, groundHitData.normal, 0.2f);
-            if (normal != null) { up_direction = Vector3.Slerp(up_direction, normal, 0.1f); } 
-            else { up_direction = Vector3.Slerp(up_direction, Vector3.up, 0.1f); }
-
-            Vector3 right = Vector3.Cross(up_direction, transform.forward);
-            Vector3 forward = Vector3.Cross(right, up_direction);
-            //Vector3.OrthoNormalize(ref normal, ref forward);
-            transform.LookAt(transform.position + forward, up_direction);
-            floorAngle = Vector3.Angle(Vector3.up, up_direction);
-
-        }
-
 
         private void CheckDistanceForward()
         {
@@ -319,89 +301,12 @@ namespace Gameplay.Mecha
                 EventManager.TriggerEvent("OnDistanceForward", float.NaN);
         }
         
-        public void UpdateFloorRays()
-        {
-            // Scans the surrounding terrain and creates an averaged normal of it
-            
-
-            // Overhaul code, above should be integrated into it
-            int bodyRayOutwardCount = 8;
-            int bodyRayInwardCount = 8; // these can hit the player's collider, make sure they don't do that by changing their angle and/or distance from the main body
-            // Ground ray + Velocity ray + local down ray + body rays
-            int bodyRayCount = 1 + 1 + 1+ bodyRayOutwardCount + bodyRayInwardCount;
-
-            Vector3[] groundNormals = new Vector3[feetEnds.Length + bodyRayCount];
-
-            RaycastHit hitData;
-
-            // Gathering normals of the surrounding terrain 
-            Vector3 direction = transform.forward;
-            direction = Quaternion.AngleAxis(-30.0f, transform.right) * direction;
-            for (int i = 0; i < bodyRayOutwardCount; i++)
-            {
-                Physics.Raycast(transform.position, Quaternion.AngleAxis(i * (360.0f / bodyRayOutwardCount), transform.up) * direction, out hitData, 3.0f);
-                groundNormals[i] = hitData.normal;
-            }
-
-            direction = transform.forward;
-            direction = Quaternion.AngleAxis(-105.0f, transform.right) * direction;
-            for (int i = 0; i < bodyRayInwardCount; i++)
-            {
-                Vector3 offset = Quaternion.AngleAxis(i * (360.0f / bodyRayInwardCount), transform.up) * transform.forward * 1.5f;
-                // 31 (bx011111) is a layer mask containing everything, but "damageables", change it to everything but the "player" layer mask once it is created
-                Physics.Raycast(transform.position + offset, Quaternion.AngleAxis(i * (-360.0f / bodyRayInwardCount), transform.up) * direction, out hitData, 3.0f, 31); 
-                groundNormals[bodyRayOutwardCount + i] = hitData.normal;
-                //Debug.Log(hitData.collider);
-            }
-
-            // Gathering unique rays
-            groundRay.origin = transform.position;
-            groundRay.direction = Vector3.down * 10;
-            Physics.Raycast(groundRay, out groundHitData);
-            groundNormals[bodyRayCount - 1] = groundHitData.normal;
-
-            direction = -transform.up * 3;
-            Physics.Raycast(transform.position, direction, out hitData, 5.0f);
-            groundNormals[bodyRayCount - 2] = hitData.normal * 3;
-
-            direction = transform.forward * (_lastMovement.y) + transform.right * (_lastMovement.x);
-            Physics.Raycast(transform.position, direction, out hitData, 5.0f);
-            groundNormals[bodyRayCount - 3] = hitData.normal * 3;
-
-
-
-            // Gathering normals where feet hit the ground
-            int count = 0;
-            for (int i = 0; i < feetEnds.Length; i++)
-            {
-                Physics.Raycast(feetEnds[i].transform.position, -feetEnds[i].transform.up, out hitData, 2.0f);
-                groundNormals[bodyRayCount + i] = hitData.normal * 1.5f;
-            }
-
-
-            Vector3 avg_normal = Vector3.zero;
-            count = 0;
-            for (int i = 0; i < groundNormals.Length; i++)
-            {
-                if (groundNormals[i] != null)
-                {
-                    avg_normal += groundNormals[i];
-                    count++;
-                }
-            }
-            if (count > 0) { 
-                avg_normal /= count;
-                groundHitData.normal = avg_normal;
-            }
-            
-            }
-
         public void CheckGround(bool isGrounded)
         {
-            // _isGrounded = Physics.Raycast(transform.position, Vector3.down, out var hit, 3f, forwardMask);
-            _isGrounded = groundHitData.distance <= airborneHeight;
-            _isInclineStable = floorAngle < maxFloorAngle;
-            Debug.Log(groundHitData.distance);
+
+            _isGrounded = surfaceAlignment.groundDistance <= airborneHeight;
+            _isInclineStable = surfaceAlignment.floorAngle < maxFloorAngle;
+
             if (_isGrounded)
                 _rigidbody.linearDamping = groundDrag;
             else
@@ -410,28 +315,23 @@ namespace Gameplay.Mecha
 
         private void MoveJuggernaut()
         {
-            // If dashing, don't apply any other movement mode logic // this made the dash feel stiff
-            //if (isDashing)
-            //    return;
 
             if (!_isGrounded || !_isInclineStable)
                 return;
 
-            //Debug.Log(_movementmode);
-
             var move = transform.forward * (_lastMovement.y) + transform.right * (_lastMovement.x);
             move = move.normalized;
             if (isDashing) { move *= 0.5f; }
+            // gradually decreses speed once GripLossAngle is reached, completely stopping and maxFloorAngle
+            float floorAngleMultiplier = math.clamp((maxFloorAngle - floorAngle) / gripLossAngle, 0, 1);
             
-            _rigidbody.AddForce(move * (MovementSpeed * 1000f), UnityEngine.ForceMode.Force);
-            //_rigidbody.MovePosition(_rigidbody.position + move * Time.fixedDeltaTime);
-
+            _rigidbody.AddForce(move * (MovementSpeed * 1000f) * floorAngleMultiplier, UnityEngine.ForceMode.Force);
         }
 
 
         private void ApplyGravity()
         {
-            _yVelocity += -gravity * gravity * 0.3f * Time.fixedDeltaTime;
+            _yVelocity += - gravity * gravity * Time.fixedDeltaTime;
             if (_isGrounded && _isInclineStable)
                 _yVelocity = 0; //gravity;
             _rigidbody.AddForce(Vector3.up * (_yVelocity), UnityEngine.ForceMode.Acceleration);
@@ -477,7 +377,7 @@ namespace Gameplay.Mecha
             _yRotation += pos.x * juggernautParameters.MouseSensitivity * Time.fixedDeltaTime;
 
             var _yRotationChange = pos.x * juggernautParameters.MouseSensitivity * Time.fixedDeltaTime;
-            rotationLeft += up_direction * _yRotationChange; 
+            rotationLeft += surfaceAlignment.upDirection * _yRotationChange; 
 
             EventManager.TriggerEvent("OnUpdateCompass", _yRotation);
 
