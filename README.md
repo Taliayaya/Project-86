@@ -33,7 +33,8 @@ This project is made by the community, for the community. Any fan can contribute
 - [Before Reporting](#before-reporting)
 - [How to Contribute ?](#how-to-contribute)
 - [Disclaimer](#disclaimer)
-- [Contributions](#contributions) 
+- [Contributions](#contributions)
+- [Other Repositories](#other-repositories)
 ## Project Objectives
 
 Our aim is to create a game that fully realizes the potential of the 86 universe. The game will feature two distinct playstyles:
@@ -173,3 +174,9 @@ We extend our gratitude to Patreon supporters and external donors for financiall
 Special thanks to those contributing to the game's development, including UI artists, 3D designers, and developers, as well as testers and bug finders
 
 Your support is invaluable in making this project a reality!
+
+
+## Other Repositories
+
+- Website: https://github.com/Taliayaya/Project-86-Website
+- Launcher: https://github.com/Taliayaya/Project-86-Launcher
