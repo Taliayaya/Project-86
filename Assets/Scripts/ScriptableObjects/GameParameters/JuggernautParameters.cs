@@ -13,6 +13,7 @@ namespace ScriptableObjects.GameParameters
         public float dashCooldown = 1f;    // CD time before next dash
 
         public float jumpPower = 1000f;
+        public float maxJumpDuration = 0.5f;
         public float jumpCooldown = 1f;
  
 

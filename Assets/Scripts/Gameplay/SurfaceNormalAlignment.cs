@@ -38,7 +38,7 @@ public class SurfaceNormalAlignment : MonoBehaviour
         rayDirections = new Vector3[weightRaycasts.Length];
         rayWeights = new float[weightRaycasts.Length];
         rayLengths = new float[weightRaycasts.Length];
-        Debug.Log(weightRaycasts.Length);
+        //Debug.Log(weightRaycasts.Length);
 
         for (int i = 0; i < weightRaycasts.Length; i++)
         {
@@ -47,11 +47,11 @@ public class SurfaceNormalAlignment : MonoBehaviour
             SurfaceAlignmentRaycast SAR = weightRaycasts[i].GetComponent("SurfaceAlignmentRaycast") as SurfaceAlignmentRaycast;
             rayWeights[i] = SAR.weight;
             rayLengths[i] = SAR.length;
-            Debug.Log(i);
+            //Debug.Log(i);
         }
         for (int i = 0; i < weightRaycasts.Length; i++)
         {
-            Debug.Log(weightRaycasts[i].name);
+            //Debug.Log(weightRaycasts[i].name);
             Destroy(weightRaycasts[i]);
         }
 

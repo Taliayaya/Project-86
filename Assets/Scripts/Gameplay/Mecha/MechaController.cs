@@ -18,6 +18,7 @@ using Unity.Mathematics;
 using Unity.Services.Authentication;
 using UnityEngine.Rendering.Universal;
 using static UnityEngine.LightAnchor;
+using UnityEngine.InputSystem;
 
 
 namespace Gameplay.Mecha
@@ -91,13 +92,12 @@ namespace Gameplay.Mecha
         private bool _isRunning;
         // Fox's var's unorganised
 
-        private bool isDashing = false;                      
+        private bool isDashing = false;
+        private bool isJumping = false;
         private bool canDash = true;                 
         private Coroutine dashCoroutine = null;
 
         private bool canJump = true;
-
-        // Movement Overhaul (Nova)
 
         // instead of using transform.up, use surfaceAlignment.upDirection, it's less eratic since its lerping value is much lower (Nova)
         private Ray groundRay;
@@ -480,8 +480,6 @@ namespace Gameplay.Mecha
         private void OnJump(object data)
         {
             Debug.Log("Jump attempted");
-
-
             StartCoroutine(JumpCoroutine());
         }
 
@@ -489,18 +487,40 @@ namespace Gameplay.Mecha
         {
             if(!canJump || !_isGrounded)
                 yield break;
-
+            
             // jump is now off for CD
             canJump = false;
 
+            isJumping = true;
+            //Debug.Log("Jump started");
+
+            float elapsedTime = 0.0f;
+            float jumpTime = 2.0f;
+            while (true)
+            {
+                //Debug.Log("Jumping");
+                float t = 1 - (elapsedTime / jumpTime);
+                _rigidbody.AddForce(Vector3.up * juggernautParameters.jumpPower * t, UnityEngine.ForceMode.Impulse);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+                isJumping = Input.GetKey("space");
+                if (!isJumping || elapsedTime > juggernautParameters.maxJumpDuration)
+                {
+                    break;
+                }
+                //Debug.Log(isJumpPressed);
+
+            }
+            //Debug.Log("Jump ended");
+
             // applies a jump force
-            _rigidbody.AddForce(Vector3.up * juggernautParameters.jumpPower, UnityEngine.ForceMode.Impulse);
-            yield return null;
+            //_rigidbody.AddForce(Vector3.up * juggernautParameters.jumpPower, UnityEngine.ForceMode.Impulse);
+            //yield return null;
 
             // starts the cd
-            yield return new WaitForSeconds(juggernautParameters.jumpCooldown);
+            //yield return new WaitForSeconds(juggernautParameters.jumpCooldown);
             canJump = true;
-
+            isJumping = false;
         }
 
 
@@ -519,7 +539,7 @@ namespace Gameplay.Mecha
                 return;
 
             Debug.Log("Dash input received!");
-           StartCoroutine(DashCoroutine());
+            StartCoroutine(DashCoroutine());
         }
 
         public float test = 1000f;
