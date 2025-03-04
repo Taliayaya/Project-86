@@ -16,6 +16,7 @@ public class SurfaceNormalAlignment : MonoBehaviour
     public Vector3 normal = Vector3.up;
     public Vector3 upDirection = Vector3.up;
     public float groundDistance = 0f;
+    public float discardAngle = 40f;
 
     public bool pause = false;
 
@@ -78,6 +79,7 @@ public class SurfaceNormalAlignment : MonoBehaviour
         {
             if (Physics.Raycast(transform.position + rayPositions[i], transform.TransformDirection(rayDirections[i]), out hitData, rayLengths[i])) 
             {
+                if (Vector3.Angle(Vector3.up, hitData.normal) > discardAngle) { continue; }
                 normals[hits] = hitData.normal * rayWeights[i];
                 //Debug.Log(hitData.collider.name);
                 hits++;

@@ -122,13 +122,17 @@ namespace Gameplay.Mecha
         {
             if (_grapplingCdTimer > 0)
                 return;
-            if (isMainModule)
-                EventManager.TriggerEvent("GrapplingModule", new ModuleData
+            if (isMainModule) {
+                ModuleData data = new ModuleData
                 {
                     name = "GrapplingModule",
                     cooldown = juggernautParameters.grapplingCd,
                     status = ModuleStatus.Active,
-                });
+                };
+                EventManager.TriggerEvent("GrapplingModule", data);
+                EventManager.TriggerEvent("GrapplingModuleStart", data);
+            }
+
             
             lr.SetPosition(quality, gunTip.position);
             _isGrappling = true;
@@ -183,8 +187,10 @@ namespace Gameplay.Mecha
         {
             _recast = true;
             var direction = (_grapplePoint - rb.position).normalized;
-            rb.AddForce(direction * (1000 * juggernautParameters.grapplePullSpeed), ForceMode.Force);
             var distance = Vector3.Distance(rb.position, _grapplePoint);
+            var multiplier = Math.Min(1, distance / 2f);
+            rb.AddForce(direction * (1000 * juggernautParameters.grapplePullSpeed * multiplier), ForceMode.Force);
+            
             _joint.maxDistance = distance;
             _joint.minDistance = distance * 0.25f;
         }
@@ -221,12 +227,17 @@ namespace Gameplay.Mecha
         {
             var grapplingCooldown = juggernautParameters.grapplingCd;
             if (isMainModule)
-                EventManager.TriggerEvent("GrapplingModule", new ModuleData
+            {
+                ModuleData data = new ModuleData
                 {
                     name = "GrapplingModule",
                     cooldown = success ? grapplingCooldown : grapplingCooldown * 0.2f,
                     status = ModuleStatus.Cooldown,
-                });
+                };
+                EventManager.TriggerEvent("GrapplingModule", data);
+                EventManager.TriggerEvent("GrapplingModuleStop", data);
+            }
+                
             RemoveSwing();
             _isGrappling = false;
             _grapplingCdTimer = success ? grapplingCooldown : grapplingCooldown * 0.2f;

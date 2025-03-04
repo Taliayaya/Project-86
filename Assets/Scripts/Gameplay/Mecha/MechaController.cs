@@ -55,6 +55,7 @@ namespace Gameplay.Mecha
         [SerializeField] private float airborneHeight = 2.2f;
         [SerializeField] private float gripLossAngle = 20f;
         [SerializeField] private float maxFloorAngle = 40f;
+        [SerializeField] private bool allowMoveOnStart = false;
 
         [SerializeField]
         private Transform modelTransform;
@@ -94,6 +95,7 @@ namespace Gameplay.Mecha
 
         private bool isDashing = false;
         private bool isJumping = false;
+        private bool _isGrappling = false;
         private bool canDash = true;                 
         private Coroutine dashCoroutine = null;
 
@@ -280,6 +282,8 @@ namespace Gameplay.Mecha
             EventManager.AddListener("OnShoot:Primary", OnShoot);
             EventManager.AddListener(Constants.TypedEvents.Inputs.OnFreeLook, OnFreeLook);
             EventManager.AddListener(Constants.Events.Inputs.OnChangeView, OnChangeView);
+            EventManager.AddListener("GrapplingModuleStart", OnGrappleStart);
+            EventManager.AddListener("GrapplingModuleStop", OnGrappleStop);
         }
 
 
@@ -298,6 +302,8 @@ namespace Gameplay.Mecha
             EventManager.RemoveListener("OnShoot:Primary", OnShoot);
             EventManager.RemoveListener(Constants.TypedEvents.Inputs.OnFreeLook, OnFreeLook);
             EventManager.RemoveListener(Constants.Events.Inputs.OnChangeView, OnChangeView);
+            EventManager.RemoveListener("GrapplingModule", OnGrappleStart);
+            EventManager.RemoveListener("GrapplingModule", OnGrappleStop);
         }
 
         public override void OnNetworkSpawn()
@@ -346,6 +352,8 @@ namespace Gameplay.Mecha
             Cursor.lockState = CursorLockMode.Locked;
             groundRay = new Ray(transform.position, Vector3.down);
             surfaceAlignment = GetComponent<SurfaceNormalAlignment>();
+            surfaceAlignment.discardAngle = maxFloorAngle;
+            if (allowMoveOnStart) { _movementmode = MovementMode.Walking; }
         }
 
         #endregion
@@ -384,6 +392,7 @@ namespace Gameplay.Mecha
             if (isDashing) { move *= 0.5f; }
             // gradually decreses speed once GripLossAngle is reached, completely stopping and maxFloorAngle
             float floorAngleMultiplier = math.clamp((maxFloorAngle - floorAngle) / gripLossAngle, 0, 1);
+            //if (_isGrappling) { floorAngleMultiplier = 0.5};
             
             _rigidbody.AddForce(move * (MovementSpeed * 1000f * floorAngleMultiplier), UnityEngine.ForceMode.Force);
         }
@@ -540,6 +549,16 @@ namespace Gameplay.Mecha
 
             Debug.Log("Dash input received!");
             StartCoroutine(DashCoroutine());
+        }
+        private void OnGrappleStart(object data)
+        {
+            _isGrappling = true;
+            Debug.Log("Grapple Started");
+        }
+        private void OnGrappleStop(object data)
+        {
+            _isGrappling = false;
+            Debug.Log("Grapple Ended!!!!!!!!!!");
         }
 
         public float test = 1000f;
