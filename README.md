@@ -56,6 +56,8 @@ The ultimate goal is to create a multiplayer mode where RTS and FPS modes seamle
 
 Please note that all aspects outlined here are currently theoretical and subject to change based on our team's capabilities, time constraints, and evolving ambitions.
 
+--- 
+
 ## Download
 
 While the game is still at an early development stage, we wish for players to actively participate in this project. Hence, players are already allowed to download the latest version and play on it.
@@ -89,6 +91,8 @@ If downloading the launcher is too much for you, you can simply download the lat
 > This method can also be a work-around if your computer does not let you download the launcher.
 
 > `Mono not found`? Ensure that the download was done correctly and that the install path does not contain special character (only alphanumeric ones) as it may cause issues. If you have an error, you can [ask help on the discord server](https://discord.gg/Yh2TQH97yA)
+
+--- 
 
 ## Key Bindings
 A non-exhaustive list of the available keybinds. Note that these are the default ones.
