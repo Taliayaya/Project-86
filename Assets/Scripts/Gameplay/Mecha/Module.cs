@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using Unity.Netcode;
+using UnityEngine;
 
 namespace Gameplay
 {
-    public class Module : MonoBehaviour
+    public abstract class Module : NetworkBehaviour
     {
         public Faction faction;
 

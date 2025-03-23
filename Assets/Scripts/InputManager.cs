@@ -62,6 +62,7 @@ public class InputManager : Singleton<InputManager>
     
     private void OnJump(InputValue inputValue)
     {
+        Debug.Log("OnJump");
         EventManager.TriggerEvent(Constants.TypedEvents.Inputs.OnJump, inputValue.isPressed);
     }
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Gameplay.Units;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.AI;
@@ -16,7 +17,7 @@ namespace AI.BehaviourTree.BasicNodes
     }
     public class Patrol : ActionNode
     {
-        private NavMeshAgent _agent;
+        private AIAgent _aiAgent;
         private bool _isSet = false;
         public CustomPatrolConfig customPatrolConfig;
         
@@ -28,12 +29,12 @@ namespace AI.BehaviourTree.BasicNodes
         {
             if (!_isSet)
             {
-                _agent = blackBoard.GetValue<NavMeshAgent>("navMeshAgent");
+                _aiAgent = blackBoard.GetValue<AIAgent>("aiAgent");
                 blackBoard.TryGetValue("waypoints", out _waypoints);
                 _isSet = true;
             }
-            _agent.updateRotation = true;
-            _agent.angularSpeed = 120;
+            //_agent.updateRotation = true;
+            //_agent.angularSpeed = 120;
         }
 
         protected override void OnStop()
@@ -43,10 +44,10 @@ namespace AI.BehaviourTree.BasicNodes
 
         protected override State OnUpdate()
         {
-            if (_agent.remainingDistance < 1f || _agent.velocity.magnitude < 1f || !_agent.hasPath)
+            if (_aiAgent.Agent.remainingDistance < 1f || _aiAgent.Agent.velocity.magnitude < 1f || !_aiAgent.Agent.hasPath)
             {
                 if (_patrolPoints != null && _patrolPoints.MoveNext())
-                    _agent.SetDestination(_patrolPoints.Current);
+                    _aiAgent.SetDestination(_patrolPoints.Current);
                 else if (_waypoints is { Count: > 0 })
                     WaypointToEnumerator();
                 else
@@ -69,7 +70,7 @@ namespace AI.BehaviourTree.BasicNodes
         private void GenerateRandomPatrol()
         {
             List<Vector3> points = new List<Vector3>();
-            Vector3 previousPosition = _agent.transform.position;
+            Vector3 previousPosition = _aiAgent.transform.position;
             for (int i = 0; i < customPatrolConfig.steps; i++)
             {
                 Vector3 randomDirection = Random.insideUnitSphere * customPatrolConfig.distanceBetweenSteps;

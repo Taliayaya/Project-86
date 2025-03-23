@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections;
+using Gameplay;
+using Networking;
 using ScriptableObjects;
 using ScriptableObjects.GameParameters;
 using ScriptableObjects.UI;
 using UI;
 using UI.MainMenu;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -40,47 +43,76 @@ public class SceneHandler : Singleton<SceneHandler>
     
     private static Action onLoaderCallback;
     private static AsyncOperation _loadingAsyncOperation;
+    
 
-    public static void LoadScene(SceneData sceneData, object dataOnComplete = null)
+    //[Rpc(SendTo.)]
+    public static void LoadScene(SceneData sceneData, object dataOnComplete = null, bool isMultiplayer = false)
     {
         _activeSceneData = sceneData;
         WindowManager.CloseAll();
         onLoaderCallback = () =>
         {
             GameObject loader = new GameObject("Loader");
-            loader.AddComponent<LoadingMonoBehaviour>().StartCoroutine(LoadSceneAsync(sceneData, dataOnComplete));
+            loader.AddComponent<LoadingMonoBehaviour>().StartCoroutine(LoadSceneAsync(sceneData, dataOnComplete, isMultiplayer));
         };
         EventManager.TriggerEvent("LoadingLoadingScene");
-        SceneManager.LoadScene("LoadingScene");
+        if (isMultiplayer)
+            NetworkManager.Singleton.SceneManager.LoadScene("LoadingScene", LoadSceneMode.Single);
+        else
+            SceneManager.LoadScene("LoadingScene", LoadSceneMode.Single);
+        
     }
 
-    
-    private static IEnumerator LoadSceneAsync(SceneData sceneData, object dataOnComplete = null)
+
+    private static IEnumerator LoadSceneAsync(SceneData sceneData, object dataOnComplete = null,
+        bool isMultiplayer = false)
     {
         yield return null;
-        _loadingAsyncOperation = SceneManager.LoadSceneAsync(sceneData.SceneName);
-        EventManager.TriggerEvent("LoadingScene", (sceneData, _loadingAsyncOperation));
-        _loadingAsyncOperation.completed += operation =>
-        {
-            Cursor.lockState = sceneData.cursorLockMode;
-            if (sceneData.inputActionMap != "")
-                InputManager.SwitchCurrentActionMap(sceneData.inputActionMap);
-            // this line was added to fix an issue where somehow loaded settings were reset to default after a scene change
-            DataHandler.LoadGameData();
 
-            _loadingAsyncOperation = null;
-            EventManager.TriggerEvent(Constants.TypedEvents.OnSceneLoadingCompleted, dataOnComplete);
-            Debug.Log("Scene loaded");
+        Action onComplete = () =>
+        {
+            //Cursor.lockState = sceneData.cursorLockMode;
+            //if (sceneData.inputActionMap != "")
+            //    InputManager.SwitchCurrentActionMap(sceneData.inputActionMap);
+            //// this line was added to fix an issue where somehow loaded settings were reset to default after a scene change
+            //DataHandler.LoadGameData();
+
+            //_loadingAsyncOperation = null;
+            //EventManager.TriggerEvent(Constants.TypedEvents.OnSceneLoadingCompleted, dataOnComplete);
+            //Debug.Log("Scene loaded");
         };
 
-        while (!_loadingAsyncOperation.isDone)
+        if (isMultiplayer)
         {
-            yield return null;
+            NetworkManager.Singleton.SceneManager.LoadScene(sceneData.SceneName, LoadSceneMode.Single);
+            bool isLoaded = false;
+            NetworkManager.Singleton.SceneManager.OnLoadComplete += (scene, mode, status) =>
+            {
+                onComplete();
+                isLoaded = true;
+            };
+            while (!isLoaded)
+            {
+                yield return null;
+            }
         }
-        
+        else
+        {
+            _loadingAsyncOperation = SceneManager.LoadSceneAsync(sceneData.SceneName);
+            _loadingAsyncOperation.completed += operation => { onComplete(); };
+            EventManager.TriggerEvent(Constants.TypedEvents.LoadingScene, (sceneData, _loadingAsyncOperation));
+            while (!_loadingAsyncOperation.isDone)
+            {
+                yield return null;
+            }
+        }
+
+
+
+
         yield return null;
     }
-    
+
     public static float LoadProgress()
     {
         if (_loadingAsyncOperation != null)

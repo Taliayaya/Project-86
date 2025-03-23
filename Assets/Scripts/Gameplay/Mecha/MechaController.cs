@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Cinemachine;
 using Gameplay.Units;
+using NUnit.Framework;
 using ScriptableObjects;
 using ScriptableObjects.GameParameters;
 using UI.HUD;
@@ -222,17 +223,45 @@ namespace Gameplay.Mecha
 
         public override void Awake()
         {
+
             base.Awake();
             Health = juggernautParameters.health;
             MaxHealth = juggernautParameters.health;
             _rigidbody = GetComponent<Rigidbody>();
+            vCamera.gameObject.SetActive(IsOwner);
+            _xRotation = modelTransform.localEulerAngles.x;
+            if (!IsOwner)
+            {
+                return;
+            }
             EventManager.TriggerEvent("OnUpdateHealth", 1f);
             EventManager.TriggerEvent(Constants.TypedEvents.OnToggleCockpitView, juggernautParameters.toggleCockpitView);
             PlayerManager.Player = this;
         }
 
+        public void ReInit()
+        {
+            Debug.Log("ReInit");
+            if (IsOwner)
+            {
+                EventManager.TriggerEvent("OnUpdateHealth", 1f);
+                EventManager.TriggerEvent(Constants.TypedEvents.OnToggleCockpitView,
+                    juggernautParameters.toggleCockpitView);
+                PlayerManager.Player = this;
+            }
+
+            vCamera.gameObject.SetActive(IsOwner);
+            OnDisable();
+            OnEnable();
+        }
         protected override void OnEnable()
         {
+            Debug.Log("OnEnable " + IsOwner);
+            if (!IsOwner)
+                return;
+            
+            Debug.Log("OnEnable 2");
+            // these events are local
             base.OnEnable();
             if (!_rigidbody)
                 _rigidbody = GetComponent<Rigidbody>();
@@ -251,6 +280,9 @@ namespace Gameplay.Mecha
 
         protected override void OnDisable()
         {
+            if (!IsOwner)
+                return;
+            // these events are local
             base.OnDisable();
             EventManager.RemoveListener(Constants.TypedEvents.Inputs.OnLookAround, OnLookAround);
             EventManager.RemoveListener("OnMove", OnMove);
@@ -263,8 +295,30 @@ namespace Gameplay.Mecha
             EventManager.RemoveListener(Constants.Events.Inputs.OnChangeView, OnChangeView);
         }
 
+        public override void OnNetworkSpawn()
+        {
+            base.OnNetworkSpawn();
+            if (!HasAuthority)
+            {
+                // if not owner, this component is "useless"
+                // everything will be synchronized by the server
+                // -- 
+                // nevermind we need it active to listen to RPC
+                //enabled = false;
+                return;
+            }
+            ReInit();
+        }
+
         protected override void FixedUpdate()
         {
+            if (!HasAuthority || !IsSpawned)
+            {
+                Debug.Log("Not owner");
+                return;
+            }
+            Debug.Log("Has authority");
+
             base.FixedUpdate();
             CheckGround(false);
             ApplyGravity();
@@ -285,6 +339,8 @@ namespace Gameplay.Mecha
         protected override void Start()
         {
             base.Start();
+            if (!IsOwner)
+                return;
             EventManager.TriggerEvent("RegisterMinimapTarget", transform);
             Cursor.lockState = CursorLockMode.Locked;
             groundRay = new Ray(transform.position, Vector3.down);
@@ -401,7 +457,7 @@ namespace Gameplay.Mecha
             // _isGrounded = Physics.Raycast(transform.position, Vector3.down, out var hit, 3f, forwardMask);
             _isGrounded = groundHitData.distance <= airborneHeight;
             _isInclineStable = floorAngle < maxFloorAngle;
-            Debug.Log(groundHitData.distance);
+            //Debug.Log(groundHitData.distance);
             if (_isGrounded)
                 _rigidbody.linearDamping = groundDrag;
             else
@@ -431,7 +487,7 @@ namespace Gameplay.Mecha
 
         private void ApplyGravity()
         {
-            _yVelocity += -gravity * gravity * 0.3f * Time.fixedDeltaTime;
+            _yVelocity += -gravity * gravity * Time.fixedDeltaTime;
             if (_isGrounded && _isInclineStable)
                 _yVelocity = 0; //gravity;
             _rigidbody.AddForce(Vector3.up * (_yVelocity), UnityEngine.ForceMode.Acceleration);
@@ -544,6 +600,7 @@ namespace Gameplay.Mecha
 
         private void OnMove(object data)
         {
+            Debug.Log("Move" + data);
             if (data is not Vector2 movement)
                 return;
             _lastMovement = movement;
@@ -689,6 +746,8 @@ namespace Gameplay.Mecha
         public override void OnTakeDamage(DamagePackage damagePackage)
         {
             base.OnTakeDamage(damagePackage);
+            if (!IsOwner)
+                return;
             EventManager.TriggerEvent("OnTakeDamage", Health);
             EventManager.TriggerEvent("OnUpdateHealth", Health/MaxHealth);
         }
@@ -701,6 +760,8 @@ namespace Gameplay.Mecha
                 DeathPosition = transform.position,
                 Faction = Faction
             };
+            if (!IsOwner)
+                return;
             EventManager.TriggerEvent("OnDeath", deathData);
         }
         

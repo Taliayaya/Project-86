@@ -61,6 +61,11 @@ public static class Constants
     /// </remarks>
     public static class TypedEvents
     {
+        public static class Auth
+        {
+            public const string OnLoginSuccess = "OnLoginSuccess";
+            public const string OnSignUpSuccess = "OnSignUpSuccess";
+        }
         public static class Inputs
         {
             public const string OnFreeLook = "OnFreeLook";
@@ -93,6 +98,7 @@ public static class Constants
         public const string OnChangedPersonalMark = "OnChangedPersonalMark";
 
         public const string OnSceneLoadingCompleted = "OnSceneLoadingCompleted";
+        public const string LoadingScene = "LoadingScene";
 
         // /!\ this is used as NAME:keyName
         public const string RebindKey = "RebindKey:";

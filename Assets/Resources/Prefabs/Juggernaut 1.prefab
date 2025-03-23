@@ -666,6 +666,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7708000740794298556}
   - component: {fileID: 6118138699753156102}
+  - component: {fileID: 371509932854535578}
   m_Layer: 0
   m_Name: Juggernaut
   m_TagString: Untagged
@@ -681,7 +682,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 545502849207435182}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
@@ -693,7 +694,7 @@ Transform:
   - {fileID: 5725537649123048010}
   - {fileID: 1323384351481441253}
   m_Father: {fileID: 4781548308717753425}
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &6118138699753156102
 AudioSource:
   m_ObjectHideFlags: 0
@@ -792,6 +793,42 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &371509932854535578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 545502849207435182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkTransformExpanded: 0
+  AuthorityMode: 1
+  TickSyncChildren: 0
+  UseUnreliableDeltas: 0
+  SyncPositionX: 0
+  SyncPositionY: 0
+  SyncPositionZ: 0
+  SyncRotAngleX: 1
+  SyncRotAngleY: 0
+  SyncRotAngleZ: 0
+  SyncScaleX: 0
+  SyncScaleY: 0
+  SyncScaleZ: 0
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 1
+  SwitchTransformSpaceWhenParented: 0
+  Interpolate: 1
+  SlerpPosition: 0
 --- !u!1 &733792677798634860
 GameObject:
   m_ObjectHideFlags: 0
@@ -871,6 +908,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c20935483dbb488eba5bae69617000bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   faction: 0
   weaponType: 1
   listenOrTriggersEvents: 1
@@ -1157,6 +1195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c20935483dbb488eba5bae69617000bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   faction: 0
   weaponType: 1
   listenOrTriggersEvents: 1
@@ -1453,6 +1492,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb4fcde5c084714fa05cca7b4e1ba6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   faction: 0
   isMainModule: 1
   cam: {fileID: 5671069290084933127}
@@ -1950,6 +1990,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb4fcde5c084714fa05cca7b4e1ba6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   faction: 0
   isMainModule: 0
   cam: {fileID: 5671069290084933127}
@@ -2762,11 +2803,14 @@ GameObject:
   m_Component:
   - component: {fileID: 4781548308717753425}
   - component: {fileID: 4781548308717753426}
+  - component: {fileID: -8167561658889271619}
   - component: {fileID: 4781548308717753439}
   - component: {fileID: 4781548308717753424}
   - component: {fileID: 4781548308717753436}
   - component: {fileID: 4781548308717753437}
   - component: {fileID: 4781548308717753438}
+  - component: {fileID: 9188858232302331841}
+  - component: {fileID: 6163195061033850021}
   m_Layer: 7
   m_Name: Juggernaut 1
   m_TagString: Untagged
@@ -2817,6 +2861,31 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 2
+--- !u!114 &-8167561658889271619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4781548308717753427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 1684480287
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 4
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 1
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!114 &4781548308717753439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2829,6 +2898,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f13ea461cf5e394b9453915daa88cc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   unitType: 4
   aimiYOffset: 0
   onHealthChange:
@@ -3074,6 +3144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d252d365e9b4422b9c91b33fa2db4b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   faction: 0
   listenToEvents: 1
   weaponModules: []
@@ -3106,6 +3177,59 @@ MonoBehaviour:
   goToTargetIndicatorPrefab: {fileID: 3435485861080877356, guid: e5258522085098d4d812fe8ebf2996ee,
     type: 3}
   juggCamera: {fileID: 5671069290084933127}
+--- !u!114 &9188858232302331841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4781548308717753427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkRigidbodyBaseExpanded: 0
+  UseRigidBodyForMotion: 1
+  AutoUpdateKinematicState: 1
+  AutoSetKinematicOnDespawn: 1
+--- !u!114 &6163195061033850021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4781548308717753427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkTransformExpanded: 0
+  AuthorityMode: 1
+  TickSyncChildren: 0
+  UseUnreliableDeltas: 0
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 1
+  SyncRotAngleX: 0
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 0
+  SyncScaleX: 0
+  SyncScaleY: 0
+  SyncScaleZ: 0
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  SwitchTransformSpaceWhenParented: 0
+  Interpolate: 1
+  SlerpPosition: 0
 --- !u!1 &4981590388118185181
 GameObject:
   m_ObjectHideFlags: 0
@@ -3759,6 +3883,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c20935483dbb488eba5bae69617000bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   faction: 0
   weaponType: 0
   listenOrTriggersEvents: 1
@@ -5961,7 +6086,7 @@ MonoBehaviour:
   baseTransform: {fileID: 0}
   Hips: {fileID: 1144192619514177283}
   ScaleReferenceMode: 1
-  finalScaleReference: 0.027995316
+  finalScaleReference: 0.02799532
   finalScaleReferenceSqrt: 0.1
   customScaleReferenceValue: 0.05
   DelayedInitialization: 0

@@ -1,6 +1,11 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Net.Http;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using Firebase.Auth;
+using Networking;
 using TMPro;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
@@ -21,18 +26,23 @@ namespace UI.MainMenu
 
         [SerializeField] private TMP_InputField emailInput;
         [SerializeField] private TMP_InputField passwordInput;
-        
+
         [SerializeField] private UnityEvent onLoginSuccess;
 
         async Task SignInWithUsernamePasswordAsync(string username, string password)
         {
             try
             {
-                
-                await AuthenticationService.Instance.SignInWithUsernamePasswordAsync(username, password);
+                await AuthManager.Instance.LoginUserWithEmailAndPasswordAsync(username, password);
                 feedbackText.text = "Log in successful.";
                 feedbackText.color = successColor;
                 onLoginSuccess.Invoke();
+            }
+            catch (FirebaseAuthException ex)
+            {
+                Debug.LogException(ex);
+                feedbackText.color = errorColor;
+                feedbackText.text = AuthManager.GetAuthErrorReason(ex);
             }
             catch (AuthenticationException ex)
             {
@@ -81,6 +91,17 @@ namespace UI.MainMenu
             finally
             {
                 loginButton.interactable = true;
+            }
+        }
+        
+        [ContextMenu("Auto Login")]
+        public async void AutoLogin()
+        {
+            bool sessionActive = await AuthManager.Instance.OldSessionStillActive();
+            Debug.Log("AutoLogin " + sessionActive);
+            if (sessionActive)
+            {
+                onLoginSuccess.Invoke();
             }
         }
     }

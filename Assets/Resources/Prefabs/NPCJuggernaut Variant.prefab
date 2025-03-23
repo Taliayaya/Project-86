@@ -8,6 +8,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8167561658889271619, guid: 95f4efd5279b9094da54c69047e49be4,
+        type: 3}
+      propertyPath: Ownership
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8167561658889271619, guid: 95f4efd5279b9094da54c69047e49be4,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3020068472
+      objectReference: {fileID: 0}
     - target: {fileID: 462571988, guid: 95f4efd5279b9094da54c69047e49be4, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -200,7 +210,7 @@ PrefabInstance:
     - target: {fileID: 5009670203228888221, guid: 95f4efd5279b9094da54c69047e49be4,
         type: 3}
       propertyPath: finalScaleReference
-      value: 0.027995314
+      value: 0.027995368
       objectReference: {fileID: 0}
     - target: {fileID: 6332846349530842250, guid: 95f4efd5279b9094da54c69047e49be4,
         type: 3}
@@ -270,6 +280,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 457c51b2782849cb8505917c84afa333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   unitType: 4
   aimiYOffset: 2
   onHealthChange:
@@ -299,6 +310,7 @@ MonoBehaviour:
       m_Calls: []
   isRotating: 0
   _firstChild: {fileID: 0}
+  _sensor: {fileID: 0}
 --- !u!114 &1678518790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -311,6 +323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf32070c0cc14b5d90a8d55f167610f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   tree: {fileID: 11400000, guid: eb7fb663440554b47bdc47e534b7d9e7, type: 2}
 --- !u!195 &1678518791
 NavMeshAgent:
