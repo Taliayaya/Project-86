@@ -67,7 +67,7 @@ The game is not on Steam (yet) and players have two ways to download the game fo
 
 ### [DEPRECATED] Launcher
 
-> **⚠ The launcher update system is currently Out of Service as we lost our server backend solution. Consider updating by downloading the .zip file through the releases section.**
+> **⚠ The launcher update system is currently Out of Service as we lost our server backend solution. Consider updating by downloading the .zip file through the [releases section](#latest-version).**
 
 A launcher was made so that players do not have to go through the pain of re-downloading every new version. The launcher is not as powerful as Steam update system, yet it already avoids redownloading unchanged files and can hence make the download lighter.
 
@@ -81,8 +81,8 @@ A launcher was made so that players do not have to go through the pain of re-dow
 
 If downloading the launcher is too much for you, you can simply download the latest build and execute it. This is not a long term recommendation as downloading the whole game every time for an update can be troublesome. 
 
-- Go to the latest version page
-- Download the .ZIP file matching the version
+- Go to [the latest version page](https://github.com/Taliayaya/Project-86/releases/latest)
+- Download the .ZIP file matching the version (e.g. `Project86-vX.X.X-alpha.zip`)
 - Extract it in any directory
 - Execute `Project-86.exe`
 
@@ -133,6 +133,8 @@ Navigate through screens using F1, F2, and F3.
 Please be aware that juggernaut stats, sounds, and visual effects are temporary and subject to change. Report issues, bugs, or suggest improvements on the Issue page, Discord Community Server, or share your ideas.
 
 ## How to Contribute
+
+> **⚠ This section is not to download the game**. It is for people willing to help the project development, coding and so on. [Go back to the download game section](#download)
 
 Project 86 is an open source fan game. Hence, anyone can freely contribute to his project and this part is here to help you to set up.
 First, make sure to join the [discord server](https://discord.gg/Yh2TQH97yA). By doing so, communications will be made easier and you'll have access to the current tasks. These tasks are not only coding tasks. There are modeling, coding, musics, level design, art, story/lore, etc. Enough to find something you may do!
