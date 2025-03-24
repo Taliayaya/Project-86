@@ -690,7 +690,6 @@ Transform:
   - {fileID: 9003461652026958406}
   - {fileID: 4086926188413774762}
   - {fileID: 586304502740200769}
-  - {fileID: 322688147507287502}
   - {fileID: 5725537649123048010}
   - {fileID: 1323384351481441253}
   m_Father: {fileID: 4781548308717753425}
@@ -2832,6 +2831,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7708000740794298556}
+  - {fileID: 322688147507287502}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &4781548308717753426
@@ -3161,6 +3161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d3898cd573b4c038a45ee0208e79098, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   scavengerOwned: {fileID: 0}
   scavengerParameters: {fileID: 11400000, guid: 3885c2bf2ccff704ba541f82ef4269a9,
     type: 2}
@@ -3256,11 +3257,11 @@ Transform:
   m_GameObject: {fileID: 4981590388118185181}
   serializedVersion: 2
   m_LocalRotation: {x: 0.54167527, y: -0.45451945, z: 0.45451945, w: 0.54167527}
-  m_LocalPosition: {x: -1.14, y: 0.36, z: 8.090005}
+  m_LocalPosition: {x: -1.1399999, y: 0.36, z: 8.090005}
   m_LocalScale: {x: 75, y: 75, z: 75}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 7708000740794298556}
+  m_Father: {fileID: 4781548308717753425}
   m_LocalEulerAnglesHint: {x: 90, y: -80, z: 0}
 --- !u!212 &4737874601329374513
 SpriteRenderer:

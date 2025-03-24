@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Gameplay.Units;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
@@ -16,15 +17,23 @@ namespace Gameplay
         GoTo,
     }
     [RequireComponent(typeof(NavMeshAgent), typeof(Scavenger))]
-    public class ScavengerController : MonoBehaviour
+    public class ScavengerController : NetworkBehaviour
     {
         private NavMeshAgent _scavengerAgent;
         private Scavenger _scavenger;
         private float _lastHealth;
         
+        NetworkVariable<bool> _isStopped = new NetworkVariable<bool>(false);
+
+        public bool IsStopped
+        {
+            get => _isStopped.Value;
+            set => _isStopped.Value = value;
+        }
+
         public UnityEvent<ScavengerState> onScavengerStateChange = new UnityEvent<ScavengerState>();
         [Header("Settings")]
-        [SerializeField] private float followDistance = 10;
+        [SerializeField] private float followDistance = 20;
 
         public ScavengerMaster master;
         private ScavengerState _state = ScavengerState.Idle;
@@ -46,26 +55,26 @@ namespace Gameplay
                     case ScavengerState.Hide:
                         if (State != _previousState && _scavenger.hideSound)
                             _scavenger.audioSource.PlayOneShot(_scavenger.hideSound);
-                        _scavengerAgent.isStopped = false;
+                        IsStopped = false;
                         break;
                     case ScavengerState.Idle:
                         if (State != _previousState && _scavenger.idleSound) 
                             _scavenger.audioSource.PlayOneShot(_scavenger.idleSound);
-                        _scavengerAgent.isStopped = true;
+                        IsStopped = true;
                         _scavengerAgent.ResetPath();
                         break;
                     case ScavengerState.Reloading:
-                        _scavengerAgent.isStopped = true;
+                        IsStopped = true;
                         _scavengerAgent.ResetPath();
                         break;
                     case ScavengerState.Follow:
                         
                         if (State != _previousState && _scavenger.followSound)
                             _scavenger.audioSource.PlayOneShot(_scavenger.followSound);
-                        _scavengerAgent.isStopped = false;
+                        IsStopped = false;
                         break;
                     case ScavengerState.GoTo:
-                        _scavengerAgent.isStopped = false;
+                        IsStopped = false;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -80,9 +89,18 @@ namespace Gameplay
         {
             _scavengerAgent = GetComponent<NavMeshAgent>();
             _scavenger = GetComponent<Scavenger>();
-            _scavenger.onTakeDamage.AddListener(OnHealthChange);
+            _isStopped.OnValueChanged += (old, current) => _scavengerAgent.isStopped = current;
+            if (IsOwner)
+                _scavenger.onTakeDamage.AddListener(OnHealthChange);
         }
-        
+
+        public override void OnNetworkSpawn()
+        {
+            base.OnNetworkSpawn();
+            _scavengerAgent.Warp(transform.position);
+            _scavengerAgent.enabled = true;
+        }
+
         private void Start()
         {
             StartCoroutine(ScavengerActions());
@@ -101,20 +119,31 @@ namespace Gameplay
         {
             if (!NavMesh.SamplePosition(location, out var hit1, 30, -1))
                 return;
-            _scavengerAgent.SetDestination(hit1.position);
+            SetDestinationRpc(hit1.position);
         }
         
         public void GoTo(Transform target)
         {
-            _scavengerAgent.SetDestination(target.position);
+            SetDestinationRpc(target.position);
             if (_scavenger.goToSound)
                 _scavenger.audioSource.PlayOneShot(_scavenger.goToSound);
         }
-
+        
+        [Rpc(SendTo.ClientsAndHost)]
+        public void SetDestinationRpc(Vector3 destination)
+        {
+            _scavengerAgent.SetDestination(destination);
+        }
+        
         private IEnumerator ScavengerActions()
         {
             while (true)
             {
+                if (!HasAuthority || !IsSpawned)
+                {
+                    yield break;
+                }
+
                 switch (State)
                 {
                     case ScavengerState.Hide:
@@ -179,7 +208,7 @@ namespace Gameplay
         public void GoTo(Vector3 dest)
         {
             State = ScavengerState.GoTo;
-            _scavengerAgent.SetDestination(dest);
+            SetDestinationRpc(dest);
             if (_scavenger.goToSound)
                 _scavenger.audioSource.PlayOneShot(_scavenger.goToSound);
         }
@@ -198,7 +227,7 @@ namespace Gameplay
                 State = ScavengerState.Idle;
                 return;
             }
-            _scavengerAgent.SetDestination(master.transform.position);
+            SetDestinationRpc(master.transform.position);
             
         }
         

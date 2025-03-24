@@ -9,10 +9,10 @@ namespace Networking
     public class QuickConnect : NetworkBehaviour
     {
         private bool _spawned;
-        private void Awake()
+        private void Start()
         {
             Debug.Log("QuickConnect Start");
-            //NetworkManager.Singleton.OnClientConnectedCallback += StartMultiplayer;
+            NetworkManager.Singleton.OnClientConnectedCallback += StartMultiplayer;
             //NetworkManager.Singleton.OnClientStarted += () =>
             //{
             //    Debug.Log("Client started");
