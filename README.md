@@ -67,16 +67,16 @@ The game is not on Steam (yet) and players have two ways to download the game fo
 
 > Concerning Steam, fan games are not allowed without the authorization of the IP. Our goal is to grow a bit more and hope to reach an agreement with them to simply this procedure. 
 
-### [DEPRECATED] Launcher
+### [PRERELEASE] Launcher
 
-> **⚠ The launcher update system is currently Out of Service as we lost our server backend solution. Consider updating by downloading the .zip file through the [releases section](#latest-version).**
+> **⚠ The launcher update system is currently in test! Try it out or Consider updating by downloading the .zip file through the [releases section](#latest-version).**
 
 A launcher was made so that players do not have to go through the pain of re-downloading every new version. The launcher is not as powerful as Steam update system, yet it already avoids redownloading unchanged files and can hence make the download lighter.
 
-- [Download the launcher](https://github.com/Taliayaya/Project-86/releases/download/v1.2.0-alpha/Project-86-Launcher-Setup-v1.0.3.msi)
+- [Download the launcher](https://github.com/Project-86-Community/Project-86-Launcher/releases/latest)
 - Execute the launcher
-> Your computer will treat this EXE file as a virus. This is because we do not hold a certificate for it yet. This EXE is a compiled installer made from Visual Studio and [the app publicly available here](https://github.com/Taliayaya/Project-86-Launcher)
-- After installation, the game will be installed in `%Appdata%/Project-86-Community/Build/`. It is not possible with the current launcher to change the download folder. ([You can contribute and improve the launcher](https://github.com/Taliayaya/Project-86-Launcher)
+> Your computer will treat this EXE file as a virus. This is because we do not hold a certificate for it yet. This EXE is a compiled installer made from Visual Studio and [the app publicly available here](https://github.com/Project-86-Community/Project-86-Launcher)
+- After installation, the game will be installed in `%Appdata%/Project-86-Community/Build/`. It is not possible with the current launcher to change the download folder. ([You can contribute and improve the launcher](https://github.com/Project-86-Community/Project-86-Launcher)
 - Once the game is downloaded, click PLAY and enjoy.
 
 ### Latest version
@@ -184,5 +184,5 @@ Your support is invaluable in making this project a reality!
 
 ## Other Repositories
 
-- Website: https://github.com/Taliayaya/Project-86-Website
-- Launcher: https://github.com/Taliayaya/Project-86-Launcher
+- Website: https://github.com/Project-86-Community/Project-86-Website
+- Launcher: https://github.com/Project-86-Community/Project-86-Launcher
