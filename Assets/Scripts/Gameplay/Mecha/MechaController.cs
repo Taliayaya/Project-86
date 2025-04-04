@@ -314,10 +314,8 @@ namespace Gameplay.Mecha
         {
             if (!HasAuthority || !IsSpawned)
             {
-                Debug.Log("Not owner");
                 return;
             }
-            Debug.Log("Has authority");
 
             base.FixedUpdate();
             CheckGround(false);

@@ -19,6 +19,8 @@ namespace Networking
 
         public FirebaseAuthClient Client { get; private set; }
         public static FirebaseAuthClient AuthClient => Instance.Client;
+        
+        public string PlayerName => AuthenticationService.Instance.PlayerName;
 
         protected override void OnAwake()
         {

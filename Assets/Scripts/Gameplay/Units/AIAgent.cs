@@ -190,6 +190,7 @@ namespace Gameplay.Units
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
+            _agent.enabled = IsSpawned;
             if (IsOwner)
             {
                 _target.Value = null;

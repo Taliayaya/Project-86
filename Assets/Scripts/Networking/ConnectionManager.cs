@@ -1,3 +1,6 @@
+using Networking.Widgets.Session.Session;
+using Unity.Multiplayer.Widgets;
+
 namespace Networking
 {
    using System;
@@ -32,6 +35,11 @@ public class ConnectionManager : Singleton<MonoBehaviour>
         m_NetworkManager.OnSessionOwnerPromoted += OnSessionOwnerPromoted;
         _profileName = $"Player-{UnityEngine.Random.Range(0, 1000)}";
         await UnityServices.InitializeAsync();
+        
+    }
+
+    private async void Start()
+    {
         if (autoConnect)
         {
             await CreateOrJoinSessionAsync();
@@ -54,6 +62,7 @@ public class ConnectionManager : Singleton<MonoBehaviour>
         }
     }
 
+    #if UNITY_EDITOR
    private void OnGUI()
    {
        if (_state == ConnectionState.Connected)
@@ -80,6 +89,7 @@ public class ConnectionManager : Singleton<MonoBehaviour>
            CreateOrJoinSessionAsync();
        }
    }
+   #endif
 
    protected override void OnDestroy()
    {
@@ -94,16 +104,24 @@ public class ConnectionManager : Singleton<MonoBehaviour>
        try
        {
            Debug.Log($"Switching profile to {_profileName}");
+           AuthenticationService.Instance.SignOut(true);
            AuthenticationService.Instance.SwitchProfile(_profileName);
-           await AuthenticationService.Instance.SignInAnonymouslyAsync();
+           if (!AuthenticationService.Instance.IsSignedIn)
+               await AuthenticationService.Instance.SignInAnonymouslyAsync();
 
-            var options = new SessionOptions() {
-                Name = _sessionName,
-                MaxPlayers = _maxPlayers
-            }.WithDistributedAuthorityNetwork();
 
-            _session = await MultiplayerService.Instance.CreateOrJoinSessionAsync(_sessionName, options);
-            Debug.Log($"Connected to session {_session.Name} with id {_session.Id}");
+           var options = new SessionOptions()
+           {
+               Name = _sessionName,
+               MaxPlayers = _maxPlayers
+           }.WithDistributedAuthorityNetwork();
+
+           _session = await MultiplayerService.Instance.CreateOrJoinSessionAsync(_sessionName, options);
+#if UNITY_EDITOR
+           
+           SessionManager.Instance.ActiveSession = _session;
+#endif
+           Debug.Log($"Connected to session {_session.Name} with id {_session.Id}");
 
            _state = ConnectionState.Connected;
        }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using DefaultNamespace;
 using ScriptableObjects.GameParameters;
 using ScriptableObjects.UI;
+using Unity.Netcode;
 using Unity.Services.Analytics;
 using Unity.Services.Core;
 using UnityEngine;
@@ -53,6 +54,16 @@ public class GameManager : Singleton<GameManager>
         EventManager.RemoveListener("OnResume", OnResumeGame);
     }
 
+    private void Start()
+    {
+        NetworkManager.Singleton.OnSessionOwnerPromoted += OnSessionOwnerPromoted;
+    }
+
+    private void OnSessionOwnerPromoted(ulong sessionownerpromoted)
+    {
+        Debug.Log("Session Owner Promoted is " + sessionownerpromoted + " and Local Client ID is " + NetworkManager.Singleton.LocalClientId);
+    }
+
     #endregion
 
     #region Resume / Pause Game
@@ -67,6 +78,8 @@ public class GameManager : Singleton<GameManager>
     public void Pause(bool pause)
     {
         GameIsPaused = pause;
+        if (NetworkManager.Singleton.ConnectedClients.Count > 1)
+            return;
         Time.timeScale = pause ? 0 : 1;
     }
 

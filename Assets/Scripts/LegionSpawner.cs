@@ -24,7 +24,7 @@ public class LegionSpawner : NetworkBehaviour
             var unit = Instantiate(prefab, hit.position, Quaternion.Euler(0, Random.Range(0, 360), 0));
             if (NetworkManager.Singleton.IsConnectedClient)
             {
-                unit.GetComponent<NetworkObject>().Spawn();
+                unit.GetComponent<NetworkObject>().Spawn(true);
             }
         }
         else
