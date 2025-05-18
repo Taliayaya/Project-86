@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Gameplay.Units;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -6,7 +7,7 @@ namespace AI.BehaviourTree.BasicNodes
 {
     public class Wander : ActionNode
     {
-        private NavMeshAgent _agent;
+        private AIAgent _agent;
         private bool _isSet = false;
         public int wanderRadius = 20;
         
@@ -15,7 +16,7 @@ namespace AI.BehaviourTree.BasicNodes
         {
             if (!_isSet)
             {
-                _agent = blackBoard.GetValue<NavMeshAgent>("navMeshAgent");
+                _agent = blackBoard.GetValue<AIAgent>("aiAgent");
                 _isSet = true;
             }
             
@@ -29,7 +30,7 @@ namespace AI.BehaviourTree.BasicNodes
 
         protected override State OnUpdate()
         {
-            if (_agent.remainingDistance < 1f || _agent.velocity.magnitude < 1f || !_agent.hasPath)
+            if (_agent.Agent.remainingDistance < 1f || _agent.Agent.velocity.magnitude < 1f || !_agent.Agent.hasPath)
                 WanderAround();
             return State.Success;
         }
@@ -49,7 +50,8 @@ namespace AI.BehaviourTree.BasicNodes
             if (NavMesh.SamplePosition(randomDirection, out hit, wanderRadius, 1))
             {
                 Vector3 finalPosition = hit.position;
-                if (_agent.SetDestination(finalPosition))
+                _agent.SetDestination(finalPosition);
+                if (_agent.Agent.pathStatus == NavMeshPathStatus.PathComplete)
                 {
                     _goal = null;
                     blackBoard.RemoveValue("goal");

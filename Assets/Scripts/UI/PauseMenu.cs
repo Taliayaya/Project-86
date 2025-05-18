@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections;
+using Networking.Widgets.Session.Session;
 using ScriptableObjects;
+using Unity.Netcode;
+using Unity.Services.Lobbies;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -43,10 +47,17 @@ namespace UI
 
         public void Quit()
         {
+            StartCoroutine(QuitSession());
+        }
+        
+        IEnumerator QuitSession()
+        {
+            WindowManager.CloseAll();
+            var task = SessionManager.Instance.LeaveSession();
+            yield return new WaitUntil(() => task.IsCompleted);
             GameManager.Instance.Pause(false);
-            SceneHandler.LoadScene(mainMenuSceneData);
-            return;
-
+            NetworkManager.Singleton.DisconnectClient(NetworkManager.Singleton.LocalClientId, "Return to main menu");
+            SceneManager.LoadScene(mainMenuSceneData.SceneName);
         }
     }
 }

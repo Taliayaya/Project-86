@@ -3,12 +3,14 @@ using System.Collections;
 using Cinemachine;
 using Gameplay.Units;
 using ScriptableObjects.GameParameters;
+using Unity.Netcode;
+using Unity.Netcode.Components;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace Gameplay
 {
-    public class ScavengerMaster : MonoBehaviour
+    public class ScavengerMaster : NetworkBehaviour
     {
         [SerializeField] private Scavenger scavengerOwned;
         public ScavengerParameters scavengerParameters;
@@ -32,22 +34,31 @@ namespace Gameplay
 
         #region Unity Callbacks
 
-        private void Awake()
+        public override void OnNetworkSpawn()
         {
+            base.OnNetworkSpawn();
+            if (!HasAuthority)
+                return;
             if (autoCreateScavenger && !scavengerOwned)
             {
-                scavengerOwned = Instantiate(scavengerPrefab, transform.position + Vector3.back * spawnDistance, transform.rotation).GetComponent<Scavenger>();
+                Vector3 position = transform.position + Vector3.back * spawnDistance;
+                var scavenger = Instantiate(scavengerPrefab, position, transform.rotation);
+                scavengerOwned = scavenger.GetComponent<Scavenger>();
                 if (!scavengerOwned.TryGetComponent(out _scavengerController))
                     _scavengerController = scavengerOwned.gameObject.AddComponent<ScavengerController>();
                 Debug.Log("Scavenger created" +_scavengerController.gameObject.name);
                 _scavengerController.master = this;         
+                scavenger.GetComponent<NetworkObject>().SpawnAsPlayerObject(OwnerClientId, true);
                 InitListeners();
             }
 
             if (emitOrListen)
                 StartCoroutine(ScavengerDistanceCoroutine());
+            OnDisable();
+            OnEnable();
 
         }
+
 
         private void InitListeners()
         {
@@ -72,7 +83,7 @@ namespace Gameplay
 
         private void OnEnable()
         {
-            if (emitOrListen)
+            if (emitOrListen && IsOwner)
             {
                 EventManager.AddListener("OnCallScavenger", OnCallScavenger);
                 EventManager.AddListener("OnStopScavenger", OnStopScavenger);
@@ -84,7 +95,7 @@ namespace Gameplay
 
         private void OnDisable()
         {
-            if (emitOrListen)
+            if (emitOrListen && IsOwner)
             {
                 EventManager.RemoveListener("OnCallScavenger", OnCallScavenger);
                 EventManager.RemoveListener("OnStopScavenger", OnStopScavenger);

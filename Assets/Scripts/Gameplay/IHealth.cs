@@ -1,9 +1,10 @@
 ﻿using System;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace Gameplay
 {
-    public struct DamagePackage
+    public struct DamagePackage : INetworkSerializable
     {
         public float DamageAmount;
         public Faction Faction;
@@ -11,9 +12,18 @@ namespace Gameplay
         public AudioClip DamageAudioClip;
         public bool IsBullet;
         public float BulletSize;
+        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+        {
+            serializer.SerializeValue(ref DamageAmount);
+            serializer.SerializeValue(ref Faction);
+            serializer.SerializeValue(ref DamageSourcePosition);
+            //serializer.SerializeValue(ref DamageAudioClip);
+            serializer.SerializeValue(ref IsBullet);
+            serializer.SerializeValue(ref BulletSize);
+        }
     }
 
-    public struct DamageResponse
+    public struct DamageResponse : INetworkSerializable
     {
         public enum DamageStatus
         {
@@ -25,32 +35,25 @@ namespace Gameplay
         public float DamageReceived;
         public float RemainingHealth;
 
+        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+        {
+            serializer.SerializeValue(ref Status);
+            serializer.SerializeValue(ref DamageReceived);
+            serializer.SerializeValue(ref RemainingHealth);
+        }
     }
     public interface IHealth
     {
         public float Health { get; set; }
         public float MaxHealth { get; set; }
         public float Armor { get; set; }
-        
+
         public Faction Faction { get; set; }
 
         public void OnTakeDamage(DamagePackage damagePackage);
 
-        public DamageResponse TakeDamage(DamagePackage damagePackage)
-        {
-            if (damagePackage.IsBullet && damagePackage.DamageAmount < Armor)
-                return new DamageResponse() { Status = DamageResponse.DamageStatus.Deflected, DamageReceived = 0};
-            Health = Mathf.Clamp(Health - damagePackage.DamageAmount, 0, MaxHealth);
-            Debug.Log($"{Faction} took {damagePackage.DamageAmount} damage. Health: {Health}");
-            OnTakeDamage(damagePackage);
-            
-            if (!Alive)
-                Die();
-            return new DamageResponse() { Status = DamageResponse.DamageStatus.Taken, DamageReceived = damagePackage.DamageAmount, RemainingHealth = Health};
-        }
+        public DamageResponse TakeDamage(DamagePackage damagePackage);
 
         public void Die();
-
-        public bool Alive => Health > 0;
     }
 }

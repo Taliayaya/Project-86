@@ -1,5 +1,11 @@
+using System;
+using System.Collections.Generic;
 using Cinemachine;
+using Firebase.Auth;
+using Networking;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace UI.MainMenu
@@ -11,8 +17,11 @@ namespace UI.MainMenu
         [SerializeField] private CinemachineVirtualCamera settingsCamera;
         [SerializeField] private Button toMainLeftButton;
         [SerializeField] private Button toMainRightButton;
+        
 
         [SerializeField] private PersonalMarksMenu personalMarksMenu;
+        
+        [SerializeField] private List<TMP_Text> multiplayerTexts = new List<TMP_Text>();
         
         private CinemachineVirtualCamera _currentCamera;
 
@@ -22,6 +31,38 @@ namespace UI.MainMenu
             _currentCamera = mainMenuCamera;
             gameModeCamera.enabled = false;
             settingsCamera.enabled = false;
+        }
+
+        private void OnEnable()
+        {
+            EventManager.AddListener(Constants.TypedEvents.Auth.OnLoginSuccess, OnAuthentication);
+            EventManager.AddListener(Constants.TypedEvents.Auth.OnSignUpSuccess, OnAuthentication);
+        }
+        
+        private void OnDisable()
+        {
+            EventManager.RemoveListener(Constants.TypedEvents.Auth.OnSignUpSuccess, OnAuthentication);
+            EventManager.RemoveListener(Constants.TypedEvents.Auth.OnLoginSuccess, OnAuthentication);
+        }
+
+        private void OnAuthentication(object arg0)
+        {
+            if (arg0 is not User user)
+                return;
+            if (AuthManager.Instance.IsSignedIn)
+            {
+                foreach (var tmpText in multiplayerTexts)
+                {
+                    tmpText.text = AuthManager.Instance.PlayerName;
+                }
+            }
+            else
+            {
+                foreach (var tmpText in multiplayerTexts)
+                {
+                    tmpText.text = "Handler";
+                }
+            }
         }
 
         public void ToGameMode()

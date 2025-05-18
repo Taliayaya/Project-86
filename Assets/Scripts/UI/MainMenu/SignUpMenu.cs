@@ -1,6 +1,8 @@
 using System;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using Firebase.Auth;
+using Networking;
 using TMPro;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
@@ -25,15 +27,21 @@ namespace UI.MainMenu
 
         [SerializeField] private UnityEvent onRegisterSuccess;
 
-        async Task SignUpWithUsernamePasswordAsync(string username, string password)
+        async Task SignUpWithUsernamePasswordAsync(string email, string password, string username)
         {
             try
             {
-                var res = await NetworkManager.AuthClient.CreateUserWithEmailAndPasswordAsync(username, password);
+                await AuthManager.Instance.CreateUserWithEmailAndPasswordAsync(email, password, username);
                 feedbackText.text = "Account created successfully.";
                 feedbackText.color = successColor;
                 Debug.Log("SignUp is successful.");
                 onRegisterSuccess.Invoke();
+            }
+            catch (FirebaseAuthException ex)
+            {
+                Debug.LogException(ex);
+                feedbackText.color = errorColor;
+                feedbackText.text = AuthManager.GetAuthErrorReason(ex);
             }
             catch (AuthenticationException ex)
             {
@@ -66,6 +74,11 @@ namespace UI.MainMenu
                     feedbackText.text = "Personal Name, email and password cannot be empty.";
                     feedbackText.color = errorColor;
                 }
+                else if (usernameInput.text.Contains(' ') || usernameInput.text.Length is < 3 or >= 50)
+                {
+                    feedbackText.text = "Personal Name must be between 3 and 50 characters and cannot contain spaces.";
+                    feedbackText.color = errorColor;
+                }
                 else
                 {
                     MailAddress mailAddress = new MailAddress(emailInput.text);
@@ -76,14 +89,8 @@ namespace UI.MainMenu
                     }
                     else
                     {
-#if ALLOW_SIGNUP
                         feedbackText.text = "";
-                        await NetworkManager.Instance.CreateUserWithEmailAndPasswordAsync(emailInput.text,
-                            passwordInput.text, usernameInput.text);
-#else
-                        feedbackText.text = "Sign up is disabled.";
-                        feedbackText.color = errorColor;
-#endif
+                        await SignUpWithUsernamePasswordAsync(emailInput.text,  passwordInput.text, usernameInput.text);
                     }
                 }
             }

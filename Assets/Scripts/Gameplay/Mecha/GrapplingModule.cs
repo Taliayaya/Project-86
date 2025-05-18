@@ -57,12 +57,16 @@ namespace Gameplay.Mecha
 
         private void OnEnable()
         {
+            if (!IsSpawned || !HasAuthority)
+                return;
             EventManager.AddListener("OnGrapplingThrow", OnGrapplingThrow);
             
         }
         
         private void OnDisable()
         {
+            if (!IsSpawned || !HasAuthority)
+                return;
             EventManager.RemoveListener("OnGrapplingThrow", OnGrapplingThrow);
             if (isMainModule)
                 EventManager.TriggerEvent("GrapplingModule", new ModuleData
@@ -74,6 +78,14 @@ namespace Gameplay.Mecha
             
         }
 
+        public override void OnNetworkSpawn()
+        {
+            if (!IsSpawned || !HasAuthority)
+                return;
+            OnEnable();
+            base.OnNetworkSpawn();
+        }
+
         private bool _isPressed;
         private void OnGrapplingThrow(object arg0)
         {
@@ -83,6 +95,8 @@ namespace Gameplay.Mecha
         // Update is called once per frame
         void FixedUpdate()
         {
+            if (!IsSpawned || !HasAuthority)
+                return;
             if (_isGrappling && _canPull)
             {
                 if (_isPressed)

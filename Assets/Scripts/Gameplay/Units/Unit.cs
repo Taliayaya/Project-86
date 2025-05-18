@@ -1,6 +1,7 @@
 ﻿using System;
 using Gameplay.Mecha;
 using ScriptableObjects.Sound;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -20,7 +21,7 @@ namespace Gameplay.Units
         Running,
     }
     [RequireComponent(typeof(Rigidbody))]
-    public class Unit : MonoBehaviour, IHealth
+    public abstract class Unit : NetworkBehaviour, IHealth
     {
         private Module[] _modules;
         
@@ -28,6 +29,7 @@ namespace Gameplay.Units
         public UnitType unitType = UnitType.None;
         public float aimiYOffset = 2f;
 
+        [Tooltip("Current heal, Max health")]
         public UnityEvent<float, float> onHealthChange;
 
         private Rigidbody _rb;
@@ -40,7 +42,14 @@ namespace Gameplay.Units
         [SerializeField] private AudioSource engineAudioSource;
         [SerializeField] private EngineAudioSO engineAudioSo;
         
-        public virtual float Health { get; set; } = 100;
+        private NetworkVariable<float> _health = new NetworkVariable<float>(100);
+        public virtual float Health
+        {
+            get => _health.Value;
+            set { _health.Value = value; }
+        }
+
+        public bool Alive => Health > 0;
         public virtual float Armor { get; set; } = 10;
         public float MaxHealth { get; set; } = 100;
         [SerializeField] private Faction faction;
@@ -79,7 +88,14 @@ namespace Gameplay.Units
         {
             _modules = GetComponentsInChildren<Module>();
             foreach (var module in _modules)
+            {
                 module.faction = Faction;
+                //if (!IsOwner)
+                //{
+                //    module.enabled = false;
+                //}
+            }
+            _health.OnValueChanged += (old, curr) => onHealthChange.Invoke(curr, MaxHealth);
             onHealthChange.Invoke(Health, MaxHealth); // Initialize health bar
             
             _rb = GetComponent<Rigidbody>();
@@ -111,10 +127,29 @@ namespace Gameplay.Units
             engineAudioSource.UnPause();
         }
 
+        
+        public DamageResponse TakeDamage(DamagePackage damagePackage)
+        {
+            if (damagePackage.IsBullet && damagePackage.DamageAmount < Armor)
+                return new DamageResponse() { Status = DamageResponse.DamageStatus.Deflected, DamageReceived = 0};
+            Debug.Log($"{Faction} took {damagePackage.DamageAmount} damage. Health: {Health}");
+            float remainingHealth = Mathf.Clamp(Health - damagePackage.DamageAmount, 0, MaxHealth);
+            TakeDamageRpc(damagePackage);
+
+            return new DamageResponse() { Status = DamageResponse.DamageStatus.Taken, DamageReceived = damagePackage.DamageAmount, RemainingHealth = remainingHealth};
+        }
+        
+        [Rpc(SendTo.Owner)]
+        public void TakeDamageRpc(DamagePackage damagePackage)
+        {
+            Health = Mathf.Clamp(Health - damagePackage.DamageAmount, 0, MaxHealth);
+            if (!Alive)
+                Die();
+            OnTakeDamage(damagePackage);
+        }
      
         public virtual void OnTakeDamage(DamagePackage damagePackage)
         {
-            
             onHealthChange?.Invoke(Health, MaxHealth);
         }
 
@@ -140,6 +175,7 @@ namespace Gameplay.Units
         public virtual void Die()
         {
             if (Died) return;
+            if (!IsOwner) return;
             Died = true;
             EventManager.TriggerEvent("UnitDeath", this);
             Destroy(gameObject);
@@ -147,8 +183,9 @@ namespace Gameplay.Units
             Factions.RemoveMember(faction, this);
         }
         
-        private void OnDestroy()
+        public override void OnDestroy()
         {
+            base.OnDestroy();
             Factions.RemoveMember(faction, this);
         }
 

@@ -79,7 +79,7 @@ public abstract class Singleton<T> : Singleton where T : MonoBehaviour
     /// </summary>
     protected virtual void OnAwake() { }
 
-    protected void OnDestroy()
+    protected virtual void OnDestroy()
     {
         if (_instance == this)
         {

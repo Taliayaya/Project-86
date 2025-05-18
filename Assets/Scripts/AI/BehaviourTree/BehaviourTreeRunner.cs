@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace AI.BehaviourTree
 {
-    public class BehaviourTreeRunner : MonoBehaviour
+    public class BehaviourTreeRunner : NetworkBehaviour
     {
         public BehaviourTree tree;
 
@@ -19,7 +20,7 @@ namespace AI.BehaviourTree
         {
             while (true)
             {
-                if (!GameManager.GameIsPaused)
+                if (!GameManager.GameIsPaused && HasAuthority && IsSpawned)
                     tree.Update();
                 yield return new WaitForSeconds(0.4f);
             }

@@ -4,6 +4,7 @@ using Cinemachine;
 using ScriptableObjects;
 using UI;
 using UI.HUD;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.VFX;
@@ -92,7 +93,13 @@ namespace Gameplay.Mecha
             
         }
 
-        
+        public override void OnNetworkSpawn()
+        {
+            base.OnNetworkSpawn();
+            if (!HasAuthority)
+                OnDisable();
+        }
+
 
         protected virtual void OnDisable()
         {
@@ -160,7 +167,7 @@ namespace Gameplay.Mecha
             
             while (_isHeld && _currentAmmoRemaining > 0)
             {
-                PlayBulletSound(false);
+                PlayBulletSoundRpc(false);
                 Shoot();
                 yield return new WaitForSeconds(1/ammo.fireRate);
             }
@@ -202,7 +209,7 @@ namespace Gameplay.Mecha
 
                 _lastShotTime = Time.time;
                 Shoot(cameraTransform);
-                PlayBulletSound();
+                PlayBulletSoundRpc();
                 yield return new WaitForSeconds(fireRate);
             }
 
@@ -236,7 +243,7 @@ namespace Gameplay.Mecha
 
                 _lastShotTime = Time.time;
                 Shoot(cameraTransform);
-                PlayBulletSound();
+                PlayBulletSoundRpc();
                 yield return new WaitForSeconds(fireRate);
             }
 
@@ -265,7 +272,8 @@ namespace Gameplay.Mecha
                         EventManager.TriggerEvent("OnShoot:" + weaponType, ammo);
                     }
 
-                    PlayBulletSound();
+                    if (HasAuthority && IsSpawned)
+                        PlayBulletSoundRpc();
                 }
             }
             if (_currentAmmoRemaining <= 0)
@@ -299,6 +307,8 @@ namespace Gameplay.Mecha
         
         private void FireBullet(Transform origin)
         {
+            if (!HasAuthority || !IsSpawned)
+                return;
             var bulletDirection = origin.forward;
             if (Physics.Raycast(origin.position, origin.forward, out var hit, maxRaycastDistance, fireBulletLayerMask))
             {
@@ -315,32 +325,44 @@ namespace Gameplay.Mecha
 
             if (muzzleFlash)
             {
-                if (_muzzleFlashCoroutine != null)
-                    StopCoroutine(_muzzleFlashCoroutine);
-                _muzzleFlashCoroutine = StartCoroutine(MuzzleFlash());
+                PlayMuzzleFlashRpc();
             }
 
-
             var bullet = Instantiate(ammo.prefab, gunTransform.position, Quaternion.identity);
+            // colliders
             var bulletCollider = bullet.GetComponentInChildren<Collider>();
             if (_gunTransformCollider != null)
                 Physics.IgnoreCollision(bulletCollider, _gunTransformCollider, true);
             if (myParentColliderToIgnore != null)
                 Physics.IgnoreCollision(bulletCollider, myParentColliderToIgnore, true);
+            
             var bulletScript = bullet.GetComponent<Bullet>();
             bulletScript.Init(ammo, faction);
             bulletScript.InitLifeTime(ammo.maxLifetime);
 
             var bulletRb = bullet.GetComponent<Rigidbody>();
-
-            canFire = false;
             bulletRb.AddForce(bulletDirection * ammo.forcePower, ForceMode.Impulse);
             var rot = bulletRb.rotation.eulerAngles;
             bulletRb.rotation = Quaternion.Euler(rot.x, gunTransform.eulerAngles.y, rot.z);
+            
+            // network spawning related
+            var bulletNetworkObject = bullet.GetComponent<NetworkObject>();
+            if (NetworkManager.Singleton.IsConnectedClient)
+                bulletNetworkObject.SpawnWithOwnership(NetworkManager.Singleton.LocalClientId, true);
+            
+            canFire = false;
             if (ammo.reloadSound != null)
                 Invoke(nameof(PlayReloadSound), 0.3f);
-
             Invoke(nameof(ResetOnFire), 1 / ammo.fireRate);
+        }
+        
+        [Rpc(SendTo.ClientsAndHost)]
+        private void PlayMuzzleFlashRpc()
+        {
+            Debug.Log("PlayMuzzleFlashRPC");
+            if (_muzzleFlashCoroutine != null)
+                StopCoroutine(_muzzleFlashCoroutine);
+            _muzzleFlashCoroutine = StartCoroutine(MuzzleFlash());
         }
 
         private void PlayReloadSound()
@@ -348,7 +370,8 @@ namespace Gameplay.Mecha
             reloadAudioSource.PlayOneShot(ammo.reloadSound);
         }
 
-        private void PlayBulletSound(bool oneShot = true)
+        [Rpc(SendTo.ClientsAndHost)]
+        private void PlayBulletSoundRpc(bool oneShot = true)
         {
             Debug.Log($"{name}: {ammo.GetRandomFireSound().name}");
             if (oneShot)

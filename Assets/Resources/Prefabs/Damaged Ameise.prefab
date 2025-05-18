@@ -5,8 +5,14 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -869072037724221908, guid: 5f88132ef78f19647aaac97222672cff,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2154333432
+      objectReference: {fileID: 0}
     - target: {fileID: 440560975, guid: 5f88132ef78f19647aaac97222672cff, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -96,6 +102,11 @@ PrefabInstance:
       propertyPath: m_Center.y
       value: 1.5
       objectReference: {fileID: 0}
+    - target: {fileID: 3131941792353629566, guid: 5f88132ef78f19647aaac97222672cff,
+        type: 3}
+      propertyPath: finalScaleReference
+      value: 0.44119555
+      objectReference: {fileID: 0}
     - target: {fileID: 6576844422240144710, guid: 5f88132ef78f19647aaac97222672cff,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -107,4 +118,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5f88132ef78f19647aaac97222672cff, type: 3}
