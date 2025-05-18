@@ -42,7 +42,12 @@ namespace Networking
             UnityServices.Initialized += async () =>
             {
                 Debug.Log("[NetworkManager] UnityServices Initialized");
-                await OldSessionStillActive();
+                
+                if (AuthenticationService.Instance.IsSignedIn)
+                {
+                    await AuthenticationService.Instance.GetPlayerNameAsync();
+                }
+                // await OldSessionStillActive();
             };
         }
 
@@ -76,6 +81,21 @@ namespace Networking
             else
             {
                 Debug.LogError("SignUp failed.");
+            }
+        }
+        
+        public async Task AnonymousSignInAsync(string username)
+        {
+            await AuthenticationService.Instance.SignInAnonymouslyAsync();
+            if (AuthenticationService.Instance.IsSignedIn)
+            {
+                await  AuthenticationService.Instance.UpdatePlayerNameAsync(username);
+                EventManager.TriggerEvent(Constants.TypedEvents.Auth.OnLoginSuccess, AuthClient.User);
+                Debug.Log("SignUp is successful.");
+            }
+            else
+            {
+                Debug.LogError("Login failed.");
             }
         }
 

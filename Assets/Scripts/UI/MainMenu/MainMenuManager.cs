@@ -53,7 +53,7 @@ namespace UI.MainMenu
             {
                 foreach (var tmpText in multiplayerTexts)
                 {
-                    tmpText.text = user.Info.DisplayName.Split('#')[0];
+                    tmpText.text = AuthManager.Instance.PlayerName;
                 }
             }
             else

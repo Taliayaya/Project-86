@@ -26,8 +26,22 @@ namespace UI.MainMenu
 
         [SerializeField] private TMP_InputField emailInput;
         [SerializeField] private TMP_InputField passwordInput;
+        
+        [SerializeField] private TMP_InputField usernameInput;
+        [SerializeField] private Button playAnonymousButton;
 
         [SerializeField] private UnityEvent onLoginSuccess;
+
+        private void Start()
+        {
+            if (AuthManager.Instance.IsSignedIn)
+            {
+                feedbackText.text = "Already logged in.";
+                feedbackText.color = successColor;
+                onLoginSuccess.Invoke();
+                EventManager.TriggerEvent(Constants.TypedEvents.Auth.OnLoginSuccess, AuthManager.AuthClient);
+            }
+        }
 
         async Task SignInWithUsernamePasswordAsync(string username, string password)
         {
@@ -59,6 +73,28 @@ namespace UI.MainMenu
                 feedbackText.text = ex.Message;
                 feedbackText.color = errorColor;
                 Debug.LogException(ex);
+            }
+        }
+
+        public async void OnPlayAnonymousClicked()
+        {
+            try
+            {
+                playAnonymousButton.interactable = false;
+                await AuthManager.Instance.AnonymousSignInAsync(usernameInput.text);
+                feedbackText.text = "Log in successful.";
+                feedbackText.color = successColor;
+                onLoginSuccess.Invoke();
+            }
+            catch (Exception ex)
+            {
+                Debug.LogException(ex);
+                feedbackText.text = "Log in failed.";
+                feedbackText.color = errorColor;
+            }
+            finally
+            {
+                playAnonymousButton.interactable = true;
             }
         }
 

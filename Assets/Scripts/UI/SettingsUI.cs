@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Services.Authentication;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace UI
@@ -10,15 +12,15 @@ namespace UI
     public class SettingsUI : MonoBehaviour
     {
         [SerializeField] private bool closeOnStart = true;
-        [Header("Prefabs")] 
-        [SerializeField] private GameObject menuButtonPrefab;
-        
+        [Header("Prefabs")] [SerializeField] private GameObject menuButtonPrefab;
+
         [Header("References")] [SerializeField]
         private GameObject gameSettingsPanel;
+
         public TMP_Text menuContentName;
         public Transform contentParent;
         public Transform menusParent;
-        
+
         public UnityEvent<SettingsUI> onMenuCategoryGenerated = new UnityEvent<SettingsUI>();
         public UnityEvent<SettingsUI> onResetButton = new UnityEvent<SettingsUI>();
 
@@ -31,7 +33,7 @@ namespace UI
             onResetButton.RemoveAllListeners();
             AddListener(menuCategory);
         }
-        
+
         private void AddListener(SettingsMenuCategory menuCategory)
         {
             onResetButton.AddListener((s) => menuCategory.ResetSettings(s));
@@ -62,7 +64,7 @@ namespace UI
             DataHandler.SaveGameData(); // Saving the settings
             gameSettingsPanel.transform.GetChild(0).gameObject.SetActive(false);
         }
-        
+
         public void ClearContent()
         {
             foreach (Transform c in contentParent)
@@ -70,5 +72,11 @@ namespace UI
                 Destroy(c.gameObject);
             }
         }
-    }
+
+        public void Logout()
+        {
+            AuthenticationService.Instance.SignOut(true);
+            SceneManager.LoadScene("MainMenu");
+        }
+}
 }
