@@ -14,103 +14,226 @@ using UnityEngine.SceneManagement;
 public class SceneHandler : Singleton<SceneHandler>
 {
     [SerializeField] private GraphicsParameters graphicsParameters;
+    [SerializeField] private GameObject loadingScreenPrefab;
     private static SceneData _activeSceneData;
-    private class LoadingMonoBehaviour : MonoBehaviour
-    {
-    }
+    private Scene? _currentScene;
+    private Scene _globalScene;
+
+    private bool _init;
+    private bool _preloaded;
+    
 
     private void OnEnable()
     {
         EventManager.AddListener("LoadingScene", OnLoadingScene);
         EventManager.AddListener($"UpdateGameParameter:{nameof(graphicsParameters.detailsDensity)}", UpdateGrassDensity);
         EventManager.AddListener("ReloadScene", ReloadScene);
-    }
+        EventManager.AddListener("Play", OnPlay);
+        if (!_preloaded)
+        {
+            _preloaded = true;
+            SceneManager.LoadScene("PreloadManagers", LoadSceneMode.Additive);
+            var loadingScreen = Instantiate(loadingScreenPrefab);
+            DontDestroyOnLoad(loadingScreen);
+        }
 
+    }
+    
     private void OnDisable()
     {
         EventManager.RemoveListener("LoadingScene", OnLoadingScene);
         EventManager.RemoveListener($"UpdateGameParameter:{nameof(graphicsParameters.detailsDensity)}", UpdateGrassDensity);
         EventManager.RemoveListener("ReloadScene", ReloadScene);
+        EventManager.RemoveListener("Play", OnPlay);
+        NetworkManager.Singleton.SceneManager.OnSceneEvent -= OnSceneEvent;
+    }
+
+    public static void Init()
+    {
+        if (Instance._init)
+            return;
+        Debug.Log("[SceneHandler] Init");
+        NetworkManager.Singleton.SceneManager.OnSceneEvent += Instance.OnSceneEvent;
+        // NetworkManager.Singleton.SceneManager.SetClientSynchronizationMode(LoadSceneMode.Additive);
+        // NetworkManager.Singleton.SceneManager.ActiveSceneSynchronizationEnabled = true;
+        // SceneManager.sceneLoaded += Instance.OnSinglePlayerLoad;
+        Instance._init = true;
+    }
+
+    private void OnSinglePlayerLoad(Scene arg0, LoadSceneMode arg1)
+    {
+        StartCoroutine(PostSceneLoad(null, setActiveScene: false));
+    }
+
+    private bool _isReload;
+    
+    public void LoadGameScene(string newSceneName)
+    {
+        Init();
+        Debug.Log($"Loading scene {newSceneName}");
+        if (!NetworkManager.Singleton.IsListening)
+        {
+            ShowLoadingUI();
+            _loadingAsyncOperation = SceneManager.LoadSceneAsync(newSceneName, LoadSceneMode.Single);
+            EventManager.TriggerEvent(Constants.TypedEvents.LoadingScene, (_activeSceneData, _loadingAsyncOperation));
+        }
+
+        if (NetworkManager.Singleton.IsHost)
+        {
+            LoadSceneMode mode = _isReload ? LoadSceneMode.Single : LoadSceneMode.Additive;
+            NetworkManager.Singleton.SceneManager.LoadScene(newSceneName, mode);
+        }
+    }
+
+    private void OnSceneEvent(SceneEvent sceneEvent)
+    {
+        switch (sceneEvent.SceneEventType)
+        {
+            case SceneEventType.Load:
+                Debug.Log($"Loading scene {sceneEvent.SceneName}");
+                _loadingAsyncOperation = sceneEvent.AsyncOperation;
+                ShowLoadingUI();
+                DisableSceneObjects(SceneManager.GetActiveScene());
+                EventManager.TriggerEvent(Constants.TypedEvents.LoadingScene, (_activeSceneData, _loadingAsyncOperation));
+                break;
+            case SceneEventType.LoadComplete:
+                // only handle ourselves here
+                if (sceneEvent.ClientId != NetworkManager.Singleton.LocalClientId)
+                    return;
+                if (_currentScene.HasValue && _currentScene.Value.name == sceneEvent.SceneName)
+                    return;
+                Debug.Log($"Scene {sceneEvent.SceneName} loaded.");
+                _currentScene = sceneEvent.Scene;
+                StartCoroutine(PostSceneLoad(sceneEvent));
+                break;
+            case SceneEventType.Synchronize:
+                Debug.Log("Synchronize event");
+                break;
+            
+            case SceneEventType.UnloadComplete:
+                if (_activeSceneData && sceneEvent.SceneName == _activeSceneData.SceneName)
+                {
+                    Debug.Log($"Scene {sceneEvent.SceneName} unloaded.");
+                    _currentScene = null;
+                }
+                break;
+        }
+        
+    }
+
+    void DisableSceneObjects(Scene scene)
+    {
+        foreach (GameObject rootObj in scene.GetRootGameObjects())
+        {
+            // Disable all root objects (and their children)
+            rootObj.SetActive(false);
+        }
+    }
+
+    void PreviousSceneCleanup()
+    {
+        var activeScene = SceneManager.GetActiveScene();
+        Debug.Log($"Unloading scene {activeScene.name}");
+        NetworkManager.Singleton.SceneManager.UnloadScene(activeScene);
+    }
+
+    IEnumerator PostSceneLoad(SceneEvent sceneEvent, bool setActiveScene = true)
+    {
+        if (!_isReload)
+            PreviousSceneCleanup();
+        yield return null;
+        
+        var terrains =
+            GameObject.FindObjectsByType<Terrain>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+        ApplyGrassSettings(terrains);
+        yield return null;
+        
+        // SceneManager.SetActiveScene(sceneEvent.Scene);
+        if (setActiveScene)
+        {
+            var scene = SceneManager.GetSceneByName(sceneEvent.SceneName);
+            while (!scene.IsValid())
+            {
+                Debug.Log($"Scene {scene.name} is not valid and loaded={scene.isLoaded}.");
+                scene = SceneManager.GetSceneByName(sceneEvent.SceneName);
+                yield return null;
+            }
+
+            SceneManager.SetActiveScene(scene);
+        }
+
+        yield return null;
+
+        yield return new WaitUntil(() =>
+        {
+            Debug.Log($"Waiting for GameManager.Mission...");
+            return GameManager.Mission;
+        });
+        // Debug.Log($"Starting LoadingSceneCallback");
+        // LoadingSceneCallback();
+        yield return null;
+        if (NetworkManager.Singleton.IsHost)
+        {
+            Debug.Log("Host is spawning players");
+            var respawnManager = FindAnyObjectByType<RespawnManager>();
+            foreach (var client in NetworkManager.Singleton.ConnectedClientsList)
+            {
+                Debug.Log("Host is spawning player " + client.ClientId);
+                var playerObject = respawnManager.SpawnPlayer(client.ClientId);
+                PlayerManager.PlayerObjects[client.ClientId] = playerObject;
+            }
+
+            Debug.Log("Auto spawning for late users");
+            NetworkManager.Singleton.OnClientConnectedCallback -= LateUserSpawn;
+            NetworkManager.Singleton.OnClientConnectedCallback += LateUserSpawn;
+        }
+        else
+        {
+            Debug.Log("Client is waiting for its player object to spawn");
+        }
+        yield return null;
+        OnPlay();
+
+        // HideLoadingUI();
+    }
+
+    public static void ShowLoadingUI()
+    {
+        EventManager.TriggerEvent("LoadingLoadingScene");
+        EventManager.TriggerEvent("DisplayLoadingScreen", true);
+    }
+
+    public static void HideLoadingUI()
+    {
+        EventManager.TriggerEvent("DisplayLoadingScreen", false);
+    }
+
+    private void OnPlay()
+    {
+        Debug.Log("OnPlay");
+        Cursor.lockState = GameManager.Mission.scene.cursorLockMode;
+        if (GameManager.Mission.scene.inputActionMap != "")
+            InputManager.SwitchCurrentActionMap(GameManager.Mission.scene.inputActionMap);
+        DataHandler.LoadGameData();
+        EventManager.TriggerEvent(Constants.TypedEvents.OnSceneLoadingCompleted, GameManager.Mission);
+        HideLoadingUI();
     }
 
     public static void ReloadScene()
     {
-        WindowManager.CloseAll();
-        EventManager.TriggerEvent("ReloadScene");
-        EventManager.TriggerEvent("OnResume");
-        LoadScene(_activeSceneData, GameManager.Mission);
+        if (!NetworkManager.Singleton.IsHost)
+            return;
+        MissionManager.Instance.ReloadMission();
     }
     
     private static Action onLoaderCallback;
     private static AsyncOperation _loadingAsyncOperation;
     
-
-    //[Rpc(SendTo.)]
-    public static void LoadScene(SceneData sceneData, object dataOnComplete = null, bool isMultiplayer = false)
+    public static void LoadScene(SceneData sceneData, bool isReload = false)
     {
+        Instance._isReload = isReload;
         _activeSceneData = sceneData;
-        WindowManager.CloseAll();
-        onLoaderCallback = () =>
-        {
-            GameObject loader = new GameObject("Loader");
-            loader.AddComponent<LoadingMonoBehaviour>().StartCoroutine(LoadSceneAsync(sceneData, dataOnComplete, isMultiplayer));
-        };
-        EventManager.TriggerEvent("LoadingLoadingScene");
-        if (isMultiplayer)
-            NetworkManager.Singleton.SceneManager.LoadScene("LoadingScene", LoadSceneMode.Single);
-        else
-            SceneManager.LoadScene("LoadingScene", LoadSceneMode.Single);
-        
-    }
-
-
-    private static IEnumerator LoadSceneAsync(SceneData sceneData, object dataOnComplete = null,
-        bool isMultiplayer = false)
-    {
-        yield return null;
-
-        Action onComplete = () =>
-        {
-            //Cursor.lockState = sceneData.cursorLockMode;
-            //if (sceneData.inputActionMap != "")
-            //    InputManager.SwitchCurrentActionMap(sceneData.inputActionMap);
-            //// this line was added to fix an issue where somehow loaded settings were reset to default after a scene change
-            //DataHandler.LoadGameData();
-
-            //_loadingAsyncOperation = null;
-            //EventManager.TriggerEvent(Constants.TypedEvents.OnSceneLoadingCompleted, dataOnComplete);
-            //Debug.Log("Scene loaded");
-        };
-
-        if (isMultiplayer)
-        {
-            NetworkManager.Singleton.SceneManager.LoadScene(sceneData.SceneName, LoadSceneMode.Single);
-            bool isLoaded = false;
-            NetworkManager.Singleton.SceneManager.OnLoadComplete += (scene, mode, status) =>
-            {
-                onComplete();
-                isLoaded = true;
-            };
-            while (!isLoaded)
-            {
-                yield return null;
-            }
-        }
-        else
-        {
-            _loadingAsyncOperation = SceneManager.LoadSceneAsync(sceneData.SceneName);
-            _loadingAsyncOperation.completed += operation => { onComplete(); };
-            EventManager.TriggerEvent(Constants.TypedEvents.LoadingScene, (sceneData, _loadingAsyncOperation));
-            while (!_loadingAsyncOperation.isDone)
-            {
-                yield return null;
-            }
-        }
-
-
-
-
-        yield return null;
+        Instance.LoadGameScene(sceneData.SceneName);
     }
 
     public static float LoadProgress()
@@ -129,6 +252,12 @@ public class SceneHandler : Singleton<SceneHandler>
         }
     }
 
+    private void LateUserSpawn(ulong clientId)
+    {
+        var respawnManager = FindAnyObjectByType<RespawnManager>();
+        PlayerManager.PlayerObjects[clientId] = respawnManager.SpawnPlayer(clientId);
+    }
+
     private void OnLoadingScene(object data)
     {
         Debug.Log("LoadingScene");
@@ -137,9 +266,7 @@ public class SceneHandler : Singleton<SceneHandler>
             asyncOperation.completed += operation =>
             {
                 Debug.Log("LoadingScene completed");
-                var terrains =
-                    GameObject.FindObjectsByType<Terrain>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
-                ApplyGrassSettings(terrains);
+                
             };
         }
     }
