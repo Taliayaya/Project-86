@@ -41,7 +41,7 @@ namespace Gameplay.Quests
         public List<QuestMission> questMissions;
 
         public static List<Quest> Quests => Instance._quests;
-        private List<Quest> _quests;
+        private List<Quest> _quests = new List<Quest>();
 
         [CanBeNull] private Quest _currentQuest;
         [CanBeNull]

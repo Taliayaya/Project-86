@@ -28,7 +28,7 @@ public abstract class Singleton<T> : Singleton where T : MonoBehaviour
     
     protected static bool AllowAutoCreation => true;
 
-    public static bool HasInstance => _instance != null;
+    public static bool HasInstance => _instance;
     
     public static T Instance
     {

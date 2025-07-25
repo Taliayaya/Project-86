@@ -46,11 +46,12 @@ namespace Gameplay
         private const bool DestroyWithScene = true;
         
         //[ServerRpc]
-        public void Respawn(GameObject prefab, GameObject spawnPoint, ulong clientId)
+        public GameObject Respawn(GameObject prefab, GameObject spawnPoint, ulong clientId)
         {
             // random offset
             var offset = new Vector3(UnityEngine.Random.Range(-10f, 10f), 0, UnityEngine.Random.Range(-10f, 10f));
             var go = Instantiate(prefab, spawnPoint.transform.position + offset, spawnPoint.transform.rotation);
+            go.name = "Player" + clientId;
 
             if (NetworkManager.Singleton.IsConnectedClient)
             {
@@ -58,22 +59,24 @@ namespace Gameplay
                 go.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, DestroyWithScene);
                 //go.GetComponent<MechaController>().ReInit();
             }
+
+            return go;
         }
         
-        public void SpawnPlayer()
+        public GameObject SpawnPlayer()
         {
-            SpawnPlayer(NetworkManager.Singleton.LocalClientId);
+            return SpawnPlayer(NetworkManager.Singleton.LocalClientId);
         }
 
-        public void SpawnPlayer(ulong clientId)
+        public GameObject SpawnPlayer(ulong clientId)
         {
             Debug.Log("spawnpoint: " + spawnPoint);
-            Respawn(playerPrefab, spawnPoint.gameObject, clientId);
+            return Respawn(playerPrefab, spawnPoint.gameObject, clientId);
         }
 
-        public void Respawn(GameObject prefab, int spawnPointIndex)
+        public GameObject Respawn(GameObject prefab, int spawnPointIndex)
         {
-            Respawn(prefab, _respawnPoints[spawnPointIndex], NetworkManager.Singleton.LocalClientId);
+            return Respawn(prefab, _respawnPoints[spawnPointIndex], NetworkManager.Singleton.LocalClientId);
         }
 
         public static Vector3 GetClosestRespawnPoint(Vector3 origin)
@@ -88,16 +91,16 @@ namespace Gameplay
             return spawnPoint.transform.position;
         }
 
-        public void Respawn(GameObject prefab, Vector3 position)
+        public GameObject Respawn(GameObject prefab, Vector3 position)
         {
             if (_respawnPoints.Length == 0)
             {
                 Debug.LogError("No respawn points found!");
-                return;
+                return null;
             }
             var closestSpawnPoint = _respawnPoints.Min(x => Vector3.Distance(x.transform.position, position));
             var spawnPoint = _respawnPoints.First(x => Math.Abs(Vector3.Distance(x.transform.position, position) - closestSpawnPoint) < 0.5);
-            Respawn(prefab, spawnPoint, NetworkManager.Singleton.LocalClientId);
+            return Respawn(prefab, spawnPoint, NetworkManager.Singleton.LocalClientId);
         }
 
         public void OnRespawn(object arg)

@@ -54,6 +54,7 @@ public class SceneHandler : Singleton<SceneHandler>
             return;
         Debug.Log("[SceneHandler] Init");
         NetworkManager.Singleton.SceneManager.OnSceneEvent += Instance.OnSceneEvent;
+        NetworkManager.Singleton.SceneManager.PostSynchronizationSceneUnloading = true;
         // NetworkManager.Singleton.SceneManager.SetClientSynchronizationMode(LoadSceneMode.Additive);
         // NetworkManager.Singleton.SceneManager.ActiveSceneSynchronizationEnabled = true;
         // SceneManager.sceneLoaded += Instance.OnSinglePlayerLoad;
@@ -71,6 +72,7 @@ public class SceneHandler : Singleton<SceneHandler>
     {
         Init();
         Debug.Log($"Loading scene {newSceneName}");
+        WindowManager.CloseAll();
         if (!NetworkManager.Singleton.IsListening)
         {
             ShowLoadingUI();
@@ -91,6 +93,7 @@ public class SceneHandler : Singleton<SceneHandler>
         {
             case SceneEventType.Load:
                 Debug.Log($"Loading scene {sceneEvent.SceneName}");
+                WindowManager.CloseAll();
                 _loadingAsyncOperation = sceneEvent.AsyncOperation;
                 ShowLoadingUI();
                 DisableSceneObjects(SceneManager.GetActiveScene());
@@ -105,6 +108,10 @@ public class SceneHandler : Singleton<SceneHandler>
                 Debug.Log($"Scene {sceneEvent.SceneName} loaded.");
                 _currentScene = sceneEvent.Scene;
                 StartCoroutine(PostSceneLoad(sceneEvent));
+                break;
+            case SceneEventType.SynchronizeComplete:
+                Debug.Log("Synchronize event complete");
+                StartCoroutine(SynchronizePostLoad());
                 break;
             case SceneEventType.Synchronize:
                 Debug.Log("Synchronize event");
@@ -135,6 +142,18 @@ public class SceneHandler : Singleton<SceneHandler>
         var activeScene = SceneManager.GetActiveScene();
         Debug.Log($"Unloading scene {activeScene.name}");
         NetworkManager.Singleton.SceneManager.UnloadScene(activeScene);
+    }
+
+    IEnumerator SynchronizePostLoad()
+    {
+        yield return null;
+        var terrains =
+            GameObject.FindObjectsByType<Terrain>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+        ApplyGrassSettings(terrains);
+        yield return null;
+        Debug.Log("Client is waiting for its player object to spawn");
+        yield return null;
+        OnPlay();
     }
 
     IEnumerator PostSceneLoad(SceneEvent sceneEvent, bool setActiveScene = true)

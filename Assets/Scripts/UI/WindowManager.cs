@@ -52,8 +52,22 @@ namespace UI
         
         public static void CloseAll()
         {
+            Debug.Log("Closing all window");
             while (WindowStack.Count > 0)
-                Close();
+            {
+                // not pretty, exception often happens because
+                // not closed before scene loads...
+                // [work around] for now
+                try 
+                {
+                    Close();
+                }
+                catch
+                {
+                    continue;
+                }
+            }
+            WindowStack.Clear();
         }
         
         private static void HideWindowWindow(Window window)
