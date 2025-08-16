@@ -3,6 +3,7 @@ using Cinemachine;
 using ScriptableObjects.GameParameters;
 using UI;
 using UI.HUD;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Gameplay.Mecha
@@ -33,9 +34,13 @@ namespace Gameplay.Mecha
         [SerializeField] private float damper = 14f;
         
         [SerializeField] private float velocity = 15f;
+
+        private float springLowDistance = 0.25f;
+        private float springHighDistance = 0.8f;
         
     
-        private Vector3 _grapplePoint;
+        public GameObject grapplePoint;
+        //private float _starting_distance = 0f;
 
         [Header("Cooldown")] [SerializeField] private float grapplingCd;
         private float _grapplingCdTimer;
@@ -53,6 +58,8 @@ namespace Gameplay.Mecha
             {
                 Target = 0f
             };
+            grapplePoint = new GameObject();
+            grapplePoint.transform.SetParent(transform);
         }
 
         private void OnEnable()
@@ -99,6 +106,7 @@ namespace Gameplay.Mecha
                 return;
             if (_isGrappling && _canPull)
             {
+                MaintainGrapple();
                 if (_isPressed)
                     PullBody();
                 else if (_recast)
@@ -139,16 +147,24 @@ namespace Gameplay.Mecha
             RaycastHit hit;
             if (Physics.Raycast(cam.position, cam.forward, out hit, juggernautParameters.maxGrappleDistance, whatIsGrappleable))
             {
-                _grapplePoint = hit.point;
+                TransferGrapplePoint(hit.transform, hit.point);
+                //_grapplePoint = hit.point;
                 Invoke(nameof(ExecuteGrapple), grappleDelayTime);
             }
             else
             {
-                _grapplePoint = cam.position + cam.forward * maxGrappleDistance;
+                TransferGrapplePoint(transform, cam.position + cam.forward * maxGrappleDistance);
+                //_grapplePoint = cam.position + cam.forward * maxGrappleDistance;
                 Invoke(nameof(StopGrappleFail), grappleDelayTime);
             }
             
             lr.enabled = true;
+        }
+
+        private void TransferGrapplePoint(Transform targetTransform, Vector3 point)
+        {
+            grapplePoint.transform.SetParent(targetTransform, true);
+            grapplePoint.transform.position = point;
         }
 
         private SpringJoint _joint;
@@ -161,13 +177,13 @@ namespace Gameplay.Mecha
             float distanceFromPoint = Vector3.Distance(rb.position, swingPoint);
         
             // The distance grapple will try to keep from grapple point.
-            _joint.maxDistance = distanceFromPoint * 1;
-            _joint.minDistance = distanceFromPoint * 0.25f;
+            _joint.maxDistance = distanceFromPoint * springHighDistance;
+            _joint.minDistance = distanceFromPoint * springLowDistance;
         
             // Adjust these values to fit needs.
-            _joint.spring = 500f;
-            _joint.damper = 30f;
-            _joint.massScale = 4.5f;
+            _joint.spring = 4.5f;
+            _joint.damper = 2f;
+            _joint.massScale = 340f;
         
         
         }
@@ -179,20 +195,31 @@ namespace Gameplay.Mecha
 
         private void ExecuteGrapple()
         {
-            AddSwing(_grapplePoint);
+            AddSwing(grapplePoint.transform.position);
             _canPull = true;
+            //_starting_distance = Vector3.Distance(rb.position, _grapplePoint);
+        }
+
+        private void MaintainGrapple()
+        {
+            _joint.connectedAnchor = grapplePoint.transform.position;
+            _joint.minDistance = MathF.Min(_joint.minDistance, Vector3.Distance(rb.position, grapplePoint.transform.position));
         }
 
         private void PullBody()
         {
             _recast = true;
-            var direction = (_grapplePoint - rb.position).normalized;
-            var distance = Vector3.Distance(rb.position, _grapplePoint);
-            var multiplier = Math.Min(1, distance / 2f);
-            rb.AddForce(direction * (1000 * juggernautParameters.grapplePullSpeed * multiplier), ForceMode.Force);
-            
-            _joint.maxDistance = distance;
-            _joint.minDistance = distance * 0.25f;
+            //var direction = (_grapplePoint - rb.position).normalized;
+            var distance = Vector3.Distance(rb.position, grapplePoint.transform.position);
+            //var multiplier = 10;//Math.Min(1, distance / 2f);
+            //rb.AddForce(direction * (1000 * juggernautParameters.grapplePullSpeed * multiplier), ForceMode.Force);
+
+            //var distance_change = Vector3.ClampMagnitude(direction * multiplier * Time.deltaTime, math.max(distance, 0.5f));
+            //rb.transform.position = (rb.transform.position + distance_change);
+            //rb.AddForce(direction * juggernautParameters.grapplePullSpeed * Time.fixedDeltaTime * 4, ForceMode.VelocityChange);
+
+            _joint.maxDistance = math.clamp(math.min(_joint.maxDistance - grapplePullSpeed * Time.fixedDeltaTime, distance), 0.25f, maxGrappleDistance);
+            _joint.minDistance = 0.25f; // distance * 0.25f;
         }
         
 
@@ -209,9 +236,9 @@ namespace Gameplay.Mecha
             _spring.Strength = strength;
             _spring.Update(Time.deltaTime);
 
-            var newPoint = Vector3.Lerp(lr.GetPosition(quality), _grapplePoint, Time.deltaTime * 4f);
+            var newPoint = Vector3.Lerp(lr.GetPosition(quality), grapplePoint.transform.position, Time.deltaTime * 4f);
             
-             var up = Quaternion.LookRotation(_grapplePoint - gunTip.position).normalized * Vector3.up;
+             var up = Quaternion.LookRotation(grapplePoint.transform.position - gunTip.position).normalized * Vector3.up;
              for (int i = 0; i < quality + 1 ; i++)
              {
                  var delta = i / (float) quality;
@@ -245,6 +272,7 @@ namespace Gameplay.Mecha
             _recast = false;
             lr.SetPosition(1, gunTip.position);
             lr.enabled = false;
+            TransferGrapplePoint(transform, Vector3.zero);
         }
         
         private void StopGrappleFail()
