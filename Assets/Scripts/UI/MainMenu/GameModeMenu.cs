@@ -109,6 +109,7 @@ namespace UI.MainMenu
         {
             if (!isMultiplayer)
                 NetworkManager.StartHost();
+            // SendUserInfoToLobby();
             startButton.interactable = false;
             startMultiplayerButton.interactable = false;
             SoundManager.PlayOneShot(onClickSound);
@@ -145,5 +146,31 @@ namespace UI.MainMenu
             };
             await LobbyService.Instance.UpdateLobbyAsync(lobbyIds[0], options);
         }
+
+        // async void SendUserInfoToLobby()
+        // {
+        //     try
+        //     {
+        //         UpdatePlayerOptions options = new UpdatePlayerOptions();
+
+        //         options.Data = new Dictionary<string, PlayerDataObject>()
+        //         {
+        //             {
+        //                 "username", new PlayerDataObject(
+        //                     visibility: PlayerDataObject.VisibilityOptions.Public,
+        //                     value: AuthManager.PlayerName)
+        //             }
+        //         };
+
+        //         string playerId = AuthenticationService.Instance.PlayerId;
+
+        //         var lobby = await LobbyService.Instance.UpdatePlayerAsync(lobbyId, playerId, options);
+        //         Debug.Log("Sent userinfo to lobby");
+        //     }
+        //     catch (LobbyServiceException e)
+        //     {
+        //         Debug.Log(e);
+        //     }
+        // }
     }
 }

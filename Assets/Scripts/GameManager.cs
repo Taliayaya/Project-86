@@ -58,7 +58,7 @@ public class GameManager : Singleton<GameManager>
     private void Start()
     {
         NetworkManager.Singleton.OnSessionOwnerPromoted += OnSessionOwnerPromoted;
-        SceneManager.UnloadScene("PreloadManagers");
+        SceneManager.UnloadSceneAsync("PreloadManagers");
     }
 
     private void OnSessionOwnerPromoted(ulong sessionownerpromoted)

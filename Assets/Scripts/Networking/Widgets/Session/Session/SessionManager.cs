@@ -17,7 +17,7 @@ namespace Networking.Widgets.Session.Session
     /// When the application is quit the SessionManager will leave the active session.
     /// </summary>
     [DefaultExecutionOrder(-100)]
-    internal class SessionManager : LazySingleton<SessionManager>
+    public class SessionManager : LazySingleton<SessionManager>
     {
         bool m_Initialized;
 

@@ -7,6 +7,13 @@ using UnityEngine;
 
 namespace Gameplay
 {
+    struct PlayerInfo
+    {
+        GameObject mech;
+        ulong id;
+        string username;
+    }
+
     public class PlayerManager : Singleton<PlayerManager>
     {
         [CanBeNull] private Unit _player;
