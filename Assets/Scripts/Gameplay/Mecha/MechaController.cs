@@ -336,9 +336,11 @@ namespace Gameplay.Mecha
 
         protected override void Start()
         {
+            Debug.Log("Start");
             base.Start();
             if (!IsOwner)
                 return;
+            Debug.Log("[MechaController] Start");
             EventManager.TriggerEvent("RegisterMinimapTarget", transform);
             Cursor.lockState = CursorLockMode.Locked;
             groundRay = new Ray(transform.position, Vector3.down);

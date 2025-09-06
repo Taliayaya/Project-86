@@ -9,6 +9,7 @@ namespace UI
     {
         [SerializeField] private Slider healthSlider;
         [SerializeField] private TextMeshProUGUI healthText;
+        [SerializeField] private bool toggleable = true;
         private Transform _mainCamera;
 
         private static bool _isVisible = true;
@@ -24,8 +25,11 @@ namespace UI
 
         private void Awake()
         {
-            EventManager.AddListener(Constants.TypedEvents.OnToggleHealthBar, OnToggleHealthBar);    
-            gameObject.SetActive(IsVisible);
+            if (toggleable)
+            {
+                EventManager.AddListener(Constants.TypedEvents.OnToggleHealthBar, OnToggleHealthBar);    
+                gameObject.SetActive(IsVisible);
+            }
         }
         
         private void OnDestroy()
@@ -35,7 +39,8 @@ namespace UI
 
         public void OnHealthChange(float health, float maxHealth)
         {
-            healthText.text = $"{health:F0} / {maxHealth}"; 
+            if (healthText)
+                healthText.text = $"{health:F0} / {maxHealth}"; 
             healthSlider.value = health / maxHealth;
         }
         
