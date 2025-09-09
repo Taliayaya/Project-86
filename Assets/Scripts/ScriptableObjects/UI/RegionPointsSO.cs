@@ -34,6 +34,7 @@ namespace ScriptableObjects.UI
         
         public SceneData scene;
         public bool isMultiplayer;
+        public bool isSingleplayer;
 
         [TextArea]
         public string description;

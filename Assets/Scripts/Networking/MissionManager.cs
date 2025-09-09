@@ -16,6 +16,13 @@ namespace Networking
         private void Awake()
         {
             Instance = this;
+            EventManager.AddListener(Constants.Events.OnLeavingSession, OnLeavingSession);
+        }
+
+        private void OnLeavingSession()
+        {
+            Instance = null;
+            Destroy(this);
         }
 
         public override void OnNetworkSpawn()

@@ -222,6 +222,7 @@ namespace Networking.Widgets.Session.Session
             if (ActiveSession != null)
             {
                 UnregisterPlayerEvents();
+                EventManager.TriggerEvent(Constants.Events.OnLeavingSession);
                 
                 try
                 {

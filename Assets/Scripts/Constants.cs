@@ -47,6 +47,8 @@ public static class Constants
                 public const string OnExitPhotoMode = "OnExitPhotoMode";
             }
         }
+        
+        public const string OnLeavingSession = "OnLeavingSession";
 
         public static class Analytics
         {

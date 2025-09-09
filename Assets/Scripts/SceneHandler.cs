@@ -2,6 +2,7 @@
 using System.Collections;
 using Gameplay;
 using Networking;
+using Networking.Widgets.Session.Session;
 using ScriptableObjects;
 using ScriptableObjects.GameParameters;
 using ScriptableObjects.UI;
@@ -15,37 +16,65 @@ public class SceneHandler : Singleton<SceneHandler>
 {
     [SerializeField] private GraphicsParameters graphicsParameters;
     [SerializeField] private GameObject loadingScreenPrefab;
+    
+    [SerializeField] private bool loadMainMenuOnStart = true;
     private static SceneData _activeSceneData;
     private Scene? _currentScene;
     private Scene _globalScene;
 
     private bool _init;
-    private bool _preloaded;
+    private static bool _preloaded;
     
 
     private void OnEnable()
     {
-        EventManager.AddListener("LoadingScene", OnLoadingScene);
+        Debug.Log("[SceneHandler] OnEnable");
+        EventManager.AddListener(Constants.TypedEvents.LoadingScene, OnLoadingScene);
         EventManager.AddListener($"UpdateGameParameter:{nameof(graphicsParameters.detailsDensity)}", UpdateGrassDensity);
         EventManager.AddListener("ReloadScene", ReloadScene);
         EventManager.AddListener("Play", OnPlay);
+        EventManager.AddListener(Constants.Events.OnLeavingSession, OnLeavingSession);
         if (!_preloaded)
         {
             _preloaded = true;
-            SceneManager.LoadScene("PreloadManagers", LoadSceneMode.Additive);
             var loadingScreen = Instantiate(loadingScreenPrefab);
             DontDestroyOnLoad(loadingScreen);
         }
 
+        if (_init)
+        {
+            NetworkManager.Singleton.SceneManager.OnSceneEvent -= Instance.OnSceneEvent;
+            NetworkManager.Singleton.SceneManager.OnSceneEvent += Instance.OnSceneEvent;
+            NetworkManager.Singleton.SceneManager.PostSynchronizationSceneUnloading = true;
+        }
+
     }
-    
+
+    private void Start()
+    {
+        if (loadMainMenuOnStart)
+        {
+            Debug.Log("[SceneHandler] Loading Main Menu");
+            SceneManager.LoadScene("MainMenu");
+        }
+    }
+
+    private void OnLeavingSession()
+    {
+        NetworkManager.Singleton.OnClientConnectedCallback -= LateUserSpawn;
+    }
+
     private void OnDisable()
     {
+        if (this != Instance)
+            return;
+        Debug.Log("[SceneHandler] OnDisable");
         EventManager.RemoveListener("LoadingScene", OnLoadingScene);
         EventManager.RemoveListener($"UpdateGameParameter:{nameof(graphicsParameters.detailsDensity)}", UpdateGrassDensity);
         EventManager.RemoveListener("ReloadScene", ReloadScene);
         EventManager.RemoveListener("Play", OnPlay);
-        NetworkManager.Singleton.SceneManager.OnSceneEvent -= OnSceneEvent;
+        if (NetworkManager.Singleton && NetworkManager.Singleton.IsConnectedClient)
+            NetworkManager.Singleton.SceneManager.OnSceneEvent -= OnSceneEvent;
     }
 
     public static void Init()
@@ -73,9 +102,12 @@ public class SceneHandler : Singleton<SceneHandler>
         Init();
         Debug.Log($"Loading scene {newSceneName}");
         WindowManager.CloseAll();
+        ShowLoadingUI();
+        
+        NetworkManager.Singleton.SceneManager.OnSceneEvent -= Instance.OnSceneEvent;
+        NetworkManager.Singleton.SceneManager.OnSceneEvent += Instance.OnSceneEvent;
         if (!NetworkManager.Singleton.IsListening)
         {
-            ShowLoadingUI();
             _loadingAsyncOperation = SceneManager.LoadSceneAsync(newSceneName, LoadSceneMode.Single);
             EventManager.TriggerEvent(Constants.TypedEvents.LoadingScene, (_activeSceneData, _loadingAsyncOperation));
         }
@@ -273,8 +305,11 @@ public class SceneHandler : Singleton<SceneHandler>
 
     private void LateUserSpawn(ulong clientId)
     {
-        var respawnManager = FindAnyObjectByType<RespawnManager>();
-        PlayerManager.PlayerObjects[clientId] = respawnManager.SpawnPlayer(clientId);
+        if (NetworkManager.Singleton.IsHost)
+        {
+            var respawnManager = FindAnyObjectByType<RespawnManager>();
+            PlayerManager.PlayerObjects[clientId] = respawnManager.SpawnPlayer(clientId);
+        }
     }
 
     private void OnLoadingScene(object data)

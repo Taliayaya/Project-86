@@ -97,6 +97,7 @@ namespace UI.MainMenu
             startButton.onClick.RemoveAllListeners();
             _selectedRegionPointsSo = regionPointsSo;
             startButton.onClick.AddListener(() => StartSession());
+            startButton.gameObject.SetActive(regionPointsSo.isSingleplayer);
             multiplayerModeButton.gameObject.SetActive(regionPointsSo.isMultiplayer);
         }
 

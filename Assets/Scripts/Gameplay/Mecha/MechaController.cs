@@ -470,7 +470,7 @@ namespace Gameplay.Mecha
             //if (isDashing)
             //    return;
 
-            if (!_isGrounded || !_isInclineStable)
+            if (!_isGrounded /*|| !_isInclineStable */)
                 return;
 
             //Debug.Log(_movementmode);
@@ -487,9 +487,9 @@ namespace Gameplay.Mecha
 
         private void ApplyGravity()
         {
-            _yVelocity += -gravity * gravity * Time.fixedDeltaTime;
+            _yVelocity += gravity * Time.fixedDeltaTime;
             if (_isGrounded && _isInclineStable)
-                _yVelocity = 0; //gravity;
+                _yVelocity = gravity;
             _rigidbody.AddForce(Vector3.up * (_yVelocity), UnityEngine.ForceMode.Acceleration);
         }
 
@@ -513,6 +513,8 @@ namespace Gameplay.Mecha
         
         public void CanMove(bool canMove)
         {
+            if (!_rigidbody)
+                _rigidbody = GetComponent<Rigidbody>();
             _rigidbody.constraints = canMove ? RigidbodyConstraints.FreezeRotation : RigidbodyConstraints.FreezeAll;
         }
 
