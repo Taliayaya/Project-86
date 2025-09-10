@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using Cinemachine;
 using Gameplay.Units;
+using Networking;
+using Networking.Widgets.Session.Session;
 using NUnit.Framework;
 using ScriptableObjects;
 using ScriptableObjects.GameParameters;
@@ -12,6 +14,7 @@ using UnityEngine.Serialization;
 using UnityEngine;
 using Unity.VisualScripting;
 using Unity.Mathematics;
+using Unity.Services.Authentication;
 using static UnityEngine.LightAnchor;
 
 
@@ -307,6 +310,7 @@ namespace Gameplay.Mecha
                 //enabled = false;
                 return;
             }
+            MissionManager.Instance.RegisterPlayerRpc(SessionManager.Instance.ActiveSession.CurrentPlayer.Id, AuthenticationService.Instance.PlayerName, NetworkManager.LocalClientId);
             ReInit();
         }
 
@@ -374,17 +378,18 @@ namespace Gameplay.Mecha
             else
                 EventManager.TriggerEvent("OnDistanceForward", float.NaN);
         }
-        
+
         public void UpdateFloorRays()
         {
             // Scans the surrounding terrain and creates an averaged normal of it
-            
+
 
             // Overhaul code, above should be integrated into it
             int bodyRayOutwardCount = 8;
-            int bodyRayInwardCount = 8; // these can hit the player's collider, make sure they don't do that by changing their angle and/or distance from the main body
+            int bodyRayInwardCount =
+                8; // these can hit the player's collider, make sure they don't do that by changing their angle and/or distance from the main body
             // Ground ray + Velocity ray + local down ray + body rays
-            int bodyRayCount = 1 + 1 + 1+ bodyRayOutwardCount + bodyRayInwardCount;
+            int bodyRayCount = 1 + 1 + 1 + bodyRayOutwardCount + bodyRayInwardCount;
 
             Vector3[] groundNormals = new Vector3[feetEnds.Length + bodyRayCount];
 
@@ -395,7 +400,9 @@ namespace Gameplay.Mecha
             direction = Quaternion.AngleAxis(-30.0f, transform.right) * direction;
             for (int i = 0; i < bodyRayOutwardCount; i++)
             {
-                Physics.Raycast(transform.position, Quaternion.AngleAxis(i * (360.0f / bodyRayOutwardCount), transform.up) * direction, out hitData, 3.0f);
+                Physics.Raycast(transform.position,
+                    Quaternion.AngleAxis(i * (360.0f / bodyRayOutwardCount), transform.up) * direction, out hitData,
+                    3.0f);
                 groundNormals[i] = hitData.normal;
             }
 
@@ -403,9 +410,12 @@ namespace Gameplay.Mecha
             direction = Quaternion.AngleAxis(-105.0f, transform.right) * direction;
             for (int i = 0; i < bodyRayInwardCount; i++)
             {
-                Vector3 offset = Quaternion.AngleAxis(i * (360.0f / bodyRayInwardCount), transform.up) * transform.forward * 1.5f;
+                Vector3 offset = Quaternion.AngleAxis(i * (360.0f / bodyRayInwardCount), transform.up) *
+                                 transform.forward * 1.5f;
                 // 31 (bx011111) is a layer mask containing everything, but "damageables", change it to everything but the "player" layer mask once it is created
-                Physics.Raycast(transform.position + offset, Quaternion.AngleAxis(i * (-360.0f / bodyRayInwardCount), transform.up) * direction, out hitData, 3.0f, 31); 
+                Physics.Raycast(transform.position + offset,
+                    Quaternion.AngleAxis(i * (-360.0f / bodyRayInwardCount), transform.up) * direction, out hitData,
+                    3.0f, 31);
                 groundNormals[bodyRayOutwardCount + i] = hitData.normal;
                 //Debug.Log(hitData.collider);
             }
@@ -445,12 +455,14 @@ namespace Gameplay.Mecha
                     count++;
                 }
             }
-            if (count > 0) { 
+
+            if (count > 0)
+            {
                 avg_normal /= count;
                 groundHitData.normal = avg_normal;
             }
-            
-            }
+
+        }
 
         public void CheckGround(bool isGrounded)
         {

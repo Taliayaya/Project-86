@@ -25,7 +25,7 @@ namespace Gameplay
             {
                 if (Instance._player == value) return;
                 Instance._player = value;
-                EventManager.TriggerEvent("PlayerChanged", value);
+                EventManager.TriggerEvent(Constants.TypedEvents.OnPlayerChanged, value);
             }
         }
         

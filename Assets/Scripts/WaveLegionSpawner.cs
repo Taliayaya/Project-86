@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Gameplay;
 using Gameplay.Units;
 using ScriptableObjects.GameParameters;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -45,10 +46,16 @@ public class WaveLegionSpawner : MonoBehaviour
 
     public void SpawnLegion(GameObject prefab)
     {
+        if (!NetworkManager.Singleton.IsHost)
+            return;
         var point = transform.position + Random.insideUnitSphere * spawnRadius;
         if (NavMesh.SamplePosition(point, out var hit, 500, -1))
         {
             var unit = Instantiate(prefab, hit.position, Quaternion.Euler(0, Random.Range(0, 360), 0));
+            if (NetworkManager.Singleton.IsConnectedClient)
+            {
+                unit.GetComponent<NetworkObject>().Spawn(true);
+            }
             if (initialGoal && unit.TryGetComponent(out AIAgent agent))
             {
                 SetInitialGoal(agent);

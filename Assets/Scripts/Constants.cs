@@ -127,6 +127,8 @@ public static class Constants
 
         public const string OnToggleCockpitView = "OnToggleCockpitView";
         // TODO : Add all the typed event names cause i couldnt be bothered -nemo
+        
+        public const string OnPlayerChanged = "OnPlayerChanged";
 
     }
 

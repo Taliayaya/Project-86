@@ -7,10 +7,39 @@ using UnityEngine;
 
 namespace Networking
 {
+    public struct PlayerInfo : INetworkSerializable, IEquatable<PlayerInfo>
+    {
+        public FixedString128Bytes PlayerId;
+        public FixedString32Bytes PlayerName;
+        public ulong NetworkId;
+        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+        {
+            serializer.SerializeValue(ref PlayerId);
+            serializer.SerializeValue(ref PlayerName);
+            serializer.SerializeValue(ref NetworkId);
+        }
+
+        public bool Equals(PlayerInfo other)
+        {
+            return PlayerId.Equals(other.PlayerId) && PlayerName.Equals(other.PlayerName) && NetworkId == other.NetworkId;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is PlayerInfo other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(PlayerId, PlayerName, NetworkId);
+        }
+    }
     public class MissionManager : NetworkBehaviour
     {
         public NetworkVariable<FixedString64Bytes> missionName = new NetworkVariable<FixedString64Bytes>();
-
+        
+        public NetworkList<PlayerInfo> Players = new NetworkList<PlayerInfo>();
+        
         public static MissionManager Instance;
 
         private void Awake()
@@ -32,6 +61,52 @@ namespace Networking
             missionName.OnValueChanged += OnNewMission;
             if (!missionName.Value.IsEmpty)
                 OnNewMission("", missionName.Value);
+        }
+
+        public bool GetPlayerById(FixedString128Bytes playerId, out PlayerInfo? playerInfo)
+        {
+            foreach (var player in Players)
+            {
+                if (player.PlayerId.Equals(playerId))
+                {
+                    playerInfo = player;
+                    return true;
+                }
+            }
+            playerInfo = null;
+            return false;
+        }
+        
+        public bool GetPlayerByNetworkId(ulong networkId, out PlayerInfo? playerInfo)
+        {
+            foreach (var player in Players)
+            {
+                if (player.NetworkId == networkId)
+                {
+                    playerInfo = player;
+                    return true;
+                }
+            }
+            playerInfo = null;
+            return false;
+        }
+
+        [Rpc(SendTo.Owner)]
+        public void RegisterPlayerRpc(FixedString128Bytes playerId, FixedString32Bytes playerName, ulong networkId)
+        {
+            if (GetPlayerById(playerId, out PlayerInfo? info) && info.Value.NetworkId == networkId)
+            {
+                Debug.Log($"Player {playerName} with id {playerId} already registered with network id {networkId}, removing: " +
+                Players.Remove(info.Value));
+            }
+
+            Debug.Log($"Registering player {playerName} with id {playerId} and network id {networkId}");
+            Players.Add(new PlayerInfo()
+            {
+                PlayerId = playerId,
+                PlayerName = playerName,
+                NetworkId = networkId
+            });
         }
 
         protected override void OnNetworkSessionSynchronized()
