@@ -130,14 +130,14 @@ namespace Gameplay
         #region Event Callbacks
 
  
-        private void OnCallScavenger()
+        public void OnCallScavenger()
         {
             if (!scavengerOwned)
                 return;
             _scavengerController.State = ScavengerState.Follow;
         }
 
-        private void OnStopScavenger()
+        public void OnStopScavenger()
         {
             if (!scavengerOwned)
                 return;

@@ -908,9 +908,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: DefaultNamespace.SceneHandler, Assembly-CSharp
-        m_MethodName: ReloadScene
+      - m_Target: {fileID: 8751980441722113850}
+        m_TargetAssemblyTypeName: UI.SettingsUI, Assembly-CSharp
+        m_MethodName: ReloadMission
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1275,7 +1275,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4219052236674424641
 RectTransform:
   m_ObjectHideFlags: 0

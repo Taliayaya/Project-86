@@ -30,7 +30,7 @@ public class ConnectionManager : Singleton<MonoBehaviour>
 
     private async void Awake()
     {
-        m_NetworkManager = GetComponent<NetworkManager>();
+        m_NetworkManager = FindAnyObjectByType<NetworkManager>();
         m_NetworkManager.OnClientConnectedCallback += OnClientConnectedCallback;
         m_NetworkManager.OnSessionOwnerPromoted += OnSessionOwnerPromoted;
         _profileName = $"Player-{UnityEngine.Random.Range(0, 1000)}";
@@ -40,10 +40,10 @@ public class ConnectionManager : Singleton<MonoBehaviour>
 
     private async void Start()
     {
-        if (autoConnect)
-        {
-            await CreateOrJoinSessionAsync();
-        }
+        // if (autoConnect)
+        // {
+        //     await CreateOrJoinSessionAsync();
+        // }
     }
 
     private void OnSessionOwnerPromoted(ulong sessionOwnerPromoted)

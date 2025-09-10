@@ -9,6 +9,7 @@ using Unity.Services.Analytics;
 using Unity.Services.Core;
 using UnityEngine;
 using UnityEngine.Analytics;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Game Manager is the main class of the game. It is a singleton that is not destroyed on load.
@@ -57,6 +58,7 @@ public class GameManager : Singleton<GameManager>
     private void Start()
     {
         NetworkManager.Singleton.OnSessionOwnerPromoted += OnSessionOwnerPromoted;
+        SceneManager.UnloadSceneAsync("PreloadManagers");
     }
 
     private void OnSessionOwnerPromoted(ulong sessionownerpromoted)

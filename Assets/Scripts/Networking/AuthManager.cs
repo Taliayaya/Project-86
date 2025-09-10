@@ -86,6 +86,13 @@ namespace Networking
         
         public async Task AnonymousSignInAsync(string username)
         {
+            string profile = "Test" + Random.Range(0, 1000);
+            AuthenticationService.Instance.SwitchProfile(profile);
+            if (AuthenticationService.Instance.IsSignedIn)
+            {
+                await AuthenticationService.Instance.DeleteAccountAsync();
+            }
+            
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
             if (AuthenticationService.Instance.IsSignedIn)
             {

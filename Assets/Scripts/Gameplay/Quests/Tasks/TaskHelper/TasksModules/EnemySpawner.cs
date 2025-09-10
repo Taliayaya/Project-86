@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Gameplay.Units;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -56,6 +57,12 @@ namespace Gameplay.Quests.Tasks.TaskHelper.TasksModules
             } while (i > 0 && NavMesh.SamplePosition(position, out hit, 100, NavMesh.AllAreas));
             
             var enemy = Instantiate(unitPrefab, hit.position , Quaternion.Euler(0, Random.Range(0, 360), 0));
+            Debug.Log("[EnemySpawner]: Spawned unit.");
+            if (NetworkManager.Singleton.IsConnectedClient)
+            {
+                Debug.Log("[EnemySpawner]: Spawned unit to network.");
+                enemy.GetComponent<NetworkObject>().Spawn(true);
+            }
             return enemy;
         }
 
@@ -80,6 +87,8 @@ namespace Gameplay.Quests.Tasks.TaskHelper.TasksModules
 
         public void SpawnEnemies()
         {
+            if (!NetworkManager.Singleton.IsHost)
+                return;
             StartCoroutine(SpawnEnemiesCoroutine());
         }
         

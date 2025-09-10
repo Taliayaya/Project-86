@@ -78,5 +78,10 @@ namespace UI
             AuthenticationService.Instance.SignOut(true);
             SceneManager.LoadScene("MainMenu");
         }
+
+        public void ReloadMission()
+        {
+            SceneHandler.ReloadScene();
+        }
 }
 }

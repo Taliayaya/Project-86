@@ -7,7 +7,7 @@ namespace Networking.Widgets.Core.Base
     /// Lazy singleton pattern.
     /// </summary>
     /// <typeparam name="T">MonoBehaviour that will be added to an instantiated GameObject.</typeparam>
-    internal abstract class LazySingleton<T> : MonoBehaviour where T : MonoBehaviour
+    public abstract class LazySingleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         // We don't have to reset this static field to make it work with disabled DomainReload, as we check the gameObject in the Instance property.
         static T s_Instance;

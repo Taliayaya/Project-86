@@ -25,6 +25,12 @@ namespace Networking
             //};
         }
 
+        private void OnDisable()
+        {
+            if (NetworkManager.Singleton)
+                NetworkManager.Singleton.OnClientConnectedCallback -= StartMultiplayer;
+        }
+
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();

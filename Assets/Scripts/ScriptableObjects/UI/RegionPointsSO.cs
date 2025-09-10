@@ -33,6 +33,8 @@ namespace ScriptableObjects.UI
         public UnitType enemyType;
         
         public SceneData scene;
+        public bool isMultiplayer;
+        public bool isSingleplayer;
 
         [TextArea]
         public string description;

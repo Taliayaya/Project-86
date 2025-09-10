@@ -123,6 +123,29 @@ public class EventManager : Singleton<EventManager>
             evt.RemoveListener(listener);
     }
 
+    public static void ClearListeners(string eventName, bool typed = false)
+    {
+        if (!HasInstance) // removing a listener from a non existing event is not an error. 
+        {
+            if (typed && _tmpTypedEvents.TryGetValue(eventName, out var e))
+            {
+                e.RemoveAllListeners();
+                return;
+            }
+            if (_tmpEvents.TryGetValue(eventName, out var ev))
+                ev.RemoveAllListeners();
+            return;
+        }
+
+        if (typed && Instance._typedEvents.TryGetValue(eventName, out var evt))
+        {
+            evt.RemoveAllListeners();
+            return;
+        }
+        if (Instance._events.TryGetValue(eventName, out var eve))
+            eve.RemoveAllListeners();
+    }
+
     /// <summary>
     /// Trigger the event with the given name.
     /// It will send the message to all the actions that are listening at the event.
@@ -187,9 +210,9 @@ public class EventManager : Singleton<EventManager>
         {
             if (_tmpTypedEvents.TryGetValue(eventName, out var e))
                 e.RemoveListener(listener);
+            return;
         }
 
-        return;
             
         if (Instance._typedEvents.TryGetValue(eventName, out var evt))
             evt.RemoveListener(listener);

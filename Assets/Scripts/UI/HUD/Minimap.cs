@@ -25,6 +25,7 @@ namespace UI.HUD
 
         private void OnEnable()
         {
+            Debug.Log("[Minimap] OnEnable");
             EventManager.AddListener("MinimapMarkerVisibilityChanged", OnMinimapMarkerVisibilityChanged);
             EventManager.AddListener("RegisterMinimapTarget", ChangeTarget);
         }
@@ -62,6 +63,7 @@ namespace UI.HUD
 
         public void ChangeTarget(object newTarget)
         {
+            Debug.Log("Change target to " + newTarget);
             target = (Transform)newTarget;
         }
 

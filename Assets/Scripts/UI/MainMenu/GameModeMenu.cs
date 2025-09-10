@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using DefaultNamespace.Sound;
 using Gameplay;
+using Networking;
 using Networking.RpcRequestStructs;
 using ScriptableObjects.UI;
 using TMPro;
@@ -13,6 +14,10 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Unity.Services.Lobbies;
+using Unity.Services.Lobbies.Models;
+using Unity.Services.Authentication;
+using Unity.Services.Core;
 
 namespace UI.MainMenu
 {
@@ -23,6 +28,7 @@ namespace UI.MainMenu
         [SerializeField] private Transform regionPointsTransform;
         [SerializeField] private GameObject regionPointPrefab;
 
+        [SerializeField] private GameObject missionManagerPrefab;
         [Header("Mission Window")] [SerializeField]
         private AudioClip onClickSound;
 
@@ -32,6 +38,7 @@ namespace UI.MainMenu
         [SerializeField] private TMP_Text descriptionText;
         [SerializeField] private TMP_Text enemyTypeText;
         [SerializeField] private Button startButton;
+        [SerializeField] private Button multiplayerModeButton;
         [SerializeField] private Button startMultiplayerButton;
 
         private RegionPointsSO _selectedRegionPointsSo;
@@ -46,12 +53,14 @@ namespace UI.MainMenu
 
             closingBackground.onClick.AddListener(WindowManager.Close);
             startMultiplayerButton.gameObject.SetActive(false);
-            NetworkManager.Singleton.OnClientConnectedCallback += (clientId) =>
-            {
-                startMultiplayerButton.gameObject.SetActive(true);
-                startMultiplayerButton.onClick.RemoveAllListeners();
-                startMultiplayerButton.onClick.AddListener(() => StartSession(true));
-            };
+        }
+
+        public void CreatedSession()
+        {
+            startMultiplayerButton.gameObject.SetActive(true);
+            startMultiplayerButton.onClick.RemoveAllListeners();
+            startMultiplayerButton.onClick.AddListener(() => StartSession(true));
+            SetMission(_selectedRegionPointsSo);
         }
 
         private void CreateRegionPoint(RegionPointsSO regionPointsSo)
@@ -88,6 +97,8 @@ namespace UI.MainMenu
             startButton.onClick.RemoveAllListeners();
             _selectedRegionPointsSo = regionPointsSo;
             startButton.onClick.AddListener(() => StartSession());
+            startButton.gameObject.SetActive(regionPointsSo.isSingleplayer);
+            multiplayerModeButton.gameObject.SetActive(regionPointsSo.isMultiplayer);
         }
 
         private void CloseWindow()
@@ -97,43 +108,70 @@ namespace UI.MainMenu
 
         public void StartSession(bool isMultiplayer = false)
         {
+            if (!isMultiplayer)
+                NetworkManager.StartHost();
+            // SendUserInfoToLobby();
             startButton.interactable = false;
             startMultiplayerButton.interactable = false;
             SoundManager.PlayOneShot(onClickSound);
             // notify all clients and the host to trigger the scene change
-            SceneHandler.LoadScene(_selectedRegionPointsSo.scene, _selectedRegionPointsSo, isMultiplayer);
-            StartSessionRpc(new MissionData()
-            {
-                missionName = _selectedRegionPointsSo.name
-            });
+            Debug.Log("Creating missionManager");
+            var missionManager = Instantiate(missionManagerPrefab);
+            DontDestroyOnLoad(missionManager);
+            missionManager.GetComponent<NetworkObject>().Spawn();
+            missionManager.GetComponent<MissionManager>().missionName.Value = _selectedRegionPointsSo.name;
+            
             //AnalyticsService.Instance.CustomData("levelStarted", new Dictionary<string, object>()
             //{
             //    {"levelName", _selectedRegionPointsSo.regionName}
             //});
         }
-        [Rpc(SendTo.ClientsAndHost)]
-        private void StartSessionRpc(MissionData missionData)
+        async void SetMission(RegionPointsSO mission)
         {
-            RegionPointsSO regionPointsSo = Resources.Load<RegionPointsSO>($"ScriptableObjects/UI/Main Menu/{missionData.missionName}");
-            Debug.Log("StartSessionRpc " + regionPointsSo);
-            Debug.Log("SceneData " + regionPointsSo.scene);
-            GameManager.Mission = regionPointsSo;
-            NetworkManager.Singleton.SceneManager.OnLoadComplete += SceneManagerOnOnLoadComplete;
+            if (!IsHost)
+                return;
+            Debug.Log("Set mission for lobby");
+            var lobbyIds = await LobbyService.Instance.GetJoinedLobbiesAsync();
+            Debug.Assert(lobbyIds.Count == 1, "expected only one lobby, not parties implemented yet");
+
+            UpdateLobbyOptions options = new UpdateLobbyOptions();
+            options.HostId = AuthenticationService.Instance.PlayerId;
+
+
+            options.Data = new Dictionary<string, DataObject>()
+            {
+                {
+                    "missionName", new DataObject(visibility: DataObject.VisibilityOptions.Public,
+                            mission.name)
+                }
+            };
+            await LobbyService.Instance.UpdateLobbyAsync(lobbyIds[0], options);
         }
 
-        private void SceneManagerOnOnLoadComplete(ulong clientid, string scenename, LoadSceneMode loadscenemode)
-        {
-            if (scenename == "LoadingScene") return;
-            if (clientid != NetworkManager.Singleton.LocalClientId) return;
-            NetworkManager.Singleton.SceneManager.OnLoadComplete -= SceneManagerOnOnLoadComplete;
-            Cursor.lockState = _selectedRegionPointsSo.scene.cursorLockMode;
-            if (_selectedRegionPointsSo.scene.inputActionMap != "")
-                InputManager.SwitchCurrentActionMap(_selectedRegionPointsSo.scene.inputActionMap);
-            DataHandler.LoadGameData();
-            EventManager.TriggerEvent(Constants.TypedEvents.OnSceneLoadingCompleted, _selectedRegionPointsSo);
-            FindAnyObjectByType<RespawnManager>().SpawnPlayer(clientid);
-            
-            Debug.Log("Scene loaded");
-        }
+        // async void SendUserInfoToLobby()
+        // {
+        //     try
+        //     {
+        //         UpdatePlayerOptions options = new UpdatePlayerOptions();
+
+        //         options.Data = new Dictionary<string, PlayerDataObject>()
+        //         {
+        //             {
+        //                 "username", new PlayerDataObject(
+        //                     visibility: PlayerDataObject.VisibilityOptions.Public,
+        //                     value: AuthManager.PlayerName)
+        //             }
+        //         };
+
+        //         string playerId = AuthenticationService.Instance.PlayerId;
+
+        //         var lobby = await LobbyService.Instance.UpdatePlayerAsync(lobbyId, playerId, options);
+        //         Debug.Log("Sent userinfo to lobby");
+        //     }
+        //     catch (LobbyServiceException e)
+        //     {
+        //         Debug.Log(e);
+        //     }
+        // }
     }
 }
