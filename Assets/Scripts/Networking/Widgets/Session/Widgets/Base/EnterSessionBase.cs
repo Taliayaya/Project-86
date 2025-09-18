@@ -13,7 +13,7 @@ namespace Networking.Widgets.Session.Widgets.Base
     /// <summary>
     /// Base class for joining a session via a button.
     /// </summary>
-    internal class EnterSessionBase : WidgetBehaviour, ISessionLifecycleEvents, ISessionProvider
+    public class EnterSessionBase : WidgetBehaviour, ISessionLifecycleEvents, ISessionProvider
     {
         [Header("Widget Configuration")]
         [Tooltip("General Widget Configuration.")]
@@ -35,41 +35,50 @@ namespace Networking.Widgets.Session.Widgets.Base
         protected virtual void Awake()
         {
             m_EnterSessionButton ??= GetComponentInChildren<Button>();
-            m_EnterSessionButton.onClick.AddListener(EnterSession);
-            m_EnterSessionButton.interactable = false;
+            if (m_EnterSessionButton)
+            {
+                m_EnterSessionButton.onClick.AddListener(EnterSession);
+                m_EnterSessionButton.interactable = false;
+            }
         }
 
         public override void OnServicesInitialized()
         {
-            m_EnterSessionButton.interactable = true;
+            if (m_EnterSessionButton)
+                m_EnterSessionButton.interactable = true;
         }
 
         protected virtual void OnDestroy()
         {
-            m_EnterSessionButton.onClick.RemoveListener(EnterSession);
+            if (m_EnterSessionButton)
+                m_EnterSessionButton.onClick.RemoveListener(EnterSession);
         }
 
         public void OnSessionJoining()
         {
             JoiningSession?.Invoke();
-            m_EnterSessionButton.interactable = false;
+            if (m_EnterSessionButton)
+                m_EnterSessionButton.interactable = false;
         }
 
         public void OnSessionFailedToJoin(SessionException sessionException)
         {
             FailedToJoinSession?.Invoke(sessionException);
-            m_EnterSessionButton.interactable = true;
+            if (m_EnterSessionButton)
+                m_EnterSessionButton.interactable = true;
         }
 
         public void OnSessionJoined()
         {
             JoinedSession?.Invoke(Session);
-            m_EnterSessionButton.interactable = Session == null;
+            if (m_EnterSessionButton)
+                m_EnterSessionButton.interactable = Session == null;
         }
 
         public void OnSessionLeft()
         {
-            m_EnterSessionButton.interactable = true;
+            if (m_EnterSessionButton)
+                m_EnterSessionButton.interactable = true;
         }
 
         protected virtual EnterSessionData GetSessionData()

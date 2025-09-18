@@ -7,7 +7,7 @@ namespace Networking.Widgets.Core.Base
     /// <summary>
     /// The different types of SessionActions.
     /// </summary>
-    internal enum SessionAction
+    public enum SessionAction
     {
         Invalid,
         Create,
@@ -20,7 +20,7 @@ namespace Networking.Widgets.Core.Base
     /// <summary>
     /// Data to enter a session.
     /// </summary>
-    internal struct EnterSessionData
+    public struct EnterSessionData
     {
         public SessionAction SessionAction;
         public string SessionName;
@@ -33,7 +33,7 @@ namespace Networking.Widgets.Core.Base
     /// <summary>
     /// Additional data to enter specific session types.
     /// </summary>
-    internal struct AdditionalOptions
+    public struct AdditionalOptions
     {
         public MatchmakerOptions MatchmakerOptions;
         public bool AutoCreateSession;

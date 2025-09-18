@@ -46,7 +46,7 @@ namespace Gameplay.Units
         public virtual float Health
         {
             get => _health.Value;
-            set { _health.Value = value; }
+            set => _health.Value = value;
         }
 
         public bool Alive => Health > 0;
@@ -95,7 +95,8 @@ namespace Gameplay.Units
                 //    module.enabled = false;
                 //}
             }
-            _health.OnValueChanged += (old, curr) => onHealthChange.Invoke(curr, MaxHealth);
+
+            _health.OnValueChanged += OnHealthValueChanged;
             onHealthChange.Invoke(Health, MaxHealth); // Initialize health bar
             
             _rb = GetComponent<Rigidbody>();
@@ -127,6 +128,13 @@ namespace Gameplay.Units
             engineAudioSource.UnPause();
         }
 
+        private void OnHealthValueChanged(float old, float curr)
+        {
+            onHealthChange.Invoke(curr, MaxHealth);
+            if (!Alive)
+                Die();
+        }
+
         
         public DamageResponse TakeDamage(DamagePackage damagePackage)
         {
@@ -143,9 +151,9 @@ namespace Gameplay.Units
         public void TakeDamageRpc(DamagePackage damagePackage)
         {
             Health = Mathf.Clamp(Health - damagePackage.DamageAmount, 0, MaxHealth);
+            OnTakeDamage(damagePackage);
             if (!Alive)
                 Die();
-            OnTakeDamage(damagePackage);
         }
      
         public virtual void OnTakeDamage(DamagePackage damagePackage)
@@ -175,16 +183,20 @@ namespace Gameplay.Units
         public virtual void Die()
         {
             if (Died) return;
-            if (!IsOwner) return;
             Died = true;
+            if (IsOwner)
+                GetComponent<NetworkObject>().Despawn();
+            Debug.Log("[Unit]: Die");
+            // Despawn invokes Destroy on all clients
             EventManager.TriggerEvent("UnitDeath", this);
-            Destroy(gameObject);
             onUnitDeath.Invoke(this);
             Factions.RemoveMember(faction, this);
         }
         
         public override void OnDestroy()
         {
+            if (!Died)
+                Die();
             base.OnDestroy();
             Factions.RemoveMember(faction, this);
         }

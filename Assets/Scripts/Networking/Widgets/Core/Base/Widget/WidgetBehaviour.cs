@@ -10,7 +10,7 @@ namespace Unity.Multiplayer.Widgets
     ///
     /// Registers itself to the <see cref="Networking.Widgets.Core.Base.Widget.WidgetEventDispatcher"/> to call events.
     /// </summary>
-    internal abstract class WidgetBehaviour : MonoBehaviour, IWidget
+    public abstract class WidgetBehaviour : MonoBehaviour, IWidget
     {
         bool m_IsQuitting;
         
