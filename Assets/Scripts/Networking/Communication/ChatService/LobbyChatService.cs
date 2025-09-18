@@ -15,7 +15,8 @@ namespace Networking.Communication.ChatService
 
         public override void OnNetworkSpawn()
         {
-            OnSessionJoined(SessionManager.Instance.ActiveSession);
+            if (SessionManager.Instance.ActiveSession != null)
+                OnSessionJoined(SessionManager.Instance.ActiveSession);
             Debug.Log("Chat Service Spawned");
             EventManager.AddListener(Constants.TypedEvents.Session.SessionJoined, OnSessionJoined);
         }

@@ -188,6 +188,24 @@ public class SceneHandler : Singleton<SceneHandler>
         OnPlay();
     }
 
+    public static IEnumerator SpawnPlayers()
+    {
+        if (!NetworkManager.Singleton.IsHost)
+            yield break;
+        Debug.Log("Host is spawning players");
+        var respawnManager = FindAnyObjectByType<RespawnManager>();
+        foreach (var client in NetworkManager.Singleton.ConnectedClientsList)
+        {
+            Debug.Log("Host is spawning player " + client.ClientId);
+            var playerObject = respawnManager.SpawnPlayer(client.ClientId);
+            PlayerManager.PlayerObjects[client.ClientId] = playerObject;
+        }
+
+        Debug.Log("Auto spawning for late users");
+        NetworkManager.Singleton.OnClientConnectedCallback -= LateUserSpawn;
+        NetworkManager.Singleton.OnClientConnectedCallback += LateUserSpawn;
+    }
+
     IEnumerator PostSceneLoad(SceneEvent sceneEvent, bool setActiveScene = true)
     {
         if (!_isReload)
@@ -225,18 +243,7 @@ public class SceneHandler : Singleton<SceneHandler>
         yield return null;
         if (NetworkManager.Singleton.IsHost)
         {
-            Debug.Log("Host is spawning players");
-            var respawnManager = FindAnyObjectByType<RespawnManager>();
-            foreach (var client in NetworkManager.Singleton.ConnectedClientsList)
-            {
-                Debug.Log("Host is spawning player " + client.ClientId);
-                var playerObject = respawnManager.SpawnPlayer(client.ClientId);
-                PlayerManager.PlayerObjects[client.ClientId] = playerObject;
-            }
-
-            Debug.Log("Auto spawning for late users");
-            NetworkManager.Singleton.OnClientConnectedCallback -= LateUserSpawn;
-            NetworkManager.Singleton.OnClientConnectedCallback += LateUserSpawn;
+            yield return SpawnPlayers();
         }
         else
         {
@@ -303,7 +310,7 @@ public class SceneHandler : Singleton<SceneHandler>
         }
     }
 
-    private void LateUserSpawn(ulong clientId)
+    private static void LateUserSpawn(ulong clientId)
     {
         if (NetworkManager.Singleton.IsHost)
         {
