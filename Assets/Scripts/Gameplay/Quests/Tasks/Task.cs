@@ -1,11 +1,12 @@
 using System;
 using Gameplay.Quests.Tasks.TaskHelper.TasksModules;
 using Gameplay.Quests.Tasks.TasksType;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace Gameplay.Quests.Tasks
 {
-    public class Task : MonoBehaviour
+    public class Task : NetworkBehaviour
     {
         public delegate void TaskProgressChanged(Task task);
         public delegate void StatusChanged(TaskStatus newStatus, Task task);
@@ -15,25 +16,43 @@ namespace Gameplay.Quests.Tasks
         
         public TaskImportance importance;
         [NonSerialized]
-        private TaskStatus _status = TaskStatus.Inactive;
+        private NetworkVariable<TaskStatus> _status = new NetworkVariable<TaskStatus>(TaskStatus.Inactive);
         public TaskStatus Status
         {
-            get => _status;
+            get => _status.Value;
             set
             {
-                
-                var oldStatus = _status;
-                _status = value;
-                if (oldStatus != value)
-                {
-                    OnStatusChanged?.Invoke(oldStatus, this);
-                }
-
+                // if (IsOwner)
+                    _status.Value = value;
+                // else
+                //     Debug.LogWarning("[Task] Status: Task status can only be changed by the owner");
             }
         }
 
         private void Awake()
         {
+        }
+
+        public void OnEnable()
+        {
+            _status.OnValueChanged += OnTaskStatusChanged;
+            Debug.Log($"[Task] OnNetworkSpawn(): Task {name} spawned");
+
+            if (Status != TaskStatus.Inactive)
+            {
+                OnTaskStatusChanged(TaskStatus.Inactive, Status);
+            }
+        }
+
+        private void OnDisable()
+        {
+            _status.OnValueChanged -= OnTaskStatusChanged;
+        }
+
+        private void OnTaskStatusChanged(TaskStatus previousValue, TaskStatus newValue)
+        {
+            Debug.Log($"[Task] OnTaskStatusChanged(): Task {name} status changed to {newValue}");
+            OnStatusChanged?.Invoke(previousValue, this);
         }
 
         [NonSerialized]
