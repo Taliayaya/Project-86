@@ -19,7 +19,7 @@ namespace Gameplay.Quests.Tasks.TasksType
         [NonSerialized]
         private int _currentEnemyKilled = 0;
 
-        public void OnEnable()
+        public override void OnEnable()
         {
             _currentEnemyKilled = 0;
         }

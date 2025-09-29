@@ -33,7 +33,7 @@ namespace Gameplay.Quests.Tasks
         {
         }
 
-        public void OnEnable()
+        public virtual void OnEnable()
         {
             _status.OnValueChanged += OnTaskStatusChanged;
             Debug.Log($"[Task] OnNetworkSpawn(): Task {name} spawned");
