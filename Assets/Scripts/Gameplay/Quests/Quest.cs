@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Quests.Tasks;
+using Unity.Netcode;
 using Unity.Services.Analytics;
 using UnityEngine;
 using UnityEngine.Events;
@@ -10,7 +11,7 @@ using TaskStatus = Gameplay.Quests.Tasks.TaskStatus;
 
 namespace Gameplay.Quests
 {
-    public class Quest : MonoBehaviour
+    public class Quest : NetworkBehaviour
     {
         #region Events
         
@@ -32,18 +33,15 @@ namespace Gameplay.Quests
         
         public TaskOrder taskOrder;
         [NonSerialized]
-        private QuestStatus _status = QuestStatus.Inactive;
+        private NetworkVariable<QuestStatus> _status = new NetworkVariable<QuestStatus>(QuestStatus.Inactive);
 
         public QuestStatus Status
         {
-            get => _status;
+            get => _status.Value;
             set
             {
-                var oldStatus = _status;
-                _status = value;
-                if (oldStatus != value)
-                    OnStatusChanged?.Invoke(_status, this);
-
+                if (IsOwner)
+                    _status.Value = value;
             }
         }
 
@@ -57,8 +55,6 @@ namespace Gameplay.Quests
             {
                 tasks = value;
             }
-            
-            
         }
         
         [Header("Conditions")]
@@ -68,7 +64,22 @@ namespace Gameplay.Quests
         public UnityEvent<Quest> onActivate;
         public UnityEvent<Quest> onComplete;
         public bool IsCompleted => Status == QuestStatus.Completed;
-        
+
+        public override void OnNetworkSpawn()
+        {
+            base.OnNetworkSpawn();
+            _status.OnValueChanged += NetworkStatusChanged;
+        }
+
+        private void NetworkStatusChanged(QuestStatus previousValue, QuestStatus newValue)
+        {
+            if (!IsOwner && newValue == QuestStatus.Completed)
+                Complete(true);
+                
+            if (previousValue != newValue)
+                OnStatusChanged?.Invoke(newValue, this);
+        }
+
         public bool CanActivate()
         {
             foreach (var quest in requiredFinishedQuests)
@@ -83,7 +94,7 @@ namespace Gameplay.Quests
 
         public bool CanComplete()
         {
-            if (_status != QuestStatus.Active)
+            if (Status != QuestStatus.Active)
                 return false;
 
             foreach (var task in GetPrincipaleTasks())
@@ -116,11 +127,11 @@ namespace Gameplay.Quests
             CompleteCompletableTasks(forceComplete);
             UnregisterTaskEvents();
             foreach (Transform child in transform)
+            {
                 child.gameObject.SetActive(false);
-            
-            EventManager.TriggerEvent(Constants.Events.Analytics.QuestCompleted, questName);
-            
+            }
 
+            EventManager.TriggerEvent(Constants.Events.Analytics.QuestCompleted, questName);
         }
         
         
