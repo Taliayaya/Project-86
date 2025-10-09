@@ -10,7 +10,15 @@ namespace Gameplay
         {
             EventManager.AddListener(Constants.Events.Inputs.Juggernaut.OnPhotoMode, OnPhotoMode);
         }
-        
+
+        private void Awake()
+        {
+            if (!freeCamera)
+            {
+                freeCamera = Resources.Load<GameObject>("Prefabs/PhotoMode Camera");
+            }
+        }
+
         private void OnDisable()
         {
             EventManager.RemoveListener(Constants.Events.Inputs.Juggernaut.OnPhotoMode, OnPhotoMode);
@@ -18,7 +26,8 @@ namespace Gameplay
         
         private void OnPhotoMode()
         {
-            Instantiate(freeCamera, transform.position, transform.rotation);
+            var go = Instantiate(freeCamera, transform.position, transform.rotation);
+            go.SetActive(true);
         }
         
     }
