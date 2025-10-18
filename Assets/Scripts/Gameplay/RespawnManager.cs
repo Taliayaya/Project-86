@@ -82,10 +82,6 @@ namespace Gameplay
             var switcher2 = armamentSection.GetComponentInChildren<ArmamentSwitcher>();
             switcher1.ChangedArmament(armament);
             switcher2.ChangedArmament(armament);
-
-            var personalMarkLoader = go.GetComponentInChildren<LoadPersonalMark>();
-            personalMarkLoader.Load(player.Properties[Constants.Properties.Session.PersonalMark].Value);;
-            
         }
 
         public GameObject SpawnPlayer()

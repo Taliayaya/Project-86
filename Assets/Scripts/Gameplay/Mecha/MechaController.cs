@@ -310,8 +310,6 @@ namespace Gameplay.Mecha
                 //enabled = false;
                 return;
             }
-            if (SessionManager.Instance.ActiveSession != null)
-                MissionManager.Instance.RegisterPlayerRpc(SessionManager.Instance.ActiveSession.CurrentPlayer.Id, AuthenticationService.Instance.PlayerName, NetworkManager.LocalClientId);
             ReInit();
         }
 

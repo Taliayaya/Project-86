@@ -1,6 +1,12 @@
 using System;
 using System.Collections;
+using Armament.Shared;
+using Networking;
+using Networking.Widgets.Session.Session;
 using ScriptableObjects.Skins;
+using Unity.Multiplayer.Widgets;
+using Unity.Netcode;
+using Unity.Services.Multiplayer;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using JuggConfigSO = ScriptableObjects.Skins.JuggConfigSO;
@@ -8,11 +14,12 @@ using JuggConfigSO = ScriptableObjects.Skins.JuggConfigSO;
 namespace Cosmetic
 {
     [RequireComponent(typeof(DecalProjector))]
-    public class LoadPersonalMark : MonoBehaviour
+    public class LoadPersonalMark : NetworkBehaviour
     {
         private Material _material;
         private DecalProjector _decalProjector;
         private JuggConfigSO _configSo;
+        PersonalMarkSO _personalMarkSo;
         private static readonly int BaseMap = Shader.PropertyToID("Base_Map");
 
         private void Awake()
@@ -38,14 +45,30 @@ namespace Cosmetic
             _configSo = LoadConfig();
            
             _material.EnableKeyword("_BASEMAP");
-            _material.SetTexture(BaseMap, _configSo.PersonalMark.image);
-            _material.mainTexture = _configSo.PersonalMark.image;
+            if (!_personalMarkSo)
+            {
+                Debug.Log("Using config PM");
+                if (!IsOwner)
+                    LoadRemotePM();
+                else
+                    _personalMarkSo = _configSo.PersonalMark;
+            }
+
+            _material.SetTexture(BaseMap, _personalMarkSo.image);
+            _material.mainTexture = _personalMarkSo.image;
             
             _material.name = "Decal_PM_tmp";
             _decalProjector.material = _material;
             _decalProjector.enabled = true;
 
             //StartCoroutine(DisplayAllPM());
+        }
+
+        private void LoadRemotePM()
+        {
+            MissionManager.Instance.GetPlayerByNetworkId(OwnerClientId, out var playerInfo);
+            IReadOnlyPlayer player = SessionManager.Instance.ActiveSession.GetPlayer(playerInfo.Value.PlayerId.Value);
+            Load(player.Properties[Constants.Properties.Session.PersonalMark].Value);
         }
         
         private void OnEnable()
@@ -60,14 +83,9 @@ namespace Cosmetic
 
         public void Load(string personalMarkFileName)
         {
-            var mark = Resources.Load<PersonalMarkSO>("ScriptableObjects/Skins/PersonalMarks/" + personalMarkFileName);
-            if (mark == null)
-            {
+            _personalMarkSo = Resources.Load<PersonalMarkSO>("ScriptableObjects/Skins/PersonalMarks/" + personalMarkFileName);
+            if (_personalMarkSo == null)
                 Debug.LogError("PersonalMarkSO not found");
-                return;
-            }
-            _material.SetTexture(BaseMap, mark.image);
-            _material.mainTexture = mark.image;
             // EventManager.TriggerEvent(Constants.TypedEvents.OnChangedPersonalMark, mark);
         }
         
