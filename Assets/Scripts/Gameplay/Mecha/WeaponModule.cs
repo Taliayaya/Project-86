@@ -46,10 +46,18 @@ namespace Gameplay.Mecha
          SerializeField]
         private string ammoLeftOrRight = "Left";
         [SerializeField] private Transform gunCheckCanShoot;
+        [SerializeField] private Animator _animator;
+        [SerializeField] private Rigidbody _rb;
+        [SerializeField] private Vector3 recoilBodyTorque;
+        
         
         public bool canFire = true;
+        
         private Collider _gunTransformCollider;
-        private int _currentAmmoRemaining;
+        [Header("Live data")]
+        [SerializeField] private int _currentAmmoRemaining;
+
+        private int _recoilLayer = 0;
         
         private bool _isHeld = false;
 
@@ -80,6 +88,8 @@ namespace Gameplay.Mecha
                 gunCheckCanShoot = transform;
             _gunTransformCollider = gunTransform.parent.GetComponent<Collider>();
             CurrentAmmoRemaining = ammo.maxAmmo;
+            if (_animator)
+                _recoilLayer = _animator.GetLayerIndex("Cannon");
             //gunAudioSource.loop = holdFire;
         }
 
@@ -218,6 +228,15 @@ namespace Gameplay.Mecha
         
         private float _lastShotTime;
 
+        
+        private void PlayRecoilAnimation()
+        {
+            if (_animator == null) return;
+            _animator.Play("Recoil", _recoilLayer, 0f);
+            _rb.AddTorque(Vector3.up * recoilBodyTorque.y, ForceMode.Impulse);
+            _rb.AddForce(Vector3.back * recoilBodyTorque.z, ForceMode.Impulse);
+        }
+
         /// <summary>
         /// AI related method
         /// </summary>
@@ -274,6 +293,7 @@ namespace Gameplay.Mecha
 
                     if (HasAuthority && IsSpawned)
                         PlayBulletSoundRpc();
+                    PlayRecoilAnimation();
                 }
             }
             if (_currentAmmoRemaining <= 0)
