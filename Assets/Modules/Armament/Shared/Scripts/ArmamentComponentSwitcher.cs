@@ -7,10 +7,15 @@ namespace Armament.Shared
 	public class ArmamentComponentSwitcher : MonoBehaviour
 	{
 		[SerializeField] private ArmamentComponentSwitcherData[] Armaments;
+		
+		[SerializeField] private bool changeArmamentOnStart = true;
+		[SerializeField] private bool useArmamentOverride;
+		[SerializeField] private ArmamentType armamentOverride;
 
 		private void Start()
 		{
-			ChangedArmament();
+			if (changeArmamentOnStart)
+				ChangedArmament();
 			SubscribeToEvents();
 		}
 
@@ -30,12 +35,17 @@ namespace Armament.Shared
 			EventManager.RemoveListener(nameof(MenuEvents.Instance.OnChangedArmament), ChangedArmament);
 		}
 
-		private void ChangedArmament()
+		public void ChangedArmament()
 		{
-			ArmamentType currentArmament = ArmamentConfigManager.GetConfig().CurrentArmament;
+			ArmamentType currentArmament =
+				useArmamentOverride ? armamentOverride : ArmamentConfigManager.GetConfig().CurrentArmament;
+			ChangedArmament(currentArmament);
+		}
+		public void ChangedArmament(ArmamentType armament)
+		{
 			foreach (ArmamentComponentSwitcherData data in Armaments)
 			{
-				bool isCurrentEnabled = data.Type == currentArmament;
+				bool isCurrentEnabled = data.Type == armament;
 				foreach (var visual in data.Components)
 				{
 					visual.enabled = isCurrentEnabled;

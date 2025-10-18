@@ -41,7 +41,7 @@ namespace BladesCombat
             
             if (!other.TryGetComponent(out IHealth health))
             {
-                Debug.LogError($"{other.name} doesn't have health component");
+                Debug.Log($"{other.name} doesn't have health component");
                 return;
             }
 

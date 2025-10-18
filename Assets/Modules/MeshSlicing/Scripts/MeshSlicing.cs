@@ -1,6 +1,7 @@
 ﻿using System;
 using Assets.Scripts;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 /// <summary>
 /// Code from <a href="https://www.youtube.com/watch?v=BVCNDUcnE1o" />
@@ -13,14 +14,16 @@ public class MeshSlicing
 	private Vector3 _triggerEnterBasePosition;
 	private Vector3 _triggerExitTipPosition;
 	private float _forceAppliedToCut;
+	private float _lifetime;
 
-	public event Action<GameObject> OnSliced; 
+	public event Action<GameObject, GameObject> OnSliced; 
 
-	public MeshSlicing(Transform bladeTip, Transform bladeBase, float forceAppliedToCut)
+	public MeshSlicing(Transform bladeTip, Transform bladeBase, float forceAppliedToCut, float lifetime)
 	{
 		_bladeTip = bladeTip;
 		_bladeBase = bladeBase;
 		_forceAppliedToCut = forceAppliedToCut;
+		_lifetime = lifetime;
 	}
 
 	public void OnTriggerEnter(Collider other)
@@ -84,6 +87,6 @@ public class MeshSlicing
 
 		newPart.transform.localScale = worldScale;
 
-		OnSliced?.Invoke(other.gameObject);
+		OnSliced?.Invoke(other.gameObject, newPart);
 	}
 }

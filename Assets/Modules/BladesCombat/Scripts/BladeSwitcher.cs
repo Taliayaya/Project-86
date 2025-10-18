@@ -43,8 +43,19 @@ namespace BladesCombat
         {
             _isHeld = !_isHeld;
             if (!_isHeld) return;
-            OnLeftToggle();
-            OnRightToggle();
+            _enabledLeftBlade = !_enabledLeftBlade;
+            _enabledRightBlade = !_enabledRightBlade;
+            
+            SharedData.LeftTrigger.IsActive = _enabledLeftBlade;
+            SharedData.RightTrigger.IsActive = _enabledRightBlade;
+            if (_enabledLeftBlade)
+            {
+                OpenBlade(SharedData.BothBlade);
+            }
+            else
+            {
+                CloseBlade(SharedData.BothBlade);
+            }
             OnBothBladesToggled?.Invoke();
         }
 

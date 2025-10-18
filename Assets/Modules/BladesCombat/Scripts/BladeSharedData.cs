@@ -10,6 +10,7 @@ namespace BladesCombat
     {
         [SerializeField] private float _FullDamage;
         
+        [SerializeField] private Animator _BothBlade;
         [SerializeField] private Animator _LeftBlade;
         [SerializeField] private Animator _RightBlade;
         
@@ -20,6 +21,7 @@ namespace BladesCombat
         
         public Animator LeftBlade => _LeftBlade;
         public Animator RightBlade => _RightBlade;
+        public Animator BothBlade => _BothBlade;
         
         public BladeCollisionTrigger LeftTrigger => _LeftTrigger;
         public BladeCollisionTrigger RightTrigger => _RightTrigger;
