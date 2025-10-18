@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using Armament.Shared;
 using Networking.Widgets.Core.Base.ChatService.Interfaces;
 using Networking.Widgets.Core.Base.Session;
 using Networking.Widgets.Core.Base.Widget.Interfaces;
 using Unity.Multiplayer.Widgets;
+using Unity.Services.Lobbies;
 using Unity.Services.Multiplayer;
 using UnityEngine;
 using WidgetConfiguration = Networking.Widgets.Core.Configuration.WidgetConfiguration;
@@ -47,6 +49,14 @@ namespace Networking.Widgets.Session.Widgets.SessionPlayerList
             base.OnEnable();
             
             UpdatePlayerList();
+            
+            EventManager.AddListener(Constants.Events.Session.SessionPlayerDataChanged, OnLobbyChanged);
+        }
+
+        private async void OnLobbyChanged()
+        {
+            Debug.Log("[SessionPlayerList] OnLobbyChanged");
+            UpdatePlayerList();
         }
 
         protected override void OnDisable()
@@ -54,6 +64,7 @@ namespace Networking.Widgets.Session.Widgets.SessionPlayerList
             base.OnDisable();
             
             DisableAllPlayerListItems();
+            EventManager.RemoveListener(Constants.Events.Session.SessionPlayerDataChanged, OnLobbyChanged);
         }
 
         public void OnSessionLeft()
@@ -61,7 +72,7 @@ namespace Networking.Widgets.Session.Widgets.SessionPlayerList
             DisableAllPlayerListItems();
         }
         
-        public void OnSessionJoined()
+        public async void OnSessionJoined()
         {
             UpdatePlayerList();
         }
@@ -85,29 +96,58 @@ namespace Networking.Widgets.Session.Widgets.SessionPlayerList
         void UpdatePlayerList()
         {
             if (Session == null)
+            {
+                Debug.LogWarning("Session is null. Cannot update player list.");
                 return;
-            
+            }
+
+            Debug.Log($"[SessionPlayerList] Playersession has {Session.Players.Count} players");
             foreach (var player in Session.Players)
             {
                 var playerId = player.Id;
-                
-                if (m_PlayerListItems.ContainsKey(playerId))
-                    continue;
-                
-                var playerListItem = GetPlayerListItem(playerId);
-                playerListItem.gameObject.SetActive(true);
-                
+
+                SessionPlayerListItem playerListItem;
+                if (m_PlayerListItems.TryGetValue(playerId, out var item))
+                {
+                    playerListItem = item;
+                }
+                else
+                {
+
+                    playerListItem = GetPlayerListItem(playerId);
+                    playerListItem.gameObject.SetActive(true);
+                }
+
                 var playerName = "Unknown";
                 if (player.Properties.TryGetValue(SessionConstants.playerNamePropertyKey, out var playerNameProperty))
                     playerName = playerNameProperty.Value;
+                Debug.Log($"[SessionPlayerList] Player {playerId} has a {SessionConstants.playerNamePropertyKey} property of {playerName}");
 
                 var configuration = new SessionPlayerListItem.Configuration
                 {
                     HostCanKickPlayers = HostCanKickPlayers,
                     PlayersCanBeMuted = (WidgetConfiguration?.EnableVoiceChat ?? false) && PlayersCanBeMuted,
                 };
-                
-                playerListItem.Init(playerName, playerId, configuration);
+                string juggernautArmament = "MachineGun";
+                if (playerId == Session.CurrentPlayer.Id)
+                    juggernautArmament = ArmamentConfigManager.GetConfig().CurrentArmament.ToString();
+                else if (player.Properties.TryGetValue(Constants.Properties.Session.JuggernautArmament,
+                        out var juggernautArmamentProperty))
+                {
+                    juggernautArmament = juggernautArmamentProperty.Value;
+                    Debug.Log($"[SessionPlayerList] Player {playerId} has a {Constants.Properties.Session.JuggernautArmament} property of {juggernautArmament}");
+                }
+                else
+                {
+                    Debug.LogWarning($"[SessionPlayerList] Player {playerId} does not have a {Constants.Properties.Session.JuggernautArmament} property. Using default value {juggernautArmament}");
+                }
+
+                string personalMark = "";
+                if (player.Properties.TryGetValue(Constants.Properties.Session.PersonalMark, out var pmark))
+                    personalMark = pmark.Value;
+                Debug.Log($"[SessionPlayerList] Player {playerId} has a {Constants.Properties.Session.PersonalMark} property of {personalMark}");
+                    
+                playerListItem.Init(playerName, playerId, configuration, juggernautArmament, personalMark);
             }
         }
 

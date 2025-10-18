@@ -1,6 +1,9 @@
+using System;
+using Armament.Shared;
 using Networking.Widgets.Core.Base.ChatService.Interfaces;
 using Networking.Widgets.Core.Base.Widget.Interfaces;
 using Networking.Widgets.Session.Session;
+using ScriptableObjects.Skins;
 using TMPro;
 using Unity.Multiplayer.Widgets;
 using Unity.Services.Multiplayer;
@@ -39,6 +42,9 @@ namespace Networking.Widgets.Session.Widgets.SessionPlayerList
         /// The button that will toggle the mute state of a player in the session.
         /// </summary>
         public Button MuteButton;
+
+        public Image ArmamentType;
+        public RawImage PersonalMark;
         
         /// <summary>
         /// The icon that will show speech activity and mute states.
@@ -67,7 +73,7 @@ namespace Networking.Widgets.Session.Widgets.SessionPlayerList
         /// </summary>
         public Sprite VoiceIndicatorMuted;
         
-        internal void Init(string playerName, string playerId, Configuration configuration)
+        internal void Init(string playerName, string playerId, Configuration configuration, string armament, string personalMark)
         {
             PlayerNameText.text = playerName;
             PlayerId = playerId;
@@ -81,8 +87,25 @@ namespace Networking.Widgets.Session.Widgets.SessionPlayerList
 
             SetVoiceIndicatorEnabled(false);
             
+            SetArmamentType(armament);
+            SetPersonalMark(personalMark);
+            
             KickButton.onClick.AddListener(OnKickButtonClicked);
             MuteButton.onClick.AddListener(OnMuteButtonClicked);
+        }
+
+        internal void SetArmamentType(string armamentFile)
+        {
+            ArmamentSO armament = Resources.Load<ArmamentSO>($"ScriptableObjects/Armament/{armamentFile}");
+            ArmamentType.sprite = armament.Icon;
+        }
+
+        internal void SetPersonalMark(string personalMarkFile)
+        {
+            if (personalMarkFile == String.Empty)
+                return;
+            PersonalMarkSO personalMark = Resources.Load<PersonalMarkSO>($"ScriptableObjects/Skins/PersonalMarks/{personalMarkFile}");
+            PersonalMark.texture = personalMark.image;
         }
 
         internal void Reset()

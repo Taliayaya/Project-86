@@ -21,18 +21,22 @@ namespace Cosmetic
             
             _material = new Material(_decalProjector.material);
             //_decalProjector.enabled = false;
+        }
 
+        public static JuggConfigSO LoadConfig()
+        {
+            var config = Resources.Load<JuggConfigSO>("ScriptableObjects/Skins/PersonalMarks/JuggConfig");
+            config.SaveToFile();
+            config.SaveToFileDefault();
 
+            config.LoadFromFile();
+            return config;
         }
 
         private void Start()
         {
-            
-            _configSo = Resources.Load<JuggConfigSO>("ScriptableObjects/Skins/PersonalMarks/JuggConfig");
-            _configSo.SaveToFile();
-            _configSo.SaveToFileDefault();
-
-            _configSo.LoadFromFile();
+            _configSo = LoadConfig();
+           
             _material.EnableKeyword("_BASEMAP");
             _material.SetTexture(BaseMap, _configSo.PersonalMark.image);
             _material.mainTexture = _configSo.PersonalMark.image;
@@ -42,6 +46,44 @@ namespace Cosmetic
             _decalProjector.enabled = true;
 
             //StartCoroutine(DisplayAllPM());
+        }
+        
+        private void OnEnable()
+        {
+            EventManager.AddListener(Constants.TypedEvents.OnChangedPersonalMark, OnChangedPersonalMark);
+        }
+
+        private void OnDisable()
+        {
+            EventManager.RemoveListener(Constants.TypedEvents.OnChangedPersonalMark, OnChangedPersonalMark);
+        }
+
+        public void Load(string personalMarkFileName)
+        {
+            var mark = Resources.Load<PersonalMarkSO>("ScriptableObjects/Skins/PersonalMarks/" + personalMarkFileName);
+            if (mark == null)
+            {
+                Debug.LogError("PersonalMarkSO not found");
+                return;
+            }
+            _material.SetTexture(BaseMap, mark.image);
+            _material.mainTexture = mark.image;
+            // EventManager.TriggerEvent(Constants.TypedEvents.OnChangedPersonalMark, mark);
+        }
+        
+        private void OnChangedPersonalMark(object mark)
+        {
+            PersonalMarkSO markSo;
+            if (mark is PersonalMarkSO personalMarkSo && personalMarkSo != null)
+            {
+                markSo = personalMarkSo;
+            }else
+            {
+                markSo = _configSo.PersonalMark;
+            }
+            
+            _material.SetTexture(BaseMap, markSo.image);
+            _material.mainTexture = markSo.image;
         }
 
         IEnumerator DisplayAllPM()
