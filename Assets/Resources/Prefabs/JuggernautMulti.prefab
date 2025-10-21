@@ -888,7 +888,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 300237752
+  GlobalObjectIdHash: 2432999085
   InScenePlacedSourceGlobalObjectIdHash: 300237752
   DeferredDespawnTick: 0
   Ownership: 4
@@ -1039,6 +1039,8 @@ MonoBehaviour:
         m_CallState: 2
   test: 1000
   _state: 0
+  deathPrefab: {fileID: 7245819395031187743, guid: 2ed37a5d243b79843a00c65c441b2072,
+    type: 3}
   impulseSource: {fileID: 3902475107613049172}
 --- !u!82 &1719141408145350203
 AudioSource:
@@ -2765,7 +2767,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7803715037472698195
 Transform:
   m_ObjectHideFlags: 0
@@ -2973,7 +2975,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8911278839299763673
 Transform:
   m_ObjectHideFlags: 0
@@ -4384,6 +4386,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5e5b784d78f414a8d27dc91e97fc313, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &6821089675277859678
 GameObject:
   m_ObjectHideFlags: 0
