@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Armament.Shared;
 using Cinemachine;
 using Gameplay.Units;
 using Networking;
@@ -15,6 +16,7 @@ using UnityEngine;
 using Unity.VisualScripting;
 using Unity.Mathematics;
 using Unity.Services.Authentication;
+using UnityEngine.Rendering.Universal;
 using static UnityEngine.LightAnchor;
 
 
@@ -121,9 +123,13 @@ namespace Gameplay.Mecha
                 _cameraPreviousView = _cameraView;
                 _cameraView = value;
                 vCamera.gameObject.SetActive(value == View.FirstPerson);
+                zoomCamera.gameObject.SetActive(value == View.FirstPerson);
                 freeLookCamera.gameObject.SetActive(value == View.FreeLook);
                 tpsCamera.gameObject.SetActive(value == View.ThirdPerson);
+                tpsZoomCamera.gameObject.SetActive(value == View.ThirdPerson);
+                
                 onCameraViewChanged?.Invoke(value == View.FirstPerson ? vCamera : tpsCamera);
+                CameraZoom = Zoom.Default;
                 EventManager.TriggerEvent(Constants.TypedEvents.OnToggleCockpitView, value == View.FirstPerson && juggernautParameters.toggleCockpitView);
                 
             }
@@ -156,7 +162,6 @@ namespace Gameplay.Mecha
                 switch (value) // <-- Use "value" here instead of "_movementmode"
                 {
                     case MovementMode.Walking:
-                        Debug.Log("You reached me");
                         MovementSpeed = juggernautParameters.walkSpeed;
                         break;
                     case MovementMode.Running :
@@ -259,11 +264,9 @@ namespace Gameplay.Mecha
         }
         protected override void OnEnable()
         {
-            Debug.Log("OnEnable " + IsOwner);
             if (!IsOwner)
                 return;
             
-            Debug.Log("OnEnable 2");
             // these events are local
             base.OnEnable();
             if (!_rigidbody)
@@ -613,7 +616,6 @@ namespace Gameplay.Mecha
 
         private void OnMove(object data)
         {
-            Debug.Log("Move" + data);
             if (data is not Vector2 movement)
                 return;
             _lastMovement = movement;
@@ -765,14 +767,28 @@ namespace Gameplay.Mecha
             EventManager.TriggerEvent("OnUpdateHealth", Health/MaxHealth);
         }
 
+        [SerializeField] private GameObject deathPrefab;
         public override void Die()
         {
+            if (Died)
+                return;
             base.Die();
             var deathData = new DeathData
             {
                 DeathPosition = transform.position,
                 Faction = Faction
             };
+            var dead = Instantiate(deathPrefab, transform.position, transform.rotation);
+            dead.transform.GetChild(0).rotation = transform.GetChild(0).transform.rotation;
+            var decal = dead.GetComponentInChildren<DecalProjector>();
+            var thisDecal = GetComponentInChildren<DecalProjector>();
+            decal.material = thisDecal.material;
+
+            var thisSwitcher = GetComponentInChildren<ArmamentSwitcher>();
+            var switcher = dead.GetComponentInChildren<ArmamentSwitcher>();
+            switcher.ChangedArmament(thisSwitcher.CurrentArmament);
+            Debug.Log($"CurrentArmament: ${thisSwitcher.CurrentArmament}");
+            
             if (!IsOwner)
                 return;
             EventManager.TriggerEvent("OnDeath", deathData);

@@ -1,9 +1,10 @@
 ﻿using System;
 using Armament.MainMenu;
+using Unity.Netcode;
 using UnityEngine;
 namespace Armament.Shared
 {
-	public class ArmamentSwitcher : MonoBehaviour
+	public class ArmamentSwitcher : NetworkBehaviour
 	{
 		[SerializeField] private ArmamentSwitcherData[] Armaments;
 		[Tooltip("If empty, it uses the config armament")]
@@ -11,11 +12,24 @@ namespace Armament.Shared
 		[SerializeField] private bool useArmamentOverride;
 		[SerializeField] private ArmamentType armamentOverride;
 
+		NetworkVariable<ArmamentType> m_currentArmament = new NetworkVariable<ArmamentType>();
+		public ArmamentType CurrentArmament => m_currentArmament.Value;
+
 		private void Start()
 		{
 			if (changeArmamentOnStart)
 				ChangedArmament();
 			SubscribeToEvents();
+		}
+
+		public override void OnNetworkSpawn()
+		{
+			m_currentArmament.OnValueChanged += ValueChanged;
+		}
+
+		private void ValueChanged(ArmamentType previousValue, ArmamentType newValue)
+		{
+			ChangedArmament(newValue);
 		}
 
 		private void SubscribeToEvents()
@@ -42,6 +56,8 @@ namespace Armament.Shared
 		}
 		public void ChangedArmament(ArmamentType armament)
 		{
+			if (IsOwner)
+				m_currentArmament.Value = armament;
 			foreach (ArmamentSwitcherData data in Armaments)
 			{
 				bool isCurrentEnabled = data.Type == armament;

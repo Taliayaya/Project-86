@@ -48,7 +48,7 @@ namespace Cosmetic
             if (!_personalMarkSo)
             {
                 Debug.Log("Using config PM");
-                if (!IsOwner)
+                if (NetworkManager.Singleton.IsConnectedClient && !IsOwner)
                     LoadRemotePM();
                 else
                     _personalMarkSo = _configSo.PersonalMark;
