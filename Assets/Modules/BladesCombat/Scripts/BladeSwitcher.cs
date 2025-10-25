@@ -1,4 +1,5 @@
 using System;
+using Unity.Netcode.Components;
 using UnityEngine;
 namespace BladesCombat
 {
@@ -87,12 +88,12 @@ namespace BladesCombat
             }
         }
 
-        private void OpenBlade(Animator animator)
+        private void OpenBlade(NetworkAnimator animator)
         {
             animator.SetTrigger("Open");
         }
 
-        private void CloseBlade(Animator animator)
+        private void CloseBlade(NetworkAnimator animator)
         {
             animator.SetTrigger("Close");
         }
