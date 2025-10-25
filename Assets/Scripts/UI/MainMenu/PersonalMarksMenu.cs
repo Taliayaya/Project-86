@@ -36,13 +36,14 @@ namespace UI.MainMenu
 
             foreach (var personalMarkSo in personalMarkSos)
                 CreateCell(personalMarkSo);
-            gameObject.SetActive(true);
             
-           
+            EventManager.TriggerEvent(nameof(PersonalMarksMenu) + nameof(Open));
+            gameObject.SetActive(true);
         }
 
         public void Close()
         {
+            EventManager.TriggerEvent(nameof(PersonalMarksMenu) + nameof(Close));
             gameObject.SetActive(false);
             foreach (Transform child in container.transform)
             {

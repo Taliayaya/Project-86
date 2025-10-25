@@ -139,11 +139,12 @@ public class ConnectionManager : EnterSessionBase
     {
         return new EnterSessionData
         {
-            SessionAction = SessionAction.QuickJoin,
+            SessionAction = SessionAction.Create,
+            SessionName = _profileName,
             WidgetConfiguration = WidgetConfiguration,
             AdditionalOptions = new AdditionalOptions
             {
-                AutoCreateSession = m_AutoCreateSession
+                AutoCreateSession = m_AutoCreateSession,
             }
         };
     }

@@ -1,8 +1,10 @@
 using System;
+using Networking.Widgets.Session.Session;
 using ScriptableObjects.UI;
 using UI;
 using Unity.Collections;
 using Unity.Netcode;
+using Unity.Services.Authentication;
 using UnityEngine;
 
 namespace Networking
@@ -61,6 +63,8 @@ namespace Networking
             missionName.OnValueChanged += OnNewMission;
             if (!missionName.Value.IsEmpty)
                 OnNewMission("", missionName.Value);
+            if (SessionManager.Instance.ActiveSession != null)
+                RegisterPlayerRpc(SessionManager.Instance.ActiveSession.CurrentPlayer.Id, AuthenticationService.Instance.PlayerName, NetworkManager.LocalClientId);
         }
 
         public bool GetPlayerById(FixedString128Bytes playerId, out PlayerInfo? playerInfo)

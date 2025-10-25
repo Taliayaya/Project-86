@@ -17,5 +17,18 @@ namespace Unity.Multiplayer.Widgets
 
             return null;
         }
+        
+        public static IReadOnlyPlayer GetPlayer(this ISession session, string playerId)
+        {
+            foreach (var player in session.Players)
+            {
+                if (player.Id == playerId)
+                {
+                    return player;
+                }
+            }
+
+            return null;
+        }
     }
 }

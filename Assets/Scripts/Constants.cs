@@ -56,6 +56,11 @@ public static class Constants
             public const string QuestCompleted = "AnalyticsQuestCompleted";
 
         }
+
+        public static class Session
+        {
+            public const string SessionPlayerDataChanged = "LobbyDataChanged";
+        }
     }
 
     /// <summary>
@@ -130,6 +135,15 @@ public static class Constants
         
         public const string OnPlayerChanged = "OnPlayerChanged";
 
+    }
+
+    public static class Properties
+    {
+        public class Session
+        {
+            public const string PersonalMark = "PersonalMark";
+            public const string JuggernautArmament = "JuggernautArmament";
+        }
     }
 
     public static class Integrations

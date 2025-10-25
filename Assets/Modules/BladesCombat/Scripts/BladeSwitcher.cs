@@ -1,4 +1,5 @@
 using System;
+using Unity.Netcode.Components;
 using UnityEngine;
 namespace BladesCombat
 {
@@ -43,8 +44,19 @@ namespace BladesCombat
         {
             _isHeld = !_isHeld;
             if (!_isHeld) return;
-            OnLeftToggle();
-            OnRightToggle();
+            _enabledLeftBlade = !_enabledLeftBlade;
+            _enabledRightBlade = !_enabledRightBlade;
+            
+            SharedData.LeftTrigger.IsActive = _enabledLeftBlade;
+            SharedData.RightTrigger.IsActive = _enabledRightBlade;
+            if (_enabledLeftBlade)
+            {
+                OpenBlade(SharedData.BothBlade);
+            }
+            else
+            {
+                CloseBlade(SharedData.BothBlade);
+            }
             OnBothBladesToggled?.Invoke();
         }
 
@@ -76,12 +88,12 @@ namespace BladesCombat
             }
         }
 
-        private void OpenBlade(Animator animator)
+        private void OpenBlade(NetworkAnimator animator)
         {
             animator.SetTrigger("Open");
         }
 
-        private void CloseBlade(Animator animator)
+        private void CloseBlade(NetworkAnimator animator)
         {
             animator.SetTrigger("Close");
         }

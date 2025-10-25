@@ -58,7 +58,7 @@ namespace Networking.Widgets.Core.Configuration
     /// <summary>
     /// The WidgetConfiguration is a ScriptableObject that contains the configuration for a session.
     /// </summary>
-    [CreateAssetMenu(fileName = "WidgetConfiguration", menuName = "Multiplayer/Widgets/WidgetConfiguration")]
+    [CreateAssetMenu(fileName = "WidgetConfiguration", menuName = "Networks/Widgets/WidgetConfiguration")]
     public class WidgetConfiguration : ScriptableObject
     {
         /// <summary>

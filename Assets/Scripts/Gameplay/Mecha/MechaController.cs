@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Armament.Shared;
 using Cinemachine;
 using Gameplay.Units;
 using Networking;
@@ -15,7 +16,9 @@ using UnityEngine;
 using Unity.VisualScripting;
 using Unity.Mathematics;
 using Unity.Services.Authentication;
+using UnityEngine.Rendering.Universal;
 using static UnityEngine.LightAnchor;
+using UnityEngine.InputSystem;
 
 
 namespace Gameplay.Mecha
@@ -50,8 +53,14 @@ namespace Gameplay.Mecha
         [SerializeField] private float groundDrag;
         //[SerializeField] private float groundCleareance = 1.5f;
         [SerializeField] private float airborneHeight = 2.2f;
+        [SerializeField] private float gripLossAngle = 20f;
         [SerializeField] private float maxFloorAngle = 40f;
-        [SerializeField] private GameObject[] feetEnds;
+        [SerializeField] private float fallGravityMult = 2.5f;
+        [SerializeField] private float lowJumpGravityMult = 2f;
+        [SerializeField] private float wallFallingMult = 2.5f;
+        [SerializeField] private float dashingMaxUpwardSpeed = 2.5f;
+        [SerializeField] private bool allowMoveOnStart = true;
+        [SerializeField] public GrapplingModule grappleModule = null;
 
         [SerializeField]
         private Transform modelTransform;
@@ -62,7 +71,6 @@ namespace Gameplay.Mecha
         [SerializeField] private CinemachineVirtualCamera tpsCamera;
         [SerializeField] private CinemachineFreeLook freeLookCamera;
         [SerializeField] private LayerMask forwardMask;
-        //[SerializeField] private GameObject[] feetArray;
 
         [Header("Main Recoil")]
         [SerializeField] private float recoilStrength = 1f;
@@ -78,6 +86,7 @@ namespace Gameplay.Mecha
         private Vector2 _lastMouseUpdate;
         private Rigidbody _rigidbody;
         private bool _isGrounded;
+        private bool _isOnWall;
 
         private Vector2 _lastMovement;
 
@@ -90,20 +99,24 @@ namespace Gameplay.Mecha
         private bool _isRunning;
         // Fox's var's unorganised
 
-        private bool isDashing = false;                      
-        private bool canDash = true;                 
+        private bool isDashing = false;
+        private bool isJumping = false;
+        private bool _isGrappling = false;
+        private bool canDash = true;
+        private bool isAirborne = false;
+        //private bool canGrapple = true;
         private Coroutine dashCoroutine = null;
 
         private bool canJump = true;
 
-        // Movement Overhaul
-
+        // instead of using transform.up, use surfaceAlignment.upDirection, it's less erratic since its lerping value is much lower (Nova)
         private Ray groundRay;
         private RaycastHit groundHitData;
-        private Vector3 up_direction = Vector3.up; // is more stable than transfom.up
         private Vector3 rotationLeft = Vector3.zero;
         private float floorAngle = 0f;
         private bool _isInclineStable = true;
+        private SurfaceNormalAlignment surfaceAlignment;
+        private Vector3 grappleAttachPoint = Vector3.zero;
 
         #endregion
 
@@ -121,9 +134,13 @@ namespace Gameplay.Mecha
                 _cameraPreviousView = _cameraView;
                 _cameraView = value;
                 vCamera.gameObject.SetActive(value == View.FirstPerson);
+                zoomCamera.gameObject.SetActive(value == View.FirstPerson);
                 freeLookCamera.gameObject.SetActive(value == View.FreeLook);
                 tpsCamera.gameObject.SetActive(value == View.ThirdPerson);
+                tpsZoomCamera.gameObject.SetActive(value == View.ThirdPerson);
+                
                 onCameraViewChanged?.Invoke(value == View.FirstPerson ? vCamera : tpsCamera);
+                CameraZoom = Zoom.Default;
                 EventManager.TriggerEvent(Constants.TypedEvents.OnToggleCockpitView, value == View.FirstPerson && juggernautParameters.toggleCockpitView);
                 
             }
@@ -156,7 +173,6 @@ namespace Gameplay.Mecha
                 switch (value) // <-- Use "value" here instead of "_movementmode"
                 {
                     case MovementMode.Walking:
-                        Debug.Log("You reached me");
                         MovementSpeed = juggernautParameters.walkSpeed;
                         break;
                     case MovementMode.Running :
@@ -226,7 +242,6 @@ namespace Gameplay.Mecha
 
         public override void Awake()
         {
-
             base.Awake();
             Health = juggernautParameters.health;
             MaxHealth = juggernautParameters.health;
@@ -259,11 +274,9 @@ namespace Gameplay.Mecha
         }
         protected override void OnEnable()
         {
-            Debug.Log("OnEnable " + IsOwner);
             if (!IsOwner)
                 return;
             
-            Debug.Log("OnEnable 2");
             // these events are local
             base.OnEnable();
             if (!_rigidbody)
@@ -278,6 +291,8 @@ namespace Gameplay.Mecha
             EventManager.AddListener("OnShoot:Primary", OnShoot);
             EventManager.AddListener(Constants.TypedEvents.Inputs.OnFreeLook, OnFreeLook);
             EventManager.AddListener(Constants.Events.Inputs.OnChangeView, OnChangeView);
+            EventManager.AddListener("GrapplingModuleStart", OnGrappleStart);
+            EventManager.AddListener("GrapplingModuleStop", OnGrappleStop);
         }
 
 
@@ -296,6 +311,8 @@ namespace Gameplay.Mecha
             EventManager.RemoveListener("OnShoot:Primary", OnShoot);
             EventManager.RemoveListener(Constants.TypedEvents.Inputs.OnFreeLook, OnFreeLook);
             EventManager.RemoveListener(Constants.Events.Inputs.OnChangeView, OnChangeView);
+            EventManager.RemoveListener("GrapplingModule", OnGrappleStart);
+            EventManager.RemoveListener("GrapplingModule", OnGrappleStop);
         }
 
         public override void OnNetworkSpawn()
@@ -310,8 +327,6 @@ namespace Gameplay.Mecha
                 //enabled = false;
                 return;
             }
-            if (SessionManager.Instance.ActiveSession != null)
-                MissionManager.Instance.RegisterPlayerRpc(SessionManager.Instance.ActiveSession.CurrentPlayer.Id, AuthenticationService.Instance.PlayerName, NetworkManager.LocalClientId);
             ReInit();
         }
 
@@ -327,9 +342,7 @@ namespace Gameplay.Mecha
             ApplyGravity();
             LimitSpeed();
             CheckDistanceForward();
-            UpdateFloorRays();
-
-            MatchGroundAngle();
+            CheckGrappleSurfaceAlignment();
 
             if (State == UnitState.Default)
             {
@@ -341,7 +354,6 @@ namespace Gameplay.Mecha
 
         protected override void Start()
         {
-            Debug.Log("Start");
             base.Start();
             if (!IsOwner)
                 return;
@@ -349,24 +361,20 @@ namespace Gameplay.Mecha
             EventManager.TriggerEvent("RegisterMinimapTarget", transform);
             Cursor.lockState = CursorLockMode.Locked;
             groundRay = new Ray(transform.position, Vector3.down);
+            surfaceAlignment = GetComponent<SurfaceNormalAlignment>();
+            surfaceAlignment.discardAngle = maxFloorAngle;
+            if (allowMoveOnStart) { _movementmode = MovementMode.Walking; }
+            StartCoroutine(LandingCoroutine());
+
         }
 
         #endregion
 
         #region Movement and Camera
 
-        private void MatchGroundAngle()
-        {
-            Vector3 normal = Vector3.Slerp(transform.up, groundHitData.normal, 0.2f);
-            if (normal != null) { up_direction = Vector3.Slerp(up_direction, normal, 0.1f); } 
-            else { up_direction = Vector3.Slerp(up_direction, Vector3.up, 0.1f); }
-
-            Vector3 right = Vector3.Cross(up_direction, transform.forward);
-            Vector3 forward = Vector3.Cross(right, up_direction);
-            //Vector3.OrthoNormalize(ref normal, ref forward);
-            transform.LookAt(transform.position + forward, up_direction);
-            floorAngle = Vector3.Angle(Vector3.up, up_direction);
-
+        private void CheckGrappleSurfaceAlignment() { 
+            if (_isGrappling ) { surfaceAlignment.useRawNormal = true; } // && isAirborne
+            else if (!_isGrappling){ surfaceAlignment.useRawNormal = false;}
         }
 
 
@@ -379,131 +387,90 @@ namespace Gameplay.Mecha
             else
                 EventManager.TriggerEvent("OnDistanceForward", float.NaN);
         }
-
-        public void UpdateFloorRays()
-        {
-            // Scans the surrounding terrain and creates an averaged normal of it
-
-
-            // Overhaul code, above should be integrated into it
-            int bodyRayOutwardCount = 8;
-            int bodyRayInwardCount =
-                8; // these can hit the player's collider, make sure they don't do that by changing their angle and/or distance from the main body
-            // Ground ray + Velocity ray + local down ray + body rays
-            int bodyRayCount = 1 + 1 + 1 + bodyRayOutwardCount + bodyRayInwardCount;
-
-            Vector3[] groundNormals = new Vector3[feetEnds.Length + bodyRayCount];
-
-            RaycastHit hitData;
-
-            // Gathering normals of the surrounding terrain 
-            Vector3 direction = transform.forward;
-            direction = Quaternion.AngleAxis(-30.0f, transform.right) * direction;
-            for (int i = 0; i < bodyRayOutwardCount; i++)
-            {
-                Physics.Raycast(transform.position,
-                    Quaternion.AngleAxis(i * (360.0f / bodyRayOutwardCount), transform.up) * direction, out hitData,
-                    3.0f);
-                groundNormals[i] = hitData.normal;
-            }
-
-            direction = transform.forward;
-            direction = Quaternion.AngleAxis(-105.0f, transform.right) * direction;
-            for (int i = 0; i < bodyRayInwardCount; i++)
-            {
-                Vector3 offset = Quaternion.AngleAxis(i * (360.0f / bodyRayInwardCount), transform.up) *
-                                 transform.forward * 1.5f;
-                // 31 (bx011111) is a layer mask containing everything, but "damageables", change it to everything but the "player" layer mask once it is created
-                Physics.Raycast(transform.position + offset,
-                    Quaternion.AngleAxis(i * (-360.0f / bodyRayInwardCount), transform.up) * direction, out hitData,
-                    3.0f, 31);
-                groundNormals[bodyRayOutwardCount + i] = hitData.normal;
-                //Debug.Log(hitData.collider);
-            }
-
-            // Gathering unique rays
-            groundRay.origin = transform.position;
-            groundRay.direction = Vector3.down * 10;
-            Physics.Raycast(groundRay, out groundHitData);
-            groundNormals[bodyRayCount - 1] = groundHitData.normal;
-
-            direction = -transform.up * 3;
-            Physics.Raycast(transform.position, direction, out hitData, 5.0f);
-            groundNormals[bodyRayCount - 2] = hitData.normal * 3;
-
-            direction = transform.forward * (_lastMovement.y) + transform.right * (_lastMovement.x);
-            Physics.Raycast(transform.position, direction, out hitData, 5.0f);
-            groundNormals[bodyRayCount - 3] = hitData.normal * 3;
-
-
-
-            // Gathering normals where feet hit the ground
-            int count = 0;
-            for (int i = 0; i < feetEnds.Length; i++)
-            {
-                Physics.Raycast(feetEnds[i].transform.position, -feetEnds[i].transform.up, out hitData, 2.0f);
-                groundNormals[bodyRayCount + i] = hitData.normal * 1.5f;
-            }
-
-
-            Vector3 avg_normal = Vector3.zero;
-            count = 0;
-            for (int i = 0; i < groundNormals.Length; i++)
-            {
-                if (groundNormals[i] != null)
-                {
-                    avg_normal += groundNormals[i];
-                    count++;
-                }
-            }
-
-            if (count > 0)
-            {
-                avg_normal /= count;
-                groundHitData.normal = avg_normal;
-            }
-
-        }
-
+        
         public void CheckGround(bool isGrounded)
         {
-            // _isGrounded = Physics.Raycast(transform.position, Vector3.down, out var hit, 3f, forwardMask);
-            _isGrounded = groundHitData.distance <= airborneHeight;
-            _isInclineStable = floorAngle < maxFloorAngle;
-            //Debug.Log(groundHitData.distance);
+
+            _isGrounded = surfaceAlignment.groundDistance <= airborneHeight;
+            _isInclineStable = surfaceAlignment.floorAngle < maxFloorAngle;
+
             if (_isGrounded)
+            {
                 _rigidbody.linearDamping = groundDrag;
+                _isOnWall = Vector3.Dot(transform.up, Vector3.up) < 0.8f;
+                Debug.Log("isOnWall " + _isOnWall + " isGrappling " + _isGrappling);
+                if (_isOnWall && !_isGrappling)
+                    _isGrounded = false;
+            }
             else
-                _rigidbody.linearDamping = 0.1f;
+                _rigidbody.linearDamping = 0.3f;
         }
 
         private void MoveJuggernaut()
         {
-            // If dashing, don't apply any other movement mode logic // this made the dash feel stiff
-            //if (isDashing)
-            //    return;
-
-            if (!_isGrounded /*|| !_isInclineStable */)
-                return;
-
-            //Debug.Log(_movementmode);
-
             var move = transform.forward * (_lastMovement.y) + transform.right * (_lastMovement.x);
             move = move.normalized;
-            if (isDashing) { move *= 0.5f; }
-            
-            _rigidbody.AddForce(move * (MovementSpeed * 1000f), UnityEngine.ForceMode.Force);
-            //_rigidbody.MovePosition(_rigidbody.position + move * Time.fixedDeltaTime);
+            bool isMovingUp = Vector3.Dot(Vector3.up, move) > 0;
+            // gradually decreses speed once GripLossAngle is reached, completely stopping at maxFloorAngle
+            float floorAngleMultiplier = math.clamp((maxFloorAngle - floorAngle) / gripLossAngle, 0, 1);
 
+            // Wall walking allowance code
+            
+
+            if (!_isGrappling) // if isn't grappling
+            {
+                if (!_isGrounded || (!_isInclineStable && isMovingUp)) { return; }
+                if (isDashing) { move *= 0.5f; }
+            }
+            else if (_isOnWall && _isGrappling) { // if is grappling
+                
+
+                Vector3 grapplePoint = grappleModule.grapplePoint.transform.position;
+                float distance = Vector3.Distance(grapplePoint, transform.position);
+                float dot = Vector3.Dot(Vector3.up, (grapplePoint - transform.position).normalized);
+
+                
+
+                if (dot < 0.85f && distance > 10f) {
+                    move *= MathF.Max(0, dot / 2f);
+                    Debug.Log("HARD GRAPPLE");
+                    Debug.Log(dot);
+                }
+
+                floorAngleMultiplier = 0.75f;
+                //var surfaceAlignedVector = Vector3.ProjectOnPlane(move + Vector3.up * (_lastMovement.y), surfaceAlignment.rawNormal).normalized;
+                //Debug.Log(surfaceAlignment.rawNormal);
+                //move = surfaceAlignedVector;
+                //move = ((transform.forward * 0.5f + Vector3.up * 3) * (_lastMovement.y) + transform.right * _lastMovement.x).normalized;
+
+            }
+            
+            
+            //if (_isGrappling) { floorAngleMultiplier = 0.5};
+            
+            _rigidbody.AddForce(move * (MovementSpeed * 1000f * floorAngleMultiplier), UnityEngine.ForceMode.Force);
+            
         }
 
 
         private void ApplyGravity()
         {
-            _yVelocity += gravity * Time.fixedDeltaTime;
-            if (_isGrounded && _isInclineStable)
-                _yVelocity = gravity;
-            _rigidbody.AddForce(Vector3.up * (_yVelocity), UnityEngine.ForceMode.Acceleration);
+            float excessGravity = 0f;
+            Debug.Log("ApplyGravity " + _isGrounded + " " + _isOnWall + " " + _isGrappling + " " + _rigidbody.linearVelocity.y + "");
+            if (_isGrounded) excessGravity = gravity;
+            else if (_isOnWall && !_isGrappling) excessGravity = gravity * (wallFallingMult - 1);
+            else if (_rigidbody.linearVelocity.y < 0) { excessGravity += gravity * (fallGravityMult - 1f); }
+            else if (!isJumping && _rigidbody.linearVelocity.y > 0) { excessGravity += gravity * (lowJumpGravityMult - 1f);  }
+            //Debug.Log(_rigidbody.linearVelocity.y);
+            _rigidbody.AddForce(Vector3.up * excessGravity, UnityEngine.ForceMode.Acceleration);
+
+            /*
+            _yVelocity += gravity;// * gravity; //* Time.fixedDeltaTime; 
+            if (_isGrounded && _isInclineStable) 
+                _yVelocity = 0;
+            _rigidbody.AddForce(Vector3.up * _yVelocity, UnityEngine.ForceMode.Acceleration);
+            _yVelocity = 0;
+            */
         }
 
         private void RotateJuggernaut()
@@ -548,7 +515,7 @@ namespace Gameplay.Mecha
             _yRotation += pos.x * juggernautParameters.MouseSensitivity * Time.fixedDeltaTime;
 
             var _yRotationChange = pos.x * juggernautParameters.MouseSensitivity * Time.fixedDeltaTime;
-            rotationLeft += up_direction * _yRotationChange; 
+            rotationLeft += surfaceAlignment.upDirection * _yRotationChange; 
 
             EventManager.TriggerEvent("OnUpdateCompass", _yRotation);
 
@@ -588,34 +555,61 @@ namespace Gameplay.Mecha
         // Coroutines for these two scripts are not organised yet, jump / dash.
         private void OnJump(object data)
         {
-            Debug.Log("Jump attempted");
-
-
-            StartCoroutine(JumpCoroutine());
+            //Debug.Log("Jump attempted");
+            if (canJump) {
+                StartCoroutine(JumpCoroutine()); 
+            }
         }
 
+        private IEnumerator LandingCoroutine()
+        {
+            var landingVelocity = Vector3.zero;
+
+            while (true)
+            {
+                if (!_isGrounded) { isAirborne = true; }
+                if (isAirborne && _isGrounded)
+                {
+                    _rigidbody.linearVelocity = Vector3.ProjectOnPlane(landingVelocity, surfaceAlignment.normal);
+                    isAirborne = false;
+                }
+                landingVelocity = _rigidbody.linearVelocity;
+                yield return null;
+
+            }
+        }
         private IEnumerator JumpCoroutine()
         {
             if(!canJump || !_isGrounded)
                 yield break;
 
-            // jump is now off for CD
+            _rigidbody.AddForce(Vector3.up * juggernautParameters.jumpPower, UnityEngine.ForceMode.Acceleration);
+
+            // jump is now on cooldown
             canJump = false;
+            isJumping = true;
 
-            // applies a jump force
-            _rigidbody.AddForce(Vector3.up * juggernautParameters.jumpPower, UnityEngine.ForceMode.Impulse);
-            yield return null;
+            float elapsedTime = 0.0f;
+            //float jumpTime = 0.5f;
 
-            // starts the cd
-            yield return new WaitForSeconds(juggernautParameters.jumpCooldown);
+            while (isJumping)
+            {
+                yield return null;
+                elapsedTime += Time.deltaTime;
+                
+                isJumping = Input.GetKey("space");
+                if (!isJumping || elapsedTime > juggernautParameters.maxJumpDuration)
+                {
+                    break;
+                }
+            }
+
             canJump = true;
-
+            isJumping = false;
         }
-
-
+        
         private void OnMove(object data)
         {
-            Debug.Log("Move" + data);
             if (data is not Vector2 movement)
                 return;
             _lastMovement = movement;
@@ -629,7 +623,19 @@ namespace Gameplay.Mecha
                 return;
 
             Debug.Log("Dash input received!");
-           StartCoroutine(DashCoroutine());
+            StartCoroutine(DashCoroutine());
+        }
+        private void OnGrappleStart(object data)
+        {
+            _isGrappling = true;
+            //surfaceAlignment.useRawNormal = true;
+            Debug.Log("Grapple Started");
+        }
+        private void OnGrappleStop(object data)
+        {
+            _isGrappling = false;
+            //surfaceAlignment.useRawNormal = false;
+            Debug.Log("Grapple Ended!!!!!!!!!!");
         }
 
         public float test = 1000f;
@@ -668,21 +674,24 @@ namespace Gameplay.Mecha
             // Time management for smooth deceleration
             float elapsedTime = 0f;
 
-            while (elapsedTime < juggernautParameters.dashDuration)
+            while (elapsedTime < juggernautParameters.dashDuration && _isGrounded)
             {
                 // Best reccomendation for elapsedtime..
                 float t = elapsedTime / juggernautParameters.dashDuration;
 
                 // Gradually reduce speed using a smooth easing function
-                float currentSpeed = Mathf.Lerp(dashSpeed, 30f, EaseOutQuad(t));  // Lerp from full speed to 0, will freeze you momentarily
+                //float currentSpeed = Mathf.Lerp(dashSpeed, 30f, EaseOutQuad(t));  // Lerp from full speed to 0, will freeze you momentarily
 
 
-                Vector3 currentVelocity = dashDirection * currentSpeed;
+                Vector3 DashVector = dashDirection * (juggernautParameters.dashSpeed * math.max(1f-t, 0.2f));
                 //_rigidbody.AddForce(Vector3.down * test, UnityEngine.ForceMode.Acceleration);
                 //Debug.Log(($"Y value: {currentVelocity}"));
 
                 // Velocity based on current speed
-                _rigidbody.linearVelocity = dashDirection * currentSpeed;
+                //_rigidbody.linearVelocity += dashDirection * currentSpeed * Time.deltaTime;
+                _rigidbody.AddForce(DashVector * Time.deltaTime, ForceMode.VelocityChange);
+                if (_rigidbody.linearVelocity.y > dashingMaxUpwardSpeed)
+                    _rigidbody.linearVelocity = new Vector3(_rigidbody.linearVelocity.x, dashingMaxUpwardSpeed, _rigidbody.linearVelocity.z);
 
                 elapsedTime += Time.deltaTime;  
                 yield return null;  
@@ -767,14 +776,28 @@ namespace Gameplay.Mecha
             EventManager.TriggerEvent("OnUpdateHealth", Health/MaxHealth);
         }
 
+        [SerializeField] private GameObject deathPrefab;
         public override void Die()
         {
+            if (Died)
+                return;
             base.Die();
             var deathData = new DeathData
             {
                 DeathPosition = transform.position,
                 Faction = Faction
             };
+            var dead = Instantiate(deathPrefab, transform.position, transform.rotation);
+            dead.transform.GetChild(0).rotation = transform.GetChild(0).transform.rotation;
+            var decal = dead.GetComponentInChildren<DecalProjector>();
+            var thisDecal = GetComponentInChildren<DecalProjector>();
+            decal.material = thisDecal.material;
+
+            var thisSwitcher = GetComponentInChildren<ArmamentSwitcher>();
+            var switcher = dead.GetComponentInChildren<ArmamentSwitcher>();
+            switcher.ChangedArmament(thisSwitcher.CurrentArmament);
+            Debug.Log($"CurrentArmament: ${thisSwitcher.CurrentArmament}");
+            
             if (!IsOwner)
                 return;
             EventManager.TriggerEvent("OnDeath", deathData);

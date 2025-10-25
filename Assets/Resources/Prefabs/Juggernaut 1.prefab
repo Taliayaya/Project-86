@@ -927,7 +927,11 @@ MonoBehaviour:
   myParentColliderToIgnore: {fileID: 0}
   ammoLeftOrRight: Left
   gunCheckCanShoot: {fileID: 0}
+  _animator: {fileID: 0}
+  _rb: {fileID: 0}
+  recoilBodyTorque: {x: 0, y: 0, z: 0}
   canFire: 1
+  _currentAmmoRemaining: 0
 --- !u!82 &6963457486633022638
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1214,7 +1218,11 @@ MonoBehaviour:
   myParentColliderToIgnore: {fileID: 0}
   ammoLeftOrRight: Right
   gunCheckCanShoot: {fileID: 0}
+  _animator: {fileID: 0}
+  _rb: {fileID: 0}
+  recoilBodyTorque: {x: 0, y: 0, z: 0}
   canFire: 1
+  _currentAmmoRemaining: 0
 --- !u!82 &7708746117937629143
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1344,7 +1352,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.6852468, y: 0.0000000351343, z: 0.000000026875135, w: 0.72831094}
   m_LocalPosition: {x: 0.18215998, y: -0.16961028, z: -1.3899081}
-  m_LocalScale: {x: 0.30000007, y: 0.5, z: 0.2999986}
+  m_LocalScale: {x: 86.51008, y: 0.000082836865, z: 0.00008216733}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6864043951974421832}
@@ -1797,7 +1805,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.68524665, y: 5.824246e-10, z: -0.00000016287933, w: 0.7283111}
   m_LocalPosition: {x: -0.17602603, y: -0.14395, z: -1.3788142}
-  m_LocalScale: {x: 0.30000007, y: 0.49999997, z: 0.2999986}
+  m_LocalScale: {x: 86.51008, y: 0.000082836865, z: 0.00008216733}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2836126709342092043}
@@ -2873,8 +2881,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1684480287
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  GlobalObjectIdHash: 422551785
+  InScenePlacedSourceGlobalObjectIdHash: 1684480287
   DeferredDespawnTick: 0
   Ownership: 4
   AlwaysReplicateAsRoot: 0
@@ -3917,7 +3925,11 @@ MonoBehaviour:
   myParentColliderToIgnore: {fileID: 0}
   ammoLeftOrRight: Left
   gunCheckCanShoot: {fileID: 0}
+  _animator: {fileID: 0}
+  _rb: {fileID: 0}
+  recoilBodyTorque: {x: 0, y: 0, z: 0}
   canFire: 1
+  _currentAmmoRemaining: 0
 --- !u!82 &2303210759000440079
 AudioSource:
   m_ObjectHideFlags: 0

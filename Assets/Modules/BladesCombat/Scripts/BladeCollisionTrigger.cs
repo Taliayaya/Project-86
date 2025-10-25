@@ -1,12 +1,18 @@
 using Gameplay;
 using UnityEngine;
 using UnityEngine.Events;
+
 namespace BladesCombat
 {
+    public enum BladeDirection
+    {
+        Left,
+        Right
+    }
+
     public class BladeCollisionTrigger : MonoBehaviour
     {
-        
-        public bool IsLeftBlade;
+        [SerializeField] private BladeDirection bladeDirection;
 
         public UnityEvent<Collider, bool> OnBladeTriggerEnter { get; } = new UnityEvent<Collider, bool>();
         public UnityEvent<Collider, bool> OnBladeTriggerStay { get; } = new UnityEvent<Collider, bool>();
@@ -17,42 +23,41 @@ namespace BladesCombat
         {
             // if (!IsActive) return;
             
-            if (other.gameObject.TryGetComponent(out IHealth _) || other.gameObject.layer == LayerMask.NameToLayer("Slicable"))
+            if (other.gameObject.TryGetComponent(out IHealth _) || other.gameObject.layer == LayerMask.NameToLayer("Sliceable"))
             {
                 if (other.CompareTag("NonHitbox"))
                 {
                     // DeflectBullet(other);
                     return;
                 }
+                OnBladeTriggerEnter.Invoke(other, bladeDirection == BladeDirection.Left);
             }
-            OnBladeTriggerEnter.Invoke(other, IsLeftBlade);
         }
         private void OnTriggerStay(Collider other)
         {
             // if (!IsActive) return;
-            if (other.gameObject.TryGetComponent(out IHealth _) || other.gameObject.layer == LayerMask.NameToLayer("Slicable"))
+            if (other.gameObject.TryGetComponent(out IHealth _) || other.gameObject.layer == LayerMask.NameToLayer("Sliceable"))
             {
                 if (other.CompareTag("NonHitbox"))
                 {
                     // DeflectBullet(other);
                     return;
                 }
+                OnBladeTriggerStay.Invoke(other, bladeDirection == BladeDirection.Left);
             }
-
-            OnBladeTriggerStay.Invoke(other, IsLeftBlade);
         }
 
         private void OnTriggerExit(Collider other)
         {
             // if (!IsActive) return;
-            if (other.gameObject.TryGetComponent(out IHealth _) || other.gameObject.layer == LayerMask.NameToLayer("Slicable"))
+            if (other.gameObject.TryGetComponent(out IHealth _) || other.gameObject.layer == LayerMask.NameToLayer("Sliceable"))
             {
                 if (other.CompareTag("NonHitbox"))
                 {
                     // DeflectBullet(other);
                     return;
                 }
-                OnBladeTriggerExit.Invoke(other, IsLeftBlade);
+                OnBladeTriggerExit.Invoke(other, bladeDirection == BladeDirection.Left);
             }
         }
     }

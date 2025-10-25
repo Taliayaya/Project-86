@@ -12,7 +12,8 @@ namespace ScriptableObjects.GameParameters
         public float dashDuration = 0.5f;  // How long dash lasts
         public float dashCooldown = 1f;    // CD time before next dash
 
-        public float jumpPower = 1000f;
+        public float jumpPower = 2000f;
+        public float maxJumpDuration = 0.5f;
         public float jumpCooldown = 1f;
  
 
