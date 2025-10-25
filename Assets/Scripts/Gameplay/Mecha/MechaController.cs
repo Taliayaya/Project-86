@@ -57,6 +57,8 @@ namespace Gameplay.Mecha
         [SerializeField] private float maxFloorAngle = 40f;
         [SerializeField] private float fallGravityMult = 2.5f;
         [SerializeField] private float lowJumpGravityMult = 2f;
+        [SerializeField] private float wallFallingMult = 2.5f;
+        [SerializeField] private float dashingMaxUpwardSpeed = 2.5f;
         [SerializeField] private bool allowMoveOnStart = true;
         [SerializeField] public GrapplingModule grappleModule = null;
 
@@ -396,9 +398,12 @@ namespace Gameplay.Mecha
             {
                 _rigidbody.linearDamping = groundDrag;
                 _isOnWall = Vector3.Dot(transform.up, Vector3.up) < 0.8f;
+                Debug.Log("isOnWall " + _isOnWall + " isGrappling " + _isGrappling);
+                if (_isOnWall && !_isGrappling)
+                    _isGrounded = false;
             }
             else
-                _rigidbody.linearDamping = 0.1f;
+                _rigidbody.linearDamping = 0.3f;
         }
 
         private void MoveJuggernaut()
@@ -451,8 +456,10 @@ namespace Gameplay.Mecha
         private void ApplyGravity()
         {
             float excessGravity = 0f;
-            if (_isGrounded) { return; }
-            if (_rigidbody.linearVelocity.y < 0) { excessGravity += gravity * (fallGravityMult - 1f); }
+            Debug.Log("ApplyGravity " + _isGrounded + " " + _isOnWall + " " + _isGrappling + " " + _rigidbody.linearVelocity.y + "");
+            if (_isGrounded) excessGravity = gravity;
+            else if (_isOnWall && !_isGrappling) excessGravity = gravity * (wallFallingMult - 1);
+            else if (_rigidbody.linearVelocity.y < 0) { excessGravity += gravity * (fallGravityMult - 1f); }
             else if (!isJumping && _rigidbody.linearVelocity.y > 0) { excessGravity += gravity * (lowJumpGravityMult - 1f);  }
             //Debug.Log(_rigidbody.linearVelocity.y);
             _rigidbody.AddForce(Vector3.up * excessGravity, UnityEngine.ForceMode.Acceleration);
@@ -667,7 +674,7 @@ namespace Gameplay.Mecha
             // Time management for smooth deceleration
             float elapsedTime = 0f;
 
-            while (elapsedTime < juggernautParameters.dashDuration)
+            while (elapsedTime < juggernautParameters.dashDuration && _isGrounded)
             {
                 // Best reccomendation for elapsedtime..
                 float t = elapsedTime / juggernautParameters.dashDuration;
@@ -676,13 +683,15 @@ namespace Gameplay.Mecha
                 //float currentSpeed = Mathf.Lerp(dashSpeed, 30f, EaseOutQuad(t));  // Lerp from full speed to 0, will freeze you momentarily
 
 
-                Vector3 DashVector = dashDirection * juggernautParameters.dashSpeed * math.max(1f-t, 0.2f);
+                Vector3 DashVector = dashDirection * (juggernautParameters.dashSpeed * math.max(1f-t, 0.2f));
                 //_rigidbody.AddForce(Vector3.down * test, UnityEngine.ForceMode.Acceleration);
                 //Debug.Log(($"Y value: {currentVelocity}"));
 
                 // Velocity based on current speed
                 //_rigidbody.linearVelocity += dashDirection * currentSpeed * Time.deltaTime;
                 _rigidbody.AddForce(DashVector * Time.deltaTime, ForceMode.VelocityChange);
+                if (_rigidbody.linearVelocity.y > dashingMaxUpwardSpeed)
+                    _rigidbody.linearVelocity = new Vector3(_rigidbody.linearVelocity.x, dashingMaxUpwardSpeed, _rigidbody.linearVelocity.z);
 
                 elapsedTime += Time.deltaTime;  
                 yield return null;  
