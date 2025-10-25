@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
 using Cinemachine;
 using ScriptableObjects.GameParameters;
 using UI;
 using UI.HUD;
 using Unity.Mathematics;
+using Unity.Netcode;
+using Unity.Netcode.Components;
 using UnityEngine;
 
 namespace Gameplay.Mecha
@@ -37,6 +40,8 @@ namespace Gameplay.Mecha
 
         private float springLowDistance = 0.25f;
         private float springHighDistance = 0.8f;
+
+        [SerializeField] private List<Collider> collidersToIgnore;
         
     
         public GameObject grapplePoint;
@@ -67,7 +72,6 @@ namespace Gameplay.Mecha
             if (!IsSpawned || !HasAuthority)
                 return;
             EventManager.AddListener("OnGrapplingThrow", OnGrapplingThrow);
-            
         }
         
         private void OnDisable()
@@ -103,7 +107,12 @@ namespace Gameplay.Mecha
         void FixedUpdate()
         {
             if (!IsSpawned || !HasAuthority)
+            {
+                if (_isGrappling)
+                    DrawRope();
                 return;
+            }
+
             if (_isGrappling && _canPull)
             {
                 MaintainGrapple();
@@ -140,27 +149,30 @@ namespace Gameplay.Mecha
                 EventManager.TriggerEvent("GrapplingModule", data);
                 EventManager.TriggerEvent("GrapplingModuleStart", data);
             }
-
             
+            StartGrappleRpc();
+        }
+
+        [Rpc(SendTo.ClientsAndHost)]
+        public void StartGrappleRpc()
+        {
             lr.SetPosition(quality, gunTip.position);
             _isGrappling = true;
             RaycastHit hit;
-            if (Physics.Raycast(cam.position, cam.forward, out hit, juggernautParameters.maxGrappleDistance, whatIsGrappleable))
+            if (RaycastIgnoringSelf(cam.position, cam.forward, out hit, juggernautParameters.maxGrappleDistance, whatIsGrappleable))
             {
                 TransferGrapplePoint(hit.transform, hit.point);
-                //_grapplePoint = hit.point;
                 Invoke(nameof(ExecuteGrapple), grappleDelayTime);
             }
             else
             {
                 TransferGrapplePoint(transform, cam.position + cam.forward * maxGrappleDistance);
-                //_grapplePoint = cam.position + cam.forward * maxGrappleDistance;
                 Invoke(nameof(StopGrappleFail), grappleDelayTime);
             }
             
             lr.enabled = true;
         }
-
+        
         private void TransferGrapplePoint(Transform targetTransform, Vector3 point)
         {
             grapplePoint.transform.SetParent(targetTransform, true);
@@ -184,8 +196,6 @@ namespace Gameplay.Mecha
             _joint.spring = 4.5f;
             _joint.damper = 2f;
             _joint.massScale = 340f;
-        
-        
         }
     
         private void RemoveSwing()
@@ -198,6 +208,30 @@ namespace Gameplay.Mecha
             AddSwing(grapplePoint.transform.position);
             _canPull = true;
             //_starting_distance = Vector3.Distance(rb.position, _grapplePoint);
+        }
+
+        private RaycastHit[] _hits = new RaycastHit[8];
+        public bool RaycastIgnoringSelf(Vector3 origin, Vector3 direction, out RaycastHit hit, float range, LayerMask layerMask)
+        {
+            var size = Physics.RaycastNonAlloc(origin, direction, _hits, range, layerMask);
+            hit = default;
+            float closest = Mathf.Infinity;
+            bool found = false;
+
+            for (int i = 0; i < size; i++)
+            {
+                RaycastHit h = _hits[i];
+                if (collidersToIgnore.Contains(h.collider)) continue; // skip self
+
+                if (h.distance < closest)
+                {
+                    closest = h.distance;
+                    hit = h;
+                    found = true;
+                }
+            }
+
+            return found;
         }
 
         private void MaintainGrapple()
@@ -223,7 +257,7 @@ namespace Gameplay.Mecha
         }
         
 
-        private void DrawRope()
+        public void DrawRope()
         {
             if (!_isGrappling)
             {
@@ -245,15 +279,12 @@ namespace Gameplay.Mecha
                  var offset = up * (waveHeight * Mathf.Sin(delta * waveCount * Mathf.PI) * _spring.Value * effectCurve.Evaluate(delta));
                  lr.SetPosition(i, Vector3.Lerp(gunTip.position, newPoint, delta) + offset);
              }
-             
-             
-             
         }
 
         private void StopGrapple(bool success = true)
         {
             var grapplingCooldown = juggernautParameters.grapplingCd;
-            if (isMainModule)
+            if (isMainModule && IsOwner)
             {
                 ModuleData data = new ModuleData
                 {
@@ -264,7 +295,14 @@ namespace Gameplay.Mecha
                 EventManager.TriggerEvent("GrapplingModule", data);
                 EventManager.TriggerEvent("GrapplingModuleStop", data);
             }
-                
+           
+            StopGrappleRpc(success);
+        }
+
+        [Rpc(SendTo.ClientsAndHost)]
+        public void StopGrappleRpc(bool success)
+        { 
+            var grapplingCooldown = juggernautParameters.grapplingCd;
             RemoveSwing();
             _isGrappling = false;
             _grapplingCdTimer = success ? grapplingCooldown : grapplingCooldown * 0.2f;
