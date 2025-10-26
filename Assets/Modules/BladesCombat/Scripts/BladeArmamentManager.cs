@@ -66,6 +66,8 @@ namespace BladesCombat
             PrepareUpdatableComponents();
             PrepareTriggerComponents();
             SubscribeToBladeTriggers();
+
+            _initedComponents = true;
         }
 
         private void PrepareUpdatableComponents()
