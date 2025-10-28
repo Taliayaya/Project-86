@@ -22,8 +22,11 @@ namespace Gameplay.Quests.Tasks
             get => _status.Value;
             set
             {
-                // if (IsOwner)
+                if (IsOwner)
+                {
                     _status.Value = value;
+                    OnStatusChanged?.Invoke(value, this);
+                }
                 // else
                 //     Debug.LogWarning("[Task] Status: Task status can only be changed by the owner");
             }
@@ -31,6 +34,19 @@ namespace Gameplay.Quests.Tasks
 
         private void Awake()
         {
+        }
+
+        // they need to be enabled during spawn or they wont be sync / taken into account
+        protected override void OnNetworkPreSpawn(ref NetworkManager networkManager)
+        {
+            gameObject.SetActive(true);
+            base.OnNetworkPreSpawn(ref networkManager);
+        }
+
+        protected override void OnNetworkPostSpawn()
+        {
+            base.OnNetworkPostSpawn();
+            gameObject.SetActive(false);
         }
 
         public virtual void OnEnable()

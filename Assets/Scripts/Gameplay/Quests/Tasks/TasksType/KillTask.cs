@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using AI;
 using Gameplay.Units;
+using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -16,13 +17,22 @@ namespace Gameplay.Quests.Tasks.TasksType
         public UnitType type;
         
         [SerializeField] private string taskName = "Kill";
-        [NonSerialized]
-        private int _currentEnemyKilled = 0;
+        
+        [SerializeField] NetworkVariable<int> _currentEnemyKilled = new NetworkVariable<int>(0);
 
         public override void OnEnable()
         {
-            _currentEnemyKilled = 0;
+            if (IsOwner)
+                _currentEnemyKilled.Value = 0;
+            _currentEnemyKilled.OnValueChanged += ValueChanged;
         }
+
+        private void ValueChanged(int previousValue, int newValue)
+        {
+            bool isComplete = Complete();
+            OnTaskProgressChangedHandler(this);
+        }
+
         protected void OnEnemyDeath(object unitArg)
         {
             var unit = (Unit)unitArg;
@@ -30,32 +40,38 @@ namespace Gameplay.Quests.Tasks.TasksType
             Debug.Log("[KillTask] OnEnemyDeath()" + unit.unitType + " has type " + type.HasFlag(unit.unitType));
             if (type.HasFlag(unit.unitType))
             {
-                _currentEnemyKilled++;
-                bool isComplete = Complete();
-                OnTaskProgressChangedHandler(this);
+                if (IsOwner)
+                {
+                    _currentEnemyKilled.Value++;
+                    Complete();
+                    OnTaskProgressChangedHandler(this);
+                }
             }
         }
 
         public override bool CanComplete()
         {
-            return _currentEnemyKilled >= enemyToKill;
+            Debug.Log($"[CanComplete]2 currentEnemyKilled {_currentEnemyKilled.Value}");
+            return _currentEnemyKilled.Value >= enemyToKill;
         }
 
         public override string ToString()
         {
-            return $"{taskName} {enemyToKill} {type}{(enemyToKill > 1 ? "s" : "")}: {_currentEnemyKilled}/{enemyToKill}";
+            return $"{taskName} {enemyToKill} {type}{(enemyToKill > 1 ? "s" : "")}: {_currentEnemyKilled.Value}/{enemyToKill}";
         }
 
         public override void RegisterEvents()
         {
             base.RegisterEvents();
-            EventManager.AddListener("UnitDeath", OnEnemyDeath);
+            if (IsOwner)
+                EventManager.AddListener("UnitDeath", OnEnemyDeath);
         }
         
         public override void UnregisterEvents()
         {
             base.UnregisterEvents();
-            EventManager.RemoveListener("UnitDeath", OnEnemyDeath);
+            if (IsOwner)
+                EventManager.RemoveListener("UnitDeath", OnEnemyDeath);
         }
     }
     

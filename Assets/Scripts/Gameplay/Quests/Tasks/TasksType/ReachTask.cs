@@ -1,6 +1,7 @@
 using System;
 using Gameplay.Quests.Tasks.TaskHelper;
 using Gameplay.Units;
+using Unity.Netcode;
 using UnityEngine;
 using Utility;
 
@@ -14,14 +15,20 @@ namespace Gameplay.Quests.Tasks.TasksType
         public bool playerOnly = true;
         
         [NonSerialized]
-        private bool _zoneReached = false;
+        private NetworkVariable<bool> _zoneReached = new NetworkVariable<bool>(false);
         public override void Activate()
         {
             base.Activate();
+            _zoneReached.OnValueChanged += ValueChanged;
             zoneArea.Task = this;
             zoneArea.onTriggerEnter.AddListener(OnTriggerEnter);
         }
-        
+
+        private void ValueChanged(bool previousValue, bool newValue)
+        {
+            Complete();
+        }
+
         public void OnTriggerEnter(Collider other)
         {
             if (!PlayerManager.Player) return;
@@ -29,8 +36,13 @@ namespace Gameplay.Quests.Tasks.TasksType
             bool isPlayerOrAllowed = !playerOnly || other.gameObject == PlayerManager.Player.gameObject;
             if (isUnitAllowed && isPlayerOrAllowed && !IsCompleted)
             {
-                _zoneReached = true;
-                Complete();
+                Debug.Log("[ReachTask] OnTriggerEnter()");
+                if (IsOwner)
+                {
+                    Debug.Log("[ReachTask] OnTriggerEnter() IsOwner");
+                    _zoneReached.Value = true;
+                    Complete();
+                }
             }
         }
 
@@ -57,7 +69,7 @@ namespace Gameplay.Quests.Tasks.TasksType
 
         public override bool CanComplete()
         {
-            return _zoneReached;
+            return _zoneReached.Value;
         }
     }
 }
