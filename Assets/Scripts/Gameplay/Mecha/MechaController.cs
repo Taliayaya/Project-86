@@ -373,7 +373,7 @@ namespace Gameplay.Mecha
         #region Movement and Camera
 
         private void CheckGrappleSurfaceAlignment() { 
-            if (_isGrappling ) { surfaceAlignment.useRawNormal = true; } // && isAirborne
+            if (_isGrappling ) { surfaceAlignment.useRawNormal = false; } // && isAirborne
             else if (!_isGrappling){ surfaceAlignment.useRawNormal = false;}
         }
 
