@@ -81,9 +81,14 @@ namespace Gameplay.Quests
                     _quests = questMission.quests;
                     break;
                 }
+        }
+
+        protected override void OnNetworkPostSpawn()
+        {
+            base.OnNetworkPostSpawn();
             Invoke(nameof(SelectFirstQuestAndRegister), 1f);
         }
-        
+
         private bool _isStarted = false;
         private void Start()
         {

@@ -870,6 +870,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2793151854681958041}
   - component: {fileID: 2032124242736149603}
+  - component: {fileID: -8909847295727461809}
   m_Layer: 0
   m_Name: DeadJuggernaut
   m_TagString: Untagged
@@ -921,6 +922,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-8909847295727461809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7245819395031187743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88b9b11ad00a01e44aa1c4d1ab3954eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyTime: 300
 --- !u!1 &7594742309956662073
 GameObject:
   m_ObjectHideFlags: 0

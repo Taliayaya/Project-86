@@ -3034,9 +3034,9 @@ GameObject:
   - component: {fileID: 7728286909231517240}
   - component: {fileID: 757720393720240841}
   - component: {fileID: 1565958590495840711}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: JuggernautMulti
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3519,6 +3519,9 @@ MonoBehaviour:
   - {fileID: 8771123071544770293}
   - {fileID: 5712937813687554075}
   - {fileID: 5619697401373303747}
+  rayMask:
+    serializedVersion: 2
+    m_Bits: 1
   normalLerp: 0.4
   upDirectionLerp: 0.15
   floorAngle: 0
@@ -3631,7 +3634,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6858872875946099967
 Transform:
   m_ObjectHideFlags: 0
@@ -5226,6 +5229,8 @@ MonoBehaviour:
   strength: 800
   damper: 8
   velocity: 40
+  springLowDistance: 0.25
+  springHighDistance: 0.8
   collidersToIgnore:
   - {fileID: 1897744429626977099}
   - {fileID: 7969712110587937151}
@@ -6167,7 +6172,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4343
+    m_Bits: 6391
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 0014588010443f7479908e74bdd43dca, type: 2}
   m_TargetDisplay: 0
@@ -6601,7 +6606,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4343
+    m_Bits: 6391
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 0014588010443f7479908e74bdd43dca, type: 2}
   m_TargetDisplay: 0
@@ -7584,6 +7589,8 @@ MonoBehaviour:
   strength: 800
   damper: 8
   velocity: 40
+  springLowDistance: 0.25
+  springHighDistance: 0.8
   collidersToIgnore:
   - {fileID: 741119176688537131}
   - {fileID: 852244600678177141}
@@ -13188,75 +13195,11 @@ MonoBehaviour:
   _EditorExtraCategory: 1
   setupPose:
     MainHipsPose:
-      SourceTransform: {fileID: 4158300666289665904}
+      SourceTransform: {fileID: 0}
       RotationInRoot: {x: 0, y: 0, z: 0, w: 1}
       PositionInRoot: {x: 0, y: 0, z: 0}
     HipsPoses: []
-    LegPoses:
-    - UpperLegPose:
-        SourceTransform: {fileID: 4131427054324704049}
-        RotationInRoot: {x: -0.18015648, y: 0.683772, z: 0.6837712, w: -0.18015648}
-        PositionInRoot: {x: -0.0029182376, y: 0.00026791682, z: 0.001003646}
-      LowerLegPose:
-        SourceTransform: {fileID: 8718576828504585336}
-        RotationInRoot: {x: -0.50295746, y: 0.29224503, z: 0.7847147, w: 0.21412505}
-        PositionInRoot: {x: -0.011662798, y: 0.0057881065, z: 0.005260027}
-      AnklePose:
-        SourceTransform: {fileID: 3308720847670728986}
-        RotationInRoot: {x: -0.54632175, y: -0.009912372, z: 0.8373088, w: 0.018660992}
-        PositionInRoot: {x: -0.019755924, y: -0.0051892106, z: 0.008315744}
-      FeetPose:
-        SourceTransform: {fileID: 0}
-        RotationInRoot: {x: 0, y: 0, z: 0, w: 0}
-        PositionInRoot: {x: 0, y: 0, z: 0}
-    - UpperLegPose:
-        SourceTransform: {fileID: 5222555710320212458}
-        RotationInRoot: {x: 0.18015657, y: 0.68377197, z: 0.68377113, w: 0.18015657}
-        PositionInRoot: {x: 0.0029182376, y: 0.00026791682, z: 0.001003646}
-      LowerLegPose:
-        SourceTransform: {fileID: 2007608627201993964}
-        RotationInRoot: {x: 0.50295746, y: 0.29224515, z: 0.7847147, w: -0.21412496}
-        PositionInRoot: {x: 0.011661957, y: 0.005793208, z: 0.0052614915}
-      AnklePose:
-        SourceTransform: {fileID: 8829609305333350732}
-        RotationInRoot: {x: 0.54632175, y: -0.009912282, z: 0.8373089, w: -0.018660754}
-        PositionInRoot: {x: 0.019755071, y: -0.0051841093, z: 0.008317212}
-      FeetPose:
-        SourceTransform: {fileID: 0}
-        RotationInRoot: {x: 0, y: 0, z: 0, w: 0}
-        PositionInRoot: {x: 0, y: 0, z: 0}
-    - UpperLegPose:
-        SourceTransform: {fileID: 6730298147993262353}
-        RotationInRoot: {x: 0.18015628, y: -0.6837715, z: 0.68377185, w: -0.18015637}
-        PositionInRoot: {x: -0.0029182145, y: 0.00026787422, z: -0.0021197456}
-      LowerLegPose:
-        SourceTransform: {fileID: 8480607879356587450}
-        RotationInRoot: {x: -0.78471524, y: 0.21412413, z: 0.5029572, w: 0.29224455}
-        PositionInRoot: {x: -0.011662786, y: 0.0057880543, z: -0.006376128}
-      AnklePose:
-        SourceTransform: {fileID: 6243161544923415509}
-        RotationInRoot: {x: -0.8373091, y: 0.018660277, z: 0.5463213, w: -0.009913027}
-        PositionInRoot: {x: -0.019755883, y: -0.005189281, z: -0.009431854}
-      FeetPose:
-        SourceTransform: {fileID: 0}
-        RotationInRoot: {x: 0, y: 0, z: 0, w: 0}
-        PositionInRoot: {x: 0, y: 0, z: 0}
-    - UpperLegPose:
-        SourceTransform: {fileID: 8139750983691009706}
-        RotationInRoot: {x: -0.18015628, y: -0.68377143, z: 0.6837719, w: 0.18015637}
-        PositionInRoot: {x: 0.0029182145, y: 0.00026787422, z: -0.0021197456}
-      LowerLegPose:
-        SourceTransform: {fileID: 1609873827521231179}
-        RotationInRoot: {x: -0.78471535, y: -0.21412425, z: -0.502957, w: 0.29224467}
-        PositionInRoot: {x: 0.011661939, y: 0.005793156, z: -0.006377595}
-      AnklePose:
-        SourceTransform: {fileID: 1727178170361936532}
-        RotationInRoot: {x: -0.83730936, y: -0.018660396, z: -0.5463213, w: -0.009912938}
-        PositionInRoot: {x: 0.019755041, y: -0.0051841727, z: -0.00943332}
-      FeetPose:
-        SourceTransform: {fileID: 0}
-        RotationInRoot: {x: 0, y: 0, z: 0, w: 0}
-        PositionInRoot: {x: 0, y: 0, z: 0}
+    LegPoses: []
   ExtraSetupPoses: []
   IKHintMode: 0
   LimitLegStretch: 0.99

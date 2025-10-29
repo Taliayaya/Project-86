@@ -39,7 +39,7 @@ namespace Gameplay.Mecha
         [SerializeField] private float velocity = 15f;
 
         private float springLowDistance = 0.25f;
-        private float springHighDistance = 0.8f;
+        private float springHighDistance = 1.25f;
 
         [SerializeField] private List<Collider> collidersToIgnore;
         
@@ -193,9 +193,9 @@ namespace Gameplay.Mecha
             _joint.minDistance = distanceFromPoint * springLowDistance;
         
             // Adjust these values to fit needs.
-            _joint.spring = 4.5f;
-            _joint.damper = 2f;
-            _joint.massScale = 340f;
+            _joint.spring = 500f;
+            _joint.damper = 30f;
+            _joint.massScale = 4.5f;
         }
     
         private void RemoveSwing()
@@ -243,17 +243,18 @@ namespace Gameplay.Mecha
         private void PullBody()
         {
             _recast = true;
-            //var direction = (_grapplePoint - rb.position).normalized;
+            var direction = (grapplePoint.transform.position - rb.position).normalized;
             var distance = Vector3.Distance(rb.position, grapplePoint.transform.position);
             //var multiplier = 10;//Math.Min(1, distance / 2f);
-            //rb.AddForce(direction * (1000 * juggernautParameters.grapplePullSpeed * multiplier), ForceMode.Force);
+            rb.AddForce(direction * (1000 * juggernautParameters.grapplePullSpeed), ForceMode.Force);
 
             //var distance_change = Vector3.ClampMagnitude(direction * multiplier * Time.deltaTime, math.max(distance, 0.5f));
             //rb.transform.position = (rb.transform.position + distance_change);
             //rb.AddForce(direction * juggernautParameters.grapplePullSpeed * Time.fixedDeltaTime * 4, ForceMode.VelocityChange);
 
-            _joint.maxDistance = math.clamp(math.min(_joint.maxDistance - grapplePullSpeed * Time.fixedDeltaTime, distance), 0.25f, maxGrappleDistance);
-            _joint.minDistance = 0.25f; // distance * 0.25f;
+            _joint.maxDistance = distance; // 0.25f;
+            // _joint.maxDistance = math.clamp(math.min(_joint.maxDistance - grapplePullSpeed * Time.fixedDeltaTime, distance), 0.25f, maxGrappleDistance);
+            _joint.minDistance = distance * 0.25f; // 0.25f;
         }
         
 
