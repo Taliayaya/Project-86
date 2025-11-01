@@ -1,10 +1,11 @@
+using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static UnityEngine.Analytics.IAnalytic;
 using static UnityEngine.LightAnchor;
 
-public class SurfaceNormalAlignment : MonoBehaviour
+public class SurfaceNormalAlignment : NetworkBehaviour
 {
     [SerializeField] private GameObject[] weightRaycasts;
     // Stabilizes surface normal jitter on uneven terrain
@@ -36,22 +37,27 @@ public class SurfaceNormalAlignment : MonoBehaviour
 
     private void CompileRaycasts()
     {
-        // Converts dummy raycast gameobjects into an ECS like data structure
-        rayPositions = new Vector3[weightRaycasts.Length];
-        rayDirections = new Vector3[weightRaycasts.Length];
-        rayWeights = new float[weightRaycasts.Length];
-        rayLengths = new float[weightRaycasts.Length];
-        //Debug.Log(weightRaycasts.Length);
-
-        for (int i = 0; i < weightRaycasts.Length; i++)
+        if (IsOwner)
         {
-            rayPositions[i] = weightRaycasts[i].transform.localPosition;
-            rayDirections[i] = weightRaycasts[i].transform.forward;
-            SurfaceAlignmentRaycast SAR = weightRaycasts[i].GetComponent("SurfaceAlignmentRaycast") as SurfaceAlignmentRaycast;
-            rayWeights[i] = SAR.weight;
-            rayLengths[i] = SAR.length;
-            //Debug.Log(i);
+            // Converts dummy raycast gameobjects into an ECS like data structure
+            rayPositions = new Vector3[weightRaycasts.Length];
+            rayDirections = new Vector3[weightRaycasts.Length];
+            rayWeights = new float[weightRaycasts.Length];
+            rayLengths = new float[weightRaycasts.Length];
+            //Debug.Log(weightRaycasts.Length);
+
+            for (int i = 0; i < weightRaycasts.Length; i++)
+            {
+                rayPositions[i] = weightRaycasts[i].transform.localPosition;
+                rayDirections[i] = weightRaycasts[i].transform.forward;
+                SurfaceAlignmentRaycast SAR =
+                    weightRaycasts[i].GetComponent("SurfaceAlignmentRaycast") as SurfaceAlignmentRaycast;
+                rayWeights[i] = SAR.weight;
+                rayLengths[i] = SAR.length;
+                //Debug.Log(i);
+            }
         }
+
         for (int i = 0; i < weightRaycasts.Length; i++)
         {
             //Debug.Log(weightRaycasts[i].name);
@@ -62,7 +68,7 @@ public class SurfaceNormalAlignment : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (pause) { return; }
+        if (pause || !HasAuthority) { return; }
         ProcessFloorRays();
 
         AverageRaycasts();
