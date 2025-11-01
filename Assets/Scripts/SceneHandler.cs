@@ -192,14 +192,10 @@ public class SceneHandler : Singleton<SceneHandler>
     {
         if (!NetworkManager.Singleton.IsHost)
             yield break;
-        Debug.Log("Host is spawning players");
+        Debug.Log("Host is spawning itself");
         var respawnManager = FindAnyObjectByType<RespawnManager>();
-        foreach (var client in NetworkManager.Singleton.ConnectedClientsList)
-        {
-            Debug.Log("Host is spawning player " + client.ClientId);
-            var playerObject = respawnManager.SpawnPlayer(client.ClientId);
-            PlayerManager.PlayerObjects[client.ClientId] = playerObject;
-        }
+        var playerObject = respawnManager.SpawnPlayer(NetworkManager.Singleton.LocalClientId);
+        PlayerManager.PlayerObjects[NetworkManager.Singleton.LocalClientId] = playerObject;
 
         Debug.Log("Auto spawning for late users");
         NetworkManager.Singleton.OnClientConnectedCallback -= LateUserSpawn;
@@ -248,6 +244,10 @@ public class SceneHandler : Singleton<SceneHandler>
         else
         {
             Debug.Log("Client is waiting for its player object to spawn");
+            var respawnManager = FindAnyObjectByType<RespawnManager>();
+            // Debug.Log("Host is spawning player " + .ClientId);
+            var playerObject = respawnManager.SpawnPlayer(sceneEvent.ClientId);
+            PlayerManager.PlayerObjects[sceneEvent.ClientId] = playerObject;
         }
         yield return null;
         OnPlay();

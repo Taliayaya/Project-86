@@ -51,10 +51,10 @@ namespace Gameplay
         private const bool DestroyWithScene = true;
         
         //[ServerRpc]
-        public GameObject Respawn(GameObject prefab, GameObject spawnPoint, ulong clientId)
+        public GameObject Respawn(GameObject prefab, GameObject spawnPoint, ulong clientId, bool useRandomOffset = true)
         {
             // random offset
-            var offset = new Vector3(UnityEngine.Random.Range(-10f, 10f), 0, UnityEngine.Random.Range(-10f, 10f));
+            var offset = useRandomOffset ? new Vector3(UnityEngine.Random.Range(-10f, 10f), 0, UnityEngine.Random.Range(-10f, 10f)) : Vector3.zero;
             var go = Instantiate(prefab, spawnPoint.transform.position + offset, spawnPoint.transform.rotation);
             go.name = "Player" + clientId;
 
@@ -96,8 +96,9 @@ namespace Gameplay
 
         public GameObject SpawnPlayer(ulong clientId)
         {
-            Debug.Log("spawnpoint: " + spawnPoint);
-            return Respawn(playerPrefab, GetPlayerSpawnPoint(clientId).gameObject, clientId);
+            var spawn = GetPlayerSpawnPoint(clientId);
+            Debug.Log($"Spawning Player{clientId} on {spawn.name}");
+            return Respawn(playerPrefab, spawn.gameObject, clientId, false);
         }
 
         public GameObject Respawn(GameObject prefab, int spawnPointIndex)

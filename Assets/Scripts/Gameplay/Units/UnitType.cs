@@ -11,9 +11,10 @@ namespace Gameplay.Units
         Juggernaut = 4,
         Scavenger = 8,
         Dinosauria = 16,
+        Grauwolf = 32,
+        Skorpion = 64,
         
-        
-        Legion = Ameise | Lowe | Dinosauria,
+        Legion = Ameise | Lowe | Dinosauria | Grauwolf | Skorpion,
         Republic = Juggernaut | Scavenger,
     }
 }

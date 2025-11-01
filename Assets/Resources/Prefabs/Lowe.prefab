@@ -473,7 +473,11 @@ MonoBehaviour:
   myParentColliderToIgnore: {fileID: 0}
   ammoLeftOrRight: Left
   gunCheckCanShoot: {fileID: 0}
+  _animator: {fileID: 0}
+  _rb: {fileID: 0}
+  recoilBodyTorque: {x: 0, y: 0, z: 0}
   canFire: 1
+  _currentAmmoRemaining: 0
 --- !u!82 &2987575834911625274
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1262,7 +1266,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2726539564
+  GlobalObjectIdHash: 451028681
   InScenePlacedSourceGlobalObjectIdHash: 451028681
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1288,7 +1292,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  tree: {fileID: 11400000, guid: 9a2589549de58f84fa2247c675fb2553, type: 2}
+  tree: {fileID: 11400000, guid: ca97dabf2cc475348834214575f65fd8, type: 2}
 --- !u!82 &2987575835785382407
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2938,7 +2942,7 @@ MonoBehaviour:
   baseTransform: {fileID: 259483675925536319}
   Hips: {fileID: 2622189977270965379}
   ScaleReferenceMode: 3
-  finalScaleReference: 0.40934855
+  finalScaleReference: 0.40934774
   finalScaleReferenceSqrt: 20.293144
   customScaleReferenceValue: 0.5
   DelayedInitialization: 0
@@ -4440,7 +4444,11 @@ MonoBehaviour:
   myParentColliderToIgnore: {fileID: 5836937867256135592}
   ammoLeftOrRight: Left
   gunCheckCanShoot: {fileID: 0}
+  _animator: {fileID: 0}
+  _rb: {fileID: 0}
+  recoilBodyTorque: {x: 0, y: 0, z: 0}
   canFire: 1
+  _currentAmmoRemaining: 0
 --- !u!82 &6852200685316878366
 AudioSource:
   m_ObjectHideFlags: 0
