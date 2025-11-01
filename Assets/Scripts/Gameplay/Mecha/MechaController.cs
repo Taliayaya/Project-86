@@ -514,7 +514,7 @@ namespace Gameplay.Mecha
             if (data is not Vector2 pos || !canRotate)
                 return;
             
-            float sensitivity = CameraZoom == Zoom.Default ? juggernautParameters.MouseSensitivity : juggernautParameters.MouseZoomSensitivity;
+            float sensitivity = CameraZoom <= Zoom.X2 ? juggernautParameters.MouseSensitivity : juggernautParameters.MouseZoomSensitivity;
             _xRotation -= pos.y * sensitivity * Time.fixedDeltaTime;
             _yRotation += pos.x * sensitivity * Time.fixedDeltaTime;
 
