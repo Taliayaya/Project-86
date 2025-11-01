@@ -89,10 +89,15 @@ namespace Gameplay
             return SpawnPlayer(NetworkManager.Singleton.LocalClientId);
         }
 
+        private Transform GetPlayerSpawnPoint(ulong clientId)
+        {
+            return spawnPoint.GetChild((int)clientId);
+        }
+
         public GameObject SpawnPlayer(ulong clientId)
         {
             Debug.Log("spawnpoint: " + spawnPoint);
-            return Respawn(playerPrefab, spawnPoint.gameObject, clientId);
+            return Respawn(playerPrefab, GetPlayerSpawnPoint(clientId).gameObject, clientId);
         }
 
         public GameObject Respawn(GameObject prefab, int spawnPointIndex)

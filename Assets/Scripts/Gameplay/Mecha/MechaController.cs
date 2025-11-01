@@ -202,10 +202,12 @@ namespace Gameplay.Mecha
                 {
                     case Zoom.Default:
                         zoomValue = 60;
+                        zoomCameraUsed.gameObject.SetActive(false);
                         zoomCameraUsed.enabled = false;
                         break;
                     case Zoom.X2:
                         zoomCameraUsed.enabled = true;
+                        zoomCameraUsed.gameObject.SetActive(true);
                         zoomValue = 30;
                         break;
                     case Zoom.X4:
@@ -511,10 +513,12 @@ namespace Gameplay.Mecha
         {
             if (data is not Vector2 pos || !canRotate)
                 return;
-            _xRotation -= pos.y * juggernautParameters.MouseSensitivity * Time.fixedDeltaTime;
-            _yRotation += pos.x * juggernautParameters.MouseSensitivity * Time.fixedDeltaTime;
+            
+            float sensitivity = CameraZoom == Zoom.Default ? juggernautParameters.MouseSensitivity : juggernautParameters.MouseZoomSensitivity;
+            _xRotation -= pos.y * sensitivity * Time.fixedDeltaTime;
+            _yRotation += pos.x * sensitivity * Time.fixedDeltaTime;
 
-            var _yRotationChange = pos.x * juggernautParameters.MouseSensitivity * Time.fixedDeltaTime;
+            var _yRotationChange = pos.x * sensitivity * Time.fixedDeltaTime;
             rotationLeft += surfaceAlignment.upDirection * _yRotationChange; 
 
             EventManager.TriggerEvent("OnUpdateCompass", _yRotation);
