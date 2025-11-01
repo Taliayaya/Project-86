@@ -37,6 +37,7 @@ public class GameManager : Singleton<GameManager>
         }
         DataHandler.LoadGameData();
         Screen.SetResolution(1920, 1080, FullScreenMode.FullScreenWindow);
+        Application.runInBackground = true;
         
         //Cursor.lockState = CursorLockMode.Locked;
 
