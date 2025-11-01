@@ -25,6 +25,7 @@ namespace Armament.Shared
 		public override void OnNetworkSpawn()
 		{
 			m_currentArmament.OnValueChanged += ValueChanged;
+			ChangedArmament(m_currentArmament.Value);
 		}
 
 		private void ValueChanged(ArmamentType previousValue, ArmamentType newValue)
