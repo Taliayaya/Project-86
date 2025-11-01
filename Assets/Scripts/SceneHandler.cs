@@ -112,6 +112,8 @@ public class SceneHandler : Singleton<SceneHandler>
             EventManager.TriggerEvent(Constants.TypedEvents.LoadingScene, (_activeSceneData, _loadingAsyncOperation));
         }
 
+        if (!_isReload)
+            PreviousSceneCleanup();
         if (NetworkManager.Singleton.IsHost)
         {
             LoadSceneMode mode = _isReload ? LoadSceneMode.Single : LoadSceneMode.Additive;
@@ -130,6 +132,8 @@ public class SceneHandler : Singleton<SceneHandler>
                 ShowLoadingUI();
                 DisableSceneObjects(SceneManager.GetActiveScene());
                 EventManager.TriggerEvent(Constants.TypedEvents.LoadingScene, (_activeSceneData, _loadingAsyncOperation));
+                if (!_isReload)
+                    PreviousSceneCleanup();
                 break;
             case SceneEventType.LoadComplete:
                 // only handle ourselves here
@@ -173,7 +177,10 @@ public class SceneHandler : Singleton<SceneHandler>
     {
         var activeScene = SceneManager.GetActiveScene();
         Debug.Log($"Unloading scene {activeScene.name}");
-        NetworkManager.Singleton.SceneManager.UnloadScene(activeScene);
+        if (activeScene.name == "MainMenu")
+            SceneManager.UnloadSceneAsync(activeScene);
+        else
+            NetworkManager.Singleton.SceneManager.UnloadScene(activeScene);
     }
 
     IEnumerator SynchronizePostLoad()
@@ -204,8 +211,6 @@ public class SceneHandler : Singleton<SceneHandler>
 
     IEnumerator PostSceneLoad(SceneEvent sceneEvent, bool setActiveScene = true)
     {
-        if (!_isReload)
-            PreviousSceneCleanup();
         yield return null;
         
         var terrains =

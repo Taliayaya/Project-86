@@ -36,14 +36,17 @@ public class InputManager : Singleton<InputManager>
         EventManager.AddListener("RebindStarted", OnRebindStarted);
         EventManager.AddListener("DeleteSave", OnDeleteSave);
         EventManager.AddListener("OnResume", OnResumeFollow);
+        EventManager.AddListener(Constants.Events.Session.ReturnToMainMenu, OnReturnToMainMenu);
     }
-        
+
+
     private void OnDisable()
     {
         EventManager.RemoveListener("OnDeath", OnDeath);
         EventManager.RemoveListener("RebindStarted", OnRebindStarted);
         EventManager.RemoveListener("DeleteSave", OnDeleteSave);
         EventManager.RemoveListener("OnResume", OnResumeFollow);
+        EventManager.RemoveListener(Constants.Events.Session.ReturnToMainMenu, OnReturnToMainMenu);
     }
 
     #region Juggernaut Action Map
@@ -225,6 +228,10 @@ public class InputManager : Singleton<InputManager>
         _playerInput.SwitchCurrentActionMap("Juggernaut");
     }
 
+    private void OnReturnToMainMenu()
+    {
+        _playerInput.SwitchCurrentActionMap("MainMenu");
+    }
     #endregion
 
     #region Death Action Map

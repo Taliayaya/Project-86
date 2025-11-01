@@ -113,6 +113,12 @@ namespace Gameplay.Mecha
                 return;
             }
 
+            // happens if the target gets destroyed while the player is attached to it
+            if (grapplePoint == null)
+            {
+                grapplePoint = new GameObject();
+                StopGrapple();
+            }
             if (_isGrappling && _canPull)
             {
                 MaintainGrapple();

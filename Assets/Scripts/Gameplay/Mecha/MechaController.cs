@@ -444,8 +444,10 @@ namespace Gameplay.Mecha
                 //Debug.Log(surfaceAlignment.rawNormal);
                 //move = surfaceAlignedVector;
                 //move = ((transform.forward * 0.5f + Vector3.up * 3) * (_lastMovement.y) + transform.right * _lastMovement.x).normalized;
-
             }
+            // if not grounded while grappling, don't move
+            else if (!_isGrounded)
+                return;
             
             
             //if (_isGrappling) { floorAngleMultiplier = 0.5};
@@ -458,10 +460,11 @@ namespace Gameplay.Mecha
         private void ApplyGravity()
         {
             float excessGravity = 0f;
-            Debug.Log("ApplyGravity " + _isGrounded + " " + _isOnWall + " " + _isGrappling + " " + _rigidbody.linearVelocity.y + "");
+            // Debug.Log("ApplyGravity " + _isGrounded + " " + _isOnWall + " " + _isGrappling + " " + _rigidbody.linearVelocity.y + "");
             if (_isGrounded) excessGravity = gravity;
             else if (_isOnWall && !_isGrappling) excessGravity = gravity * (wallFallingMult - 1);
             else if (_rigidbody.linearVelocity.y < 0) { excessGravity += gravity * (fallGravityMult - 1f); }
+            else if (_isGrappling) excessGravity += gravity * (fallGravityMult - 1);
             else if (!isJumping && _rigidbody.linearVelocity.y > 0) { excessGravity += gravity * (lowJumpGravityMult - 1f);  }
             //Debug.Log(_rigidbody.linearVelocity.y);
             _rigidbody.AddForce(Vector3.up * excessGravity, UnityEngine.ForceMode.Acceleration);
@@ -525,8 +528,6 @@ namespace Gameplay.Mecha
 
             _xRotation = Mathf.Clamp(_xRotation, MinXRotation, MaxXRotation);
             EventManager.TriggerEvent("OnUpdateXRotation", _xRotation);
-            
-
         }
         
 
