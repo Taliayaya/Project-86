@@ -24,6 +24,7 @@ namespace DefaultNamespace.Sound
             EventManager.AddListener("UpdateGameParameter:musicVolume",OnUpdateMusicVolume);
             EventManager.AddListener("UpdateGameParameter:sfxVolume", OnUpdateSfxVolume);
             EventManager.AddListener("LoadingLoadingScene", OnLoadingScene);
+            EventManager.AddListener(Constants.Events.Session.ReturnToMainMenu, OnResumeGame);
         }
 
         private void OnDisable()
@@ -33,6 +34,7 @@ namespace DefaultNamespace.Sound
             EventManager.RemoveListener("UpdateGameParameter:musicVolume",OnUpdateMusicVolume);
             EventManager.RemoveListener("UpdateGameParameter:sfxVolume", OnUpdateSfxVolume);
             EventManager.RemoveListener("LoadingLoadingScene", OnLoadingScene);
+            EventManager.RemoveListener(Constants.Events.Session.ReturnToMainMenu, OnResumeGame);
         }
 
         private void OnPauseGame()
@@ -48,14 +50,15 @@ namespace DefaultNamespace.Sound
         private void OnUpdateMusicVolume(object data)
         {
             Debug.Log("Called Event");
-            float volume;
+            float percent;
             if (data is float volf)
-                volume = volf;
+                percent = volf;
             else if (data is int voli)
-                volume = voli;
+                percent = voli;
             else
                 throw new ArgumentException("data is not float or int");
-            masterMixer.SetFloat("musicVol", volume);
+            float volumeCorrected = Mathf.Lerp(-80, -12, percent / 100f);
+            masterMixer.SetFloat("musicVol", volumeCorrected);
         }
 
         private void OnUpdateSfxVolume(object data)
@@ -67,7 +70,8 @@ namespace DefaultNamespace.Sound
                 volume = voli;
             else
                 throw new ArgumentException("data is not float or int");
-            masterMixer.SetFloat("sfxVol", volume);
+            float volumeCorrected = Mathf.Lerp(-80, 0, volume / 100f);
+            masterMixer.SetFloat("sfxVol", volumeCorrected);
         }
         
         

@@ -60,6 +60,7 @@ public static class Constants
         public static class Session
         {
             public const string SessionPlayerDataChanged = "LobbyDataChanged";
+            public const string ReturnToMainMenu = "ReturnToMainMenu";
         }
     }
 

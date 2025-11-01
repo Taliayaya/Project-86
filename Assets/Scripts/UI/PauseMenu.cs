@@ -57,6 +57,7 @@ namespace UI
             Debug.Log("IsSignedIn: " + AuthenticationService.Instance.IsSignedIn);
             var task = SessionManager.Instance.LeaveSession();
             yield return new WaitUntil(() => task.IsCompleted);
+            EventManager.TriggerEvent(Constants.Events.Session.ReturnToMainMenu);
             Debug.Log("IsSignedIn: " + AuthenticationService.Instance.IsSignedIn);
             GameManager.Instance.Pause(false);
             // NetworkManager.Singleton.DisconnectClient(NetworkManager.Singleton.LocalClientId, "Return to main menu");

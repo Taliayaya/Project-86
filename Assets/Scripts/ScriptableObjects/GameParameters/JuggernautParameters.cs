@@ -17,8 +17,9 @@ namespace ScriptableObjects.GameParameters
         public float jumpCooldown = 1f;
  
 
-        public float mouseSensitivity = 10f;
-        public float scrollSensitivity = 25f;
+        [Range(1, 100)] public float mouseSensitivity = 50f;
+        [Range(1, 100)] public float mouseZoomSensitivity = 50f;
+        [Range(1, 100)] public float scrollSensitivity = 25f;
         public float walkSpeed = 30f;
         public float runSpeed = 60f;
 
@@ -36,7 +37,8 @@ namespace ScriptableObjects.GameParameters
                 
 
 
-        public float MouseSensitivity => mouseSensitivity / 4;
+        public float MouseSensitivity => mouseSensitivity / 20;
+        public float MouseZoomSensitivity => mouseZoomSensitivity / 40;
         
         public override string GetParametersName { get; } = "Juggernaut";
     }
