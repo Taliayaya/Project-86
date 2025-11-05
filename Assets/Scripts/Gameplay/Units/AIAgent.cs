@@ -181,6 +181,10 @@ namespace Gameplay.Units
             Tree.blackBoard.SetValue("aiAgent", this);
             if (patrolWaypoints != null)
                 Tree.blackBoard.SetValue("waypoints", patrolWaypoints);
+            
+            // if we paused, dont start doing anything
+            if (Factions.IsPaused(Faction)) return;
+            
             if (isAutonomous)
                 _behaviourTreeRunner.StartAI();
             if (rotateMainBodyTowardsEnemy)
@@ -190,7 +194,7 @@ namespace Gameplay.Units
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
-            _agent.enabled = IsSpawned;
+            // _agent.enabled = IsSpawned;
             if (IsOwner)
             {
                 _target.Value = null;
@@ -205,6 +209,34 @@ namespace Gameplay.Units
         public override void OnLostOwnership()
         {
             base.OnLostOwnership();
+        }
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            EventManager.AddListener(Constants.TypedEvents.FactionPause, OnFactionPause);
+        }
+
+        private void OnFactionPause(object arg0)
+        {
+            if (arg0 is not Gameplay.Faction faction || faction != Faction)
+                return;
+
+            if (Factions.IsPaused(Faction))
+            {
+                if (isAutonomous)
+                    _behaviourTreeRunner.StopAI();
+                StopAllCoroutines();
+                _agent.isStopped = true;;
+            }
+            else
+            {
+                _agent.isStopped = false;
+                if (isAutonomous)
+                    _behaviourTreeRunner.StartAI();
+                if (rotateMainBodyTowardsEnemy)
+                    StartCoroutine(RotateTowardsEnemyCoroutine());
+            }
         }
 
         public void AddDestinationGoal(Vector3 destination)
@@ -344,6 +376,8 @@ namespace Gameplay.Units
 
         public override void Die()
         {
+            if (Died || Singleton.Quitting)
+                return;
             if (agentSo.deathEffect != null)
                 Instantiate(agentSo.deathEffect, transform.position, Quaternion.identity);
             base.Die();

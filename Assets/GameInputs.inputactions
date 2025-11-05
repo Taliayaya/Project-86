@@ -539,7 +539,7 @@
                     "name": "ExitPhotoMode",
                     "type": "Button",
                     "id": "51c485ae-f9a0-40d3-9c3a-49cee4365cfa",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -548,7 +548,7 @@
                     "name": "GoDownFreeCamera",
                     "type": "Button",
                     "id": "dd09b1e6-bf46-4785-8fd7-fc3369753242",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -557,7 +557,43 @@
                     "name": "GoUpFreeCamera",
                     "type": "Button",
                     "id": "f527c35e-c06a-4c32-a0a6-1d9fc516eab7",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PauseLegion",
+                    "type": "Button",
+                    "id": "a7cb4a4d-2cdd-461b-b2b1-0f9b6a6ac003",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SpawnAmeise",
+                    "type": "Button",
+                    "id": "04f036a9-898f-4978-bd7c-0537685944fe",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SpawnLowe",
+                    "type": "Button",
+                    "id": "f8523cc4-f3a1-4ebf-bb02-741e572157c0",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SpawnDinosauria",
+                    "type": "Button",
+                    "id": "3cea540a-2088-43f5-83b7-557686064716",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -673,6 +709,94 @@
                     "action": "GoUpFreeCamera",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b6b486db-2606-4920-a193-474028fa7215",
+                    "path": "<Keyboard>/numpad0",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PauseLegion",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "39b291fe-2d06-4b55-b10d-ef4dad5f9a61",
+                    "path": "<Keyboard>/0",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PauseLegion",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "994e36de-7de4-42ac-adeb-dd5a6ff9a54e",
+                    "path": "<Keyboard>/numpad1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SpawnAmeise",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "97905453-2775-4ab2-a0b7-a569ca4ebbc6",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SpawnAmeise",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f7d69bb6-bf66-4223-92e0-5dda488778f5",
+                    "path": "<Keyboard>/numpad2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SpawnLowe",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "70b4a883-d961-4f76-8a78-31c0982c1536",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SpawnLowe",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "faa29049-77ab-4419-a927-94e763ea3be1",
+                    "path": "<Keyboard>/numpad3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SpawnDinosauria",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ce6f4ce6-0665-47bd-98d0-b75d3ebba9ab",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SpawnDinosauria",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -684,7 +808,7 @@
                     "name": "Resume",
                     "type": "Button",
                     "id": "a7547108-8dd5-48e0-9c6e-3729530667ac",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false

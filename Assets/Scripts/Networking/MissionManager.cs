@@ -1,4 +1,5 @@
 using System;
+using Gameplay;
 using Networking.Widgets.Session.Session;
 using ScriptableObjects.UI;
 using UI;
@@ -48,6 +49,20 @@ namespace Networking
         {
             Instance = this;
             EventManager.AddListener(Constants.Events.OnLeavingSession, OnLeavingSession);
+            EventManager.AddListener(Constants.TypedEvents.FactionPause, OnFactionPaused);
+        }
+        
+        private void OnFactionPaused(object arg0)
+        {
+            Faction faction = (Faction) arg0;
+            if (IsOwner)
+                OnFactionPausedRpc(faction, Factions.IsPaused(faction));
+        }
+
+        [Rpc(SendTo.NotOwner)]
+        public void OnFactionPausedRpc(Faction faction, bool isPaused)
+        {
+            Factions.Pause(faction, isPaused);
         }
 
         private void OnLeavingSession()
