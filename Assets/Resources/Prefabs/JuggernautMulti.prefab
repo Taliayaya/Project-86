@@ -1607,6 +1607,7 @@ MonoBehaviour:
   changeArmamentOnStart: 0
   useArmamentOverride: 1
   armamentOverride: 0
+  bladeArmamentManager: {fileID: 1773057377483370418}
 --- !u!114 &8659352092718942182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3071,7 +3072,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!114 &3608410529580020386
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3110,6 +3111,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  _modules:
+  - {fileID: 1246432046865477063}
+  - {fileID: 7907563318225807425}
+  - {fileID: 4685115362978679620}
+  - {fileID: 7081078811612946158}
+  - {fileID: 7133741474418792210}
+  - {fileID: 6815822419025851912}
   unitType: 4
   aimiYOffset: 0
   onHealthChange:
@@ -7126,6 +7134,7 @@ MonoBehaviour:
     - {fileID: 8026859949306623826}
     - {fileID: 2738326612748712389}
   HasSeparateControls: 0
+  isEmitting: 1
 --- !u!1 &4481595992416996422
 GameObject:
   m_ObjectHideFlags: 0
@@ -12075,10 +12084,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6322116827388903153, guid: a87ca33298026e542b67924d105399dc,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -5568371526223589888, guid: a87ca33298026e542b67924d105399dc,
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3611046032037791572, guid: a87ca33298026e542b67924d105399dc,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -2205787409923849932, guid: a87ca33298026e542b67924d105399dc,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a87ca33298026e542b67924d105399dc,
         type: 3}
@@ -12086,6 +12110,11 @@ PrefabInstance:
       value: Juggernaut 2
       objectReference: {fileID: 0}
     - target: {fileID: 4098682958458998126, guid: a87ca33298026e542b67924d105399dc,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4526068039347577016, guid: a87ca33298026e542b67924d105399dc,
         type: 3}
       propertyPath: m_IsActive
       value: 1

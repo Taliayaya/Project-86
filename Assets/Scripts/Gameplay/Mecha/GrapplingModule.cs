@@ -228,6 +228,7 @@ namespace Gameplay.Mecha
             {
                 RaycastHit h = _hits[i];
                 if (collidersToIgnore.Contains(h.collider)) continue; // skip self
+                if (h.collider.CompareTag("FxTemporaire")) continue; // skip non-grappleable objects
 
                 if (h.distance < closest)
                 {

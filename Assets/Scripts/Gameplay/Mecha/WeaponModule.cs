@@ -88,10 +88,14 @@ namespace Gameplay.Mecha
             if (gunCheckCanShoot == null)
                 gunCheckCanShoot = transform;
             _gunTransformCollider = gunTransform.parent.GetComponent<Collider>();
-            CurrentAmmoRemaining = ammo.maxAmmo;
             if (_animator)
                 _recoilLayer = _animator.Animator.GetLayerIndex("Cannon");
             //gunAudioSource.loop = holdFire;
+        }
+
+        private void Start()
+        {
+            CurrentAmmoRemaining = ammo.maxAmmo;
         }
 
         protected virtual void OnEnable()
@@ -101,7 +105,6 @@ namespace Gameplay.Mecha
             if (!listenOrTriggersEvents) return; 
             Debug.Log($"OnEnable {transform.name}, {listenOrTriggersEvents}");
             RegisterPlayerEvents();
-            
         }
 
         public override void OnNetworkSpawn()
