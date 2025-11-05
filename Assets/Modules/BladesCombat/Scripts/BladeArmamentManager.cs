@@ -11,6 +11,7 @@ namespace BladesCombat
     {
         [SerializeField] private BladeSharedData SharedData;
         [SerializeField] private bool HasSeparateControls;
+        [SerializeField] private bool isEmitting;
 
         private BladeSwitcher _bladeSwitcher = new BladeSwitcher();
         private BladeCollision _bladeCollision = new BladeCollision();
@@ -57,6 +58,7 @@ namespace BladesCombat
                 _bladeSwitcher,
                 _bladeCollision
             };
+            _bladeSwitcher.IsEmitting = IsOwner && isEmitting;
 
             foreach (BladeComponent component in _bladeComponents)
             {

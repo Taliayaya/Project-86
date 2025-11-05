@@ -18,8 +18,18 @@ namespace UI
         private void OnEnable()
         {
             EventManager.AddListener("OnPause", OnPause);
+            NetworkManager.Singleton.OnClientDisconnectCallback += SingletonOnOnClientDisconnectCallback;
         }
-        
+
+        private void SingletonOnOnClientDisconnectCallback(ulong clientId)
+        {
+            if (clientId == NetworkManager.ServerClientId)
+            {
+                Debug.Log("Host disconnected, quitting session...");
+                StartCoroutine(QuitSession());
+            }
+        }
+
         private void OnDisable()
         {
             EventManager.RemoveListener("OnPause", OnPause);

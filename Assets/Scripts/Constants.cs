@@ -18,6 +18,8 @@ public static class Constants
         public const string OnOrderSubmitScavenger = "OnOrderSubmitScavenger";
         public const string OnStopScavenger = "OnStopScavenger";
         public const string OnReload = "OnReload";
+        public const string BladeOpened = "BladeOpened";
+        public const string BladeClosed = "BladeClosed";
 
         /// <summary>
         /// FIXME: This event seems to only be called in their typed counterpart
@@ -92,6 +94,12 @@ public static class Constants
                 public const string OnLookAroundFreeCamera = "OnLookAroundCamera";
                 public const string OnGoDownFreeCamera = "OnGoDownFreeCamera";
                 public const string OnGoUpFreeCamera = "OnGoUpFreeCamera";
+                
+                public const string PauseLegion = "PauseLegion";
+                
+                public const string SpawnAmeise = "SpawnAmeise";
+                public const string SpawnLowe = "SpawnLowe";
+                public const string SpawnDinosauria = "SpawnDinosauria";
             }
 
             public static class Juggernaut
@@ -118,6 +126,7 @@ public static class Constants
         }
 
 
+        public const string FactionPause = "FactionPause";
         public const string StrikeRequest = "StrikeRequest";
         public const string ShowHUDWarning = "ShowHUDWarning";
         public const string OnDash = "OnDash";

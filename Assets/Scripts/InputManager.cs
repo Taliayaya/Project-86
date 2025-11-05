@@ -231,6 +231,7 @@ public class InputManager : Singleton<InputManager>
     private void OnReturnToMainMenu()
     {
         _playerInput.SwitchCurrentActionMap("MainMenu");
+        Cursor.lockState = CursorLockMode.Confined;
     }
     #endregion
 
@@ -316,6 +317,26 @@ public class InputManager : Singleton<InputManager>
         EventManager.TriggerEvent(Constants.Events.Inputs.OnToggleHUD, true);
         EventManager.TriggerEvent(Constants.Events.Inputs.FreeCamera.OnExitPhotoMode);
         HealthBar.IsVisible = true;
+    }
+
+    private void OnPauseLegion(InputValue inputValue)
+    {
+        Debug.Log("Pausing Legion");
+        EventManager.TriggerEvent(Constants.TypedEvents.Inputs.FreeCamera.PauseLegion, null);
+    }
+
+    private void OnSpawnLowe(InputValue inputValue)
+    {
+        EventManager.TriggerEvent(Constants.TypedEvents.Inputs.FreeCamera.SpawnLowe, null);
+    }
+    
+    private void OnSpawnDinosauria(InputValue inputValue)
+    {
+        EventManager.TriggerEvent(Constants.TypedEvents.Inputs.FreeCamera.SpawnDinosauria, null);
+    }
+    private void OnSpawnAmeise(InputValue inputValue)
+    {
+        EventManager.TriggerEvent(Constants.TypedEvents.Inputs.FreeCamera.SpawnAmeise, null);
     }
 
     #endregion

@@ -1,5 +1,10 @@
 using System;
+using Gameplay.Units;
+using ScriptableObjects.GameParameters;
+using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.AI;
+using Random = Unity.Mathematics.Random;
 
 namespace Gameplay.Mecha
 {
@@ -11,6 +16,7 @@ namespace Gameplay.Mecha
         [SerializeField] private float _movementSpeedMultiplier = 1;
         [SerializeField] private float _maxMovementSpeed = 10;
         [SerializeField] private float _rotationSpeed = 0.5f;
+        [SerializeField] private DemoParameters demoParameters;
         
         private bool _isRunning;
         private bool _isGoingUp;
@@ -28,9 +34,15 @@ namespace Gameplay.Mecha
             EventManager.AddListener(Constants.TypedEvents.Inputs.FreeCamera.OnLookAroundFreeCamera, OnLookAround);
             EventManager.AddListener(Constants.TypedEvents.Inputs.FreeCamera.OnGoDownFreeCamera, OnGoDown);
             EventManager.AddListener(Constants.TypedEvents.Inputs.FreeCamera.OnGoUpFreeCamera, OnGoUp);
-            
-        }
 
+            if (NetworkManager.Singleton.IsHost)
+            {
+                EventManager.AddListener(Constants.TypedEvents.Inputs.FreeCamera.PauseLegion, OnPauseLegion);
+                EventManager.AddListener(Constants.TypedEvents.Inputs.FreeCamera.SpawnAmeise, OnSpawnAmeise);
+                EventManager.AddListener(Constants.TypedEvents.Inputs.FreeCamera.SpawnDinosauria, OnSpawnDinosauria);
+                EventManager.AddListener(Constants.TypedEvents.Inputs.FreeCamera.SpawnLowe, OnSpawnLowe);
+            }
+        }
 
         private void OnDisable()
         {
@@ -39,7 +51,15 @@ namespace Gameplay.Mecha
             EventManager.RemoveListener(Constants.TypedEvents.Inputs.FreeCamera.OnLookAroundFreeCamera, OnLookAround);
             EventManager.RemoveListener(Constants.TypedEvents.Inputs.FreeCamera.OnGoDownFreeCamera, OnGoDown);
             EventManager.RemoveListener(Constants.TypedEvents.Inputs.FreeCamera.OnGoUpFreeCamera, OnGoUp);
-            
+            if (NetworkManager.Singleton.IsHost)
+            {
+                EventManager.RemoveListener(Constants.TypedEvents.Inputs.FreeCamera.PauseLegion, OnPauseLegion);
+                EventManager.RemoveListener(Constants.TypedEvents.Inputs.FreeCamera.SpawnAmeise, OnSpawnAmeise);
+                EventManager.RemoveListener(Constants.TypedEvents.Inputs.FreeCamera.SpawnDinosauria, OnSpawnDinosauria);
+                EventManager.RemoveListener(Constants.TypedEvents.Inputs.FreeCamera.SpawnLowe, OnSpawnLowe);
+
+                Factions.Pause(Faction.Legion, false);
+            }
         }
         
         private void OnExitPhotoMode()
@@ -98,6 +118,64 @@ namespace Gameplay.Mecha
             {
                 transform.position += transform.up * (2 * speed * Time.deltaTime);
             }
+        }
+        private void OnSpawnAmeise(object arg0)
+        {
+            SpawnUnitBelow(UnitType.Ameise);
+        }
+
+        private void OnSpawnDinosauria(object arg0)
+        {
+            SpawnUnitBelow(UnitType.Dinosauria);
+        }
+
+        private void OnSpawnLowe(object arg0)
+        {
+            SpawnUnitBelow(UnitType.Lowe);
+        }
+
+        private void OnPauseLegion(object arg0)
+        {
+            if (!NetworkManager.Singleton.IsHost)
+                return;
+            // if paused, we unpause, and vice versa
+            Factions.Pause(Faction.Legion, !Factions.IsPaused(Faction.Legion));
+        }
+
+        private void SpawnUnitBelow(UnitType type)
+        {
+            Quaternion rotation = transform.rotation;
+            Vector3 position = transform.position;
+
+            switch (type)
+            {
+                case UnitType.Ameise:
+                    SpawnUnit(demoParameters.ameisePrefab, position, rotation);
+                    break;
+                case UnitType.Lowe:
+                    SpawnUnit(demoParameters.lowePrefab, position, rotation);
+                    break;
+                case UnitType.Dinosauria:
+                    SpawnUnit(demoParameters.dinosauriaPrefab, position, rotation);
+                    break;
+            }
+        }
+        
+        public GameObject SpawnUnit(GameObject unitPrefab, Vector3 position, Quaternion rotation)
+        {
+            NavMeshHit hit = new NavMeshHit();
+            int i = 30;
+            if (!NavMesh.SamplePosition(position, out hit, 100, NavMesh.AllAreas))
+                return null;
+            
+            var enemy = Instantiate(unitPrefab, hit.position, rotation);
+            Debug.Log("[EnemySpawner]: Spawned unit.");
+            if (NetworkManager.Singleton.IsConnectedClient)
+            {
+                Debug.Log("[EnemySpawner]: Spawned unit to network.");
+                enemy.GetComponent<NetworkObject>().Spawn(true);
+            }
+            return enemy;
         }
     }
 }
