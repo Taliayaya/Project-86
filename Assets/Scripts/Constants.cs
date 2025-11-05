@@ -18,6 +18,8 @@ public static class Constants
         public const string OnOrderSubmitScavenger = "OnOrderSubmitScavenger";
         public const string OnStopScavenger = "OnStopScavenger";
         public const string OnReload = "OnReload";
+        public const string BladeOpened = "BladeOpened";
+        public const string BladeClosed = "BladeClosed";
 
         /// <summary>
         /// FIXME: This event seems to only be called in their typed counterpart

@@ -12,6 +12,8 @@ namespace BladesCombat
 
         private bool _isHeld = false;
 
+        public bool IsEmitting;
+
         public event Action OnBothBladesToggled;
         
         protected override void OnEnabled()
@@ -24,6 +26,8 @@ namespace BladesCombat
             else
             {
                 EventManager.AddListener("OnSecondaryFire", OnBothToggle);
+                if (IsEmitting)
+                    EventManager.TriggerEvent(Constants.Events.BladeClosed);
             }
         }
 
@@ -90,11 +94,16 @@ namespace BladesCombat
 
         private void OpenBlade(NetworkAnimator animator)
         {
+            if (IsEmitting)
+                EventManager.TriggerEvent(Constants.Events.BladeOpened);
             animator.SetTrigger("Open");
         }
 
         private void CloseBlade(NetworkAnimator animator)
         {
+            if (IsEmitting)
+                EventManager.TriggerEvent(Constants.Events.BladeClosed);
+            Debug.Log("Close blade");
             animator.SetTrigger("Close");
         }
     }
