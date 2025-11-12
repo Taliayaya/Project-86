@@ -25,10 +25,14 @@ namespace Gameplay
 
         private void Start()
         {
-            _origin = transform.position;
             _impulseSource = GetComponent<CinemachineImpulseSource>();
             var layer = LayerMask.NameToLayer("Projectiles");
             Physics.IgnoreLayerCollision(layer, layer, true);
+        }
+
+        private void OnEnable()
+        {
+            _origin = transform.position;
         }
 
         public void Init(AmmoSO ammoSo, Faction factionOrigin)
@@ -114,7 +118,7 @@ namespace Gameplay
                 }
 
                 // implement on it effect
-                Destroy(gameObject);
+                PoolManager.Instance.BackToPool(gameObject);
                 return;
             }
             else
@@ -128,7 +132,7 @@ namespace Gameplay
 
             if (Ammo.explosionRadius == 0)
             {
-                Destroy(gameObject);
+                PoolManager.Instance.BackToPool(gameObject);
                 return;
             }
 
@@ -147,7 +151,7 @@ namespace Gameplay
             }
 
             Instantiate(Ammo.explosionPrefab, position, Quaternion.LookRotation(position - _origin));
-            Destroy(gameObject);
+            PoolManager.Instance.BackToPool(gameObject);
         }
 
         [Rpc(SendTo.ClientsAndHost)]
@@ -162,7 +166,7 @@ namespace Gameplay
                 Debug.Log("Armor Miss Effect");
             }
 
-            Destroy(gameObject);
+            PoolManager.Instance.BackToPool(gameObject);
         }
 
         [Rpc(SendTo.ClientsAndHost)]
@@ -170,10 +174,16 @@ namespace Gameplay
         {
             GameObject missEffect;
             if (Ammo.missEffectLookTop)
-                missEffect = Instantiate(Ammo.missEffect, point, Quaternion.Euler(-90, 0, 0));
+                missEffect = PoolManager.Instance.Instantiate(Ammo.missEffect, point, Quaternion.Euler(-90, 0, 0));
             else
-                missEffect = Instantiate(Ammo.missEffect, point,
+                missEffect = PoolManager.Instance.Instantiate(Ammo.missEffect, point,
                     Quaternion.LookRotation(point - _origin));
+
+            if (missEffect.TryGetComponent<ParticleSystem>(out var particles))
+            {
+                particles.Clear();
+                particles.Play();
+            }
             missEffect.transform.localScale *= Ammo.missEffectSizeMult;
         }
 
@@ -186,7 +196,7 @@ namespace Gameplay
 
         private void Expire()
         {
-            Destroy(gameObject);
+            PoolManager.Instance.BackToPool(gameObject);
         }
     }
 }

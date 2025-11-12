@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Cinemachine;
+using Managers;
 using ScriptableObjects;
 using UI;
 using UI.HUD;
@@ -353,7 +354,7 @@ namespace Gameplay.Mecha
                 PlayMuzzleFlashRpc();
             }
 
-            var bullet = Instantiate(ammo.prefab, gunTransform.position, Quaternion.identity);
+            var bullet = PoolManager.Instance.Instantiate(ammo.prefab, gunTransform.position, Quaternion.identity);
             // colliders
             var bulletCollider = bullet.GetComponentInChildren<Collider>();
             if (_gunTransformCollider != null)
@@ -366,13 +367,15 @@ namespace Gameplay.Mecha
             bulletScript.InitLifeTime(ammo.maxLifetime);
 
             var bulletRb = bullet.GetComponent<Rigidbody>();
+            bulletRb.angularVelocity = Vector3.zero;
+            bulletRb.linearVelocity = Vector3.zero;
             bulletRb.AddForce(bulletDirection * ammo.forcePower, ForceMode.Impulse);
             var rot = bulletRb.rotation.eulerAngles;
             bulletRb.rotation = Quaternion.Euler(rot.x, gunTransform.eulerAngles.y, rot.z);
             
             // network spawning related
             var bulletNetworkObject = bullet.GetComponent<NetworkObject>();
-            if (NetworkManager.Singleton.IsConnectedClient)
+            if (NetworkManager.Singleton.IsConnectedClient && !bulletNetworkObject.IsSpawned)
                 bulletNetworkObject.SpawnWithOwnership(NetworkManager.Singleton.LocalClientId, true);
             
             canFire = false;
