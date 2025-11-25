@@ -111,7 +111,7 @@ namespace Gameplay.Units
     [RequireComponent(typeof(NavMeshAgent), typeof(BehaviourTreeRunner), typeof(AudioSource))]
     public class AIAgent : Unit
     {
-        private NavMeshAgent _agent;
+        private NetworkNavMeshAgent _agent;
         private BehaviourTreeRunner _behaviourTreeRunner;
         private AudioSource _audioSource;
 
@@ -122,12 +122,18 @@ namespace Gameplay.Units
         [SerializeField] private DebugAgent debugAgent;
         [SerializeField] [CanBeNull] private List<Transform> patrolWaypoints = null;
         [SerializeField] private bool rotateMainBodyTowardsEnemy = true;
+        
+        public UnityEvent<Collision> onCollisionEnterEvent; 
         private WeaponModule[] _weaponModules;
+        public WeaponModule[] WeaponModules => _weaponModules;
         public BehaviourTree Tree => _behaviourTreeRunner.tree;
         public DemoParameters demoParameters;
 
         private Coroutine _rotateCoroutine;
-        
+
+        // TODO: IF HP LOW, reduce MORALE
+        // do it OnTakeDamage
+        [SerializeField] private BehaviorGraphAgent graphAgent;
         [SerializeField] protected UnityEvent<TargetInfo> onTargetChanged;
 
         private NetworkVariable<TargetInfo> _target = new NetworkVariable<TargetInfo>();
@@ -285,8 +291,6 @@ namespace Gameplay.Units
         }
 
         #region AI Coroutines
-
-        
 
         [HideInInspector] public bool isRotating;
         public void RotateTowardsEnemy()

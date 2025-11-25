@@ -35,6 +35,7 @@ public class CannonController : MonoBehaviour
         [FormerlySerializedAs("xAngle")] public Angle yAngle = new Angle(-360, 360);
         [FormerlySerializedAs("yAngle")] public Angle xAngle = new Angle(-90, 90);
         public bool invert = false;
+        public bool canRotate = true;
 
         [NonSerialized] public Quaternion defaultRotation;
 
@@ -64,7 +65,7 @@ public class CannonController : MonoBehaviour
         // Rotate each turret towards its respective target individually
         foreach (var turretData in turrets)
         {
-            if (turretData.target != null)
+            if (turretData.target != null && turretData.canRotate)
             {
                 AimTurretAtTarget(turretData, turretData.target);
             }
@@ -251,5 +252,57 @@ public class CannonController : MonoBehaviour
     public void SetTurret2Target(Unit target)
     {
         turrets[2].target = target == null ? null : target.transform;
+    }
+
+    public void StopTurret0()
+    {
+        turrets[0].canRotate = false;
+    }
+    
+    public void StopTurret1()
+    {
+        turrets[1].canRotate = false;
+    }
+    
+    public void StopTurret2()
+    {
+        turrets[2].canRotate = false;
+    }
+    
+    public void StartTurret0()
+    {
+        turrets[0].canRotate = true;
+    }
+    
+    public void StartTurret1()
+    {
+        turrets[1].canRotate = true;
+    }
+    
+    public void StartTurret2()
+    {
+        turrets[2].canRotate = true;
+    }
+
+    public void CooldownTurret0(float duration)
+    {
+        StartCoroutine(CooldownRotate(0, duration));
+    }
+
+    public void CooldownTurret1(float duration)
+    {
+        StartCoroutine(CooldownRotate(1, duration));
+    }
+    
+    public void CooldownTurret2(float duration)
+    {
+        StartCoroutine(CooldownRotate(2, duration));
+    }
+
+    public IEnumerator CooldownRotate(int turret, float duration)
+    {
+        turrets[turret].canRotate = false;
+        yield return new WaitForSeconds(duration);
+        turrets[turret].canRotate = true;
     }
 }

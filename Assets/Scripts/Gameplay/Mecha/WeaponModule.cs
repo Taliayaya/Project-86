@@ -8,6 +8,7 @@ using UI.HUD;
 using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 using UnityEngine.VFX;
 
@@ -29,7 +30,9 @@ namespace Gameplay.Mecha
         [SerializeField] private LayerMask fireBulletLayerMask = 1;
         [SerializeField] private float maxRaycastDistance = 500;
         public bool aiIgnore = false;
-        
+
+
+        public UnityEvent onFire;
         [Header("References")]
         [SerializeField] private Transform gunTransform;
         [SerializeField] private AudioSource gunAudioSource;
@@ -262,7 +265,7 @@ namespace Gameplay.Mecha
                 if (!canShoot(gunCheckCanShoot))
                 {
                     Debug.Log(transform.name + " can't shoot");
-                    yield return new WaitForSeconds(1f);
+                    yield return new WaitForSeconds(0.5f);
                     continue;
                 }
 
@@ -378,6 +381,7 @@ namespace Gameplay.Mecha
             if (NetworkManager.Singleton.IsConnectedClient && !bulletNetworkObject.IsSpawned)
                 bulletNetworkObject.SpawnWithOwnership(NetworkManager.Singleton.LocalClientId, true);
             
+            onFire?.Invoke();
             canFire = false;
             if (ammo.reloadSound != null)
                 Invoke(nameof(PlayReloadSound), 0.3f);
