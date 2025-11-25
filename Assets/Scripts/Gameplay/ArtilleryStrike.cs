@@ -81,10 +81,15 @@ public class ArtilleryStrike : MonoBehaviour
         float distance = Vector3.Distance(origin, target.transform.position);
         DamagePackage damagePackage = new DamagePackage()
         {
+            Type = DamageType.Explosion,
             Faction = Faction.Neutral,
-            DamageAmount = damageCurve.Evaluate(distance / damageRadius),
-            DamageSourcePosition = origin,
-            IsBullet = false,
+            
+            Explosion = new ExplosionData()
+            {
+                Damage = damageCurve.Evaluate(distance / damageRadius),
+                Radius = damageRadius
+            },
+            SourcePosition = origin,
         };
         health.TakeDamage(damagePackage);
     }

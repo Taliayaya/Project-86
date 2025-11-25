@@ -32,7 +32,7 @@ namespace Gameplay.Units
         [Tooltip("Current heal, Max health")]
         public UnityEvent<float, float> onHealthChange;
 
-        private Rigidbody _rb;
+        protected Rigidbody _rb;
         [Tooltip("If the armor value is bigger than the bullet, damages are neglected.")]
         public float armor = 10;
         
@@ -135,22 +135,33 @@ namespace Gameplay.Units
                 Die();
         }
 
+        public virtual bool IsGrounded => true;
         
         public DamageResponse TakeDamage(DamagePackage damagePackage)
         {
-            if (damagePackage.IsBullet && damagePackage.DamageAmount < Armor)
+            if (damagePackage.Type == DamageType.Bullet && damagePackage.GetDamage() < Armor)
                 return new DamageResponse() { Status = DamageResponse.DamageStatus.Deflected, DamageReceived = 0};
-            Debug.Log($"{Faction} took {damagePackage.DamageAmount} damage. Health: {Health}");
-            float remainingHealth = Mathf.Clamp(Health - damagePackage.DamageAmount, 0, MaxHealth);
+
+            if (damagePackage.Type == DamageType.EffectSlow)
+            {
+                if (!IsGrounded)
+                    return new DamageResponse() { Status = DamageResponse.DamageStatus.Deflected, DamageReceived = 0};
+                TakeSlowEffect(damagePackage);
+                return new DamageResponse() { Status = DamageResponse.DamageStatus.Taken, DamageReceived = 0};
+            }
+            Debug.Log($"{Faction} took {damagePackage.GetDamage()} damage. Health: {Health}");
+            float remainingHealth = Mathf.Clamp(Health - damagePackage.GetDamage(), 0, MaxHealth);
             TakeDamageRpc(damagePackage);
 
-            return new DamageResponse() { Status = DamageResponse.DamageStatus.Taken, DamageReceived = damagePackage.DamageAmount, RemainingHealth = remainingHealth};
+            return new DamageResponse() { Status = DamageResponse.DamageStatus.Taken, DamageReceived = damagePackage.GetDamage(), RemainingHealth = remainingHealth};
         }
+
+        public abstract void TakeSlowEffect(DamagePackage damagePackage);
         
         [Rpc(SendTo.Owner)]
         public void TakeDamageRpc(DamagePackage damagePackage)
         {
-            Health = Mathf.Clamp(Health - damagePackage.DamageAmount, 0, MaxHealth);
+            Health = Mathf.Clamp(Health - damagePackage.GetDamage(), 0, MaxHealth);
             OnTakeDamage(damagePackage);
             if (!Alive)
                 Die();

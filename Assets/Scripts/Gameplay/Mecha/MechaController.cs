@@ -86,6 +86,7 @@ namespace Gameplay.Mecha
         private Vector2 _lastMouseUpdate;
         private Rigidbody _rigidbody;
         private bool _isGrounded;
+        public override bool IsGrounded => _isGrounded;
         private bool _isOnWall;
 
         private Vector2 _lastMovement;
@@ -160,6 +161,8 @@ namespace Gameplay.Mecha
         }
 
 
+        private float _slowStrength;
+        private float _slowDuration;
         public float MovementSpeed { get; private set; }
         private MovementMode _movementmode;
 
@@ -179,7 +182,7 @@ namespace Gameplay.Mecha
                         MovementSpeed = juggernautParameters.runSpeed;
                         break;
                     case MovementMode.Slowed:
-                        MovementSpeed = 10f; // juggernautParameters.slowSpeed
+                        MovementSpeed = _slowStrength; // juggernautParameters.slowSpeed
                         break;
                     case MovementMode.Dashing:
                         MovementSpeed = juggernautParameters.dashSpeed; // made it useful, just a small tweak
@@ -400,7 +403,6 @@ namespace Gameplay.Mecha
             {
                 _rigidbody.linearDamping = groundDrag;
                 _isOnWall = Vector3.Dot(transform.up, Vector3.up) < 0.8f;
-                Debug.Log("isOnWall " + _isOnWall + " isGrappling " + _isGrappling);
                 if (_isOnWall && !_isGrappling)
                     _isGrounded = false;
             }
@@ -627,20 +629,17 @@ namespace Gameplay.Mecha
             if (data is not bool dashInput || !dashInput)
                 return;
 
-            Debug.Log("Dash input received!");
             StartCoroutine(DashCoroutine());
         }
         private void OnGrappleStart(object data)
         {
             _isGrappling = true;
             //surfaceAlignment.useRawNormal = true;
-            Debug.Log("Grapple Started");
         }
         private void OnGrappleStop(object data)
         {
             _isGrappling = false;
             //surfaceAlignment.useRawNormal = false;
-            Debug.Log("Grapple Ended!!!!!!!!!!");
         }
 
         public float test = 1000f;
@@ -657,7 +656,6 @@ namespace Gameplay.Mecha
                     cooldown = juggernautParameters.dashCooldown,
                     status = ModuleStatus.Active
                 });
-            Debug.Log("Dash started!");
 
             // Set the flag for dashing and block further dashes for now
             isDashing = true;
@@ -704,7 +702,6 @@ namespace Gameplay.Mecha
 
             // Reset after dash is finished
             isDashing = false;
-            Debug.Log("Dash ended!");
 
             // Ensure that we return to walking or running after the dash
             CurrentMovementMode = previousMovementMode;  // Only using walk then run since energy cost
@@ -771,6 +768,27 @@ namespace Gameplay.Mecha
         }
 
         #region Health Manager
+
+        public override void TakeSlowEffect(DamagePackage damagePackage)
+        {
+            _slowStrength = damagePackage.Slow.Strength;
+            _slowDuration = damagePackage.Slow.Duration;
+            // CurrentMovementMode = MovementMode.Slowed;
+            StopCoroutine(nameof(SlowDownCoroutine));
+            StartCoroutine(nameof(SlowDownCoroutine));
+        }
+
+        private IEnumerator SlowDownCoroutine()
+        {
+            while (_slowDuration > 0)
+            {
+                float targetSpeed = CurrentMovementMode == MovementMode.Running ? juggernautParameters.runSpeed : juggernautParameters.walkSpeed;
+
+                MovementSpeed = targetSpeed / _slowStrength;
+                yield return new WaitForFixedUpdate();
+                _slowDuration -= Time.fixedDeltaTime;
+            }
+        }
 
         public override void OnTakeDamage(DamagePackage damagePackage)
         {

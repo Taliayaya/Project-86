@@ -5,12 +5,16 @@ using System.Linq;
 using AI.BehaviourTree;
 using Gameplay.Mecha;
 using JetBrains.Annotations;
+using Networking;
 using ScriptableObjects.AI;
 using ScriptableObjects.GameParameters;
 using Unity.Netcode;
+using Unity.Behavior;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
+using UnityEditor;
+using Utility;
 
 namespace Gameplay.Units
 {
@@ -140,14 +144,16 @@ namespace Gameplay.Units
             }
         }
         
-        public NavMeshAgent Agent => _agent;
+        public NetworkNavMeshAgent Agent => _agent;
         public override void Awake()
         {
             base.Awake();
-            _agent = GetComponent<NavMeshAgent>();
+            _agent = GetComponent<NetworkNavMeshAgent>();
+            graphAgent = GetComponent<BehaviorGraphAgent>();
             _behaviourTreeRunner = GetComponent<BehaviourTreeRunner>();
             _weaponModules = GetComponentsInChildren<WeaponModule>().ToList().FindAll(module => !module.aiIgnore).ToArray();
             _audioSource = GetComponent<AudioSource>();
+            _rb = GetComponent<Rigidbody>();
             
             if (_firstChild == null)
                 _firstChild = transform.GetChild(0);
@@ -203,6 +209,11 @@ namespace Gameplay.Units
             }
         }
 
+        private void OnCollisionEnter(Collision other)
+        {
+            onCollisionEnterEvent?.Invoke(other);
+        }
+
         public override void OnGainedOwnership()
         {
             base.OnGainedOwnership();
@@ -229,11 +240,11 @@ namespace Gameplay.Units
                 if (isAutonomous)
                     _behaviourTreeRunner.StopAI();
                 StopAllCoroutines();
-                _agent.isStopped = true;;
+                _agent.StopRpc();
             }
             else
             {
-                _agent.isStopped = false;
+                _agent.ResumeRpc();
                 if (isAutonomous)
                     _behaviourTreeRunner.StartAI();
                 if (rotateMainBodyTowardsEnemy)
@@ -268,6 +279,10 @@ namespace Gameplay.Units
             SetDestination(destination.position);
         }
 
+        public void ChangeEnemyDetection(bool canDetect)
+        {
+            graphAgent.SetVariableValue("CanDetect", canDetect);
+        }
 
         #region AI Coroutines
 
@@ -298,7 +313,7 @@ namespace Gameplay.Units
                 Vector3 direction;
                 if (Target == null || Target?.Unit == null || Target.Visibility == TargetInfo.VisibilityStatus.Network)
                 {
-                    Vector3 velocity = _agent.velocity.normalized;
+                    Vector3 velocity = _agent.Agent.velocity.normalized;
                     if (velocity == Vector3.zero)
                         direction = _firstChild.forward;
                     else
@@ -344,12 +359,12 @@ namespace Gameplay.Units
                     if (distance > agentSo.idealDistanceFromEnemy + 3)
                     {
                         //_agent.isStopped = false;
-                        AgentIsStoppedRpc(false);
+                        _agent.ResumeRpc();
                         SetDestination(closestTarget.position);
                     }
                     else if (distance < agentSo.idealDistanceFromEnemy - 3)
                     {
-                        AgentIsStoppedRpc(true);
+                        _agent.StopRpc();
                         //_agent.isStopped = true;
                     }
                 }
@@ -359,21 +374,22 @@ namespace Gameplay.Units
             }
 
         }
-        
-        [Rpc(SendTo.ClientsAndHost)]
-        public void AgentIsStoppedRpc(bool isStopped)
-        {
-            _agent.isStopped = isStopped;
-        }
 
         #endregion
+
+        public float torqueDamageForce;
+        public override void TakeSlowEffect(DamagePackage damagePackage)
+        {
+        }
 
         public override void OnTakeDamage(DamagePackage damagePackage)
         {
             base.OnTakeDamage(damagePackage);
-            if (damagePackage.DamageAudioClip != null)
-                _audioSource.PlayOneShot(damagePackage.DamageAudioClip);
-            
+            if (damagePackage.Audio != null)
+                _audioSource.PlayOneShot(damagePackage.Audio);
+            // var direction = damagePackage.HitPoint - damagePackage.DamageSourcePosition;
+            // direction.Normalize();
+            // _rb.AddTorque(direction * torqueDamageForce, ForceMode.Impulse);
         }
 
         public override void Die()
@@ -420,20 +436,28 @@ namespace Gameplay.Units
 
         private void DebugGizmosSpot()
         {
-            var frontPoint = transform.position + transform.forward * agentSo.viewDistance;
+            float halfAngle = agentSo.fieldOfViewAngle / 2f;
+            Transform viewpoint = _firstChild ?? transform;
+            
+            var frontPoint = transform.position + viewpoint.forward * agentSo.viewDistance;
+            
             var rightPoint = transform.position + Quaternion.AngleAxis(agentSo.fieldOfViewAngle / 2, Vector3.up) *
-                transform.forward * agentSo.viewDistance;
+                viewpoint.forward * agentSo.viewDistance;
             var leftPoint = transform.position + Quaternion.AngleAxis(-agentSo.fieldOfViewAngle / 2, Vector3.up) *
-                transform.forward * agentSo.viewDistance;
+                viewpoint.forward * agentSo.viewDistance;
+            
             Gizmos.color = debugAgent.frontViewColor;
             Gizmos.DrawLine(transform.position, frontPoint);
             
             Gizmos.color = debugAgent.sideViewColor;
             Gizmos.DrawLine(transform.position, rightPoint);
             Gizmos.DrawLine(transform.position, leftPoint);
-            
-            Gizmos.DrawLine(rightPoint, frontPoint);
-            Gizmos.DrawLine(leftPoint, frontPoint);
+
+            Handles.color = debugAgent.sideViewColor;
+            Handles.DrawWireArc(transform.position, Vector3.up, viewpoint.forward, halfAngle, agentSo.viewDistance);
+            Handles.DrawWireArc(transform.position, Vector3.up, viewpoint.forward, -halfAngle, agentSo.viewDistance);
+            // Gizmos.DrawLine(rightPoint, frontPoint);
+            // Gizmos.DrawLine(leftPoint, frontPoint);
 
         }
         

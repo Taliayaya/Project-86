@@ -38,6 +38,7 @@ namespace ScriptableObjects
         // if the miss effect should always look upward or the player
         public bool missEffectLookTop = false;
 
+        public GameObject hitEffect;
         [Header("Armor Miss Effect")] public GameObject armorMissEffect;
         public float armorMissEffectSizeMult = 1f;
 

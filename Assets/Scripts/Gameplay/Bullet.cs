@@ -17,6 +17,8 @@ namespace Gameplay
 
         private float Damage => Ammo.damageCurve.Evaluate((_origin - transform.position).magnitude);
 
+        public Rigidbody rb;
+
         private DamagePackage _damagePackage;
         private float _lifeTime;
         private CinemachineImpulseSource _impulseSource;
@@ -25,6 +27,8 @@ namespace Gameplay
 
         private void Start()
         {
+            if (!rb)
+                rb = GetComponent<Rigidbody>();
             _impulseSource = GetComponent<CinemachineImpulseSource>();
             var layer = LayerMask.NameToLayer("Projectiles");
             Physics.IgnoreLayerCollision(layer, layer, true);
@@ -81,24 +85,30 @@ namespace Gameplay
         {
             if (!IsSpawned || !HasAuthority)
                 return;
-            Debug.LogWarning("Bullet INFO:" + Ammo + " " + _factionOrigin + " " + _origin + " " + _ammoSo);
             _damagePackage = new DamagePackage()
             {
+                Type = DamageType.Bullet,
                 Faction = _factionOrigin,
-                DamageAmount = Damage,
-                DamageSourcePosition = _origin,
-                DamageAudioClip = Ammo.onHitSound,
-                BulletSize = Ammo.bulletSize,
-                IsBullet = true
+                
+                Bullet = new BulletData()
+                {
+                    Damage = Damage,
+                    Size = Ammo.bulletSize,
+                    HitPoint = other.contacts[0].point,
+                },
+                Audio = Ammo.onHitSound,
             };
             ApplyCameraShake();
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
 
-            //Debug.Log("bullet hit " + other.gameObject.name + other.collider.name);
-            // commented to avoid damaging twice
-            bool isHealthComponent = other.collider.CompareTag("HealthComponent");
+            Debug.Log("bullet hit " + other.gameObject.name + other.collider.name);
             IHealth health;
-            if (((isHealthComponent && other.collider.TryGetComponent(out health)) ||
-                 other.gameObject.TryGetComponent(out health)) && Ammo.explosionRadius == 0)
+            bool hasHealth = other.collider.TryGetComponent(out health);
+            bool parentHasHealth = false;
+            if (!hasHealth)
+                parentHasHealth = other.rigidbody && other.rigidbody.TryGetComponent(out health);
+            if (hasHealth || parentHasHealth)
             {
                 // If the bullet hit a non-hitbox, don't damage it and play a special effect
                 // like the bullet ricocheting off the armor
@@ -108,8 +118,9 @@ namespace Gameplay
                     return;
                 }
 
+                PoolManager.Instance.BackToPool(gameObject);
                 Debug.Log("Bullet hit " + other.collider.name + " on " + other.gameObject.name + " for " +
-                          _damagePackage.DamageAmount + " damage");
+                          _damagePackage.Bullet.Damage + " damage");
                 DamageResponse response = health.TakeDamage(_damagePackage);
                 if (response.Status == DamageResponse.DamageStatus.Deflected)
                 {
@@ -117,8 +128,14 @@ namespace Gameplay
                     return;
                 }
 
-                // implement on it effect
-                PoolManager.Instance.BackToPool(gameObject);
+                if (_ammoSo.hitEffect)
+                {
+                    // implement on hit effect
+                    var rotation = Quaternion.LookRotation(other.contacts[0].point - _origin);
+                    var effect = PoolManager.Instance.Instantiate(_ammoSo.hitEffect, _damagePackage.Bullet.HitPoint, rotation);
+                    effect.transform.SetParent(other.collider.transform, true);
+                }
+
                 return;
             }
             else
@@ -165,8 +182,6 @@ namespace Gameplay
                 effect.transform.localScale *= Ammo.armorMissEffectSizeMult;
                 Debug.Log("Armor Miss Effect");
             }
-
-            PoolManager.Instance.BackToPool(gameObject);
         }
 
         [Rpc(SendTo.ClientsAndHost)]

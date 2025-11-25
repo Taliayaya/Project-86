@@ -14,8 +14,13 @@ namespace Gameplay
             {
                 health.TakeDamage(new DamagePackage()
                 {
-                    DamageAmount = damage,
-                    DamageSourcePosition = transform.position,
+                    Type = DamageType.Explosion,
+                    Explosion = new ExplosionData()
+                    {
+                        Damage = damage,
+                        Radius = damage,
+                    },
+                    SourcePosition = transform.position,
                     Faction = Faction.Neutral
                 });
             }

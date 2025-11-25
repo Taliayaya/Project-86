@@ -30,8 +30,13 @@ namespace Gameplay
                     var distance = Vector3.Distance(transform.position, hit.transform.position);
                     var damagePackage = new DamagePackage
                     {
-                        DamageAmount = Damage(distance),
-                        DamageSourcePosition = transform.position,
+                        Type = DamageType.Explosion,
+                        Explosion = new ExplosionData()
+                        {
+                            Damage = Damage(distance),
+                            Radius = deathExplodeRadius
+                        },
+                        SourcePosition = transform.position,
                         Faction = Faction.Neutral
                     };
                     health.TakeDamage(damagePackage);

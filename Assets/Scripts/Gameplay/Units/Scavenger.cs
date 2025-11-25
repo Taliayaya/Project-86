@@ -27,8 +27,6 @@ namespace Gameplay.Units
         public AudioClip hideSound;
         public AudioSource audioSource;
 
-        public override float Priority => 1;
-
         public bool IsReloading { get; private set; } = false;
         private string _name;
         public string Name { get; set; }
@@ -36,6 +34,10 @@ namespace Gameplay.Units
         private int GetAmmoIndex(WeaponModule.WeaponType weaponType)
         {
             return ammoStacks.FindIndex((w) => w.weaponType == weaponType && w.ammoAmount > 0);
+        }
+
+        public override void TakeSlowEffect(DamagePackage damagePackage)
+        {
         }
 
         public override void OnTakeDamage(DamagePackage damagePackage)
