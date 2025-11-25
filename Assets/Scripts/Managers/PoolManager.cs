@@ -44,6 +44,7 @@ namespace Managers
         public void BackToPool(GameObject instance)
         {
             instance.SetActive(false);
+            instance.transform.SetParent(null);
             int prefabId = _objectToPrefab[instance.GetInstanceID()];
             _pools[prefabId].Queue.Enqueue(instance);
         }

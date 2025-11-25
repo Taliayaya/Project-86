@@ -2,15 +2,31 @@ using System;
 using System.Collections;
 using Managers;
 using UnityEngine;
+using UnityEngine.VFX;
 
 namespace Utility
 {
     public class AutoReturnPool : MonoBehaviour
     {
-        
+        private ParticleSystem _particleSystem;
+        private VisualEffect _visualEffect;
+
+        public float timeout = 0;
+
+        private void Awake()
+        {
+            if (_particleSystem)
+                _particleSystem = GetComponent<ParticleSystem>();
+            if (_visualEffect)
+                _visualEffect = GetComponent<VisualEffect>();
+        }
+
         void OnEnable()
         {
-            StartCoroutine(CheckIfAlive());
+            if (timeout > 0)
+                Invoke(nameof(Return), timeout);
+            else
+                StartCoroutine(CheckIfAlive());
         }
 
         private void OnDisable()
@@ -18,15 +34,22 @@ namespace Utility
             StopAllCoroutines();
         }
 
-        IEnumerator CheckIfAlive ()
+        IEnumerator CheckIfAlive()
         {
-            while(true)
+            while (true)
             {
                 yield return new WaitForSeconds(0.5f);
-                if(!GetComponent<ParticleSystem>().IsAlive(true))
-                {
-                    PoolManager.Instance.BackToPool(gameObject);
-                }
+                if (_particleSystem && !_particleSystem.IsAlive(true))
+                    Return();
+
+                if (_visualEffect && _visualEffect.aliveParticleCount == 0)
+                    Return();
             }
-        }    }
+        }
+
+        void Return()
+        {
+            PoolManager.Instance.BackToPool(gameObject);
+        }
+    }
 }
