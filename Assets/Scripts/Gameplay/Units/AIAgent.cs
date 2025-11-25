@@ -189,6 +189,8 @@ namespace Gameplay.Units
                 _behaviourTreeRunner.StartAI();
             if (rotateMainBodyTowardsEnemy)
                 RotateTowardsEnemy();
+            else
+                _agent.Agent.updateRotation = true;
         }
 
         public override void OnNetworkSpawn()

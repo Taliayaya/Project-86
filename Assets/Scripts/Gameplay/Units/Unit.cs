@@ -82,7 +82,7 @@ namespace Gameplay.Units
             }
         }
 
-        public virtual float Priority => 5;
+        public float Priority = 5;
 
         protected virtual void Start()
         {
