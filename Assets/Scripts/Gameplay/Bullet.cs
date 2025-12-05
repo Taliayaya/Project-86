@@ -4,6 +4,7 @@ using Managers;
 using ScriptableObjects;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Gameplay
 {
@@ -14,6 +15,9 @@ namespace Gameplay
         public AmmoSO Ammo => _ammoSo;
         private AmmoSO _ammoSo;
         private NetworkVariable<int> _ammoName = new NetworkVariable<int>();
+
+        public UnityEvent<NetworkObject, DamagePackage, DamageResponse> onHit;
+        public UnityEvent<NetworkObject, DamagePackage, DamageResponse> onKill;
 
         private float Damage => Ammo.damageCurve.Evaluate((_origin - transform.position).magnitude);
 
@@ -34,6 +38,11 @@ namespace Gameplay
             Physics.IgnoreLayerCollision(layer, layer, true);
         }
 
+        private void OnDisable()
+        {
+            // ClearListeners();
+        }
+
         private void OnEnable()
         {
             _origin = transform.position;
@@ -44,6 +53,12 @@ namespace Gameplay
             _ammoSo = ammoSo;
             _ammoName.Value = AmmoReferences.Instance.GetAmmoIndex(ammoSo.name);
             _factionOrigin = factionOrigin;
+        }
+
+        public void ClearListeners()
+        {
+            onHit.RemoveAllListeners();
+            onKill.RemoveAllListeners();
         }
 
         public override void OnNetworkSpawn()
@@ -127,6 +142,8 @@ namespace Gameplay
                     DeflectBulletRpc(other.contacts[0].point, other.contacts[0].normal);
                     return;
                 }
+                
+                onHit.Invoke(other.gameObject.GetComponent<NetworkObject>(), _damagePackage, response);
 
                 if (_ammoSo.hitEffect)
                 {
@@ -134,6 +151,12 @@ namespace Gameplay
                     var rotation = Quaternion.LookRotation(other.contacts[0].point - _origin);
                     var effect = PoolManager.Instance.Instantiate(_ammoSo.hitEffect, _damagePackage.Bullet.HitPoint, rotation);
                     effect.transform.SetParent(other.collider.transform, true);
+                }
+
+                if (response.IsDead)
+                {
+                    Debug.Log($"Bullet killed {other.gameObject.name} ({response.RemainingHealth}");
+                    onKill.Invoke(other.gameObject.GetComponent<NetworkObject>(), _damagePackage, response);
                 }
 
                 return;

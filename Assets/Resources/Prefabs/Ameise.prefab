@@ -147,7 +147,7 @@ Transform:
   m_GameObject: {fileID: 1779380223867004384}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.54, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -254,7 +254,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 8928467
+  GlobalObjectIdHash: 2612421570
   InScenePlacedSourceGlobalObjectIdHash: 8928467
   DeferredDespawnTick: 0
   Ownership: 1
@@ -419,7 +419,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  _modules: []
   unitType: 1
   aimiYOffset: 2
   onHealthChange:
@@ -441,12 +440,14 @@ MonoBehaviour:
   onUnitDeath:
     m_PersistentCalls:
       m_Calls: []
+  killCount:
+    m_InternalValue: 0
   engineAudioSource: {fileID: 1860889347541268489}
   engineAudioSo: {fileID: 11400000, guid: cdbf35fdc54510f4e8c98c65ac06db71, type: 2}
   faction: 1
   Priority: 5
   agentSo: {fileID: 11400000, guid: e3ea471ecd155324d9fc022d0ede14fe, type: 2}
-  isAutonomous: 1
+  isAutonomous: 0
   orderPriority: 0
   debugAgent:
     debug: 1
@@ -456,15 +457,19 @@ MonoBehaviour:
     sideViewColor: {r: 0, g: 1, b: 1, a: 1}
   patrolWaypoints: []
   rotateMainBodyTowardsEnemy: 1
+  navmeshRotate: 0
+  onCollisionEnterEvent:
+    m_PersistentCalls:
+      m_Calls: []
   demoParameters: {fileID: 11400000, guid: 54207af3f0293d54a84e4a6024f5506d, type: 2}
   graphAgent: {fileID: 0}
   onTargetChanged:
     m_PersistentCalls:
       m_Calls: []
   isRotating: 0
-  _firstChild: {fileID: 0}
+  _firstChild: {fileID: 1491847034594198220}
   _sensor: {fileID: 3984767451458692088}
-  torqueDamageForce: 0
+  torqueDamageForce: 10
 --- !u!82 &1860889347541268492
 AudioSource:
   m_ObjectHideFlags: 0
@@ -620,9 +625,7 @@ MonoBehaviour:
           m_Value0: 719479968944665820
           m_Value1: 18054431686333317442
         Name: PatrolPoints
-        m_Value:
-        - {fileID: 0}
-        - {fileID: 0}
+        m_Value: []
 --- !u!114 &336999034086917449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -637,6 +640,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   isLeader: 1
+  squadMemberState: 0
   rb: {fileID: 0}
   leader: {fileID: 0}
   squadSO: {fileID: 11400000, guid: e81cfe4ca47ac0549a1dced57ad1421a, type: 2}
@@ -646,6 +650,10 @@ MonoBehaviour:
     priorityList: 
     formation: 2
     members: []
+    unitKilledCount:
+      m_InternalValue: 0
+    unitLostCount:
+      m_InternalValue: 0
   agent: {fileID: 0}
   leaderCrownHeight: 4
 --- !u!1 &2229476051930329842
@@ -1755,7 +1763,7 @@ PrefabInstance:
         type: 3}
       propertyPath: cameraTransform
       value: 
-      objectReference: {fileID: 3984767451458692088}
+      objectReference: {fileID: 1491847034594198220}
     - target: {fileID: 7673167084498494577, guid: 48660cbbbff3f6942babc11f0af5b319,
         type: 3}
       propertyPath: gunCheckCanShoot
@@ -1878,7 +1886,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: ca9c5e66ece1ad543b65df9b72def84e,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 2.54
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ca9c5e66ece1ad543b65df9b72def84e,
         type: 3}
@@ -4132,7 +4140,7 @@ PrefabInstance:
         type: 3}
       propertyPath: cameraTransform
       value: 
-      objectReference: {fileID: 3984767451458692088}
+      objectReference: {fileID: 1491847034594198220}
     - target: {fileID: 7673167084498494577, guid: 48660cbbbff3f6942babc11f0af5b319,
         type: 3}
       propertyPath: gunCheckCanShoot

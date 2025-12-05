@@ -19,17 +19,20 @@ using Utility;
 namespace AI
 {
     [Serializable]
-    public struct SquadLeaderInfo
+    public class SquadLeaderInfo
     {
         public SquadState squadState;
         public int[] priorityList;
         public SquadFormation formation;
-        public List<LegionSquad> members;
+        public List<LegionSquad> members = new List<LegionSquad>();
+        public NetworkVariable<int> unitKilledCount = new NetworkVariable<int>();
+        public NetworkVariable<int> unitLostCount = new NetworkVariable<int>();
     }
     [RequireComponent(typeof(NetworkNavMeshAgent), typeof(AIAgent), typeof(BehaviorGraphAgent))]
     public class LegionSquad : NetworkBehaviour
     {
         [SerializeField] private bool isLeader;
+        public SquadMemberState squadMemberState;
         public Rigidbody rb;
         public LegionSquad leader;
         public SquadSO squadSO;
@@ -337,6 +340,18 @@ namespace AI
         {
             base.OnDestroy();
             LeaveSquad();
+        }
+
+        public void GetMorale()
+        {
+            
+        }
+
+        public bool CanChase()
+        {
+            if (IsLeader)
+                return true;
+            return squadSO.canChaseEnemies && squadPosition > squadSO.minUnitBeforeChase;
         }
 
         

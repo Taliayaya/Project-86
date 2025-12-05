@@ -9,10 +9,12 @@ namespace ScriptableObjects.AI
     public class AgentSO : ScriptableObject
     {
         [Range(0, 360)] public float fieldOfViewAngle = 180;
+        // how far can the unit detect targets
         [Range(0, 10000)] public float viewDistance = 10;
+        // how far can the target be to shoot
+        [Range(0, 10000)] public float combatDistance = 10;
         public float rotationSpeed = 1f;
         [Range(0, 10000)] public float idealDistanceFromEnemy = 40;
-        [Range(0, 10000)] public int shareInformationMaxDistance = 100;
         
         public float speed = 10;
         public Faction faction;

@@ -1,7 +1,10 @@
 ﻿using System;
 using Armament.MainMenu;
+using BladesCombat;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Serialization;
+
 namespace Armament.Shared
 {
 	public class ArmamentSwitcher : NetworkBehaviour
@@ -11,6 +14,8 @@ namespace Armament.Shared
 		[SerializeField] private bool changeArmamentOnStart = true;
 		[SerializeField] private bool useArmamentOverride;
 		[SerializeField] private ArmamentType armamentOverride;
+
+		[SerializeField] private BladeArmamentManager bladeArmamentManager;
 
 		NetworkVariable<ArmamentType> m_currentArmament = new NetworkVariable<ArmamentType>();
 		public ArmamentType CurrentArmament => m_currentArmament.Value;
@@ -25,6 +30,11 @@ namespace Armament.Shared
 		public override void OnNetworkSpawn()
 		{
 			m_currentArmament.OnValueChanged += ValueChanged;
+		}
+
+		protected override void OnNetworkPostSpawn()
+		{
+			base.OnNetworkPostSpawn();
 			ChangedArmament(m_currentArmament.Value);
 		}
 

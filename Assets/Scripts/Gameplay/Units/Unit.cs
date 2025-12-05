@@ -1,9 +1,11 @@
 ﻿using System;
 using Gameplay.Mecha;
+using NUnit.Framework.Constraints;
 using ScriptableObjects.Sound;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 namespace Gameplay.Units
 {
@@ -20,10 +22,11 @@ namespace Gameplay.Units
         Walking,
         Running,
     }
+
     [RequireComponent(typeof(Rigidbody))]
     public abstract class Unit : NetworkBehaviour, IHealth
     {
-        private Module[] _modules;
+        protected Module[] Modules;
         
         [Header("Base Unit Settings")]
         public UnitType unitType = UnitType.None;
@@ -37,6 +40,9 @@ namespace Gameplay.Units
         public float armor = 10;
         
         public UnityEvent<Unit> onUnitDeath;
+        
+        [Header("Stats")]
+        public NetworkVariable<int> killCount = new ();
         
         [Header("Sounds")]
         [SerializeField] private AudioSource engineAudioSource;
@@ -86,8 +92,8 @@ namespace Gameplay.Units
 
         protected virtual void Start()
         {
-            _modules = GetComponentsInChildren<Module>();
-            foreach (var module in _modules)
+            Modules = GetComponentsInChildren<Module>();
+            foreach (var module in Modules)
             {
                 module.faction = Faction;
                 //if (!IsOwner)
@@ -139,7 +145,8 @@ namespace Gameplay.Units
         
         public DamageResponse TakeDamage(DamagePackage damagePackage)
         {
-            if (damagePackage.Type == DamageType.Bullet && damagePackage.GetDamage() < Armor)
+            bool isArmorDeflected = damagePackage.Type == DamageType.Bullet && damagePackage.GetDamage() < Armor;
+            if (isArmorDeflected || Health == 0)
                 return new DamageResponse() { Status = DamageResponse.DamageStatus.Deflected, DamageReceived = 0};
 
             if (damagePackage.Type == DamageType.EffectSlow)
@@ -149,8 +156,9 @@ namespace Gameplay.Units
                 TakeSlowEffect(damagePackage);
                 return new DamageResponse() { Status = DamageResponse.DamageStatus.Taken, DamageReceived = 0};
             }
-            Debug.Log($"{Faction} took {damagePackage.GetDamage()} damage. Health: {Health}");
+            
             float remainingHealth = Mathf.Clamp(Health - damagePackage.GetDamage(), 0, MaxHealth);
+            Debug.Log($"{Faction} took {damagePackage.GetDamage()} damage. Health: {Health} Remaining health: {remainingHealth}");
             TakeDamageRpc(damagePackage);
 
             return new DamageResponse() { Status = DamageResponse.DamageStatus.Taken, DamageReceived = damagePackage.GetDamage(), RemainingHealth = remainingHealth};
@@ -190,22 +198,24 @@ namespace Gameplay.Units
 
 
         public bool Died { get; protected set; } = false;
+        protected bool Destroying;
 
         public virtual void Die()
         {
             if (Died) return;
             Died = true;
-            if (IsOwner)
-                GetComponent<NetworkObject>().Despawn();
+            if (IsOwner && TryGetComponent<NetworkObject>(out var networkObject))
+                networkObject.Despawn();
             Debug.Log("[Unit]: Die");
             // Despawn invokes Destroy on all clients
-            EventManager.TriggerEvent("UnitDeath", this);
+            EventManager.TriggerEvent(Constants.TypedEvents.UnitDeath, this);
             onUnitDeath.Invoke(this);
             Factions.RemoveMember(faction, this);
         }
         
         public override void OnDestroy()
         {
+            Destroying = true;
             if (!Died)
                 Die();
             base.OnDestroy();
@@ -216,6 +226,14 @@ namespace Gameplay.Units
         {
             Armor = armor;
             Factions.AddMember(faction, this);
+        }
+
+        public virtual void OnUnitKilled(NetworkObject target, DamagePackage damagePackage, DamageResponse damageResponse)
+        {
+            if (!IsOwner)
+                return;
+            Debug.Log($"Killed {target.name}");
+            killCount.Value += 1;
         }
     }
 }

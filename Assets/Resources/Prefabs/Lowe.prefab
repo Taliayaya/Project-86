@@ -940,7 +940,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1416286270
+  GlobalObjectIdHash: 1134789098
   InScenePlacedSourceGlobalObjectIdHash: 451028681
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1105,7 +1105,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  _modules: []
   unitType: 2
   aimiYOffset: 2
   onHealthChange:
@@ -1127,6 +1126,8 @@ MonoBehaviour:
   onUnitDeath:
     m_PersistentCalls:
       m_Calls: []
+  killCount:
+    m_InternalValue: 0
   engineAudioSource: {fileID: 2987575835785382407}
   engineAudioSo: {fileID: 11400000, guid: cdbf35fdc54510f4e8c98c65ac06db71, type: 2}
   faction: 1
@@ -1142,6 +1143,7 @@ MonoBehaviour:
     sideViewColor: {r: 0, g: 1, b: 1, a: 1}
   patrolWaypoints: []
   rotateMainBodyTowardsEnemy: 0
+  navmeshRotate: 1
   onCollisionEnterEvent:
     m_PersistentCalls:
       m_Calls:
@@ -1385,9 +1387,7 @@ MonoBehaviour:
           m_Value0: 719479968944665820
           m_Value1: 18054431686333317442
         Name: PatrolPoints
-        m_Value:
-        - {fileID: 0}
-        - {fileID: 0}
+        m_Value: []
     - rid: 5191352411783430222
       type: {class: 'BlackboardVariable`1[[Unity.Netcode.Components.NetworkAnimator, Unity.Netcode.Runtime]]',
         ns: Unity.Behavior, asm: Unity.Behavior}
@@ -1411,6 +1411,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   isLeader: 1
+  squadMemberState: 0
   rb: {fileID: 0}
   leader: {fileID: 0}
   squadSO: {fileID: 11400000, guid: 7bb0efb3a80f70447ae44a0c60d21464, type: 2}
@@ -1420,6 +1421,10 @@ MonoBehaviour:
     priorityList: 
     formation: 2
     members: []
+    unitKilledCount:
+      m_InternalValue: 0
+    unitLostCount:
+      m_InternalValue: 0
   agent: {fileID: 0}
   leaderCrownHeight: 7
 --- !u!1 &293691076474557252
@@ -2709,7 +2714,7 @@ MonoBehaviour:
   baseTransform: {fileID: 259483675925536319}
   Hips: {fileID: 2622189977270965379}
   ScaleReferenceMode: 3
-  finalScaleReference: 0.40934798
+  finalScaleReference: 0.40934774
   finalScaleReferenceSqrt: 20.293144
   customScaleReferenceValue: 0.5
   DelayedInitialization: 0
@@ -4488,6 +4493,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onHit:
+    m_PersistentCalls:
+      m_Calls: []
+  onKill:
+    m_PersistentCalls:
+      m_Calls: []
   gunTransform: {fileID: 7597771167956496733}
   gunAudioSource: {fileID: 6852200685316878366}
   reloadAudioSource: {fileID: 0}
@@ -4500,6 +4511,7 @@ MonoBehaviour:
   _animator: {fileID: 0}
   _rb: {fileID: 0}
   recoilBodyTorque: {x: 0, y: 0, z: 0}
+  accuracy: 0.7
   canFire: 1
   _currentAmmoRemaining: 0
 --- !u!82 &6852200685316878366

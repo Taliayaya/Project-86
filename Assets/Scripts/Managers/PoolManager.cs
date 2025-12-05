@@ -45,7 +45,15 @@ namespace Managers
         {
             instance.SetActive(false);
             instance.transform.SetParent(null);
-            int prefabId = _objectToPrefab[instance.GetInstanceID()];
+            
+            // if we can't find the parent, just destroy the object
+            // it can happen during a network sync
+            if (!_objectToPrefab.TryGetValue(instance.GetInstanceID(), out var prefabId))
+            {
+                Destroy(instance);
+                return;
+            }
+            // otherwise, put it back in the pool
             _pools[prefabId].Queue.Enqueue(instance);
         }
     }

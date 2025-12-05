@@ -1,7 +1,9 @@
+using Gameplay;
 using Networking.Widgets.Core.Base;
 using Networking.Widgets.Session.Session;
 using Networking.Widgets.Session.Widgets.Base;
 using Unity.Multiplayer.Widgets;
+using UnityEditor;
 
 namespace Networking
 {
@@ -36,6 +38,7 @@ public class ConnectionManager : EnterSessionBase
         m_NetworkManager.OnClientConnectedCallback += OnClientConnectedCallback;
         m_NetworkManager.OnSessionOwnerPromoted += OnSessionOwnerPromoted;
         _profileName = $"Player-{UnityEngine.Random.Range(0, 1000)}";
+        _sessionName = GUID.Generate().ToString();
         EventManager.AddListener(Constants.TypedEvents.Session.SessionJoined, OnSessionJoinedEvent);
         await UnityServices.InitializeAsync();
 
@@ -44,7 +47,10 @@ public class ConnectionManager : EnterSessionBase
     private void OnSessionJoinedEvent(object arg0)
     {
         Debug.Log("Session Joined");
-        StartCoroutine(SceneHandler.SpawnPlayers());
+        var respawnManager = FindAnyObjectByType<RespawnManager>();
+        var playerObject = respawnManager.SpawnPlayer(NetworkManager.Singleton.LocalClientId);
+        PlayerManager.PlayerObjects[NetworkManager.Singleton.LocalClientId] = playerObject;
+        // StartCoroutine(SceneHandler.SpawnPlayers());
     }
 
     private async void Start()
@@ -140,7 +146,7 @@ public class ConnectionManager : EnterSessionBase
         return new EnterSessionData
         {
             SessionAction = SessionAction.Create,
-            SessionName = _profileName,
+            SessionName = _sessionName,
             WidgetConfiguration = WidgetConfiguration,
             AdditionalOptions = new AdditionalOptions
             {
