@@ -189,7 +189,7 @@ namespace AI.BehaviourTree.BasicNodes
             Debug.Log("Angle is " + angle + " " + _agentSo.fieldOfViewAngle * 0.5f);
             if (angle < _agentSo.fieldOfViewAngle * 0.5f)
             {
-                Debug.DrawLine(_transform.position, target.transform.position, Color.blue);
+                Debug.DrawLine(_transform.position, target.transform.position, Color.blue, 0.3f);
                 return PerformRaycast(direction, target);
             }
 
@@ -201,7 +201,7 @@ namespace AI.BehaviourTree.BasicNodes
             foreach (var ally in Factions.GetMembers(_aiAgent.Faction))
             {
                 float distance = Vector3.Distance(ally.transform.position, target.transform.position);
-                if (distance <= _agentSo.shareInformationMaxDistance)
+                if (distance <= _agentSo.viewDistance)
                 {
                     Debug.Log("[CanSeeObject] Sharing position to " + ally.name + " of " + target.name + " at " +
                               target.transform.position);
@@ -252,7 +252,7 @@ namespace AI.BehaviourTree.BasicNodes
             {
                 if (hit.collider.gameObject == target || (hit.rigidbody != null && hit.rigidbody.gameObject == target))
                 {
-                    Debug.DrawLine(transform.position, target.transform.position, Color.green);
+                    Debug.DrawLine(transform.position, target.transform.position, Color.green, 0.3f);
                     return true;
                 }
             }
@@ -264,14 +264,14 @@ namespace AI.BehaviourTree.BasicNodes
         {
             RaycastHit hit;
             Debug.DrawRay(_transform.position, direction.normalized * _agentSo.viewDistance, Color.yellow);
-            Debug.Log("Performing raycast " + _agentSo.viewDistance);
+            // Debug.Log("Performing raycast " + _agentSo.viewDistance);
             if (Physics.Raycast(_transform.position, direction.normalized, out hit, _agentSo.viewDistance, layerMask))
             {
-                Debug.Log("hit " + hit.transform.name);
+                // Debug.Log("hit " + hit.transform.name);
                 bool isDirectTarget = hit.collider.gameObject == target.gameObject;
                 if (isDirectTarget || (hit.rigidbody != null && hit.rigidbody.gameObject == target.gameObject))
                 {
-                    Debug.DrawLine(_transform.position, target.transform.position, Color.green);
+                    Debug.DrawLine(_transform.position, target.transform.position, Color.green, 0.3f);
                     _canSeeTarget = true;
                     _spottedTargets.Add(target);
                     return true;

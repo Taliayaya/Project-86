@@ -144,6 +144,7 @@ public static class Constants
         // TODO : Add all the typed event names cause i couldnt be bothered -nemo
         
         public const string OnPlayerChanged = "OnPlayerChanged";
+        public const string UnitDeath = "UnitDeath";
 
     }
 
@@ -161,7 +162,9 @@ public static class Constants
         public static class Discord
         {
             public const long AppID = 2 * 0b1011 * 0x1F * 0b101111101110001100001100000110001111111101110010111;
+#if ENABLE_INTEGRATION_DISCORD
             public const global::Discord.ActivityType ActivityType = 0;
+#endif
         }
     }
 }

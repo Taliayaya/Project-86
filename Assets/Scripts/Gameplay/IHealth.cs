@@ -114,6 +114,8 @@ namespace Gameplay
         public DamageStatus Status;
         public float DamageReceived;
         public float RemainingHealth;
+        
+        public bool IsDead => RemainingHealth <= 0;
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         {

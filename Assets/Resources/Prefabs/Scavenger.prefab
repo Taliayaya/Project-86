@@ -266,9 +266,12 @@ MonoBehaviour:
   onUnitDeath:
     m_PersistentCalls:
       m_Calls: []
+  killCount:
+    m_InternalValue: 0
   engineAudioSource: {fileID: 105574978142867672}
   engineAudioSo: {fileID: 11400000, guid: cdbf35fdc54510f4e8c98c65ac06db71, type: 2}
   faction: 0
+  Priority: 1
   ammoStacks:
   - {fileID: 11400000, guid: e98a5a0eaa285ec4ba662332da4a42bc, type: 2}
   - {fileID: 11400000, guid: bf80ca1ee5fe7184f9643c8a40640c33, type: 2}
@@ -2047,7 +2050,7 @@ MonoBehaviour:
   baseTransform: {fileID: 1329680720174639104}
   Hips: {fileID: 3338738301107871448}
   ScaleReferenceMode: 3
-  finalScaleReference: 20.597752
+  finalScaleReference: 20.597754
   finalScaleReferenceSqrt: 3.8734837
   customScaleReferenceValue: 0.5
   DelayedInitialization: 0

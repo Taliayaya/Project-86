@@ -122,6 +122,7 @@ namespace Gameplay.Units
         [SerializeField] private DebugAgent debugAgent;
         [SerializeField] [CanBeNull] private List<Transform> patrolWaypoints = null;
         [SerializeField] private bool rotateMainBodyTowardsEnemy = true;
+        [SerializeField] private bool navmeshRotate = true;
         
         public UnityEvent<Collision> onCollisionEnterEvent; 
         private WeaponModule[] _weaponModules;
@@ -181,7 +182,7 @@ namespace Gameplay.Units
                 MaxHealth = demoParameters.ameiseHealth;
             }
         }
-
+        
         protected override void Start()
         {
             base.Start();
@@ -201,8 +202,6 @@ namespace Gameplay.Units
                 _behaviourTreeRunner.StartAI();
             if (rotateMainBodyTowardsEnemy)
                 RotateTowardsEnemy();
-            else
-                _agent.Agent.updateRotation = true;
         }
 
         public override void OnNetworkSpawn()
@@ -212,6 +211,8 @@ namespace Gameplay.Units
             if (IsOwner)
             {
                 _target.Value = null;
+                if (!navmeshRotate)
+                    Agent.UpdateRotationRpc(navmeshRotate);
             }
         }
 

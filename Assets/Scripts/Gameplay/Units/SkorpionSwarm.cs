@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace Gameplay.Units
@@ -17,7 +18,7 @@ namespace Gameplay.Units
         TOO_CLOSE
     }
 
-    public class SkorpionSwarm : MonoBehaviour
+    public class SkorpionSwarm : NetworkBehaviour
     {
         private static Queue<Vector3> _strikeHappenings = new Queue<Vector3>();
 
@@ -86,10 +87,22 @@ namespace Gameplay.Units
 
         private void SummonStrike(Vector3 strikePosition)
         {
+            uint seed = (uint) DateTime.Now.Ticks;
+            SummonStrikeRpc(strikePosition, seed);
+        }
+
+        [Rpc(SendTo.ClientsAndHost)]
+        private void SummonStrikeRpc(Vector3 strikePosition, uint seed)
+        {
+            SummonStrikeCallees(strikePosition, seed);
+        }
+
+        private void SummonStrikeCallees(Vector3 strikePosition, uint seed)
+        {
             _onCooldown = true;
             var strike = Instantiate(strikePrefab, strikePosition + strikeYOffset * Vector3.up, Quaternion.identity);
-            var strikeScript = strike.GetComponent<ArtilleryStrike>();
-            strikeScript.SendStrike(strikeDuration, strikePerSecond, strikeRadius, delay);
+            var strikeScript = strike.GetComponentInChildren<ArtilleryStrike>();
+            strikeScript.SendStrike(strikeDuration, strikePerSecond, strikeRadius, delay, seed);
             strikeScript.DestroyAfter(strikeDuration + 20);
             _strikeHappenings.Enqueue(strikePosition);
 

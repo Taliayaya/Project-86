@@ -15,10 +15,8 @@ namespace Utility
 
         private void Awake()
         {
-            if (_particleSystem)
-                _particleSystem = GetComponent<ParticleSystem>();
-            if (_visualEffect)
-                _visualEffect = GetComponent<VisualEffect>();
+            _particleSystem = GetComponent<ParticleSystem>();
+            _visualEffect = GetComponent<VisualEffect>();
         }
 
         void OnEnable()

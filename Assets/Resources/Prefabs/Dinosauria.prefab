@@ -433,6 +433,7 @@ MonoBehaviour:
       min: -25
       max: 20
     invert: 1
+    canRotate: 1
   - turret: {fileID: 8354253488568226460}
     parent: {fileID: 7168670840042494457}
     target: {fileID: 0}
@@ -445,6 +446,7 @@ MonoBehaviour:
       min: -50
       max: 25
     invert: 1
+    canRotate: 1
   - turret: {fileID: 8951626537550282793}
     parent: {fileID: 8568937441160234182}
     target: {fileID: 0}
@@ -457,6 +459,7 @@ MonoBehaviour:
       min: -50
       max: 25
     invert: 1
+    canRotate: 1
 --- !u!82 &1875953968032884602
 AudioSource:
   m_ObjectHideFlags: 0
@@ -817,7 +820,7 @@ MonoBehaviour:
   StabilizeCenterOfMass: 0.8
   AnimationIsStablePose: 0.75
   StabilizingSpeed: 0.375
-  PushHipsOnLegMove: 0
+  PushHipsOnLegMove: 0.11
   NormalizePush: 1
   PushReactionSpeed: 0.3
   PushYBlend: 1
@@ -877,9 +880,9 @@ MonoBehaviour:
     G_CustomForceNOTAttach: 0
     Owner: {fileID: 6595575111890683721}
     LegBlendWeight: 1
-    LegMoveSpeedMultiplier: 0.86664486
-    LegRaiseMultiplier: 0.86933374
-    GlueThresholdMultiplier: 0.8914588
+    LegMoveSpeedMultiplier: 0.9668427
+    LegRaiseMultiplier: 0.95390016
+    GlueThresholdMultiplier: 0.9110781
     GluePointOffset: {x: 0, y: 0}
     LegStretchMultiplier: 1
     CustomLegAnimating: {fileID: 0}
@@ -908,9 +911,9 @@ MonoBehaviour:
     G_CustomForceNOTAttach: 0
     Owner: {fileID: 6595575111890683721}
     LegBlendWeight: 1
-    LegMoveSpeedMultiplier: 0.94222647
-    LegRaiseMultiplier: 0.94457394
-    GlueThresholdMultiplier: 0.926242
+    LegMoveSpeedMultiplier: 0.83317226
+    LegRaiseMultiplier: 0.8744811
+    GlueThresholdMultiplier: 0.9097247
     GluePointOffset: {x: 0, y: 0}
     LegStretchMultiplier: 1
     CustomLegAnimating: {fileID: 0}
@@ -939,9 +942,9 @@ MonoBehaviour:
     G_CustomForceNOTAttach: 0
     Owner: {fileID: 6595575111890683721}
     LegBlendWeight: 1
-    LegMoveSpeedMultiplier: 0.8286418
-    LegRaiseMultiplier: 0.9230169
-    GlueThresholdMultiplier: 0.9869306
+    LegMoveSpeedMultiplier: 0.8094306
+    LegRaiseMultiplier: 0.9617018
+    GlueThresholdMultiplier: 0.9551368
     GluePointOffset: {x: 0, y: 0}
     LegStretchMultiplier: 1
     CustomLegAnimating: {fileID: 0}
@@ -970,9 +973,9 @@ MonoBehaviour:
     G_CustomForceNOTAttach: 0
     Owner: {fileID: 6595575111890683721}
     LegBlendWeight: 1
-    LegMoveSpeedMultiplier: 0.85904175
-    LegRaiseMultiplier: 0.9232724
-    GlueThresholdMultiplier: 0.9327116
+    LegMoveSpeedMultiplier: 0.98029464
+    LegRaiseMultiplier: 0.97308517
+    GlueThresholdMultiplier: 0.8846862
     GluePointOffset: {x: 0, y: 0}
     LegStretchMultiplier: 1
     CustomLegAnimating: {fileID: 0}
@@ -1001,9 +1004,9 @@ MonoBehaviour:
     G_CustomForceNOTAttach: 0
     Owner: {fileID: 6595575111890683721}
     LegBlendWeight: 1
-    LegMoveSpeedMultiplier: 0.81249785
-    LegRaiseMultiplier: 0.885844
-    GlueThresholdMultiplier: 0.9616364
+    LegMoveSpeedMultiplier: 0.84758896
+    LegRaiseMultiplier: 0.8932582
+    GlueThresholdMultiplier: 0.90571344
     GluePointOffset: {x: 0, y: 0}
     LegStretchMultiplier: 1
     CustomLegAnimating: {fileID: 0}
@@ -1032,9 +1035,9 @@ MonoBehaviour:
     G_CustomForceNOTAttach: 0
     Owner: {fileID: 6595575111890683721}
     LegBlendWeight: 1
-    LegMoveSpeedMultiplier: 0.96482086
-    LegRaiseMultiplier: 0.8637829
-    GlueThresholdMultiplier: 0.88514996
+    LegMoveSpeedMultiplier: 0.90213907
+    LegRaiseMultiplier: 0.8146001
+    GlueThresholdMultiplier: 0.89926326
     GluePointOffset: {x: 0, y: 0}
     LegStretchMultiplier: 1
     CustomLegAnimating: {fileID: 0}
@@ -1063,9 +1066,9 @@ MonoBehaviour:
     G_CustomForceNOTAttach: 0
     Owner: {fileID: 6595575111890683721}
     LegBlendWeight: 1
-    LegMoveSpeedMultiplier: 0.8667844
-    LegRaiseMultiplier: 0.9783543
-    GlueThresholdMultiplier: 0.9924893
+    LegMoveSpeedMultiplier: 0.8851837
+    LegRaiseMultiplier: 0.83635706
+    GlueThresholdMultiplier: 0.9660839
     GluePointOffset: {x: 0, y: 0}
     LegStretchMultiplier: 1
     CustomLegAnimating: {fileID: 0}
@@ -1094,9 +1097,9 @@ MonoBehaviour:
     G_CustomForceNOTAttach: 0
     Owner: {fileID: 6595575111890683721}
     LegBlendWeight: 1
-    LegMoveSpeedMultiplier: 0.90273875
-    LegRaiseMultiplier: 0.88684165
-    GlueThresholdMultiplier: 0.9228352
+    LegMoveSpeedMultiplier: 0.8358732
+    LegRaiseMultiplier: 0.93370694
+    GlueThresholdMultiplier: 0.9971416
     GluePointOffset: {x: 0, y: 0}
     LegStretchMultiplier: 1
     CustomLegAnimating: {fileID: 0}
@@ -1120,7 +1123,7 @@ MonoBehaviour:
     AnkleYawCorrection: 0
     _FinalIKPos: {x: 206.15996, y: 0.9964507, z: 253.8174}
   BaseLegAnimating:
-    StepMoveDuration: 0.6
+    StepMoveDuration: 0.55
     MoveToGoalCurve:
       serializedVersion: 2
       m_Curve:
@@ -1328,7 +1331,7 @@ MonoBehaviour:
   AllowGlueDrag: 0.9
   GlueMode: 2
   OnlyLocalAnimation: 0
-  SmoothSuddenSteps: 0
+  SmoothSuddenSteps: 0.5
   LegElevateBlend: 0
   LegElevateHeightLimit: 0.6
   FootRotationBlend: 1
@@ -1341,8 +1344,8 @@ MonoBehaviour:
   _Editor_OnValidateTrigger: 1
   _EditorAllowAutoUpdateFeetParams: 1
   _EditorCategory: 1
-  _EditorSetupCategory: 1
-  _EditorMotionCategory: 1
+  _EditorSetupCategory: 0
+  _EditorMotionCategory: 2
   _EditorExtraCategory: 0
   setupPose:
     MainHipsPose:
@@ -2489,6 +2492,9 @@ GameObject:
   - component: {fileID: 5045609910531207964}
   - component: {fileID: 3605921830143639928}
   - component: {fileID: 5133340453581848025}
+  - component: {fileID: 4902321755752412367}
+  - component: {fileID: 8826413332165833531}
+  - component: {fileID: 5211135640479110472}
   m_Layer: 0
   m_Name: Dinosauria
   m_TagString: Untagged
@@ -2547,8 +2553,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3002341722
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  GlobalObjectIdHash: 2774699835
+  InScenePlacedSourceGlobalObjectIdHash: 3002341722
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
@@ -2711,7 +2717,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  _modules: []
   unitType: 16
   aimiYOffset: 2
   onHealthChange:
@@ -2733,12 +2738,14 @@ MonoBehaviour:
   onUnitDeath:
     m_PersistentCalls:
       m_Calls: []
+  killCount:
+    m_InternalValue: 0
   engineAudioSource: {fileID: 1875953968032884602}
   engineAudioSo: {fileID: 11400000, guid: cdbf35fdc54510f4e8c98c65ac06db71, type: 2}
   faction: 1
   Priority: 5
   agentSo: {fileID: 11400000, guid: df88fdb17d199e742856204605cf5625, type: 2}
-  isAutonomous: 1
+  isAutonomous: 0
   orderPriority: 2
   debugAgent:
     debug: 1
@@ -2748,6 +2755,7 @@ MonoBehaviour:
     sideViewColor: {r: 0, g: 1, b: 1, a: 1}
   patrolWaypoints: []
   rotateMainBodyTowardsEnemy: 1
+  navmeshRotate: 1
   onCollisionEnterEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -2772,6 +2780,124 @@ MonoBehaviour:
   _firstChild: {fileID: 5495974026926177958}
   _sensor: {fileID: 0}
   torqueDamageForce: 0
+--- !u!114 &4902321755752412367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1654015168095858290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59ae6bbda9fa495d8c3bedf8a3f6ae60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  sprintSpeedMultiplier: 1.2
+  isEngineOn:
+    m_InternalValue: 1
+--- !u!114 &8826413332165833531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1654015168095858290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  m_Graph: {fileID: 6216847087002603069, guid: a2f48802b1a352c4c8a7d4749cb0632f, type: 2}
+  m_BlackboardVariableOverridesList:
+  - rid: 5191352431296381268
+  - rid: 5191352431296381269
+  - rid: 5191352431296381270
+  - rid: 5191352431296381271
+  - rid: 5191352431296381272
+  m_OriginalGraph: {fileID: 0}
+  m_IsInitialised: 0
+  m_IsStarted: 0
+  NetcodeRunOnlyOnOwner: 1
+  references:
+    version: 2
+    RefIds:
+    - rid: 5191352431296381268
+      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]',
+        ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 1
+          m_Value1: 0
+        Name: Self
+        m_Value: {fileID: 1654015168095858290}
+    - rid: 5191352431296381269
+      type: {class: 'BlackboardVariable`1[[System.Boolean, mscorlib]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 13888623284079706851
+          m_Value1: 2475186256088147861
+        Name: FollowLeader
+        m_Value: 1
+    - rid: 5191352431296381270
+      type: {class: 'BlackboardVariable`1[[ScriptableObjects.AI.AgentSO, Assembly-CSharp]]',
+        ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 11655171499124337369
+          m_Value1: 937734325291473510
+        Name: Agent
+        m_Value: {fileID: 11400000, guid: df88fdb17d199e742856204605cf5625, type: 2}
+    - rid: 5191352431296381271
+      type: {class: 'BlackboardVariable`1[[Unity.Netcode.Components.NetworkAnimator, Unity.Netcode.Runtime]]',
+        ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 15920190735280661835
+          m_Value1: 3010939026837140626
+        Name: NetworkAnimator
+        m_Value: {fileID: 0}
+    - rid: 5191352431296381272
+      type: {class: 'BlackboardVariable`1[[System.Collections.Generic.List`1[[UnityEngine.GameObject, UnityEngine.CoreModule]], mscorlib]]',
+        ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 719479968944665820
+          m_Value1: 18054431686333317442
+        Name: PatrolPoints
+        m_Value: []
+--- !u!114 &5211135640479110472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1654015168095858290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fc8622b1f1042cd84b32df8f676b66c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  isLeader: 1
+  squadMemberState: 0
+  rb: {fileID: 3605921830143639928}
+  leader: {fileID: 0}
+  squadSO: {fileID: 11400000, guid: e100510dbb73ab84eb09b9c593a7ca12, type: 2}
+  squadPosition: 0
+  squadInfo:
+    squadState: 0
+    priorityList: 
+    formation: 2
+    members: []
+    unitKilledCount:
+      m_InternalValue: 0
+    unitLostCount:
+      m_InternalValue: 0
+  agent: {fileID: 4902321755752412367}
+  leaderCrownHeight: 18
 --- !u!1 &1746321470694318703
 GameObject:
   m_ObjectHideFlags: 0
@@ -6042,18 +6168,52 @@ MonoBehaviour:
     m_Bits: 129
   maxRaycastDistance: 500
   aiIgnore: 0
+  onFire:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4502831402250996778}
+        m_TargetAssemblyTypeName: CannonController, Assembly-CSharp
+        m_MethodName: CooldownTurret0
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 1.5
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onHit:
+    m_PersistentCalls:
+      m_Calls: []
+  onKill:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5133340453581848025}
+        m_TargetAssemblyTypeName: Gameplay.Units.Unit, Assembly-CSharp
+        m_MethodName: OnUnitKilled
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   gunTransform: {fileID: 20063757227711774}
   gunAudioSource: {fileID: 5362928667904857419}
   reloadAudioSource: {fileID: 0}
-  cameraTransform: {fileID: 4734491908410458219}
+  cameraTransform: {fileID: 20063757227711774}
   muzzleFlash: {fileID: 1861677871566011835}
   muzzleLight: {fileID: 6919442979133725194}
   myParentColliderToIgnore: {fileID: 4311907113561008}
   ammoLeftOrRight: Left
-  gunCheckCanShoot: {fileID: 0}
+  gunCheckCanShoot: {fileID: 20063757227711774}
   _animator: {fileID: 0}
   _rb: {fileID: 0}
   recoilBodyTorque: {x: 0, y: 0, z: 0}
+  accuracy: 0.7
   canFire: 1
   _currentAmmoRemaining: 0
 --- !u!82 &5362928667904857419
@@ -6506,6 +6666,27 @@ MonoBehaviour:
     m_Bits: 129
   maxRaycastDistance: 50
   aiIgnore: 1
+  onFire:
+    m_PersistentCalls:
+      m_Calls: []
+  onHit:
+    m_PersistentCalls:
+      m_Calls: []
+  onKill:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5133340453581848025}
+        m_TargetAssemblyTypeName: Gameplay.Units.Unit, Assembly-CSharp
+        m_MethodName: OnUnitKilled
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   gunTransform: {fileID: 8951626537550282793}
   gunAudioSource: {fileID: 2493301193770834983}
   reloadAudioSource: {fileID: 0}
@@ -6518,8 +6699,9 @@ MonoBehaviour:
   _animator: {fileID: 0}
   _rb: {fileID: 0}
   recoilBodyTorque: {x: 0, y: 0, z: 0}
+  accuracy: 0.9
   canFire: 0
-  _currentAmmoRemaining: 0
+  _currentAmmoRemaining: 10000
   minAngleToShoot: 15
   target: {fileID: 0}
   holdFireTime: 2
@@ -9787,18 +9969,52 @@ MonoBehaviour:
     m_Bits: 129
   maxRaycastDistance: 500
   aiIgnore: 0
+  onFire:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4502831402250996778}
+        m_TargetAssemblyTypeName: CannonController, Assembly-CSharp
+        m_MethodName: CooldownTurret0
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 1.5
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onHit:
+    m_PersistentCalls:
+      m_Calls: []
+  onKill:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5133340453581848025}
+        m_TargetAssemblyTypeName: Gameplay.Units.Unit, Assembly-CSharp
+        m_MethodName: OnUnitKilled
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   gunTransform: {fileID: 4935801329812501290}
   gunAudioSource: {fileID: 5956000857413621988}
   reloadAudioSource: {fileID: 0}
-  cameraTransform: {fileID: 4734491908410458219}
+  cameraTransform: {fileID: 4935801329812501290}
   muzzleFlash: {fileID: 6552960006258499151}
   muzzleLight: {fileID: 1791164840641275790}
   myParentColliderToIgnore: {fileID: 4311907113561008}
   ammoLeftOrRight: Left
-  gunCheckCanShoot: {fileID: 0}
+  gunCheckCanShoot: {fileID: 4935801329812501290}
   _animator: {fileID: 0}
   _rb: {fileID: 0}
   recoilBodyTorque: {x: 0, y: 0, z: 0}
+  accuracy: 0.7
   canFire: 1
   _currentAmmoRemaining: 0
 --- !u!82 &5956000857413621988
@@ -10429,6 +10645,27 @@ MonoBehaviour:
     m_Bits: 129
   maxRaycastDistance: 50
   aiIgnore: 1
+  onFire:
+    m_PersistentCalls:
+      m_Calls: []
+  onHit:
+    m_PersistentCalls:
+      m_Calls: []
+  onKill:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5133340453581848025}
+        m_TargetAssemblyTypeName: Gameplay.Units.Unit, Assembly-CSharp
+        m_MethodName: OnUnitKilled
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   gunTransform: {fileID: 8354253488568226460}
   gunAudioSource: {fileID: 6393537424463033257}
   reloadAudioSource: {fileID: 0}
@@ -10441,8 +10678,9 @@ MonoBehaviour:
   _animator: {fileID: 0}
   _rb: {fileID: 0}
   recoilBodyTorque: {x: 0, y: 0, z: 0}
+  accuracy: 0.9
   canFire: 0
-  _currentAmmoRemaining: 0
+  _currentAmmoRemaining: 10000
   minAngleToShoot: 15
   target: {fileID: 0}
   holdFireTime: 2

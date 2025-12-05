@@ -112,5 +112,11 @@ namespace Networking
         {
             Agent.speed = speed;
         }
+        
+        [Rpc(SendTo.ClientsAndHost)]
+        public void UpdateRotationRpc(bool rotate)
+        {
+            Agent.updateRotation = rotate;
+        }
     }
 }

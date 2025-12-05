@@ -94,12 +94,14 @@ namespace Gameplay.Quests
 
         public bool CanComplete()
         {
+            Debug.Log($"[Quest] CanComplete(): Quest {name} {Status}");
             if (Status != QuestStatus.Active)
                 return false;
 
             foreach (var task in GetPrincipaleTasks())
             {
                 var canComplete = task.CanComplete();
+                Debug.Log($"[Quest] CanComplete(): Quest {name} | Task {task.name} {canComplete}");
                 if (!canComplete)
                     return false;
             }

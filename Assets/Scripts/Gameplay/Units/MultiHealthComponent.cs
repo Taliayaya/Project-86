@@ -25,8 +25,9 @@ namespace Gameplay.Units
 
         public override void OnTakeDamage(DamagePackage damagePackage)
         {
-            if (IsDead) return;
-            base.OnTakeDamage(damagePackage);
+            if (!IsDead)
+                base.OnTakeDamage(damagePackage);
+            // even if this component is dead, the main body still takes damage
             if (mainHealthTakesDamage)
             {
                 if (damagePackage.Type == DamageType.Bullet)

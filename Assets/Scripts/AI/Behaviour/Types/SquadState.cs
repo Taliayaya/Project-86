@@ -6,11 +6,13 @@ namespace AI.Behaviour.Types
     public enum SquadState
     {
         Idle,
-        Patrol,
-        MoveToPoint,
-        AttackTarget,
-        Retreat,
-        SpreadOut,
-        Regroup
+        Patrolling,
+        Attacking
+    }
+
+    public enum SquadMemberState
+    {
+        Attached,
+        Flanking
     }
 }

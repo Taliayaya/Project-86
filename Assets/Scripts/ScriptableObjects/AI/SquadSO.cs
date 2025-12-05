@@ -12,5 +12,7 @@ namespace ScriptableObjects.AI
         public int spacing = 10;
         public int maxSquadSize = 20;
         public float positionUpdateFrequency = 1;
+        public bool canChaseEnemies = false;
+        public int minUnitBeforeChase = 3;
     }
 }
