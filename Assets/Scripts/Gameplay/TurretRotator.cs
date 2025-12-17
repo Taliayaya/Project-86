@@ -30,6 +30,7 @@ public class CannonController : MonoBehaviour
         public Transform turret;
         public Transform target;
         public float rotationSpeed = 5f;
+        public bool IsMainTurret = false;
         [FormerlySerializedAs("xAngle")] public Angle yAngle = new Angle(-360, 360);
         [FormerlySerializedAs("yAngle")] public Angle xAngle = new Angle(-90, 90);
         public bool invert = false;

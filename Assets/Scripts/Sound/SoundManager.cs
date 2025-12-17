@@ -17,6 +17,8 @@ namespace DefaultNamespace.Sound
         [SerializeField] private AudioMixerSnapshot unpaused;
         [SerializeField] private AudioMixer masterMixer;
 
+        public float MusicVolume => soundParameters.musicVolume;
+        
         private void OnEnable()
         {
             EventManager.AddListener("OnPause", OnPauseGame );
