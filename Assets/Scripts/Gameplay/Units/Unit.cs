@@ -206,5 +206,7 @@ namespace Gameplay.Units
             Armor = armor;
             Factions.AddMember(faction, this);
         }
+
+        public Module[] GetModules() => _modules;
     }
 }

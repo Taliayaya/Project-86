@@ -1,0 +1,89 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4019187324647480354
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4661514420483474506}
+  - component: {fileID: 7143605988446180102}
+  m_Layer: 0
+  m_Name: BGMPlayer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4661514420483474506
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4019187324647480354}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7143605988446180102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4019187324647480354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 639501a43a6a4c8dac824faa7635dfd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  persistent: 1
+  MenuBGM:
+    Guid:
+      Data1: -699437515
+      Data2: 1311770246
+      Data3: -2041059662
+      Data4: 488602578
+    Path: event:/BGM/Menu 1
+  ExplorationBGM:
+    Guid:
+      Data1: -897805916
+      Data2: 1104264381
+      Data3: -1722756419
+      Data4: -1374102629
+    Path: event:/BGM/Exploration 1
+  Combat1BGM:
+    Guid:
+      Data1: -206704535
+      Data2: 1075527818
+      Data3: 53715883
+      Data4: -199849249
+    Path: event:/BGM/Combat 1
+  Combat2IntenseBGM:
+    Guid:
+      Data1: 926607600
+      Data2: 1169962849
+      Data3: -999273829
+      Data4: 1291104273
+    Path: event:/BGM/Combat 2 (Intense)
+  Combat3DinosauriaBGM:
+    Guid:
+      Data1: -1508960309
+      Data2: 1235236760
+      Data3: -806385225
+      Data4: -131023233
+    Path: event:/BGM/Combat 3 (Dinosauria)
+  Death1BGM:
+    Guid:
+      Data1: -1069555192
+      Data2: 1325180393
+      Data3: 2059608468
+      Data4: 561345965
+    Path: event:/BGM/Death 1
