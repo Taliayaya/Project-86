@@ -1,0 +1,1708 @@
+﻿msgid ""
+msgstr ""
+"Project-Id-Version: FMOD for Unity\n"
+"POT-Creation-Date: 2024-12-12 11:21+1100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: zh_hans\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.5\n"
+"X-Poedit-KeywordsList: ;L10n.Tr\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: BankRefreshWindow.cs:29
+msgid "FMOD Bank Refresh Status"
+msgstr "FMOD 事件库刷新状态"
+
+#: BankRefreshWindow.cs:141
+#, csharp-format
+msgid "The FMOD source banks changed {0} ago."
+msgstr "FMOD 源事件库在 {0} 前发生了更改。"
+
+#: BankRefreshWindow.cs:148
+msgid "Refreshing banks now..."
+msgstr "正在刷新事件库..."
+
+#: BankRefreshWindow.cs:153
+msgid "Refreshing banks"
+msgstr "刷新事件库中"
+
+#: BankRefreshWindow.cs:161
+msgid "Would you like to refresh banks?"
+msgstr "是否刷新事件库？"
+
+#: BankRefreshWindow.cs:168
+msgid "The FMOD banks are up to date."
+msgstr "FMOD 事件库已是最新。"
+
+#: BankRefreshWindow.cs:172
+msgid "Bank refresh failed:"
+msgstr "事件库刷新失败："
+
+#: BankRefreshWindow.cs:181
+msgid "Closing"
+msgstr "关闭中"
+
+#: BankRefreshWindow.cs:190
+#, csharp-format
+msgid "{0} in {1}..."
+msgstr "{0} 在 {1} 内..."
+
+#: BankRefreshWindow.cs:203 EventReferenceUpdater.cs:151
+#: EventReferenceUpdater.cs:2055 FileReorganizer.cs:835
+msgid "Cancel"
+msgstr "取消"
+
+#: BankRefreshWindow.cs:226 SetupWizard.cs:874
+msgid "Close"
+msgstr "关闭"
+
+#: BankRefreshWindow.cs:231
+msgid "Refresh Banks Now"
+msgstr "立即刷新事件库"
+
+#: EditorUtils.cs:58
+msgid "The FMOD Studio project path must be set to an .fspro file."
+msgstr "FMOD Studio 项目路径必须设置为 .fspro 文件。"
+
+#: EditorUtils.cs:64
+#, csharp-format
+msgid "The FMOD Studio project path '{0}' does not exist."
+msgstr "FMOD Studio 项目路径 '{0}' 不存在。"
+
+#: EditorUtils.cs:77
+#, csharp-format
+msgid "The FMOD Studio project '{0}' does not contain any built banks. Please build your project in FMOD Studio."
+msgstr "FMOD Studio 项目 '{0}' 不包含任何已构建的事件库。请在 FMOD Studio 中构建您的项目。"
+
+#: EditorUtils.cs:86
+msgid "The build path has not been set."
+msgstr "构建路径尚未设置。"
+
+#: EditorUtils.cs:92
+#, csharp-format
+msgid "The build path '{0}' does not exist."
+msgstr "构建路径 '{0}' 不存在。"
+
+#: EditorUtils.cs:101
+#, csharp-format
+msgid "Build path '{0}' does not contain any platform sub-directories. Please check that the build path is correct."
+msgstr "构建路径 '{0}' 不包含任何平台子目录。请检查构建路径是否正确。"
+
+#: EditorUtils.cs:110
+#, csharp-format
+msgid "Build path '{0}' does not contain any built banks."
+msgstr "构建路径 '{0}' 不包含任何已构建的事件库。"
+
+#: EditorUtils.cs:155
+msgid "hour"
+msgstr "小时"
+
+#: EditorUtils.cs:155
+msgid "hours"
+msgstr "小时"
+
+#: EditorUtils.cs:159
+msgid "minute"
+msgstr "分钟"
+
+#: EditorUtils.cs:159
+msgid "minutes"
+msgstr "分钟"
+
+#: EditorUtils.cs:163
+msgid "second"
+msgstr "秒"
+
+#: EditorUtils.cs:163
+msgid "seconds"
+msgstr "秒"
+
+#: EditorUtils.cs:167
+msgid "a moment"
+msgstr "片刻"
+
+#: EditorUtils.cs:270
+msgid "Legacy Event"
+msgstr "旧版事件"
+
+#: EditorUtils.cs:275 EventRefDrawer.cs:476
+#, csharp-format
+msgid "Will be migrated to <b>{0}</b>"
+msgstr "将迁移到 <b>{0}</b>"
+
+#: EditorUtils.cs:688
+#, csharp-format
+msgid ""
+"Version: {0}\n"
+"Build Number: {1}\n"
+"\n"
+"Copyright © Firelight Technologies Pty, Ltd. 2014-2025 \n"
+"\n"
+"See LICENSE.TXT for additional license information."
+msgstr ""
+"版本号: {0}\n"
+"构建编号: {1}\n"
+"\n"
+"版权所有 © Firelight Technologies Pty, Ltd. 2014-2025 \n"
+"\n"
+"有关更多许可信息，请参见 LICENSE.TXT。"
+
+#: EditorUtils.cs:692
+msgid "FMOD Studio Unity Integration"
+msgstr "FMOD Studio Unity 集成"
+
+#: EditorUtils.cs:1028
+msgid "Name Conflict"
+msgstr "名称冲突"
+
+#: EditorUtils.cs:1028
+#, csharp-format
+msgid "The event {0} already exists under {1}"
+msgstr "事件 {0} 已经存在于 {1} 下"
+
+#: EditorUtils.cs:1387
+msgid "Disable Existing Native Libraries"
+msgstr "禁用现有的原生库"
+
+#: EditorUtils.cs:1388
+msgid "Disable the existing FMOD native libraries so that Unity will not load them at startup time."
+msgstr "禁用现有的 FMOD 原生库，以防 Unity 在启动时加载它们。"
+
+#: EditorUtils.cs:1400
+#, csharp-format
+msgid "This will disable these native libraries:{0}"
+msgstr "这将禁用以下原生库：{0}"
+
+#: EditorUtils.cs:1423
+msgid "Restart Unity"
+msgstr "重启 Unity"
+
+#: EditorUtils.cs:1424
+msgid "Restart Unity so that it releases its lock on the existing FMOD native libraries."
+msgstr "重启 Unity 以释放其对现有 FMOD 原生库的锁定。"
+
+#: EditorUtils.cs:1426
+msgid "This will restart Unity. You will be prompted to save your work if you have unsaved scene modifications."
+msgstr "这将重启 Unity。系统将会提示您保存你的工作，如果你有未保存的场景修改。"
+
+#: EditorUtils.cs:1438
+msgid "Copy New Native Libraries"
+msgstr "复制新的原生库"
+
+#: EditorUtils.cs:1439
+msgid "Copy the new FMOD native libraries to the correct location and enable them."
+msgstr "将新的 FMOD 原生库复制到正确的位置并启用它们。"
+
+#: EditorUtils.cs:1468
+#, csharp-format
+msgid ""
+"This will do the following:\n"
+"* {0}"
+msgstr ""
+"这将执行以下操作:\n"
+"* {0}"
+
+#: EventBrowser.cs:263
+msgid "Events"
+msgstr "事件"
+
+#: EventBrowser.cs:266
+msgid "Snapshots"
+msgstr "快照"
+
+#: EventBrowser.cs:272 EventBrowser.cs:917 EventRefDrawer.cs:156
+#: StudioBankLoaderEditor.cs:30
+msgid "Banks"
+msgstr "事件库"
+
+#: EventBrowser.cs:277 EventBrowser.cs:1249
+msgid "Global Parameters"
+msgstr "全局参数"
+
+#: EventBrowser.cs:492
+msgid "New FMOD Studio Emitter"
+msgstr "新 FMOD Studio Emitter"
+
+#: EventBrowser.cs:496
+msgid "New FMOD Studio Bank Loader"
+msgstr "新增 Studio Bank Loader"
+
+#: EventBrowser.cs:500
+msgid "New FMOD Studio Global Parameter Trigger"
+msgstr "新 FMOD Studio Global Parameter Trigger"
+
+#: EventBrowser.cs:915 EventBrowser.cs:935 EventBrowser.cs:942
+msgid "Full Path"
+msgstr "完整路径"
+
+#: EventBrowser.cs:920 EventRefDrawer.cs:161
+msgid "Panning"
+msgstr "声像"
+
+#: EventBrowser.cs:921 EventRefDrawer.cs:171
+msgid "Oneshot"
+msgstr "一次性"
+
+#: EventBrowser.cs:924
+msgid "Length"
+msgstr "长度"
+
+#: EventBrowser.cs:926 EventBrowser.cs:928
+msgid "Streaming"
+msgstr "流式传输"
+
+#: EventBrowser.cs:946
+msgid "Platform Bank Sizes"
+msgstr "平台事件库大小"
+
+#: EventBrowser.cs:971
+msgid "Name"
+msgstr "名称"
+
+#: EventBrowser.cs:974
+msgid "Minimum"
+msgstr "最小值"
+
+#: EventBrowser.cs:975
+msgid "Maximum"
+msgstr "最大值"
+
+#: EventBrowser.cs:1083
+msgid "Show Event in FMOD Studio"
+msgstr "在 FMOD Studio 中显示事件"
+
+#: EventBrowser.cs:1566
+msgid "Path"
+msgstr "路径"
+
+#: EventBrowser.cs:1682
+msgid "Add Studio Event Emitter"
+msgstr "新增 Studio Event Emitter"
+
+#: EventBrowser.cs:1692
+msgid "Add Studio Bank Loader"
+msgstr "新增 Studio Bank Loader"
+
+#: EventBrowser.cs:1700
+msgid "Add Studio Global Parameter Trigger"
+msgstr "新增 Studio Global Parameter Triggerr"
+
+#: EventBrowser.cs:1735
+msgid "Create Studio Event Emitter"
+msgstr "新建 Studio Event Emitter"
+
+#: EventBrowser.cs:1745
+msgid "Create Studio Bank Loader"
+msgstr "新建 Studio Bank Loader"
+
+#: EventBrowser.cs:1756
+msgid "Create Studio Global Parameter Trigger"
+msgstr "新建 Studio Global Parameter Triggerr"
+
+#: EventRefDrawer.cs:14
+msgid "Event Not Found"
+msgstr "未找到事件"
+
+#: EventRefDrawer.cs:77
+msgid "Search"
+msgstr "搜寻"
+
+#: EventRefDrawer.cs:90
+msgid "Create New Event in Studio"
+msgstr "在 Studio 里创建新事件"
+
+#: EventRefDrawer.cs:103
+msgid "Open In Browser"
+msgstr "在浏览器里打开"
+
+#: EventRefDrawer.cs:146
+msgid "Copy To Clipboard"
+msgstr "复制到剪贴板"
+
+#: EventRefDrawer.cs:166 SettingsEditor.cs:49
+msgid "Stream"
+msgstr "流"
+
+#: EventRefDrawer.cs:185
+#, csharp-format
+msgid "Moved to {0}"
+msgstr "移动到 {0}"
+
+#: EventRefDrawer.cs:187
+#, csharp-format
+msgid ""
+"This event has been moved in FMOD Studio.\n"
+"You can click the repair button to update the path to the new location, or run the <b>{0}</b> command to scan your project for similar issues and fix them all."
+msgstr ""
+"此事件在 FMOD Studio 中已被移动。\n"
+"您可以点击修复按钮来更新路径到新位置，或者运行 <b>{0}</b> 命令来扫描您的项目中类似的问题并全部修复。"
+
+#: EventRefDrawer.cs:189
+#, csharp-format
+msgid "Repair: set path to {0}"
+msgstr "修复：将路径设置为 {0}"
+
+#: EventRefDrawer.cs:287
+msgid "GUID doesn't match path"
+msgstr "GUID 与路径不匹配"
+
+#: EventRefDrawer.cs:289
+#, csharp-format
+msgid ""
+"The GUID on this EventReference doesn't match the path.\n"
+"You can click the repair button to update the GUID to match the path, or run the <b>{0}</b> command to scan your project for similar issues and fix them all."
+msgstr ""
+"此 EventReference 上的 GUID 与路径不匹配。\n"
+"您可以点击修复按钮来更新 GUID 以匹配路径，或者运行 <b>{0}</b> 命令扫描项目中的类似问题并全部修复。"
+
+#: EventRefDrawer.cs:291
+#, csharp-format
+msgid "Repair: set GUID to {0}"
+msgstr "修复：将GUID设置为 {0}"
+
+#: EventRefDrawer.cs:303
+msgid "Path doesn't match GUID"
+msgstr "路径与 GUID 不匹配"
+
+#: EventRefDrawer.cs:305
+#, csharp-format
+msgid ""
+"The path on this EventReference doesn't match the GUID.\n"
+"You can click the repair button to update the path to match the GUID, or run the <b>{0}</b> command to scan your project for similar issues and fix them all."
+msgstr ""
+"此 EventReference 上的路径与 GUID 不匹配。\n"
+"您可以点击修复按钮来更新路径以匹配 GUID，或者运行 <b>{0}</b> 命令扫描项目中的类似问题并全部修复。"
+
+#: EventRefDrawer.cs:307
+#, csharp-format
+msgid "Repair: set path to '{0}'"
+msgstr "修复：将路径设置为 '{0}'"
+
+#: EventRefDrawer.cs:411
+#, csharp-format
+msgid ""
+"This field has the <b>[EventRef]</b> attribute, which is obsolete.\n"
+"To resolve this issue:\n"
+"* Add a field of type <b>EventReference</b> to this class\n"
+"Set the <b>MigrateTo</b> property on the <b>[EventRef]</b> attribute: <b>[EventRef(MigrateTo=\"<fieldname>\")]</b>\n"
+" Run the <b>{0}</b> command to automatically migrate values from this field to the <b>EventReference</b> field"
+msgstr ""
+"此字段具有 <b>[EventRef]</b> 属性，该属性已过时。\n"
+"要解决此问题：\n"
+"* 在此类中添加一个类型为 <b>EventReference</b> 的字段\n"
+"* 在 <b>[EventRef]</b> 属性上设置 <b>MigrateTo</b> 属性：<b>[EventRef(MigrateTo=\"<fieldname>\")]</b>\n"
+" 运行 <b>{0}</b> 命令以自动将此字段中的值迁移到 <b>EventReference</b> 字段"
+
+#: EventRefDrawer.cs:459
+msgid "<b>[EventRef]</b> is obsolete - use the <b>EventReference</b> type instead."
+msgstr "<b>[EventRef]</b> 已过时 - 请改用 <b>EventReference</b> 类型。"
+
+#: EventRefDrawer.cs:481
+#, csharp-format
+msgid "Migration target <b>{0}</b> is missing"
+msgstr "迁移目标 <b>{0}</b> 丢失"
+
+#: EventReferenceUpdater.cs:27
+msgid "Click Scan to search your project for obsolete event references."
+msgstr "点击扫描搜索该项目中的过时事件引用。"
+
+#: EventReferenceUpdater.cs:66
+msgid "Asset"
+msgstr "资产"
+
+#: EventReferenceUpdater.cs:67
+msgid "Component Type"
+msgstr "组件类型"
+
+#: EventReferenceUpdater.cs:68
+msgid "Game Object"
+msgstr "游戏对象"
+
+#: EventReferenceUpdater.cs:72
+#, csharp-format
+msgid "Execute {0} Selected Tasks"
+msgstr "执行 {0} 个已选择的任务"
+
+#: EventReferenceUpdater.cs:78
+msgid "FMOD Event Reference Updater"
+msgstr "FMOD 事件引用更新器"
+
+#: EventReferenceUpdater.cs:112
+msgid "No required tasks found. Event references are up to date."
+msgstr "未找到所需任务。事件引用已是最新。"
+
+#: EventReferenceUpdater.cs:120
+msgid "Finished executing tasks. New tasks may now be required. Please re-scan your project."
+msgstr "任务执行完毕。现在可能会有新的任务需要被执行。请重新扫描您的项目。。"
+
+#: EventReferenceUpdater.cs:124
+msgid "Finished scanning. Please execute the tasks above."
+msgstr "扫描完成。请执行上方的任务。"
+
+#: EventReferenceUpdater.cs:129
+msgid "Cancelled."
+msgstr "已取消。"
+
+#: EventReferenceUpdater.cs:148
+#, csharp-format
+msgid ""
+"Executing these {0} tasks will change {1} prefabs and {2} scenes on disk.\n"
+"\n"
+"Please ensure you have committed any outstanding changes to source control before continuing!"
+msgstr ""
+"执行这 {0} 项任务将更改磁盘上的 {1} 个预制体和 {2} 个场景。\n"
+"\n"
+"在继续之前，请确保您已提交任何未完成的更改到版本控制中！"
+
+#: EventReferenceUpdater.cs:151
+msgid "Confirm Bulk Changes"
+msgstr "确认批量更改"
+
+#: EventReferenceUpdater.cs:224 EventReferenceUpdater.cs:252
+#: EventReferenceUpdater.cs:294
+#, csharp-format
+msgid "Searching {0}"
+msgstr "正在搜索 {0}"
+
+#: EventReferenceUpdater.cs:739
+#, csharp-format
+msgid "Executing: {0}"
+msgstr "执行 {0} 中"
+
+#: EventReferenceUpdater.cs:1011 EventReferenceUpdater.cs:1125
+#, csharp-format
+msgid "Clear <b>'{0}'</b> from the <b>{1}</b> field"
+msgstr "从 <b>{1}</b> 字段中清除 <b>‘{0}’</b>"
+
+#: EventReferenceUpdater.cs:1026 EventReferenceUpdater.cs:1140
+#: EventReferenceUpdater.cs:1223
+#, csharp-format
+msgid "Move <b>'{0}'</b> from <b>{1}</b> to <b>{2}</b>"
+msgstr "将 <b>‘{0}’</b> 从 <b>{1}</b> 移动到 <b>{2}</b>"
+
+#: EventReferenceUpdater.cs:1051
+#, csharp-format
+msgid "Move prefab override <b>'{0}'</b> from <b>{1}</b> to <b>{2}</b>"
+msgstr "将预制体覆盖 <b>‘{0}’</b> 从 <b>{1}</b> 移动到 <b>{2}</b>"
+
+#: EventReferenceUpdater.cs:1166
+#, csharp-format
+msgid "Remove field <b>{0}</b>"
+msgstr "移除字段 <b>{0}</b>"
+
+#: EventReferenceUpdater.cs:1177
+#, csharp-format
+msgid ""
+"The {0} field on component {1} has value '{2}', but the corresponding EventReference field already has a value.\n"
+"* Ensure no other instances of the {3} type are using the {4} field\n"
+"* Edit the definition of the {3} type and remove the {4} field"
+msgstr ""
+"组件 {1} 上的 {0} 字段的值为‘{2}’，但对应的 EventReference 字段已经有值。\n"
+"* 确保没有其他 {3} 类型的实例在使用 {4} 字段\n"
+"* 编辑 {3} 类型的定义并移除 {4} 字段"
+
+#: EventReferenceUpdater.cs:1192
+#, csharp-format
+msgid "Remove empty field <b>{0}</b>"
+msgstr "移除空字段 <b>{0}</b>"
+
+#: EventReferenceUpdater.cs:1202
+#, csharp-format
+msgid ""
+"The {0} field on component {1} is empty.\n"
+"* Ensure no other instances of the {2} type are using the {3} field\n"
+"* Edit the definition of the {2} type and remove the {3} field"
+msgstr ""
+"组件 {1} 上的 {0} 字段为空。\n"
+"* 确保没有其他 {2} 类型的实例在使用 {3} 字段\n"
+"* 编辑 {2} 类型的定义并移除 {3} 字段"
+
+#: EventReferenceUpdater.cs:1286
+#, csharp-format
+msgid "Add an <b>EventReference</b> field named <b>{0}</b> to hold <b>'{1}'</b> from <b>{2}</b>"
+msgstr "添加一个名为 <b>{0}</b> 的 <b>EventReference</b> 字段，用于保存来源于 <b>{2}</b> 的 <b>‘{1}’</b>"
+
+#: EventReferenceUpdater.cs:1291
+#, csharp-format
+msgid "Add an <b>EventReference</b> field to hold <b>'{0}'</b> from <b>{1}</b>"
+msgstr "添加一个 <b>EventReference</b> 字段，用于保存来源于 <b>{1}</b> 的 <b>‘{0}’</b>"
+
+#: EventReferenceUpdater.cs:1305
+#, csharp-format
+msgid "the definition of the {0} type"
+msgstr "{0} 类型的定义"
+
+#: EventReferenceUpdater.cs:1315
+#, csharp-format
+msgid ""
+"The {0} field on component {1} has an [EventRef(MigrateTo=\"{2}\")] attribute, but the {2} field doesn't exist.\n"
+"* Edit {3} and add an EventReference field named {2}:\n"
+"    public EventReference {2};\n"
+"* Re-scan your project"
+msgstr ""
+"组件 {1} 上的 {0} 字段具有 [EventRef(MigrateTo=\"{2}\")] 属性，但 {2} 字段不存在。\n"
+"* 编辑 {3} 并添加一个名为 {2} 的 EventReference 字段：\n"
+"    public EventReference {2};\n"
+"* 重新扫描您的项目"
+
+#: EventReferenceUpdater.cs:1321
+#, csharp-format
+msgid ""
+"The {0} field on component {1} has an [EventRef] attribute with no migration target specified.\n"
+"* Edit {2} and add an EventReference field:\n"
+"    public EventReference <fieldname>;\n"
+"* Change the [EventRef] attribute on the {3} field to:\n"
+"    [EventRef(MigrateTo=\"<fieldname>\")]\n"
+"* Re-scan your project."
+msgstr ""
+"组件 {1} 上的 {0} 字段具有 [EventRef] 属性，但未指定迁移目标。\n"
+"* 编辑 {2} 并添加一个 EventReference 字段：\n"
+"    public EventReference <字段名>;\n"
+"* 将 {3} 字段上的 [EventRef] 属性更改为：\n"
+" [EventRef(MigrateTo=\"<fieldname>\")]\n"
+"* 重新扫描您的项目。"
+
+#: EventReferenceUpdater.cs:1342
+#, csharp-format
+msgid "Change the path on field <b>{0}</b> from <b>'{1}'</b> to <b>'{2}'</b> (to match GUID <b>{3}</b>)"
+msgstr "将字段 <b>{0}</b> 的路径从 <b>‘{1}’</b> 更改为 <b>‘{2}’</b>（以匹配 GUID <b>{3}</b>）"
+
+#: EventReferenceUpdater.cs:1377
+#, csharp-format
+msgid "Change the GUID on field <b>{0}</b> from <b>{1}</b> to <b>{2}</b> (to match path <b>'{3}'</b>)"
+msgstr "将字段 <b>{0}</b> 的 GUID 从 <b>‘{1}’</b> 更改为 <b>‘{2}’</b>（以匹配 路径 <b>{3}</b>）"
+
+#: EventReferenceUpdater.cs:1414
+#, csharp-format
+msgid "Fix conflicting migration targets on fields <b>{0}</b>"
+msgstr "修复字段 <b>{0}</b> 上的迁移目标冲突"
+
+#: EventReferenceUpdater.cs:1415
+msgid "</b> and <b>"
+msgstr "</b> 以及 <b>"
+
+#: EventReferenceUpdater.cs:1419
+#, csharp-format
+msgid ""
+"Fields {0} on the {1} type have [EventRef] attributes with the same MigrateTo value.\n"
+"* Edit the definition of the {1} type and make sure all [EventRef] attributes have different MigrateTo values\n"
+"* Re-scan your project"
+msgstr ""
+"{1} 类型中的字段 {0} 具有相同的 [EventRef] 属性 MigrateTo 值。\n"
+"* 编辑 {1} 类型的定义，确保所有 [EventRef] 属性具有不同的 MigrateTo 值\n"
+"* 重新扫描您的项目"
+
+#: EventReferenceUpdater.cs:1420
+msgid " and "
+msgstr " 以及 "
+
+#: EventReferenceUpdater.cs:1997
+msgid "Open "
+msgstr "打开 "
+
+#: EventReferenceUpdater.cs:2008
+msgid "View Documentation"
+msgstr "查看文档"
+
+#: EventReferenceUpdater.cs:2028
+msgid "Execute"
+msgstr "执行"
+
+#: EventReferenceUpdater.cs:2045 FindAndReplace.cs:72
+msgid "Prefabs"
+msgstr "预制体"
+
+#: EventReferenceUpdater.cs:2046
+msgid "ScriptableObjects"
+msgstr "可编程对象"
+
+#: EventReferenceUpdater.cs:2047
+msgid "Scenes"
+msgstr "场景"
+
+#: EventReferenceUpdater.cs:2062
+msgid "Scan"
+msgstr "扫描"
+
+#: EventReferenceUpdater.cs:2133 StudioParameterTriggerEditor.cs:36
+msgid "Target"
+msgstr "目标"
+
+#: EventReferenceUpdater.cs:2140
+msgid "Task"
+msgstr "任务"
+
+#: EventReferenceUpdater.cs:2147 FileReorganizer.cs:308
+msgid "Status"
+msgstr "状态"
+
+#: EventReferenceUpdater.cs:2219
+msgid "No tasks."
+msgstr "无任务。"
+
+#: EventReferenceUpdater.cs:2392
+msgid " on"
+msgstr " 在"
+
+#: EventReferenceUpdater.cs:2424
+msgid "Manual task: "
+msgstr "手动任务：\t"
+
+#: EventReferenceUpdater.cs:2435
+msgid "Manual Changes Required"
+msgstr "需要手动更改"
+
+#: EventReferenceUpdater.cs:2439
+msgid "Complete"
+msgstr "完成"
+
+#: EventReferenceUpdater.cs:2439 FileReorganizer.cs:689
+msgid "Pending"
+msgstr "待处理"
+
+#: FileReorganizer.cs:43
+msgid "FMOD File Reorganizer"
+msgstr "FMOD 文件重组器"
+
+#: FileReorganizer.cs:68
+#, csharp-format
+msgid ""
+"{0} will be moved to\n"
+"{1}"
+msgstr ""
+"{0} 将被移动到\n"
+"{1}"
+
+#: FileReorganizer.cs:78
+#, csharp-format
+msgid "{0} will be removed if it is empty"
+msgstr "如果 {0} 为空，将被移除"
+
+#: FileReorganizer.cs:90
+#, csharp-format
+msgid ""
+"{0} is missing.\n"
+"You may need to reinstall the {1} support package from {2}."
+msgstr ""
+"未找到 {0}。\n"
+"您可能需要从 {2} 重新安装 {1} 支持包。"
+
+#: FileReorganizer.cs:102
+#, csharp-format
+msgid "{0} will be removed"
+msgstr "{0} 将被移除"
+
+#: FileReorganizer.cs:231
+msgid "There is a file missing. Select it above for more information."
+msgstr "有文件丢失。请在上方选择以获取更多信息。"
+
+#: FileReorganizer.cs:236
+#, csharp-format
+msgid "There are {0} files missing. Select them above for more information."
+msgstr "有 {0} 个文件丢失。请在上方选择以获取更多信息。"
+
+#: FileReorganizer.cs:301
+msgid "Task #"
+msgstr "任务编号"
+
+#: FileReorganizer.cs:314
+msgid "Platform"
+msgstr "平台"
+
+#: FileReorganizer.cs:321
+msgid "Description"
+msgstr "描述"
+
+#: FileReorganizer.cs:364
+msgid "Nothing to do here."
+msgstr "无需要处理的内容。"
+
+#: FileReorganizer.cs:598
+msgid "if empty"
+msgstr "如果为空"
+
+#: FileReorganizer.cs:667 StudioEventEmitterEditor.cs:342
+msgid "Remove"
+msgstr "移除"
+
+#: FileReorganizer.cs:690
+msgid "Succeeded"
+msgstr "成功"
+
+#: FileReorganizer.cs:691
+msgid "Failed"
+msgstr "失败"
+
+#: FileReorganizer.cs:692
+msgid "Missing"
+msgstr "丢失"
+
+#: FileReorganizer.cs:842
+msgid "Refresh"
+msgstr "刷新"
+
+#: FileReorganizer.cs:853
+#, csharp-format
+msgid "Processing Task {0} of {1}"
+msgstr "正在处理任务 {0}/{1}"
+
+#: FileReorganizer.cs:859
+#, csharp-format
+msgid "Process {0} Tasks"
+msgstr "处理 {0} 个任务"
+
+#: FileReorganizer.cs:1286
+#, csharp-format
+msgid "Moving {0} to {1}"
+msgstr "正在将 {0} 移动到 {1}"
+
+#: FileReorganizer.cs:1292
+#, csharp-format
+msgid ""
+"{0} was moved to\n"
+"{1}"
+msgstr ""
+"{0} 已被移动到\n"
+"{1}"
+
+#: FileReorganizer.cs:1296
+#, csharp-format
+msgid ""
+"{0} could not be moved to\n"
+"{1}: '{2}'"
+msgstr ""
+"无法将 {0} 移动到\n"
+"{1}: '{2}'"
+
+#: FileReorganizer.cs:1317 FileReorganizer.cs:1370
+#, csharp-format
+msgid "{0} was removed"
+msgstr "{0} 被移除"
+
+#: FileReorganizer.cs:1321 FileReorganizer.cs:1374
+#, csharp-format
+msgid "{0} could not be removed"
+msgstr "{0} 无法被移除"
+
+#: FileReorganizer.cs:1350
+#, csharp-format
+msgid "{0} has already been removed"
+msgstr "{0} 已被移除"
+
+#: FileReorganizer.cs:1356
+#, csharp-format
+msgid "{0} is not a valid folder"
+msgstr "{0} 不是有效的文件夹"
+
+#: FileReorganizer.cs:1362
+#, csharp-format
+msgid "{0} is not empty"
+msgstr "{0} 不为空"
+
+#: FileReorganizer.cs:1366
+#, csharp-format
+msgid "Removing empty folder {0}"
+msgstr "正在移除空文件夹 {0}"
+
+#: FindAndReplace.cs:25
+msgid "FMOD Find and Replace"
+msgstr "FMOD 查找与替换"
+
+#: FindAndReplace.cs:57 FindAndReplace.cs:129
+msgid "find"
+msgstr "查找"
+
+#: FindAndReplace.cs:58
+msgid "Find:"
+msgstr "查找 :"
+
+#: FindAndReplace.cs:66
+msgid "Replace:"
+msgstr "替换 :"
+
+#: FindAndReplace.cs:71
+msgid "Current Level"
+msgstr "当前场景"
+
+#: FindAndReplace.cs:80
+msgid "Find"
+msgstr "查找"
+
+#: FindAndReplace.cs:88 FindAndReplace.cs:105
+msgid "Finished Search"
+msgstr "查找完成"
+
+#: FindAndReplace.cs:92
+msgid "Replace"
+msgstr "替换"
+
+#: FindAndReplace.cs:109 FindAndReplace.cs:111
+msgid "Replace All"
+msgstr "替换全部"
+
+#: FindAndReplace.cs:111
+msgid "Are you sure you wish to replace all in the current hierachy?"
+msgstr "您确定要替换当前层级中的所有内容吗？"
+
+#: FindAndReplace.cs:111
+msgid "yes"
+msgstr "是"
+
+#: FindAndReplace.cs:111
+msgid "no"
+msgstr "否"
+
+#: FindAndReplace.cs:142
+msgid "Found object"
+msgstr "找到的对象"
+
+#: FindAndReplace.cs:161
+#, csharp-format
+msgid "{0} replaced"
+msgstr "已替换 {0}"
+
+#: FindAndReplace.cs:171
+msgid "Event"
+msgstr "事件"
+
+#: SettingsEditor.cs:17
+msgid "Disabled"
+msgstr "已禁用"
+
+#: SettingsEditor.cs:17
+msgid "Enabled"
+msgstr "已启用"
+
+#: SettingsEditor.cs:17
+msgid "Development Build Only"
+msgstr "仅限开发版本"
+
+#: SettingsEditor.cs:19
+msgid "TopLeft"
+msgstr "左上角"
+
+#: SettingsEditor.cs:19
+msgid "TopCenter"
+msgstr "顶部中央"
+
+#: SettingsEditor.cs:19
+msgid "TopRight"
+msgstr "右上角"
+
+#: SettingsEditor.cs:19
+msgid "BottomLeft"
+msgstr "左下角"
+
+#: SettingsEditor.cs:19
+msgid "BottomCenter"
+msgstr "底部中央"
+
+#: SettingsEditor.cs:19
+msgid "BottomRight"
+msgstr "右下角"
+
+#: SettingsEditor.cs:19
+msgid "Center"
+msgstr "中央"
+
+#: SettingsEditor.cs:19
+msgid "VR"
+msgstr "VR"
+
+#: SettingsEditor.cs:22
+msgid "Platform Default"
+msgstr "平台默认值"
+
+#: SettingsEditor.cs:33
+msgid "Stereo"
+msgstr "立体声"
+
+#: SettingsEditor.cs:34
+msgid "Surround 5.1"
+msgstr "环绕声 5.1"
+
+#: SettingsEditor.cs:35
+msgid "Surround 7.1"
+msgstr "环绕声 7.1"
+
+#: SettingsEditor.cs:36
+msgid "Surround 7.1.4"
+msgstr "环绕声 7.1.4"
+
+#: SettingsEditor.cs:47
+msgid "Mixer"
+msgstr "混音器"
+
+#: SettingsEditor.cs:48
+msgid "Feeder"
+msgstr "馈送器"
+
+#: SettingsEditor.cs:50
+msgid "File"
+msgstr "文件"
+
+#: SettingsEditor.cs:51
+msgid "Nonblocking"
+msgstr "非阻塞"
+
+#: SettingsEditor.cs:52
+msgid "Record"
+msgstr "录音"
+
+#: SettingsEditor.cs:53
+msgid "Geometry"
+msgstr "几何处理"
+
+#: SettingsEditor.cs:54
+msgid "Profiler"
+msgstr "性能分析"
+
+#: SettingsEditor.cs:55
+msgid "Studio Update"
+msgstr "Studio 更新"
+
+#: SettingsEditor.cs:56
+msgid "Studio Load Bank"
+msgstr "Studio 加载事件库"
+
+#: SettingsEditor.cs:57
+msgid "Studio Load Sample"
+msgstr "Studio 加载样本"
+
+#: SettingsEditor.cs:58
+msgid "Convolution 1"
+msgstr "卷积处理1"
+
+#: SettingsEditor.cs:59
+msgid "Convolution 2"
+msgstr "卷积处理2"
+
+#: SettingsEditor.cs:124 SettingsEditor.cs:139
+msgid "None"
+msgstr "无"
+
+#: SettingsEditor.cs:125
+msgid "Error"
+msgstr "错误"
+
+#: SettingsEditor.cs:126
+msgid "Warning"
+msgstr "警告"
+
+#: SettingsEditor.cs:127
+msgid "Log"
+msgstr "日志"
+
+#: SettingsEditor.cs:137 StudioEventEmitterEditor.cs:286
+msgid "All"
+msgstr "全部"
+
+#: SettingsEditor.cs:138
+msgid "Specified"
+msgstr "指定的事件库"
+
+#: SettingsEditor.cs:149
+msgid "Standard"
+msgstr "标准"
+
+#: SettingsEditor.cs:150
+msgid "SeparateLFE"
+msgstr "独立低频通道"
+
+#: SettingsEditor.cs:151
+msgid "Positional"
+msgstr "位置相关的"
+
+#: SettingsEditor.cs:160
+msgid "Refresh Banks"
+msgstr "刷新事件库"
+
+#: SettingsEditor.cs:163
+msgid "After 1 second"
+msgstr "1秒后"
+
+#: SettingsEditor.cs:164
+msgid "After 5 seconds"
+msgstr "5秒后"
+
+#: SettingsEditor.cs:165
+msgid "After 10 seconds"
+msgstr "10秒后"
+
+#: SettingsEditor.cs:166
+msgid "After 20 seconds"
+msgstr "20秒后"
+
+#: SettingsEditor.cs:167
+msgid "After 30 seconds"
+msgstr "30秒后"
+
+#: SettingsEditor.cs:168
+msgid "After 1 minute"
+msgstr "1分钟后"
+
+#: SettingsEditor.cs:169
+msgid "Prompt Me"
+msgstr "提示我"
+
+#: SettingsEditor.cs:170
+msgid "Manually"
+msgstr "手动"
+
+#: SettingsEditor.cs:230 SettingsEditor.cs:1507 SettingsEditor.cs:1533
+msgid "Browse"
+msgstr "浏览"
+
+#: SettingsEditor.cs:231
+msgid "Add All"
+msgstr "添加全部"
+
+#: SettingsEditor.cs:376
+msgid "Revert"
+msgstr "恢复"
+
+#: SettingsEditor.cs:381
+msgid "Revert FMOD Platform Properties"
+msgstr "恢复FMOD平台属性"
+
+#: SettingsEditor.cs:449 SettingsEditor.cs:1308
+msgid "Auto"
+msgstr "自动"
+
+#: SettingsEditor.cs:450
+msgid "No Sound"
+msgstr "无声"
+
+#: SettingsEditor.cs:451
+msgid "Wav Writer"
+msgstr "Wav 写入器"
+
+#: SettingsEditor.cs:498 SettingsEditor.cs:850
+msgid "Use Defaults"
+msgstr "使用默认值"
+
+#: SettingsEditor.cs:527
+msgid "Any"
+msgstr "任何"
+
+#: SettingsEditor.cs:567
+msgid "List is Empty"
+msgstr "列表为空"
+
+#: SettingsEditor.cs:576 StudioEventEmitterEditor.cs:283
+msgid "Add"
+msgstr "添加"
+
+#: SettingsEditor.cs:592
+msgid "Threads"
+msgstr "线程"
+
+#: SettingsEditor.cs:598
+msgid "Cores"
+msgstr "核心"
+
+#: SettingsEditor.cs:609
+msgid "Edit"
+msgstr "编辑"
+
+#: SettingsEditor.cs:703
+msgid "Delete"
+msgstr "删除"
+
+#: SettingsEditor.cs:824
+msgid "Edit Codec Channels"
+msgstr "编辑编解码通道"
+
+#: SettingsEditor.cs:914
+msgid "Output sub-directory:"
+msgstr "输出子目录:"
+
+#: SettingsEditor.cs:915
+msgid "Surround speaker mode:"
+msgstr "环绕声扬声器模式:"
+
+#: SettingsEditor.cs:1000 SettingsEditor.cs:1028
+msgid "Edit FMOD Platform Settings"
+msgstr "编辑FMOD平台属性"
+
+#: SettingsEditor.cs:1041
+msgid "Select the output sub-directory and surround speaker mode that match the project platform settings in the FMOD Studio build preferences."
+msgstr "选择与 FMOD Studio 构建首选项中的项目平台设置相匹配的输出子目录和环绕扬声器模式。"
+
+#: SettingsEditor.cs:1047
+msgid "Select the speaker mode that matches the project platform settings in the FMOD Studio build preferences."
+msgstr "选择与 FMOD Studio 构建首选项中的项目平台设置相匹配的扬声器模式。"
+
+#: SettingsEditor.cs:1106
+msgid "Reset"
+msgstr "重置"
+
+#: SettingsEditor.cs:1148
+msgid "Live Update"
+msgstr "实时更新"
+
+#: SettingsEditor.cs:1152
+msgid "Live Update Port"
+msgstr "实时更新端口"
+
+#: SettingsEditor.cs:1155
+msgid "Debug Overlay"
+msgstr "调试覆盖层"
+
+#: SettingsEditor.cs:1158
+msgid "Debug Location"
+msgstr "调试位置"
+
+#: SettingsEditor.cs:1159
+msgid "Font size"
+msgstr "字体大小"
+
+#: SettingsEditor.cs:1162
+msgid "Output Mode"
+msgstr "输出模式"
+
+#: SettingsEditor.cs:1163
+msgid "Sample Rate"
+msgstr "采样率"
+
+#: SettingsEditor.cs:1167
+msgid "Project Platform"
+msgstr "项目平台"
+
+#: SettingsEditor.cs:1171
+msgid "Speaker Mode"
+msgstr "扬声器模式"
+
+#: SettingsEditor.cs:1174
+msgid "Callback Handler"
+msgstr "回调处理程序"
+
+#: SettingsEditor.cs:1176
+msgid "Virtual Channel Count"
+msgstr "虚拟声道数量"
+
+#: SettingsEditor.cs:1177
+msgid "Real Channel Count"
+msgstr "实际声道数量"
+
+#: SettingsEditor.cs:1179
+msgid "Codec Counts"
+msgstr "编解码器计数"
+
+#: SettingsEditor.cs:1192
+msgid "Only supported on the IL2CPP scripting backend"
+msgstr "仅支持 IL2CPP 脚本后端"
+
+#: SettingsEditor.cs:1195
+msgid "Static Plugins"
+msgstr "静态插件"
+
+#: SettingsEditor.cs:1197
+msgid "Dynamic Plugins"
+msgstr "动态插件"
+
+#: SettingsEditor.cs:1199
+msgid "Thread Affinity"
+msgstr "线程亲和性"
+
+#: SettingsEditor.cs:1214
+msgid "platform group"
+msgstr "平台组"
+
+#: SettingsEditor.cs:1218
+msgid "built-in platform"
+msgstr "内置平台"
+
+#: SettingsEditor.cs:1222
+msgid "platform"
+msgstr "平台"
+
+#: SettingsEditor.cs:1232
+msgid "inheriting from Unity build target: "
+msgstr "继承自 Unity 构建目标："
+
+#: SettingsEditor.cs:1243
+msgid "inheriting from"
+msgstr "继承自"
+
+#: SettingsEditor.cs:1290
+msgid "DSP Buffer Settings"
+msgstr "DSP 缓冲设置"
+
+#: SettingsEditor.cs:1345
+msgid "DSP Buffer Length"
+msgstr "DSP 缓冲区长度"
+
+#: SettingsEditor.cs:1346
+msgid "DSP Buffer Count"
+msgstr "DSP 缓冲区数量"
+
+#: SettingsEditor.cs:1384
+msgid "FMOD Settings"
+msgstr "FMOD 设置"
+
+#: SettingsEditor.cs:1463
+msgid "Bank Import"
+msgstr "导入事件库"
+
+#: SettingsEditor.cs:1489
+msgid "Source Type"
+msgstr "源类型"
+
+#: SettingsEditor.cs:1498
+msgid "Studio Project Path"
+msgstr "项目路径"
+
+#: SettingsEditor.cs:1531
+msgid "Build Path"
+msgstr "构建路径"
+
+#: SettingsEditor.cs:1586
+msgid ""
+"\n"
+"\n"
+"For detailed setup instructions, please see the FMOD/Help/Getting Started menu item."
+msgstr ""
+"\n"
+"\n"
+"有关详细的设置说明, 请参见 FMOD/Help/Getting Started menu item."
+
+#: SettingsEditor.cs:1594 SetupWizard.cs:512
+msgid "Choose how to access your FMOD Studio content:"
+msgstr "选择如何访问您的 FMOD Studio 内容："
+
+#: SettingsEditor.cs:1597 SetupWizard.cs:527
+msgid "FMOD Studio Project"
+msgstr "FMOD Studio 项目"
+
+#: SettingsEditor.cs:1598
+msgid "If you have the complete FMOD Studio project."
+msgstr "如果您拥有完整的 FMOD Studio 项目。"
+
+#: SettingsEditor.cs:1600 SetupWizard.cs:538
+msgid "Single Platform Build"
+msgstr "单平台构建"
+
+#: SettingsEditor.cs:1601
+msgid "If you have the contents of the <b>Build</b> folder for a single platform."
+msgstr "如果您拥有单平台的<b>构建</b>文件夹内容。"
+
+#: SettingsEditor.cs:1603 SetupWizard.cs:550
+msgid "Multiple Platform Build"
+msgstr "多平台构建"
+
+#: SettingsEditor.cs:1604
+msgid "If you have the contents of the <b>Build</b> folder for multiple platforms, with each platform in its own subdirectory."
+msgstr "如果您拥有多个平台的<b>构建</b>文件夹内容，并且每个平台在其各自的子目录中。"
+
+#: SettingsEditor.cs:1687
+msgid "Streaming Asset"
+msgstr "流媒体资产"
+
+#: SettingsEditor.cs:1687
+msgid "Asset Bundle"
+msgstr "资产包"
+
+#: SettingsEditor.cs:1690
+msgid "Import Type"
+msgstr "导入类型"
+
+#: SettingsEditor.cs:1695
+msgid "FMOD Bank Import Type Changed"
+msgstr "FMOD 事件库的导入类型发生变化"
+
+#: SettingsEditor.cs:1696
+#, csharp-format
+msgid "Do you want to delete the {0} banks in {1} "
+msgstr "您确定要删除位于 {1} 的 {0} 事件库吗？"
+
+#: SettingsEditor.cs:1697
+msgid "Yes"
+msgstr "是"
+
+#: SettingsEditor.cs:1697
+msgid "No"
+msgstr "否"
+
+#: SettingsEditor.cs:1716
+msgid "FMOD Asset Sub Folder"
+msgstr "FMOD 资产子文件夹"
+
+#: SettingsEditor.cs:1721
+msgid "FMOD Bank Sub Folder"
+msgstr "FMOD 事件库子文件夹"
+
+#: SettingsEditor.cs:1735
+msgid "Event Linkage"
+msgstr "事件连接方式"
+
+#: SettingsEditor.cs:1740
+msgid "Behavior"
+msgstr "行为"
+
+#: SettingsEditor.cs:1745
+msgid "Stop Events Outside Max Distance"
+msgstr "停止超出最大距离的事件"
+
+#: SettingsEditor.cs:1752
+msgid "User Interface"
+msgstr "用户界面"
+
+#: SettingsEditor.cs:1758
+msgid "Meter Channel Ordering"
+msgstr "计量声道顺序"
+
+#: SettingsEditor.cs:1771
+msgid "Initialization"
+msgstr "初始化"
+
+#: SettingsEditor.cs:1775
+msgid "Logging Level"
+msgstr "日志级别"
+
+#: SettingsEditor.cs:1779
+msgid "Enable API Error Logging"
+msgstr "启用 API 错误日志记录"
+
+#: SettingsEditor.cs:1781
+msgid "Enable Memory Tracking"
+msgstr "启用内存追踪"
+
+#: SettingsEditor.cs:1785
+msgid "Load Banks"
+msgstr "加载事件库"
+
+#: SettingsEditor.cs:1805
+msgid "Load Bank Sample Data"
+msgstr "加载事件库样本数据"
+
+#: SettingsEditor.cs:1808
+msgid "Bank Encryption Key"
+msgstr "事件库加密密钥"
+
+#: SettingsEditor.cs:1816
+msgid "Specified Banks"
+msgstr "指定的事件库"
+
+#: SettingsEditor.cs:1830
+msgid "Locate Bank"
+msgstr "定位事件库"
+
+#: SettingsEditor.cs:1895
+msgid "Platform Specific"
+msgstr "平台设置"
+
+#: SettingsEditor.cs:2046 SettingsEditor.cs:2089
+msgid "New Group"
+msgstr "新建组"
+
+#: SettingsEditor.cs:2200
+msgid "Double-click to rename"
+msgstr "双击重命名"
+
+#: SettingsEditor.cs:2362
+msgid "Change FMOD Platform Inheritance"
+msgstr "更改 FMOD 平台继承"
+
+#: SettingsEditor.cs:2421 SettingsEditor.cs:2438
+msgid "Set FMOD Platform Inheritance"
+msgstr "设置 FMOD 平台继承"
+
+#: SettingsEditor.cs:2691
+msgid "Show Status Window"
+msgstr "显示状态窗口"
+
+#: SettingsEditor.cs:2713
+msgid "Locate Studio Project"
+msgstr "定位 Studio 项目"
+
+#: SettingsEditor.cs:2739
+msgid "Locate Build Folder"
+msgstr "定位构建文件夹"
+
+#: SetupWizard.cs:19
+msgid "Welcome"
+msgstr "欢迎"
+
+#: SetupWizard.cs:20
+msgid "Updating"
+msgstr "更新"
+
+#: SetupWizard.cs:21
+msgid "Linking"
+msgstr "连接"
+
+#: SetupWizard.cs:22
+msgid "Listener"
+msgstr "监听器"
+
+#: SetupWizard.cs:23
+msgid "Unity Audio"
+msgstr "Unity音频"
+
+#: SetupWizard.cs:24
+msgid "Unity Sources"
+msgstr "Unity音频源"
+
+#: SetupWizard.cs:25
+msgid "Source Control"
+msgstr "版本控制"
+
+#: SetupWizard.cs:26
+msgid "End"
+msgstr "完成"
+
+#: SetupWizard.cs:34
+msgid "Reorganize Plugin Files"
+msgstr "重新组织插件文件"
+
+#: SetupWizard.cs:35
+msgid "Move FMOD for Unity files to match the latest layout."
+msgstr "移动 FMOD for Unity 文件以匹配最新布局。"
+
+#: SetupWizard.cs:41
+msgid "Update Event References"
+msgstr "更新事件引用"
+
+#: SetupWizard.cs:42
+msgid "Find event references that use the obsolete [EventRef] attribute and update them to use the EventReference type."
+msgstr "查找使用过时的 [EventRef] 属性的事件引用并将它们更新为使用 EventReference 类型。"
+
+#: SetupWizard.cs:210
+msgid "FMOD Setup Wizard"
+msgstr "FMOD 设置向导"
+
+#: SetupWizard.cs:325
+msgid "Do not display this again"
+msgstr "不再显示此消息"
+
+#: SetupWizard.cs:420 SetupWizard.cs:895
+#, csharp-format
+msgid "Welcome to FMOD for Unity {0}."
+msgstr "欢迎来到 FMOD for Unity {0}。"
+
+#: SetupWizard.cs:427
+msgid "This setup wizard will help you configure your project to use FMOD."
+msgstr "此设置向导将帮助您配置项目以使用 FMOD。"
+
+#: SetupWizard.cs:463
+msgid "If you are updating an existing FMOD installation, you may need to perform some update tasks."
+msgstr "如果您正在更新已安装的FMOD，您可能需要执行一些更新任务。"
+
+#: SetupWizard.cs:467
+msgid "Choose an update task to perform:"
+msgstr "选择要执行的更新任务:"
+
+#: SetupWizard.cs:509
+msgid "In order to access your FMOD Studio content you need to locate the FMOD Studio Project or the .bank files that FMOD Studio produces, and configure a few other settings."
+msgstr "要访问您的 FMOD Studio 内容，您需要找到 FMOD Studio 项目或 FMOD Studio 生成的 .bank 文件，并配置一些其他设置。"
+
+#: SetupWizard.cs:531
+msgid "If you have the complete FMOD Studio Project."
+msgstr "如果您拥有完整的 FMOD Studio 项目。"
+
+#: SetupWizard.cs:542
+msgid "If you have the contents of the Build folder for a single platform."
+msgstr "如果您拥有单平台的构建文件夹内容。"
+
+#: SetupWizard.cs:554
+msgid "If you have the contents of the Build folder for multiple platforms, with each platform in its own subdirectory."
+msgstr "如果您拥有多平台的构建文件夹内容，且每个平台都有自己的子目录。"
+
+#: SetupWizard.cs:581
+msgid "Using the FMOD Studio project at:"
+msgstr "使用 FMOD Studio 项目于："
+
+#: SetupWizard.cs:586
+msgid "Using the multiple platform build at:"
+msgstr "使用多平台 Build 于："
+
+#: SetupWizard.cs:591
+msgid "Using the single platform build at:"
+msgstr "使用单平台构建于："
+
+#: SetupWizard.cs:607
+msgid "If you do not intend to use the built in Unity audio, you can choose to replace the Audio Listener with the FMOD Studio Listener.\n"
+msgstr "如果您不打算使用内置的 Unity 音频，您可以选择将 Audio 监听替换为 FMOD Studio 监听器。\n"
+
+#: SetupWizard.cs:608
+msgid "Adding the FMOD Studio Listener component to the main camera provides the FMOD Engine with the information it needs to play 3D events correctly."
+msgstr "将 FMOD Studio 监听器组件添加到主摄像机中，可以为 FMOD 引擎提供正确播放 3D 事件所需的信息。"
+
+#: SetupWizard.cs:631
+msgid "Replace Unity Listener(s) with FMOD Audio Listener."
+msgstr "将 Unity 监听器替换成 FMOD 监听器。"
+
+#: SetupWizard.cs:669 SetupWizard.cs:693
+msgid " Listener(s) found: "
+msgstr "监听器数量："
+
+#: SetupWizard.cs:703
+msgid "We recommend that you disable the built-in Unity audio for all platforms, to prevent it from consuming system audio resources that the FMOD Engine needs."
+msgstr "我们建议您为所有平台禁用内置的 Unity 音频，以防止它消耗 FMOD 引擎所需的系统音频资源。"
+
+#: SetupWizard.cs:715
+msgid "Built in audio has been disabled"
+msgstr "内置音频已被禁用"
+
+#: SetupWizard.cs:715
+msgid "Disable built in audio"
+msgstr "禁用内置音频"
+
+#: SetupWizard.cs:735
+msgid ""
+"Listed below are all the Unity Audio Sources found in the currently loaded scenes and the Assets directory.\n"
+"Select an Audio Source and replace it with an FMOD Studio Event Emitter."
+msgstr ""
+"以下列出了当前加载的场景和 Assets 目录中找到的所有 Unity 音频源。\n"
+"选择一个音频源并将其替换为 FMOD Studio Event Emitter 。"
+
+#: SetupWizard.cs:752
+msgid "No Unity Audio Sources have been found!"
+msgstr "未找到任何 Unity 音频源！"
+
+#: SetupWizard.cs:759
+msgid "There are a number of files produced by FMOD for Unity that should be ignored by source control. Here is an example of what you should add to your source control ignore file:"
+msgstr "FMOD for Unity 生成的一些文件应被版本控制忽略。以下是您应添加到版本控制忽略文件中的示例："
+
+#: SetupWizard.cs:802
+msgid "FMOD for Unity has been set up successfully!"
+msgstr "FMOD for Unity 已成功设置！"
+
+#: SetupWizard.cs:808
+msgid "FMOD for Unity has been partially set up."
+msgstr "FMOD for Unity 已部分设置完成。"
+
+#: SetupWizard.cs:813
+msgid ""
+"FMOD for Unity has not finished being set up.\n"
+"Linking to a project or banks is required."
+msgstr ""
+"FMOD for Unity 尚未完成设置。\n"
+"需要链接到项目或事件库。"
+
+#: SetupWizard.cs:824
+msgid " Integration Manual "
+msgstr " 集成手册 "
+
+#: SetupWizard.cs:837
+msgid " FMOD Settings "
+msgstr " FMOD 设置"
+
+#: SetupWizard.cs:863
+msgid "Back"
+msgstr "返回"
+
+#: SetupWizard.cs:873
+msgid "Start"
+msgstr "开始"
+
+#: SetupWizard.cs:875
+msgid "Next"
+msgstr "下一项"
+
+#: SetupWizard.cs:903
+msgid "To complete the installation, we need to update the FMOD native libraries.\n"
+msgstr "要完成安装，我们需要更新 FMOD 原生库。\n"
+
+#: SetupWizard.cs:904
+msgid "This involves a few steps:"
+msgstr "这包括以下几个步骤："
+
+#: SetupWizard.cs:933
+msgid "Next step:"
+msgstr "下一步:"
+
+#: SetupWizard.cs:1135
+msgid "Expand All"
+msgstr "全部展开"
+
+#: SetupWizard.cs:1140
+msgid "Collapse All"
+msgstr "全部折叠"
+
+#: StudioBankLoaderEditor.cs:18
+msgid "Load"
+msgstr "加载"
+
+#: StudioBankLoaderEditor.cs:19
+msgid "Unload"
+msgstr "卸载"
+
+#: StudioBankLoaderEditor.cs:27 StudioEventEmitterEditor.cs:122
+msgid "Preload Sample Data"
+msgstr "预加载样本数据"
+
+#: StudioBankLoaderEditor.cs:32
+msgid "Add Bank"
+msgstr "添加事件库"
+
+#: StudioBankLoaderEditor.cs:40
+msgid "Select FMOD Bank"
+msgstr "选择 FMOD 事件库"
+
+#: StudioEventEmitterEditor.cs:56
+msgid "Event Play Trigger"
+msgstr "事件播放触发器"
+
+#: StudioEventEmitterEditor.cs:57
+msgid "Event Stop Trigger"
+msgstr "事件停止触发器"
+
+#: StudioEventEmitterEditor.cs:87
+msgid "Override Attenuation"
+msgstr "覆盖衰减"
+
+#: StudioEventEmitterEditor.cs:119
+msgid "Advanced Controls"
+msgstr "高级控制"
+
+#: StudioEventEmitterEditor.cs:123
+msgid "Allow Fadeout When Stopping"
+msgstr "允许停止时淡出"
+
+#: StudioEventEmitterEditor.cs:124
+msgid "Trigger Once"
+msgstr "触发一次"
+
+#: StudioEventEmitterEditor.cs:125 StudioListenerEditor.cs:28
+msgid "Non-Rigidbody Velocity"
+msgstr "非刚体速度"
+
+#: StudioEventEmitterEditor.cs:265
+msgid "Initial Parameter Values"
+msgstr "初始参数值"
+
+#: StudioEventEmitterEditor.cs:465
+#, csharp-format
+msgid "Set to Value of '{0}'"
+msgstr "设置为 '{0}' 的值"
+
+#: StudioGlobalParameterTriggerEditor.cs:40
+msgid "Parameter Not Found"
+msgstr "未找到参数"
+
+#: StudioGlobalParameterTriggerEditor.cs:43 StudioParameterTriggerEditor.cs:63
+msgid "Trigger"
+msgstr "触发器"
+
+#: StudioGlobalParameterTriggerEditor.cs:49
+msgid "Parameter"
+msgstr "参数"
+
+#: StudioGlobalParameterTriggerEditor.cs:70
+msgid "Override Value"
+msgstr "覆盖值"
+
+#: StudioListenerEditor.cs:24
+msgid "Listener Index"
+msgstr "监听器索引"
+
+#: StudioListenerEditor.cs:27
+msgid "Attenuation Object"
+msgstr "衰减对象"

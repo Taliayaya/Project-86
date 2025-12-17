@@ -1,0 +1,195 @@
+﻿msgid ""
+msgstr ""
+"Project-Id-Version: FMOD for Unity\n"
+"POT-Creation-Date: 2024-12-20 15:03+1100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: zh_hans\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.5\n"
+"X-Poedit-KeywordsList: ;L10n.Tr\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: FmodResonanceAudioRoomEditor.cs:51
+msgid "Transparent"
+msgstr "透明"
+
+#: FmodResonanceAudioRoomEditor.cs:52
+msgid "Acoustic Ceiling Tiles"
+msgstr "吸音天花板瓦"
+
+#: FmodResonanceAudioRoomEditor.cs:53
+msgid "Brick Bare"
+msgstr "裸砖"
+
+#: FmodResonanceAudioRoomEditor.cs:54
+msgid "Brick Painted"
+msgstr "涂漆砖"
+
+#: FmodResonanceAudioRoomEditor.cs:55
+msgid "Concrete Block Coarse"
+msgstr "粗糙混凝土块"
+
+#: FmodResonanceAudioRoomEditor.cs:56
+msgid "Concrete Block Painted"
+msgstr "涂漆混凝土块"
+
+#: FmodResonanceAudioRoomEditor.cs:57
+msgid "Curtain Heavy"
+msgstr "厚重窗帘"
+
+#: FmodResonanceAudioRoomEditor.cs:58
+msgid "Fiberglass Insulation"
+msgstr "玻璃纤维绝缘"
+
+#: FmodResonanceAudioRoomEditor.cs:59
+msgid "Glass Thin"
+msgstr "薄玻璃"
+
+#: FmodResonanceAudioRoomEditor.cs:60
+msgid "Glass Thick"
+msgstr "厚玻璃"
+
+#: FmodResonanceAudioRoomEditor.cs:61
+msgid "Grass"
+msgstr "草地"
+
+#: FmodResonanceAudioRoomEditor.cs:62
+msgid "Linoleum On Concrete"
+msgstr "沥青混凝土"
+
+#: FmodResonanceAudioRoomEditor.cs:63
+msgid "Marble"
+msgstr "大理石"
+
+#: FmodResonanceAudioRoomEditor.cs:64
+msgid "Metal"
+msgstr "金属"
+
+#: FmodResonanceAudioRoomEditor.cs:65
+msgid "Parquet On Concrete"
+msgstr "混凝土上的镶木地板"
+
+#: FmodResonanceAudioRoomEditor.cs:66
+msgid "Plaster Rough"
+msgstr "粗糙石膏"
+
+#: FmodResonanceAudioRoomEditor.cs:67
+msgid "Plaster Smooth"
+msgstr "光滑石膏"
+
+#: FmodResonanceAudioRoomEditor.cs:68
+msgid "Plywood Panel"
+msgstr "胶合板"
+
+#: FmodResonanceAudioRoomEditor.cs:69
+msgid "Polished Concrete Or Tile"
+msgstr "抛光混凝土或瓷砖"
+
+#: FmodResonanceAudioRoomEditor.cs:70
+msgid "Sheetrock"
+msgstr "石膏板"
+
+#: FmodResonanceAudioRoomEditor.cs:71
+msgid "Water Or Ice Surface"
+msgstr "水面或冰面"
+
+#: FmodResonanceAudioRoomEditor.cs:72
+msgid "Wood Ceiling"
+msgstr "木质天花板"
+
+#: FmodResonanceAudioRoomEditor.cs:73
+msgid "Wood Panel"
+msgstr "木板"
+
+#: FmodResonanceAudioRoomEditor.cs:104
+msgid "Surface Materials"
+msgstr "表面材质"
+
+#: FmodResonanceAudioRoomEditor.cs:105
+msgid "Room surface materials to calculate the acoustic properties of the room."
+msgstr "用于计算房间声学属性的房间表面材质。"
+
+#: FmodResonanceAudioRoomEditor.cs:106
+msgid "Surface Material"
+msgstr "表面材质"
+
+#: FmodResonanceAudioRoomEditor.cs:107
+msgid "Surface material used to calculate the acoustic properties of the room."
+msgstr "用于计算房间声学属性的表面材质。"
+
+#: FmodResonanceAudioRoomEditor.cs:108
+msgid "Reflectivity"
+msgstr "反射率"
+
+#: FmodResonanceAudioRoomEditor.cs:109
+msgid "Adjusts what proportion of the direct sound is reflected back by each surface, after an appropriate delay. Reverberation is unaffected by this setting."
+msgstr "调整每个表面在适当延迟后反射回直接声音的比例。混响效果不受此设置影响。"
+
+#: FmodResonanceAudioRoomEditor.cs:110
+msgid "Gain (dB)"
+msgstr "增加增益（分贝）"
+
+#: FmodResonanceAudioRoomEditor.cs:111
+msgid "Applies a gain adjustment to the reverberation in the room. The default value will leave reverb unaffected."
+msgstr "对房间中的混响应用增益调整。默认值将不影响混响效果。"
+
+#: FmodResonanceAudioRoomEditor.cs:112
+msgid "Reverb Properties"
+msgstr "混响属性"
+
+#: FmodResonanceAudioRoomEditor.cs:113
+msgid "Parameters to adjust the reverb properties of the room."
+msgstr "用于调整房间混响属性的参数。"
+
+#: FmodResonanceAudioRoomEditor.cs:114
+msgid "Brightness"
+msgstr "亮度"
+
+#: FmodResonanceAudioRoomEditor.cs:115
+msgid "Adjusts the balance between high and low frequencies in the reverb."
+msgstr "调整混响中高频和低频之间的平衡。"
+
+#: FmodResonanceAudioRoomEditor.cs:116
+msgid "Time"
+msgstr "时间"
+
+#: FmodResonanceAudioRoomEditor.cs:117
+msgid "Adjusts the overall duration of the reverb by a positive scaling factor."
+msgstr "通过正比例缩放因子调整混响的整体持续时间。"
+
+#: FmodResonanceAudioRoomEditor.cs:118
+msgid "Size"
+msgstr "尺寸"
+
+#: FmodResonanceAudioRoomEditor.cs:118
+msgid "Sets the room dimensions."
+msgstr "设置房间的尺寸。"
+
+#: FmodResonanceAudioRoomEditor.cs:144
+msgid "Left Wall"
+msgstr "左墙"
+
+#: FmodResonanceAudioRoomEditor.cs:145
+msgid "Right Wall"
+msgstr "右墙"
+
+#: FmodResonanceAudioRoomEditor.cs:146
+msgid "Floor"
+msgstr "地板"
+
+#: FmodResonanceAudioRoomEditor.cs:147
+msgid "Ceiling"
+msgstr "天花板"
+
+#: FmodResonanceAudioRoomEditor.cs:148
+msgid "Back Wall"
+msgstr "后墙"
+
+#: FmodResonanceAudioRoomEditor.cs:149
+msgid "Front Wall"
+msgstr "前墙"

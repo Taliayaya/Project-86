@@ -1,6 +1,5 @@
 ﻿using System;
 using Gameplay.Mecha;
-using NUnit.Framework.Constraints;
 using ScriptableObjects.Sound;
 using Unity.Netcode;
 using UnityEngine;
@@ -235,5 +234,7 @@ namespace Gameplay.Units
             Debug.Log($"Killed {target.name}");
             killCount.Value += 1;
         }
+
+        public Module[] GetModules() => Modules;
     }
 }
