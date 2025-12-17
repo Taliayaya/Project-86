@@ -212,7 +212,7 @@ Transform:
   m_GameObject: {fileID: 1860889347541268500}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 41, y: 0, z: 249.99}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -233,13 +233,13 @@ NavMeshAgent:
   m_Speed: 10
   m_Acceleration: 25
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 90
   m_StoppingDistance: 5
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: -0.2
+  m_BaseOffset: 0.2
   m_WalkableMask: 1
   m_ObstacleAvoidanceType: 2
 --- !u!114 &-869072037724221908
@@ -254,7 +254,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2612421570
+  GlobalObjectIdHash: 137823618
   InScenePlacedSourceGlobalObjectIdHash: 8928467
   DeferredDespawnTick: 0
   Ownership: 1
@@ -466,7 +466,6 @@ MonoBehaviour:
   onTargetChanged:
     m_PersistentCalls:
       m_Calls: []
-  isRotating: 0
   _firstChild: {fileID: 1491847034594198220}
   _sensor: {fileID: 3984767451458692088}
   torqueDamageForce: 10
@@ -1886,7 +1885,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: ca9c5e66ece1ad543b65df9b72def84e,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.54
+      value: 2.25
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ca9c5e66ece1ad543b65df9b72def84e,
         type: 3}
@@ -2737,8 +2736,10 @@ MonoBehaviour:
       m_Calls: []
   mainHealthGo: {fileID: 1860889347541268500}
   mainHealthTakesDamage: 1
+  destroyMainHealthOnDeath: 0
   damageMultiplier: 1
   deathEffectPosition: {fileID: 1931211425675192169}
+  parentToDeathPosition: 1
 --- !u!4 &1783532260623593489 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6901484946921762060, guid: ca9c5e66ece1ad543b65df9b72def84e,
@@ -2824,8 +2825,10 @@ MonoBehaviour:
       m_Calls: []
   mainHealthGo: {fileID: 1860889347541268500}
   mainHealthTakesDamage: 1
+  destroyMainHealthOnDeath: 0
   damageMultiplier: 1
   deathEffectPosition: {fileID: 0}
+  parentToDeathPosition: 1
 --- !u!1 &3092878133337943732 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -1303085531697024087, guid: ca9c5e66ece1ad543b65df9b72def84e,
@@ -3390,7 +3393,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     AlignWithDesiredMoveDirection: 0
-  UseHips: 1
+  UseHips: 0
   HipsHeightStepBlend: 1
   HipsHeightStepSpeed: 0.2
   HipsAdjustStyle: 0
@@ -3457,9 +3460,9 @@ MonoBehaviour:
     G_CustomForceNOTAttach: 0
     Owner: {fileID: 2741041010774658670}
     LegBlendWeight: 1
-    LegMoveSpeedMultiplier: 0.8856864
-    LegRaiseMultiplier: 0.8707599
-    GlueThresholdMultiplier: 0.9021531
+    LegMoveSpeedMultiplier: 0.8079628
+    LegRaiseMultiplier: 0.81759214
+    GlueThresholdMultiplier: 0.8972116
     GluePointOffset: {x: 0, y: 0}
     LegStretchMultiplier: 1
     CustomLegAnimating: {fileID: 0}
@@ -3474,11 +3477,11 @@ MonoBehaviour:
     BoneFeet: {fileID: 0}
     FeetSensitivity: 0.5
     InverseHint: 0
-    AnkleToHeel: {x: 0.00000008894131, y: -0.05326791, z: -0.00000005029142}
-    AnkleToFeetEnd: {x: 0.00000009848738, y: -0.065673366, z: -0.000000029802322}
-    AnkleRight: {x: 0.45688584, y: 0, z: 0.88952535}
-    AnkleUp: {x: -0.88952523, y: 0.000000059604645, z: 0.4568858}
-    AnkleForward: {x: -0.00000008568168, y: -1, z: 0.000000059604645}
+    AnkleToHeel: {x: 0.00000001572049, y: -0.05326792, z: -5.0825477e-10}
+    AnkleToFeetEnd: {x: 0.000000022434595, y: -0.06567339, z: 0.0000000125584325}
+    AnkleRight: {x: 0.45688593, y: -0.000000104413886, z: 0.8895255}
+    AnkleUp: {x: -0.8895252, y: -0.00000009770433, z: 0.45688596}
+    AnkleForward: {x: -0.00000004705585, y: -1, z: -0.00000023841852}
     FootMiddlePosition: 0.5
     AnkleYawCorrection: 0
     _FinalIKPos: {x: 0, y: 0, z: 0}
@@ -3488,9 +3491,9 @@ MonoBehaviour:
     G_CustomForceNOTAttach: 0
     Owner: {fileID: 2741041010774658670}
     LegBlendWeight: 1
-    LegMoveSpeedMultiplier: 0.8564019
-    LegRaiseMultiplier: 0.93765354
-    GlueThresholdMultiplier: 0.9925112
+    LegMoveSpeedMultiplier: 0.91859037
+    LegRaiseMultiplier: 0.9732136
+    GlueThresholdMultiplier: 0.9833076
     GluePointOffset: {x: 0, y: 0}
     LegStretchMultiplier: 1
     CustomLegAnimating: {fileID: 0}
@@ -3505,11 +3508,11 @@ MonoBehaviour:
     BoneFeet: {fileID: 0}
     FeetSensitivity: 0.5
     InverseHint: 0
-    AnkleToHeel: {x: 0.00000007287599, y: -0.053269707, z: 0.00000008940698}
-    AnkleToFeetEnd: {x: 0.00000007310882, y: -0.065675154, z: 0.00000010058285}
-    AnkleRight: {x: -0.4568921, y: -0.00000017881393, z: 0.8895221}
-    AnkleUp: {x: -0.889522, y: 0.000000059604645, z: -0.4568921}
-    AnkleForward: {x: -0.000000059604645, y: -0.99999994, z: -0.00000029802322}
+    AnkleToHeel: {x: 0.00000001970046, y: -0.053269707, z: -0.000000026330557}
+    AnkleToFeetEnd: {x: 0.000000025351119, y: -0.06567516, z: 0.00000000941533}
+    AnkleRight: {x: -0.45689207, y: -0.000000073094725, z: 0.88952214}
+    AnkleUp: {x: -0.889522, y: 0.000000079510045, z: -0.4568921}
+    AnkleForward: {x: -0.0000001105695, y: -1.0000001, z: -0.000000059604616}
     FootMiddlePosition: 0.5
     AnkleYawCorrection: 0
     _FinalIKPos: {x: 0, y: 0, z: 0}
@@ -3519,9 +3522,9 @@ MonoBehaviour:
     G_CustomForceNOTAttach: 0
     Owner: {fileID: 2741041010774658670}
     LegBlendWeight: 1
-    LegMoveSpeedMultiplier: 0.8926244
-    LegRaiseMultiplier: 0.90024644
-    GlueThresholdMultiplier: 0.972226
+    LegMoveSpeedMultiplier: 0.8238706
+    LegRaiseMultiplier: 0.916592
+    GlueThresholdMultiplier: 0.8887432
     GluePointOffset: {x: 0, y: 0}
     LegStretchMultiplier: 1
     CustomLegAnimating: {fileID: 0}
@@ -3536,11 +3539,11 @@ MonoBehaviour:
     BoneFeet: {fileID: 0}
     FeetSensitivity: 0.5
     InverseHint: 0
-    AnkleToHeel: {x: 6.661338e-16, y: -0.05322598, z: 0.000000022351742}
-    AnkleToFeetEnd: {x: 8.2238105e-10, y: -0.065631434, z: 0.000000029802322}
-    AnkleRight: {x: -0.00000011920927, y: -0.00000023841858, z: 0.99999994}
-    AnkleUp: {x: -0.9999999, y: 0.00000005960466, z: -0.00000014901158}
-    AnkleForward: {x: -0.00000014901158, y: -0.99999994, z: -0.00000023841858}
+    AnkleToHeel: {x: 0.000000012709262, y: -0.053225964, z: -0.000000027735357}
+    AnkleToFeetEnd: {x: 0.000000012256592, y: -0.065631405, z: -0.000000029242383}
+    AnkleRight: {x: -0.000000029802308, y: 0.000000059604645, z: 0.9999999}
+    AnkleUp: {x: -0.9999999, y: -0.000000029802354, z: -0.00000005960465}
+    AnkleForward: {x: -0.00000005960463, y: -0.9999999, z: 0.00000005960466}
     FootMiddlePosition: 0.5
     AnkleYawCorrection: 0
     _FinalIKPos: {x: 0, y: 0, z: 0}
@@ -3550,9 +3553,9 @@ MonoBehaviour:
     G_CustomForceNOTAttach: 0
     Owner: {fileID: 2741041010774658670}
     LegBlendWeight: 1
-    LegMoveSpeedMultiplier: 0.90451556
-    LegRaiseMultiplier: 0.8995447
-    GlueThresholdMultiplier: 0.95977354
+    LegMoveSpeedMultiplier: 0.8725902
+    LegRaiseMultiplier: 0.97460365
+    GlueThresholdMultiplier: 0.89868075
     GluePointOffset: {x: 0, y: 0}
     LegStretchMultiplier: 1
     CustomLegAnimating: {fileID: 0}
@@ -3567,11 +3570,11 @@ MonoBehaviour:
     BoneFeet: {fileID: 0}
     FeetSensitivity: 0.5
     InverseHint: 0
-    AnkleToHeel: {x: 6.480443e-10, y: -0.053225957, z: 0.000000014901159}
-    AnkleToFeetEnd: {x: -2.87951e-10, y: -0.0656314, z: 0.000000014901159}
-    AnkleRight: {x: 0.000000503951, y: -0.00000029802322, z: -0.9999999}
-    AnkleUp: {x: 0.9999999, y: 0.00000005044663, z: 0.0000005337533}
-    AnkleForward: {x: 0.00000013985326, y: -1, z: 0.00000035762787}
+    AnkleToHeel: {x: 3.330669e-15, y: -0.05322595, z: 0.000000006897804}
+    AnkleToFeetEnd: {x: 0.0000000011920951, y: -0.06563138, z: 0.00000001322516}
+    AnkleRight: {x: 0.0000004172324, y: -0.0000003576279, z: -0.9999999}
+    AnkleUp: {x: 0.9999999, y: 0.000000029802386, z: 0.00000044703475}
+    AnkleForward: {x: 0.00000011920914, y: -1, z: 0.00000041723249}
     FootMiddlePosition: 0.5
     AnkleYawCorrection: 0
     _FinalIKPos: {x: 0, y: 0, z: 0}
@@ -3581,9 +3584,9 @@ MonoBehaviour:
     G_CustomForceNOTAttach: 0
     Owner: {fileID: 2741041010774658670}
     LegBlendWeight: 1
-    LegMoveSpeedMultiplier: 0.99956506
-    LegRaiseMultiplier: 0.80499965
-    GlueThresholdMultiplier: 0.8852718
+    LegMoveSpeedMultiplier: 0.81743336
+    LegRaiseMultiplier: 0.84803313
+    GlueThresholdMultiplier: 0.9113902
     GluePointOffset: {x: 0, y: 0}
     LegStretchMultiplier: 1
     CustomLegAnimating: {fileID: 0}
@@ -3598,11 +3601,11 @@ MonoBehaviour:
     BoneFeet: {fileID: 0}
     FeetSensitivity: 0.5
     InverseHint: 0
-    AnkleToHeel: {x: 0.00000015203841, y: -0.05326292, z: -0.000000011175869}
-    AnkleToFeetEnd: {x: 0.00000016018748, y: -0.065668344, z: -0.000000014901159}
-    AnkleRight: {x: -0.45806602, y: -0.00000023841858, z: 0.88891816}
-    AnkleUp: {x: -0.88891804, y: 0.00000020861626, z: -0.45806602}
-    AnkleForward: {x: -0.00000019744039, y: -0.9999999, z: -0.00000017881393}
+    AnkleToHeel: {x: -0.000000006458666, y: -0.053262904, z: -0.000000006053588}
+    AnkleToFeetEnd: {x: -0.000000016770446, y: -0.06566834, z: -0.000000013504166}
+    AnkleRight: {x: -0.45806587, y: -0.0000002955408, z: 0.8889184}
+    AnkleUp: {x: -0.8889181, y: 0.00000018363133, z: -0.45806596}
+    AnkleForward: {x: -0.00000017305754, y: -1, z: -0.0000003576278}
     FootMiddlePosition: 0.5
     AnkleYawCorrection: 0
     _FinalIKPos: {x: 0, y: 0, z: 0}
@@ -3612,9 +3615,9 @@ MonoBehaviour:
     G_CustomForceNOTAttach: 0
     Owner: {fileID: 2741041010774658670}
     LegBlendWeight: 1
-    LegMoveSpeedMultiplier: 0.8096845
-    LegRaiseMultiplier: 0.8528154
-    GlueThresholdMultiplier: 0.91671926
+    LegMoveSpeedMultiplier: 0.9836414
+    LegRaiseMultiplier: 0.9433305
+    GlueThresholdMultiplier: 0.9821324
     GluePointOffset: {x: 0, y: 0}
     LegStretchMultiplier: 1
     CustomLegAnimating: {fileID: 0}
@@ -3629,16 +3632,16 @@ MonoBehaviour:
     BoneFeet: {fileID: 0}
     FeetSensitivity: 0.5
     InverseHint: 0
-    AnkleToHeel: {x: 0.00000012130477, y: -0.05320081, z: -0.000000026077029}
-    AnkleToFeetEnd: {x: 0.00000012875535, y: -0.06560626, z: -0.00000001862645}
-    AnkleRight: {x: 0.45671022, y: 0.0000004172325, z: 0.8896154}
-    AnkleUp: {x: -0.8896154, y: 0.00000017881393, z: 0.45671016}
-    AnkleForward: {x: -0.000000022351742, y: -1, z: 0.0000005364418}
+    AnkleToHeel: {x: 0.0000000039022328, y: -0.05320081, z: 0.00000004936009}
+    AnkleToFeetEnd: {x: 0.0000000053832854, y: -0.06560625, z: 0.00000006798654}
+    AnkleRight: {x: 0.4567103, y: 0.00000041175582, z: 0.8896153}
+    AnkleUp: {x: -0.88961536, y: 0.00000018948184, z: 0.45671025}
+    AnkleForward: {x: -0.000000049244516, y: -0.99999976, z: 0.00000047683716}
     FootMiddlePosition: 0.5
     AnkleYawCorrection: 0
     _FinalIKPos: {x: 0, y: 0, z: 0}
   BaseLegAnimating:
-    StepMoveDuration: 0.25
+    StepMoveDuration: 0.4
     MoveToGoalCurve:
       serializedVersion: 2
       m_Curve:
@@ -3750,7 +3753,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    AllowSpeedups: 0.4
+    AllowSpeedups: 1
     AllowDetachBefore: 0.95
     PushHipsOnMoveCurve:
       serializedVersion: 2
@@ -3851,7 +3854,7 @@ MonoBehaviour:
   LegElevateHeightLimit: 0.6
   FootRotationBlend: 1
   FootAlignRapidity: 0.75
-  AnimateFeet: 1
+  AnimateFeet: 0
   LimitFeetYaw: 30
   AnimationFloorLevel: 0.001
   _Editor_Foldout_Setup_LegsList: 1
@@ -3859,8 +3862,8 @@ MonoBehaviour:
   _Editor_OnValidateTrigger: 1
   _EditorAllowAutoUpdateFeetParams: 1
   _EditorCategory: 0
-  _EditorSetupCategory: 0
-  _EditorMotionCategory: 0
+  _EditorSetupCategory: 3
+  _EditorMotionCategory: 3
   _EditorExtraCategory: 2
   setupPose:
     MainHipsPose:
@@ -3877,16 +3880,16 @@ MonoBehaviour:
   baseTransform: {fileID: 0}
   Hips: {fileID: 3778208286150064065}
   ScaleReferenceMode: 3
-  finalScaleReference: 0.082702965
+  finalScaleReference: 0.08270294
   finalScaleReferenceSqrt: 0.1
   customScaleReferenceValue: 0.5
   DelayedInitialization: 0
   Calibrate: 1
   AnimatePhysics: 0
   UnscaledDeltaTime: 0
-  DisableIfInvisible: {fileID: 0}
+  DisableIfInvisible: {fileID: 9161956631183518648}
   DisableIfInvisibleExtraRenderers: []
-  FadeOffAtDistance: 0
+  FadeOffAtDistance: 1000
   GroundMask:
     serializedVersion: 2
     m_Bits: 1
@@ -3968,6 +3971,12 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -2691636397054864146, guid: ca9c5e66ece1ad543b65df9b72def84e, type: 3}
+--- !u!137 &9161956631183518648 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -5178205149848701275, guid: ca9c5e66ece1ad543b65df9b72def84e,
+    type: 3}
+  m_PrefabInstance: {fileID: 5117952687506267421}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &9078931488260737857
 PrefabInstance:
   m_ObjectHideFlags: 0

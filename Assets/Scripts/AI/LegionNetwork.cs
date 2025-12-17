@@ -44,6 +44,7 @@ namespace AI
             serializer.SerializeValue(ref FirstSpotTime);
         }
     }
+    
     public class LegionNetwork : NetworkSingleton<LegionNetwork>
     {
         public NetworkList<SharedTarget> NetworkTargets = new NetworkList<SharedTarget>();
@@ -73,7 +74,7 @@ namespace AI
             StartCoroutine(CleaningRoutine());
         }
 
-        protected override void OnDestroy()
+        public override void OnDestroy()
         {
             base.OnDestroy();
             if (!IsOwner)

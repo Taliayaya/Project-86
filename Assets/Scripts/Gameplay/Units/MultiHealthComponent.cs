@@ -11,15 +11,18 @@ namespace Gameplay.Units
 
         public IHealth MainHealth;
         public bool mainHealthTakesDamage = true;
+        public bool destroyMainHealthOnDeath = false;
         public float damageMultiplier = 1f;
         
+        
         public Transform deathEffectPosition;
+        public bool parentToDeathPosition = true;
         
         protected bool IsDead;
 
         private void Awake()
         {
-            if (mainHealthTakesDamage)
+            if (mainHealthTakesDamage || destroyMainHealthOnDeath)
                 MainHealth = mainHealthGo.GetComponent<Unit>();
         }
 
@@ -27,6 +30,12 @@ namespace Gameplay.Units
         {
             if (!IsDead)
                 base.OnTakeDamage(damagePackage);
+            // if dead and this set, kill the main body
+            else if (destroyMainHealthOnDeath)
+            {
+                MainHealth.Die();   
+                return;
+            }
             // even if this component is dead, the main body still takes damage
             if (mainHealthTakesDamage)
             {
@@ -43,7 +52,13 @@ namespace Gameplay.Units
             IsDead = true;
             
             if (deathEffect)
-                Instantiate(deathEffect, deathEffectPosition);
+            {
+                if (parentToDeathPosition)
+                    Instantiate(deathEffect, deathEffectPosition);
+                else
+                    Instantiate(deathEffect, deathEffectPosition.position, deathEffectPosition.rotation);
+            }
+
             OnDeath?.Invoke(this);
         }
     }

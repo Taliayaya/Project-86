@@ -1,7 +1,6 @@
 using Networking.Widgets.Core.Base;
 using Networking.Widgets.Session.Widgets.Base;
 using TMPro;
-using Unity.Multiplayer.Widgets;
 using UnityEngine;
 
 namespace Networking.Widgets.Session.Widgets

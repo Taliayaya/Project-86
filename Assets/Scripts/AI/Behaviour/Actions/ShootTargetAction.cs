@@ -18,6 +18,7 @@ public partial class ShootTargetAction : Action
     [SerializeReference] public BlackboardVariable<Unit> Target;
     [SerializeReference] public BlackboardVariable<float> ShootDuration;
     [SerializeReference] public BlackboardVariable<float> AngleToShoot = new(10f);
+    [SerializeReference] public BlackboardVariable<float> DistanceShootAlways = new(10f);
     [SerializeReference] public BlackboardVariable<List<string>> Layers;
     
     [CreateProperty] WeaponModule[] _weaponModules;
@@ -49,8 +50,11 @@ public partial class ShootTargetAction : Action
     {
         RaycastHit hit;
         
+        direction.Normalize();
+        Vector3 movedPosition = position + direction * 5;
+        
         float targetDistance = Vector3.Distance(position, Target.Value.transform.position);
-        if (Physics.Raycast(position, direction.normalized, out hit, AgentSo.Value.viewDistance, _layerMask))
+        if (Physics.Raycast(movedPosition, direction, out hit, AgentSo.Value.viewDistance, _layerMask))
         {
             float errorRange = Mathf.Abs(hit.distance - targetDistance);
             Debug.Log($"{Agent.Value.name}: PerformRaycast {Target.Value.name} - hit {hit.transform.name} distance: {hit.distance} < {targetDistance} error: {errorRange}");
@@ -76,9 +80,13 @@ public partial class ShootTargetAction : Action
         
         Debug.Log($"{Agent.Value.name}: EnemyInRange {Target.Value.name} - angle: {angle} < {AngleToShoot.Value * 0.5f} distance: {distance} < {AgentSo.Value.combatDistance}");
 
-        return distance < AgentSo.Value.combatDistance
-         && angle < AngleToShoot.Value * 0.5f 
-         && PerformRaycast(turret.position, direction);
+        if (distance >= AgentSo.Value.combatDistance)
+            return false;
+
+        if (angle >= AngleToShoot.Value * 0.5f)
+            return false;
+        
+        return PerformRaycast(turret.position, direction);
     }
 }
 

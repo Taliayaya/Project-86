@@ -2,12 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Gameplay.Units;
+using Unity.Netcode;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 
-public class CannonController : MonoBehaviour
+public class CannonController : NetworkBehaviour
 {
     // A struct to pair each turret with its target
     [System.Serializable]
@@ -62,6 +63,8 @@ public class CannonController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!IsOwner)
+            return;
         // Rotate each turret towards its respective target individually
         foreach (var turretData in turrets)
         {

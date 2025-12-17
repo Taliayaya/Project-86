@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Networking;
+using Networking.Widgets.Core.Base.Session;
 using Networking.Widgets.Session.Session;
 using ScriptableObjects.Skins;
 using TMPro;
-using Unity.Multiplayer.Widgets;
 using Unity.Netcode;
 using Unity.Services.Multiplayer;
 using UnityEngine;

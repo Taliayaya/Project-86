@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Networking.Widgets.Core.Base.Session;
 using Networking.Widgets.Session.Session;
 using TMPro;
 using Unity.Multiplayer.Widgets;

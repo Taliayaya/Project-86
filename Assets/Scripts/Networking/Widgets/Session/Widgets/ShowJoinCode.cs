@@ -1,6 +1,6 @@
+using Networking.Widgets.Core.Base.Widget;
 using Networking.Widgets.Core.Base.Widget.Interfaces;
 using TMPro;
-using Unity.Multiplayer.Widgets;
 using Unity.Services.Multiplayer;
 using UnityEngine;
 using UnityEngine.EventSystems;

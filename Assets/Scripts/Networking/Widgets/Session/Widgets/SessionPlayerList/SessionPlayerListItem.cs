@@ -1,6 +1,7 @@
 using System;
 using Armament.Shared;
 using Networking.Widgets.Core.Base.ChatService.Interfaces;
+using Networking.Widgets.Core.Base.Widget;
 using Networking.Widgets.Core.Base.Widget.Interfaces;
 using Networking.Widgets.Session.Session;
 using ScriptableObjects.Skins;

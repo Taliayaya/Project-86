@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using AI.Behaviour.Types;
 using Gameplay;
 using Gameplay.Units;
@@ -10,11 +9,11 @@ using Networking;
 using ScriptableObjects.AI;
 using Unity.Netcode;
 using Unity.Behavior;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.Serialization;
-using Utility;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace AI
 {
@@ -28,6 +27,7 @@ namespace AI
         public NetworkVariable<int> unitKilledCount = new NetworkVariable<int>();
         public NetworkVariable<int> unitLostCount = new NetworkVariable<int>();
     }
+
     [RequireComponent(typeof(NetworkNavMeshAgent), typeof(AIAgent), typeof(BehaviorGraphAgent))]
     public class LegionSquad : NetworkBehaviour
     {
@@ -40,8 +40,9 @@ namespace AI
         public int Priority => squadSO.priority;
         public int Spacing => squadSO.spacing;
         public int MemberCount => isLeader ? squadInfo.members.Count : leader.squadInfo.members.Count;
-        
+
         private bool _followLeader;
+
         public bool FollowLeader
         {
             get => _followLeader;
@@ -55,6 +56,7 @@ namespace AI
         [ReadOnly] public int squadPosition;
         private Vector3 _squadPositionOffset;
         public SquadFormation Formation => isLeader ? squadInfo.formation : leader.squadInfo.formation;
+
         public Vector3 DesiredSquadPosition
         {
             get
@@ -62,15 +64,15 @@ namespace AI
                 if (isLeader)
                     return transform.position;
                 var trans = leader.transform;
-                
-                return trans.position 
+
+                return trans.position
                        + trans.right * _squadPositionOffset.x
                        + trans.forward * _squadPositionOffset.z;
             }
         }
 
         public SquadLeaderInfo squadInfo;
-        
+
         private BehaviorGraphAgent _agent;
 
         public bool IsLeader
@@ -101,10 +103,13 @@ namespace AI
             }
         }
 
-        private void Start()
+        public override void OnNetworkSpawn()
         {
-            StartCoroutine(SquadUpdate());
-            StartCoroutine(FollowLeaderCoroutine());
+            if (IsOwner)
+            {
+                StartCoroutine(SquadUpdate());
+                StartCoroutine(FollowLeaderCoroutine());
+            }
 
             IsLeader = isLeader;
         }
@@ -119,13 +124,13 @@ namespace AI
                 member.UpdatePosition();
             }
         }
-        
+
         public void RemoveMember(LegionSquad member)
         {
             if (IsLeader)
                 squadInfo.members.Remove(member);
         }
-        
+
         public bool IsInSquad => (IsLeader && squadInfo.members.Count > 0) || leader;
 
         public NetworkNavMeshAgent agent;
@@ -160,11 +165,14 @@ namespace AI
                     if (distance > squadSO.squadMergeDistance)
                         continue;
                     
+                    Debug.Log($"Mering {name} with {legion.name} at distance {distance}");
+
                     // squad are close to each other : merge them
                     var legionSquad = legion.GetComponent<LegionSquad>();
                     var newLeader = MergeSquad(legionSquad);
                     newLeader.UpdateSquadPosition();
                 }
+
                 yield return new WaitForSeconds(20);
             }
         }
@@ -178,7 +186,7 @@ namespace AI
                     yield return new WaitForSeconds(10f);
                     continue;
                 }
-                
+
                 UpdatePosition();
                 yield return new WaitForSeconds(squadSO.positionUpdateFrequency);
             }
@@ -189,7 +197,7 @@ namespace AI
             if (!IsLeader) return;
             for (var i = 0; i < squadInfo.priorityList.Length; i++)
                 squadInfo.priorityList[i] = 0;
-            
+
             foreach (var member in squadInfo.members)
             {
                 squadInfo.priorityList[member.Priority]++;
@@ -198,6 +206,7 @@ namespace AI
                 member.IsLeader = false;
                 member.UpdatePosition();
             }
+
             UpdateSquadPosition();
         }
 
@@ -213,6 +222,7 @@ namespace AI
                     highestPriority = member.Priority;
                 }
             }
+
             return highestPriorityMember;
         }
 
@@ -222,14 +232,13 @@ namespace AI
             {
                 if (squadInfo.members.Count == 0)
                     return;
-                // pass leadership to the last member in the squad
+                // pass leadership to highest priority member
                 var newLeader = GetMemberWithHighestPriority();
                 squadInfo.priorityList[newLeader.Priority]--;
-                // TODO: get the highest priority to become the new leader
                 squadInfo.members.Remove(newLeader);
-                
+
                 AssignPositionsAndLeader(newLeader);
-                
+
                 newLeader.IsLeader = true;
                 newLeader.squadPosition = 0;
                 (newLeader.squadInfo, squadInfo) = (squadInfo, newLeader.squadInfo);
@@ -274,7 +283,8 @@ namespace AI
             {
                 if (!squadToMerge.leader)
                     throw new InvalidOperationException("Non-leader squad has no leader reference");
-                Debug.Log($"[LegionSquad] {name} ask leader {squadToMerge.leader.name} to merge squad because of {squadToMerge.name}");
+                Debug.Log(
+                    $"[LegionSquad] {name} ask leader {squadToMerge.leader.name} to merge squad because of {squadToMerge.name}");
                 return MergeSquad(squadToMerge.leader);
             }
 
@@ -282,16 +292,18 @@ namespace AI
             {
                 return squadToMerge.MergeSquad(this);
             }
+
             if (Priority == squadToMerge.Priority && squadToMerge.squadInfo.members.Count > squadInfo.members.Count)
             {
                 return squadToMerge.MergeSquad(this);
             }
-            
+
             // Prevent merging with self
             if (this == squadToMerge || ReferenceEquals(squadToMerge, this))
                 return this;
-                
-            Debug.Log($"[LegionSquad] Merge {name}[{IsLeader}-{GetInstanceID()}] with {squadToMerge.name}[{squadToMerge.IsLeader}-{squadToMerge.GetInstanceID()}");
+
+            Debug.Log(
+                $"[LegionSquad] Merge {name}[{IsLeader}-{GetInstanceID()}] with {squadToMerge.name}[{squadToMerge.IsLeader}-{squadToMerge.GetInstanceID()}");
             // Add the squad leader as a member
             squadInfo.members.Add(squadToMerge);
             squadToMerge.leader = this;
@@ -299,14 +311,14 @@ namespace AI
             // Add all its members
             squadInfo.members.AddRange(squadToMerge.squadInfo.members);
             squadToMerge.squadInfo.members.Clear();
-            
+
             AssignPositionsAndLeader(this);
             // breakpoint Unity
-            
+
             return this;
         }
-        
-        
+
+
         private void Update()
         {
             // UpdateSquadPosition();
@@ -333,8 +345,9 @@ namespace AI
                 UpdatePosition(DesiredSquadPosition);
             }
         }
-        
-        public float DistanceFromLeader => !IsLeader ? Vector3.Distance(transform.position, leader.transform.position) : 0;
+
+        public float DistanceFromLeader =>
+            !IsLeader ? Vector3.Distance(transform.position, leader.transform.position) : 0;
 
         public override void OnDestroy()
         {
@@ -344,7 +357,7 @@ namespace AI
 
         public void GetMorale()
         {
-            
+
         }
 
         public bool CanChase()
@@ -354,13 +367,13 @@ namespace AI
             return squadSO.canChaseEnemies && squadPosition > squadSO.minUnitBeforeChase;
         }
 
-        
-        [Header("Debug")]
-        public float leaderCrownHeight = 3f;
+#if UNITY_EDITOR
+        [Header("Debug")] public float leaderCrownHeight = 3f;
         private void OnDrawGizmos()
         {
             Handles.color = Color.grey;
-            Handles.DrawWireArc(transform.position, Vector3.up, Vector3.forward, 360, (float)squadSO.squadMergeDistance / 2);
+            Handles.DrawWireArc(transform.position, Vector3.up, Vector3.forward, 360,
+                (float)squadSO.squadMergeDistance / 2);
 
             if (IsLeader)
             {
@@ -376,5 +389,6 @@ namespace AI
                 Gizmos.DrawWireSphere(DesiredSquadPosition, 0.5f);
             }
         }
+#endif
     }
 }

@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using Gameplay;
 using Networking.Widgets.Core.Base;
+using Networking.Widgets.Core.Base.Session;
 using Networking.Widgets.Session.Session;
 using Networking.Widgets.Session.Widgets.Base;
-using Unity.Multiplayer.Widgets;
+using Unity.Services.Lobbies;
 using UnityEditor;
 
 namespace Networking
@@ -17,15 +19,18 @@ using UnityEngine;
 
 public class ConnectionManager : EnterSessionBase
 {
+    #if UNITY_EDITOR
     private string _profileName;
     private string _sessionName = "Test";
+    private string _joinCode = "";
     private int _maxPlayers = 10;
     private ConnectionState _state = ConnectionState.Disconnected;
     private ISession _session;
     private NetworkManager m_NetworkManager;
     [SerializeField] private bool autoConnect = true;
 
-    private enum ConnectionState
+    public ConnectionState State { get; private set; } = ConnectionState.Disconnected;
+    public enum ConnectionState
     {
         Disconnected,
         Connecting,
@@ -38,15 +43,18 @@ public class ConnectionManager : EnterSessionBase
         m_NetworkManager.OnClientConnectedCallback += OnClientConnectedCallback;
         m_NetworkManager.OnSessionOwnerPromoted += OnSessionOwnerPromoted;
         _profileName = $"Player-{UnityEngine.Random.Range(0, 1000)}";
-        _sessionName = GUID.Generate().ToString();
+        _sessionName = $"Session{DateTime.Now.Minute}";
         EventManager.AddListener(Constants.TypedEvents.Session.SessionJoined, OnSessionJoinedEvent);
         await UnityServices.InitializeAsync();
+        // auto create
+        var session = SessionManager.Instance;
 
     }
 
     private void OnSessionJoinedEvent(object arg0)
     {
         Debug.Log("Session Joined");
+        GUIUtility.systemCopyBuffer = SessionManager.Instance.ActiveSession.Code;
         var respawnManager = FindAnyObjectByType<RespawnManager>();
         var playerObject = respawnManager.SpawnPlayer(NetworkManager.Singleton.LocalClientId);
         PlayerManager.PlayerObjects[NetworkManager.Singleton.LocalClientId] = playerObject;
@@ -97,11 +105,18 @@ public class ConnectionManager : EnterSessionBase
             _sessionName = GUILayout.TextField(_sessionName);
         }
 
+        using (new GUILayout.HorizontalScope(GUILayout.Width(250)))
+        {
+            GUILayout.Label("Join Code", GUILayout.Width(100));
+            _joinCode = GUILayout.TextField(_joinCode);
+            
+        }
+
         GUI.enabled = GUI.enabled && !string.IsNullOrEmpty(_profileName) && !string.IsNullOrEmpty(_sessionName);
 
-        if (GUILayout.Button("Create or Join Session"))
+        if (GUILayout.Button("JoinSession"))
         {
-            CreateOrJoinSessionAsync();
+            CreateSessionAsync();
         }
     }
 #endif
@@ -112,7 +127,35 @@ public class ConnectionManager : EnterSessionBase
         _session?.LeaveAsync();
     }
 
-    private async Task CreateOrJoinSessionAsync()
+    public async Task CreateOrJoinSessionAsync(string sessionName, string profileName)
+    {
+        if (string.IsNullOrEmpty(profileName) || string.IsNullOrEmpty(sessionName))
+        {
+            Debug.LogError("Please provide a player and session name, to login.");
+            return;
+        }
+
+        // Only sign in if not already signed in.
+        if (!AuthenticationService.Instance.IsSignedIn)
+        {
+            AuthenticationService.Instance.SwitchProfile(profileName);
+            await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        }
+
+        // Set the session options.
+        var options = new SessionOptions()
+        {
+            PlayerProperties = await GetPlayerProperties(),
+            Name = sessionName,
+            MaxPlayers = 5
+        }.WithDistributedAuthorityNetwork();
+
+        // Join a session if it already exists, or create a new one.
+        SessionManager.Instance.ActiveSession =
+            await MultiplayerService.Instance.CreateOrJoinSessionAsync(sessionName, options);
+    }
+
+    private async Task CreateSessionAsync()
     {
         _state = ConnectionState.Connecting;
 
@@ -125,7 +168,7 @@ public class ConnectionManager : EnterSessionBase
                 await AuthenticationService.Instance.SignInAnonymouslyAsync();
 
 #if UNITY_EDITOR
-            EnterSession();
+            CreateOrJoinSessionAsync(_sessionName, _profileName);
 #endif
             // Debug.Log($"Connected to session {_session.Name} with id {_session.Id}");
 
@@ -138,21 +181,42 @@ public class ConnectionManager : EnterSessionBase
         }
     }
     
+    async Task<Dictionary<string, PlayerProperty>> GetPlayerProperties()
+    {
+        var playerName = await WidgetDependencies.Instance.AuthenticationService.GetPlayerNameAsync();
+        var playerNameProperty = new PlayerProperty(playerName, VisibilityPropertyOptions.Member);
+        var playerProperties = new Dictionary<string, PlayerProperty> { { SessionConstants.playerNamePropertyKey, playerNameProperty } };
+        return playerProperties;
+    }
+    
     [SerializeField]
     bool m_AutoCreateSession = true;
 
     protected override EnterSessionData GetSessionData()
     {
-        return new EnterSessionData
+        if (_joinCode == String.Empty)
         {
-            SessionAction = SessionAction.Create,
-            SessionName = _sessionName,
-            WidgetConfiguration = WidgetConfiguration,
-            AdditionalOptions = new AdditionalOptions
+            return new EnterSessionData
             {
-                AutoCreateSession = m_AutoCreateSession,
-            }
-        };
+                SessionAction = SessionAction.Create,
+                SessionName = _sessionName,
+                WidgetConfiguration = WidgetConfiguration,
+                AdditionalOptions = new AdditionalOptions
+                {
+                    AutoCreateSession = m_AutoCreateSession,
+                }
+            };
+        }
+        else
+        {
+            return new EnterSessionData
+            {
+                SessionAction = SessionAction.JoinByCode,
+                WidgetConfiguration = WidgetConfiguration,
+                JoinCode = _joinCode
+            };
+        }
     }
+#endif
 }
 }

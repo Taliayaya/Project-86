@@ -19,6 +19,7 @@ namespace Unity.Behavior
         [SerializeReference] public BlackboardVariable<GameObject> Agent;
         [SerializeReference] public BlackboardVariable<List<GameObject>> Waypoints;
         [SerializeReference] public BlackboardVariable<AgentSO> AgentSo = new(null);
+        [SerializeReference] public BlackboardVariable<Vector3> Goal;
         [SerializeReference] public BlackboardVariable<float> WaypointWaitTime = new(1.0f);
         [SerializeReference] public BlackboardVariable<float> DistanceThreshold = new(0.2f);
 
@@ -39,14 +40,16 @@ namespace Unity.Behavior
         {
             if (Agent.Value == null)
             {
-                LogFailure("No agent assigned.");
+                LogFailure("No agent assigned.", true);
                 return Status.Failure;
             }
 
             if (Waypoints.Value == null || Waypoints.Value.Count == 0)
             {
                 Waypoints.Value = GameObject.FindGameObjectsWithTag("PatrolPoint").ToList();
-                LogFailure("No waypoints to patrol assigned.");
+                if (Waypoints.Value.Count > 0)
+                    return OnStart();
+                LogFailure("No waypoints to patrol assigned.", true);
                 return Status.Failure;
             }
 
@@ -63,6 +66,7 @@ namespace Unity.Behavior
         {
             if (Agent.Value == null || Waypoints.Value == null)
             {
+                LogFailure("Agent or Waypoints null.", true);
                 return Status.Failure;
             }
 
@@ -168,9 +172,18 @@ namespace Unity.Behavior
 
         private void MoveToNextWaypoint()
         {
-            m_CurrentPatrolPoint = (m_CurrentPatrolPoint + 1) % Waypoints.Value.Count;
+            if (Goal.Value != Vector3.zero)
+            {
+                m_CurrentTarget = Goal.Value;
+                Goal.Value = Vector3.zero;
+            }
+            else
+            {
+                m_CurrentPatrolPoint = (m_CurrentPatrolPoint + 1) % Waypoints.Value.Count;
 
-            m_CurrentTarget = Waypoints.Value[m_CurrentPatrolPoint].transform.position;
+                m_CurrentTarget = Waypoints.Value[m_CurrentPatrolPoint].transform.position;
+            }
+
             if (m_NetworkNavMeshAgent != null)
             {
                 m_NetworkNavMeshAgent.SetDestination(m_CurrentTarget);

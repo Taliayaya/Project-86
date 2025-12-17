@@ -51,7 +51,7 @@ namespace Armament.Shared
 			EventManager.AddListener(nameof(MenuEvents.Instance.OnChangedArmament), ChangedArmament);
 		}
 
-		private void OnDestroy()
+		public override void OnDestroy()
 		{
 			if (MenuEvents.Instance != null)
 				MenuEvents.Instance.OnChangedArmament -= ChangedArmament;

@@ -13,11 +13,19 @@ namespace BladesCombat
         private bool _isHeld = false;
 
         public bool IsEmitting;
+        public bool IsListening;
 
         public event Action OnBothBladesToggled;
         
         protected override void OnEnabled()
         {
+            if (!IsListening)
+            {
+                _enabledLeftBlade = true;
+                _enabledRightBlade = true;
+                return;
+            }
+
             if (Manager.HasSeparateBladeControls)
             {
                 EventManager.AddListener("OnToggleLeftBlade", OnLeftToggle);
@@ -33,6 +41,12 @@ namespace BladesCombat
 
         protected override void OnDisabled()
         {
+            if (!IsListening)
+            {
+                _enabledLeftBlade = false;
+                _enabledRightBlade = false;
+                return;
+            }
             if (Manager.HasSeparateBladeControls)
             {
                 EventManager.RemoveListener("OnToggleLeftBlade", OnLeftToggle);

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using AI.BehaviourTree;
 using Gameplay.Mecha;
-using JetBrains.Annotations;
 using Networking;
 using ScriptableObjects.AI;
 using ScriptableObjects.GameParameters;
@@ -13,8 +12,10 @@ using Unity.Behavior;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
+
+#if UNITY_EDITOR
 using UnityEditor;
-using Utility;
+#endif
 
 namespace Gameplay.Units
 {
@@ -108,7 +109,9 @@ namespace Gameplay.Units
         }
     }
     
-    [RequireComponent(typeof(NavMeshAgent), typeof(BehaviourTreeRunner), typeof(AudioSource))]
+    [RequireComponent(typeof(NavMeshAgent), 
+        typeof(BehaviorGraphAgent), 
+        typeof(AudioSource))]
     public class AIAgent : Unit
     {
         private NetworkNavMeshAgent _agent;
@@ -120,14 +123,13 @@ namespace Gameplay.Units
         public OrderPriority orderPriority = OrderPriority.Low;
 
         [SerializeField] private DebugAgent debugAgent;
-        [SerializeField] [CanBeNull] private List<Transform> patrolWaypoints = null;
+        [SerializeField] private List<Transform> patrolWaypoints = null;
         [SerializeField] private bool rotateMainBodyTowardsEnemy = true;
-        [SerializeField] private bool navmeshRotate = true;
+        public bool navmeshRotate = true;
         
         public UnityEvent<Collision> onCollisionEnterEvent; 
         private WeaponModule[] _weaponModules;
         public WeaponModule[] WeaponModules => _weaponModules;
-        public BehaviourTree Tree => _behaviourTreeRunner.tree;
         public DemoParameters demoParameters;
 
         private Coroutine _rotateCoroutine;
@@ -138,7 +140,6 @@ namespace Gameplay.Units
         [SerializeField] protected UnityEvent<TargetInfo> onTargetChanged;
 
         private NetworkVariable<TargetInfo> _target = new NetworkVariable<TargetInfo>();
-        [CanBeNull]
         public TargetInfo Target
         {
             get => _target.Value;
@@ -157,7 +158,6 @@ namespace Gameplay.Units
             base.Awake();
             _agent = GetComponent<NetworkNavMeshAgent>();
             graphAgent = GetComponent<BehaviorGraphAgent>();
-            _behaviourTreeRunner = GetComponent<BehaviourTreeRunner>();
             _weaponModules = GetComponentsInChildren<WeaponModule>().ToList().FindAll(module => !module.aiIgnore).ToArray();
             _audioSource = GetComponent<AudioSource>();
             _rb = GetComponent<Rigidbody>();
@@ -166,35 +166,13 @@ namespace Gameplay.Units
                 _firstChild = transform.GetChild(0);
             if (_sensor == null)
                 _sensor = _firstChild;
-            if (name.Contains("Lowe"))
-            {
-                Health = demoParameters.loweHealth;
-                MaxHealth = demoParameters.loweHealth;
-            }
-            else if (name.Contains("Dinosauria"))
-            {
-                Health = demoParameters.dinosauriaHealth;
-                MaxHealth = demoParameters.dinosauriaHealth;
-            }
-            else
-            {
-                Health = demoParameters.ameiseHealth;
-                MaxHealth = demoParameters.ameiseHealth;
-            }
+            MaxHealth = demoParameters.GetBaseHealth(unitType);
+            Health = MaxHealth;
         }
         
         protected override void Start()
         {
             base.Start();
-            Tree.blackBoard.SetValue("navMeshAgent", _agent);
-            Tree.blackBoard.SetValue("transform", _firstChild);
-            Tree.blackBoard.SetValue("sensor", _sensor);
-            Tree.blackBoard.SetValue("agentSO", agentSo);
-            Tree.blackBoard.SetValue("weaponModules", _weaponModules);
-            Tree.blackBoard.SetValue("aiAgent", this);
-            if (patrolWaypoints != null)
-                Tree.blackBoard.SetValue("waypoints", patrolWaypoints);
-            
             // if we paused, dont start doing anything
             if (Factions.IsPaused(Faction)) return;
             
@@ -202,6 +180,8 @@ namespace Gameplay.Units
                 _behaviourTreeRunner.StartAI();
             if (rotateMainBodyTowardsEnemy)
                 RotateTowardsEnemy();
+            if (!navmeshRotate)
+                Agent.Agent.updateRotation = false;
         }
 
         public override void OnNetworkSpawn()
@@ -244,16 +224,12 @@ namespace Gameplay.Units
 
             if (Factions.IsPaused(Faction))
             {
-                if (isAutonomous)
-                    _behaviourTreeRunner.StopAI();
                 StopAllCoroutines();
                 _agent.StopRpc();
             }
             else
             {
                 _agent.ResumeRpc();
-                if (isAutonomous)
-                    _behaviourTreeRunner.StartAI();
                 if (rotateMainBodyTowardsEnemy)
                     StartCoroutine(RotateTowardsEnemyCoroutine());
             }
@@ -261,12 +237,12 @@ namespace Gameplay.Units
 
         public void AddDestinationGoal(Vector3 destination)
         {
-            Tree.blackBoard.SetValue("goal", destination);
+            graphAgent.SetVariableValue("Goal", destination);
         }
         
         public void AddDestinationGoal(Transform destination)
         {
-            Tree.blackBoard.SetValue("goal", destination.position);
+            graphAgent.SetVariableValue("Goal", destination.position);
         }
         
         public void SetDestination(Vector3 destination)
@@ -293,11 +269,18 @@ namespace Gameplay.Units
 
         #region AI Coroutines
 
-        [HideInInspector] public bool isRotating;
+        private readonly NetworkVariable<bool> _isRotating = new NetworkVariable<bool>();
+
+        public bool IsRotating
+        {
+            get => _isRotating.Value;
+            set => _isRotating.Value = value;
+        }
+
         public void RotateTowardsEnemy()
         {
             StopRotating();
-            isRotating = true;
+            IsRotating = true;
             _rotateCoroutine = StartCoroutine(RotateTowardsEnemyCoroutine());
         }
 
@@ -305,7 +288,8 @@ namespace Gameplay.Units
         {
             if (_rotateCoroutine != null)
                 StopCoroutine(_rotateCoroutine);
-            isRotating = false;
+            if (IsOwner)
+                IsRotating = false;
         }
 
         [SerializeField] private Transform _firstChild;
@@ -315,8 +299,19 @@ namespace Gameplay.Units
         {
             while (true)
             {
+                if (!IsRotating)
+                {
+                    yield return new WaitForFixedUpdate();
+                    continue;
+                }
                 Vector3 direction;
-                if (Target == null || Target?.Unit == null || Target.Visibility == TargetInfo.VisibilityStatus.Network)
+                bool hasTarget = Target != null && Target.Unit;
+                if (hasTarget 
+                    && Vector3.Distance(Target.AimPosition, 
+                                        transform.position
+                                        ) < agentSo.combatDistance)
+                    direction = (Target.AimPosition - transform.position).normalized;
+                else
                 {
                     Vector3 velocity = _agent.Agent.velocity.normalized;
                     if (velocity == Vector3.zero)
@@ -324,8 +319,7 @@ namespace Gameplay.Units
                     else
                         direction = velocity;
                 }
-                else
-                    direction = (Target.AimPosition - transform.position).normalized;
+
                 var newRotation = Quaternion.LookRotation(direction);
 
                 Quaternion current = _firstChild.localRotation;
@@ -343,7 +337,7 @@ namespace Gameplay.Units
 
         public void StartMaintainIdealDistance(Transform closestTarget)
         {
-            _maintainIdealDistanceCoroutine = StartCoroutine(MaintainIdealDistanceCoroutine(closestTarget));
+            // _maintainIdealDistanceCoroutine = StartCoroutine(MaintainIdealDistanceCoroutine(closestTarget));
         }
         public void StopMaintainIdealDistance()
         {
@@ -413,7 +407,8 @@ namespace Gameplay.Units
         }
 
         #region Debug
-
+        
+#if UNITY_EDITOR
         private void OnDrawGizmos()
         {
             //if (Application.isPlaying)
@@ -465,6 +460,7 @@ namespace Gameplay.Units
             // Gizmos.DrawLine(leftPoint, frontPoint);
 
         }
+#endif
         
         #endregion
     }

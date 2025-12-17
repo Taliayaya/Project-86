@@ -25,15 +25,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1022861142579061867}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.17686065, y: 0.7355976, z: -0.21008754, w: 0.6192574}
-  m_LocalPosition: {x: 0.264, y: -1.431, z: -0.774}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8554675994344576276}
   - {fileID: 4017910975053004378}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 31.879, y: 99.816, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &335395649581332115
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73,13 +73,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4613481365468576298}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.00000001862645, y: 0.45033872, z: 0.000000059604638, w: 0.89285785}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.26831487, y: 0.42952317, z: -0.13533232, w: 0.851588}
+  m_LocalPosition: {x: 0.219, y: 0.389, z: 0.162}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5228123012160645464}
-  m_LocalEulerAnglesHint: {x: 0, y: 53.531, z: 0}
+  m_LocalEulerAnglesHint: {x: 34.977, y: 53.531, z: 0}
 --- !u!2083052967 &8109836241969392393
 VisualEffect:
   m_ObjectHideFlags: 0
@@ -113,7 +113,7 @@ VisualEffect:
         m_Overridden: 1
     m_Vector4f:
       m_Array:
-      - m_Value: {x: 0, y: 0.591835, z: 4, w: 0.5254902}
+      - m_Value: {x: 1.7374274, y: 2.3453698, z: 3.5682647, w: 0.69411767}
         m_Name: BloodColor
         m_Overridden: 1
     m_Uint:

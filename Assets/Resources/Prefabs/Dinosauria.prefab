@@ -420,6 +420,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75e744ad229548d9922575f8bc2bdc08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   turrets:
   - turret: {fileID: 4734491908410458219}
     parent: {fileID: 3696499268130105444}
@@ -1343,8 +1344,8 @@ MonoBehaviour:
   _Editor_EnsureCount: 0
   _Editor_OnValidateTrigger: 1
   _EditorAllowAutoUpdateFeetParams: 1
-  _EditorCategory: 1
-  _EditorSetupCategory: 0
+  _EditorCategory: 0
+  _EditorSetupCategory: 3
   _EditorMotionCategory: 2
   _EditorExtraCategory: 0
   setupPose:
@@ -1369,9 +1370,9 @@ MonoBehaviour:
   Calibrate: 1
   AnimatePhysics: 0
   UnscaledDeltaTime: 0
-  DisableIfInvisible: {fileID: 0}
+  DisableIfInvisible: {fileID: 5648386029294994413}
   DisableIfInvisibleExtraRenderers: []
-  FadeOffAtDistance: 0
+  FadeOffAtDistance: 1000
   GroundMask:
     serializedVersion: 2
     m_Bits: 1
@@ -2527,8 +2528,8 @@ NavMeshAgent:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1654015168095858290}
   m_Enabled: 1
-  m_AgentTypeID: -1372625422
-  m_Radius: 8
+  m_AgentTypeID: 1479372276
+  m_Radius: 10
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -2553,7 +2554,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2774699835
+  GlobalObjectIdHash: 3002341722
   InScenePlacedSourceGlobalObjectIdHash: 3002341722
   DeferredDespawnTick: 0
   Ownership: 1
@@ -2776,7 +2777,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  isRotating: 0
   _firstChild: {fileID: 5495974026926177958}
   _sensor: {fileID: 0}
   torqueDamageForce: 0
@@ -3005,6 +3005,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4734491908410458219}
+  - component: {fileID: 5340842790082964285}
   m_Layer: 0
   m_Name: Bone.001
   m_TagString: Untagged
@@ -3038,6 +3039,42 @@ Transform:
   - {fileID: 8568937441160234182}
   m_Father: {fileID: 8603318022376488478}
   m_LocalEulerAnglesHint: {x: -90, y: -90, z: 90}
+--- !u!114 &5340842790082964285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1841896023517037898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkTransformExpanded: 0
+  AuthorityMode: 1
+  TickSyncChildren: 0
+  UseUnreliableDeltas: 1
+  SyncPositionX: 0
+  SyncPositionY: 0
+  SyncPositionZ: 0
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 0
+  SyncScaleY: 0
+  SyncScaleZ: 0
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.1
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 1
+  InLocalSpace: 0
+  SwitchTransformSpaceWhenParented: 0
+  Interpolate: 1
+  SlerpPosition: 0
 --- !u!1 &1886615196390399558
 GameObject:
   m_ObjectHideFlags: 0
@@ -3341,6 +3378,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8951626537550282793}
   - component: {fileID: 3605702921532991427}
+  - component: {fileID: 2845553534930914408}
   m_Layer: 0
   m_Name: MACHINE_GUN_02.R
   m_TagString: Untagged
@@ -3411,6 +3449,42 @@ MonoBehaviour:
         m_CallState: 2
   fieldOfViewAngle: 150
   viewDistance: 300
+--- !u!114 &2845553534930914408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2101608040924654332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkTransformExpanded: 0
+  AuthorityMode: 1
+  TickSyncChildren: 0
+  UseUnreliableDeltas: 1
+  SyncPositionX: 0
+  SyncPositionY: 0
+  SyncPositionZ: 0
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 0
+  SyncScaleY: 0
+  SyncScaleZ: 0
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.1
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 1
+  InLocalSpace: 0
+  SwitchTransformSpaceWhenParented: 0
+  Interpolate: 1
+  SlerpPosition: 0
 --- !u!1 &2117425081707066418
 GameObject:
   m_ObjectHideFlags: 0
@@ -10187,6 +10261,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8354253488568226460}
   - component: {fileID: 426679574127038773}
+  - component: {fileID: 6656821043503039616}
   m_Layer: 0
   m_Name: MACHINE_GUN_02.L
   m_TagString: Untagged
@@ -10257,6 +10332,42 @@ MonoBehaviour:
         m_CallState: 2
   fieldOfViewAngle: 150
   viewDistance: 300
+--- !u!114 &6656821043503039616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8867717184152664199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkTransformExpanded: 0
+  AuthorityMode: 1
+  TickSyncChildren: 0
+  UseUnreliableDeltas: 1
+  SyncPositionX: 0
+  SyncPositionY: 0
+  SyncPositionZ: 0
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 0
+  SyncScaleY: 0
+  SyncScaleZ: 0
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.1
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 1
+  InLocalSpace: 0
+  SwitchTransformSpaceWhenParented: 0
+  Interpolate: 1
+  SlerpPosition: 0
 --- !u!1 &8882936610921351732
 GameObject:
   m_ObjectHideFlags: 0
