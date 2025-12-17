@@ -4,13 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using AI.BehaviourTree;
 using Gameplay.Mecha;
-using JetBrains.Annotations;
+using Networking;
 using ScriptableObjects.AI;
 using ScriptableObjects.GameParameters;
 using Unity.Netcode;
+using Unity.Behavior;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace Gameplay.Units
 {
@@ -104,10 +109,12 @@ namespace Gameplay.Units
         }
     }
     
-    [RequireComponent(typeof(NavMeshAgent), typeof(BehaviourTreeRunner), typeof(AudioSource))]
+    [RequireComponent(typeof(NavMeshAgent), 
+        typeof(BehaviorGraphAgent), 
+        typeof(AudioSource))]
     public class AIAgent : Unit
     {
-        private NavMeshAgent _agent;
+        private NetworkNavMeshAgent _agent;
         private BehaviourTreeRunner _behaviourTreeRunner;
         private AudioSource _audioSource;
 
@@ -116,18 +123,23 @@ namespace Gameplay.Units
         public OrderPriority orderPriority = OrderPriority.Low;
 
         [SerializeField] private DebugAgent debugAgent;
-        [SerializeField] [CanBeNull] private List<Transform> patrolWaypoints = null;
+        [SerializeField] private List<Transform> patrolWaypoints = null;
         [SerializeField] private bool rotateMainBodyTowardsEnemy = true;
+        public bool navmeshRotate = true;
+        
+        public UnityEvent<Collision> onCollisionEnterEvent; 
         private WeaponModule[] _weaponModules;
-        public BehaviourTree Tree => _behaviourTreeRunner.tree;
+        public WeaponModule[] WeaponModules => _weaponModules;
         public DemoParameters demoParameters;
 
         private Coroutine _rotateCoroutine;
-        
+
+        // TODO: IF HP LOW, reduce MORALE
+        // do it OnTakeDamage
+        [SerializeField] private BehaviorGraphAgent graphAgent;
         [SerializeField] protected UnityEvent<TargetInfo> onTargetChanged;
 
         private NetworkVariable<TargetInfo> _target = new NetworkVariable<TargetInfo>();
-        [CanBeNull]
         public TargetInfo Target
         {
             get => _target.Value;
@@ -140,48 +152,27 @@ namespace Gameplay.Units
             }
         }
         
-        public NavMeshAgent Agent => _agent;
+        public NetworkNavMeshAgent Agent => _agent;
         public override void Awake()
         {
             base.Awake();
-            _agent = GetComponent<NavMeshAgent>();
-            _behaviourTreeRunner = GetComponent<BehaviourTreeRunner>();
+            _agent = GetComponent<NetworkNavMeshAgent>();
+            graphAgent = GetComponent<BehaviorGraphAgent>();
             _weaponModules = GetComponentsInChildren<WeaponModule>().ToList().FindAll(module => !module.aiIgnore).ToArray();
             _audioSource = GetComponent<AudioSource>();
+            _rb = GetComponent<Rigidbody>();
             
             if (_firstChild == null)
                 _firstChild = transform.GetChild(0);
             if (_sensor == null)
                 _sensor = _firstChild;
-            if (name.Contains("Lowe"))
-            {
-                Health = demoParameters.loweHealth;
-                MaxHealth = demoParameters.loweHealth;
-            }
-            else if (name.Contains("Dinosauria"))
-            {
-                Health = demoParameters.dinosauriaHealth;
-                MaxHealth = demoParameters.dinosauriaHealth;
-            }
-            else
-            {
-                Health = demoParameters.ameiseHealth;
-                MaxHealth = demoParameters.ameiseHealth;
-            }
+            MaxHealth = demoParameters.GetBaseHealth(unitType);
+            Health = MaxHealth;
         }
-
+        
         protected override void Start()
         {
             base.Start();
-            Tree.blackBoard.SetValue("navMeshAgent", _agent);
-            Tree.blackBoard.SetValue("transform", _firstChild);
-            Tree.blackBoard.SetValue("sensor", _sensor);
-            Tree.blackBoard.SetValue("agentSO", agentSo);
-            Tree.blackBoard.SetValue("weaponModules", _weaponModules);
-            Tree.blackBoard.SetValue("aiAgent", this);
-            if (patrolWaypoints != null)
-                Tree.blackBoard.SetValue("waypoints", patrolWaypoints);
-            
             // if we paused, dont start doing anything
             if (Factions.IsPaused(Faction)) return;
             
@@ -189,6 +180,8 @@ namespace Gameplay.Units
                 _behaviourTreeRunner.StartAI();
             if (rotateMainBodyTowardsEnemy)
                 RotateTowardsEnemy();
+            if (!navmeshRotate)
+                Agent.Agent.updateRotation = false;
         }
 
         public override void OnNetworkSpawn()
@@ -198,7 +191,14 @@ namespace Gameplay.Units
             if (IsOwner)
             {
                 _target.Value = null;
+                if (!navmeshRotate)
+                    Agent.UpdateRotationRpc(navmeshRotate);
             }
+        }
+
+        private void OnCollisionEnter(Collision other)
+        {
+            onCollisionEnterEvent?.Invoke(other);
         }
 
         public override void OnGainedOwnership()
@@ -224,16 +224,12 @@ namespace Gameplay.Units
 
             if (Factions.IsPaused(Faction))
             {
-                if (isAutonomous)
-                    _behaviourTreeRunner.StopAI();
                 StopAllCoroutines();
-                _agent.isStopped = true;;
+                _agent.StopRpc();
             }
             else
             {
-                _agent.isStopped = false;
-                if (isAutonomous)
-                    _behaviourTreeRunner.StartAI();
+                _agent.ResumeRpc();
                 if (rotateMainBodyTowardsEnemy)
                     StartCoroutine(RotateTowardsEnemyCoroutine());
             }
@@ -241,12 +237,12 @@ namespace Gameplay.Units
 
         public void AddDestinationGoal(Vector3 destination)
         {
-            Tree.blackBoard.SetValue("goal", destination);
+            graphAgent.SetVariableValue("Goal", destination);
         }
         
         public void AddDestinationGoal(Transform destination)
         {
-            Tree.blackBoard.SetValue("goal", destination.position);
+            graphAgent.SetVariableValue("Goal", destination.position);
         }
         
         public void SetDestination(Vector3 destination)
@@ -266,16 +262,25 @@ namespace Gameplay.Units
             SetDestination(destination.position);
         }
 
+        public void ChangeEnemyDetection(bool canDetect)
+        {
+            graphAgent.SetVariableValue("CanDetect", canDetect);
+        }
 
         #region AI Coroutines
 
-        
+        private readonly NetworkVariable<bool> _isRotating = new NetworkVariable<bool>();
 
-        [HideInInspector] public bool isRotating;
+        public bool IsRotating
+        {
+            get => _isRotating.Value;
+            set => _isRotating.Value = value;
+        }
+
         public void RotateTowardsEnemy()
         {
             StopRotating();
-            isRotating = true;
+            IsRotating = true;
             _rotateCoroutine = StartCoroutine(RotateTowardsEnemyCoroutine());
         }
 
@@ -283,7 +288,8 @@ namespace Gameplay.Units
         {
             if (_rotateCoroutine != null)
                 StopCoroutine(_rotateCoroutine);
-            isRotating = false;
+            if (IsOwner)
+                IsRotating = false;
         }
 
         [SerializeField] private Transform _firstChild;
@@ -293,17 +299,27 @@ namespace Gameplay.Units
         {
             while (true)
             {
-                Vector3 direction;
-                if (Target == null || Target?.Unit == null || Target.Visibility == TargetInfo.VisibilityStatus.Network)
+                if (!IsRotating)
                 {
-                    Vector3 velocity = _agent.velocity.normalized;
+                    yield return new WaitForFixedUpdate();
+                    continue;
+                }
+                Vector3 direction;
+                bool hasTarget = Target != null && Target.Unit;
+                if (hasTarget 
+                    && Vector3.Distance(Target.AimPosition, 
+                                        transform.position
+                                        ) < agentSo.combatDistance)
+                    direction = (Target.AimPosition - transform.position).normalized;
+                else
+                {
+                    Vector3 velocity = _agent.Agent.velocity.normalized;
                     if (velocity == Vector3.zero)
                         direction = _firstChild.forward;
                     else
                         direction = velocity;
                 }
-                else
-                    direction = (Target.AimPosition - transform.position).normalized;
+
                 var newRotation = Quaternion.LookRotation(direction);
 
                 Quaternion current = _firstChild.localRotation;
@@ -321,7 +337,7 @@ namespace Gameplay.Units
 
         public void StartMaintainIdealDistance(Transform closestTarget)
         {
-            _maintainIdealDistanceCoroutine = StartCoroutine(MaintainIdealDistanceCoroutine(closestTarget));
+            // _maintainIdealDistanceCoroutine = StartCoroutine(MaintainIdealDistanceCoroutine(closestTarget));
         }
         public void StopMaintainIdealDistance()
         {
@@ -342,12 +358,12 @@ namespace Gameplay.Units
                     if (distance > agentSo.idealDistanceFromEnemy + 3)
                     {
                         //_agent.isStopped = false;
-                        AgentIsStoppedRpc(false);
+                        _agent.ResumeRpc();
                         SetDestination(closestTarget.position);
                     }
                     else if (distance < agentSo.idealDistanceFromEnemy - 3)
                     {
-                        AgentIsStoppedRpc(true);
+                        _agent.StopRpc();
                         //_agent.isStopped = true;
                     }
                 }
@@ -357,21 +373,22 @@ namespace Gameplay.Units
             }
 
         }
-        
-        [Rpc(SendTo.ClientsAndHost)]
-        public void AgentIsStoppedRpc(bool isStopped)
-        {
-            _agent.isStopped = isStopped;
-        }
 
         #endregion
+
+        public float torqueDamageForce;
+        public override void TakeSlowEffect(DamagePackage damagePackage)
+        {
+        }
 
         public override void OnTakeDamage(DamagePackage damagePackage)
         {
             base.OnTakeDamage(damagePackage);
-            if (damagePackage.DamageAudioClip != null)
-                _audioSource.PlayOneShot(damagePackage.DamageAudioClip);
-            
+            if (damagePackage.Audio != null)
+                _audioSource.PlayOneShot(damagePackage.Audio);
+            // var direction = damagePackage.HitPoint - damagePackage.DamageSourcePosition;
+            // direction.Normalize();
+            // _rb.AddTorque(direction * torqueDamageForce, ForceMode.Impulse);
         }
 
         public override void Die()
@@ -390,7 +407,8 @@ namespace Gameplay.Units
         }
 
         #region Debug
-
+        
+#if UNITY_EDITOR
         private void OnDrawGizmos()
         {
             //if (Application.isPlaying)
@@ -418,22 +436,31 @@ namespace Gameplay.Units
 
         private void DebugGizmosSpot()
         {
-            var frontPoint = transform.position + transform.forward * agentSo.viewDistance;
+            float halfAngle = agentSo.fieldOfViewAngle / 2f;
+            Transform viewpoint = _firstChild ?? transform;
+            
+            var frontPoint = transform.position + viewpoint.forward * agentSo.viewDistance;
+            
             var rightPoint = transform.position + Quaternion.AngleAxis(agentSo.fieldOfViewAngle / 2, Vector3.up) *
-                transform.forward * agentSo.viewDistance;
+                viewpoint.forward * agentSo.viewDistance;
             var leftPoint = transform.position + Quaternion.AngleAxis(-agentSo.fieldOfViewAngle / 2, Vector3.up) *
-                transform.forward * agentSo.viewDistance;
+                viewpoint.forward * agentSo.viewDistance;
+            
             Gizmos.color = debugAgent.frontViewColor;
             Gizmos.DrawLine(transform.position, frontPoint);
             
             Gizmos.color = debugAgent.sideViewColor;
             Gizmos.DrawLine(transform.position, rightPoint);
             Gizmos.DrawLine(transform.position, leftPoint);
-            
-            Gizmos.DrawLine(rightPoint, frontPoint);
-            Gizmos.DrawLine(leftPoint, frontPoint);
+
+            Handles.color = debugAgent.sideViewColor;
+            Handles.DrawWireArc(transform.position, Vector3.up, viewpoint.forward, halfAngle, agentSo.viewDistance);
+            Handles.DrawWireArc(transform.position, Vector3.up, viewpoint.forward, -halfAngle, agentSo.viewDistance);
+            // Gizmos.DrawLine(rightPoint, frontPoint);
+            // Gizmos.DrawLine(leftPoint, frontPoint);
 
         }
+#endif
         
         #endregion
     }

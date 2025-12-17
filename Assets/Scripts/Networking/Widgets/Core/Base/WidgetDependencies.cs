@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using Networking.Widgets.Core.Base.ChatService.Interfaces;
-using Unity.Multiplayer.Widgets;
 using Unity.Services.Authentication;
 using Unity.Services.Multiplayer;
 using UnityEngine;

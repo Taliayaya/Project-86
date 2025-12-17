@@ -1,7 +1,6 @@
-using Networking.Widgets.Core.Base.Session;
 using Unity.Services.Multiplayer;
 
-namespace Unity.Multiplayer.Widgets
+namespace Networking.Widgets.Core.Base.Session
 {
     public static class SessionExtensions
     {

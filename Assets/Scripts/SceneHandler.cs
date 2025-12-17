@@ -25,6 +25,8 @@ public class SceneHandler : Singleton<SceneHandler>
     private bool _init;
     private static bool _preloaded;
     
+    public bool ChangingScene { get; private set; }
+    
 
     private void OnEnable()
     {
@@ -114,6 +116,7 @@ public class SceneHandler : Singleton<SceneHandler>
 
         if (!_isReload)
             PreviousSceneCleanup();
+        ChangingScene = true;
         if (NetworkManager.Singleton.IsHost)
         {
             LoadSceneMode mode = _isReload ? LoadSceneMode.Single : LoadSceneMode.Additive;
@@ -126,6 +129,7 @@ public class SceneHandler : Singleton<SceneHandler>
         switch (sceneEvent.SceneEventType)
         {
             case SceneEventType.Load:
+                ChangingScene = true;
                 Debug.Log($"Loading scene {sceneEvent.SceneName}");
                 WindowManager.CloseAll();
                 _loadingAsyncOperation = sceneEvent.AsyncOperation;
@@ -139,6 +143,7 @@ public class SceneHandler : Singleton<SceneHandler>
                 // only handle ourselves here
                 if (sceneEvent.ClientId != NetworkManager.Singleton.LocalClientId)
                     return;
+                ChangingScene = false;
                 if (_currentScene.HasValue && _currentScene.Value.name == sceneEvent.SceneName)
                     return;
                 Debug.Log($"Scene {sceneEvent.SceneName} loaded.");

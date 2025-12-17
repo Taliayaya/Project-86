@@ -1,5 +1,6 @@
 using Networking.Widgets.Core.Base;
 using Networking.Widgets.Core.Base.ChatService.Interfaces;
+using Networking.Widgets.Core.Base.Widget;
 using TMPro;
 using Unity.Multiplayer.Widgets;
 using UnityEngine.UI;

@@ -37,12 +37,10 @@ namespace Gameplay.Mecha
         public enum View
         {
             FirstPerson,
+            Cannon,
             ThirdPerson,
             FreeLook
         }
-
-
-
 
         #region Serialized Fields
 
@@ -65,9 +63,11 @@ namespace Gameplay.Mecha
         [SerializeField]
         private Transform modelTransform;
         public bool canRotate = true;
+        [Header("Cameras")]
         [SerializeField] private Camera zoomCamera;
         [SerializeField] private Camera tpsZoomCamera;
         [SerializeField] private CinemachineVirtualCamera vCamera;
+        [SerializeField] private CinemachineVirtualCamera gunCamera;
         [SerializeField] private CinemachineVirtualCamera tpsCamera;
         [SerializeField] private CinemachineFreeLook freeLookCamera;
         [SerializeField] private LayerMask forwardMask;
@@ -86,6 +86,7 @@ namespace Gameplay.Mecha
         private Vector2 _lastMouseUpdate;
         private Rigidbody _rigidbody;
         private bool _isGrounded;
+        public override bool IsGrounded => _isGrounded;
         private bool _isOnWall;
 
         private Vector2 _lastMovement;
@@ -124,6 +125,15 @@ namespace Gameplay.Mecha
 
         private View _cameraView = View.FirstPerson;
         private View _cameraPreviousView = View.FirstPerson;
+
+        private CinemachineVirtualCamera ActiveCamera => CameraView switch
+        {
+            View.FirstPerson => vCamera,
+            View.Cannon => gunCamera,
+            View.ThirdPerson => tpsCamera,
+            View.FreeLook => tpsCamera,
+            _ => throw new ArgumentOutOfRangeException()
+        };
         public View CameraView
         {
             get => _cameraView;
@@ -133,13 +143,16 @@ namespace Gameplay.Mecha
                     return;
                 _cameraPreviousView = _cameraView;
                 _cameraView = value;
+
                 vCamera.gameObject.SetActive(value == View.FirstPerson);
-                zoomCamera.gameObject.SetActive(value == View.FirstPerson);
+                zoomCamera.gameObject.SetActive(value is View.FirstPerson or View.Cannon);
+                
                 freeLookCamera.gameObject.SetActive(value == View.FreeLook);
+                
                 tpsCamera.gameObject.SetActive(value == View.ThirdPerson);
                 tpsZoomCamera.gameObject.SetActive(value == View.ThirdPerson);
-                
-                onCameraViewChanged?.Invoke(value == View.FirstPerson ? vCamera : tpsCamera);
+
+                onCameraViewChanged?.Invoke(ActiveCamera);
                 CameraZoom = Zoom.Default;
                 EventManager.TriggerEvent(Constants.TypedEvents.OnToggleCockpitView, value == View.FirstPerson && juggernautParameters.toggleCockpitView);
                 
@@ -160,6 +173,8 @@ namespace Gameplay.Mecha
         }
 
 
+        private float _slowStrength;
+        private float _slowDuration;
         public float MovementSpeed { get; private set; }
         private MovementMode _movementmode;
 
@@ -179,7 +194,7 @@ namespace Gameplay.Mecha
                         MovementSpeed = juggernautParameters.runSpeed;
                         break;
                     case MovementMode.Slowed:
-                        MovementSpeed = 10f; // juggernautParameters.slowSpeed
+                        MovementSpeed = _slowStrength; // juggernautParameters.slowSpeed
                         break;
                     case MovementMode.Dashing:
                         MovementSpeed = juggernautParameters.dashSpeed; // made it useful, just a small tweak
@@ -248,6 +263,7 @@ namespace Gameplay.Mecha
             Health = juggernautParameters.health;
             MaxHealth = juggernautParameters.health;
             _rigidbody = GetComponent<Rigidbody>();
+            surfaceAlignment = GetComponent<SurfaceNormalAlignment>();
             vCamera.gameObject.SetActive(IsOwner);
             _xRotation = modelTransform.localEulerAngles.x;
             if (!IsOwner)
@@ -363,7 +379,6 @@ namespace Gameplay.Mecha
             EventManager.TriggerEvent("RegisterMinimapTarget", transform);
             Cursor.lockState = CursorLockMode.Locked;
             groundRay = new Ray(transform.position, Vector3.down);
-            surfaceAlignment = GetComponent<SurfaceNormalAlignment>();
             surfaceAlignment.discardAngle = maxFloorAngle;
             if (allowMoveOnStart) { _movementmode = MovementMode.Walking; }
             StartCoroutine(LandingCoroutine());
@@ -400,7 +415,6 @@ namespace Gameplay.Mecha
             {
                 _rigidbody.linearDamping = groundDrag;
                 _isOnWall = Vector3.Dot(transform.up, Vector3.up) < 0.8f;
-                Debug.Log("isOnWall " + _isOnWall + " isGrappling " + _isGrappling);
                 if (_isOnWall && !_isGrappling)
                     _isGrounded = false;
             }
@@ -548,8 +562,11 @@ namespace Gameplay.Mecha
                 case View.FirstPerson:
                     CameraView = View.ThirdPerson;
                     break;
-                case View.ThirdPerson:
+                case View.Cannon:
                     CameraView = View.FirstPerson;
+                    break;
+                case View.ThirdPerson:
+                    CameraView = View.Cannon;
                     break;
                 case View.FreeLook:
                     break;
@@ -627,20 +644,17 @@ namespace Gameplay.Mecha
             if (data is not bool dashInput || !dashInput)
                 return;
 
-            Debug.Log("Dash input received!");
             StartCoroutine(DashCoroutine());
         }
         private void OnGrappleStart(object data)
         {
             _isGrappling = true;
             //surfaceAlignment.useRawNormal = true;
-            Debug.Log("Grapple Started");
         }
         private void OnGrappleStop(object data)
         {
             _isGrappling = false;
             //surfaceAlignment.useRawNormal = false;
-            Debug.Log("Grapple Ended!!!!!!!!!!");
         }
 
         public float test = 1000f;
@@ -657,7 +671,6 @@ namespace Gameplay.Mecha
                     cooldown = juggernautParameters.dashCooldown,
                     status = ModuleStatus.Active
                 });
-            Debug.Log("Dash started!");
 
             // Set the flag for dashing and block further dashes for now
             isDashing = true;
@@ -704,7 +717,6 @@ namespace Gameplay.Mecha
 
             // Reset after dash is finished
             isDashing = false;
-            Debug.Log("Dash ended!");
 
             // Ensure that we return to walking or running after the dash
             CurrentMovementMode = previousMovementMode;  // Only using walk then run since energy cost
@@ -771,6 +783,27 @@ namespace Gameplay.Mecha
         }
 
         #region Health Manager
+
+        public override void TakeSlowEffect(DamagePackage damagePackage)
+        {
+            _slowStrength = damagePackage.Slow.Strength;
+            _slowDuration = damagePackage.Slow.Duration;
+            // CurrentMovementMode = MovementMode.Slowed;
+            StopCoroutine(nameof(SlowDownCoroutine));
+            StartCoroutine(nameof(SlowDownCoroutine));
+        }
+
+        private IEnumerator SlowDownCoroutine()
+        {
+            while (_slowDuration > 0)
+            {
+                float targetSpeed = CurrentMovementMode == MovementMode.Running ? juggernautParameters.runSpeed : juggernautParameters.walkSpeed;
+
+                MovementSpeed = targetSpeed / _slowStrength;
+                yield return new WaitForFixedUpdate();
+                _slowDuration -= Time.fixedDeltaTime;
+            }
+        }
 
         public override void OnTakeDamage(DamagePackage damagePackage)
         {

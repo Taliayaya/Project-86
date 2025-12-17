@@ -4,6 +4,7 @@ using ScriptableObjects.Sound;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 namespace Gameplay.Units
 {
@@ -20,10 +21,11 @@ namespace Gameplay.Units
         Walking,
         Running,
     }
+
     [RequireComponent(typeof(Rigidbody))]
     public abstract class Unit : NetworkBehaviour, IHealth
     {
-        private Module[] _modules;
+        protected Module[] Modules;
         
         [Header("Base Unit Settings")]
         public UnitType unitType = UnitType.None;
@@ -32,11 +34,14 @@ namespace Gameplay.Units
         [Tooltip("Current heal, Max health")]
         public UnityEvent<float, float> onHealthChange;
 
-        private Rigidbody _rb;
+        protected Rigidbody _rb;
         [Tooltip("If the armor value is bigger than the bullet, damages are neglected.")]
         public float armor = 10;
         
         public UnityEvent<Unit> onUnitDeath;
+        
+        [Header("Stats")]
+        public NetworkVariable<int> killCount = new ();
         
         [Header("Sounds")]
         [SerializeField] private AudioSource engineAudioSource;
@@ -82,12 +87,12 @@ namespace Gameplay.Units
             }
         }
 
-        public virtual float Priority => 5;
+        public float Priority = 5;
 
         protected virtual void Start()
         {
-            _modules = GetComponentsInChildren<Module>();
-            foreach (var module in _modules)
+            Modules = GetComponentsInChildren<Module>();
+            foreach (var module in Modules)
             {
                 module.faction = Faction;
                 //if (!IsOwner)
@@ -135,22 +140,35 @@ namespace Gameplay.Units
                 Die();
         }
 
+        public virtual bool IsGrounded => true;
         
         public DamageResponse TakeDamage(DamagePackage damagePackage)
         {
-            if (damagePackage.IsBullet && damagePackage.DamageAmount < Armor)
+            bool isArmorDeflected = damagePackage.Type == DamageType.Bullet && damagePackage.GetDamage() < Armor;
+            if (isArmorDeflected || Health == 0)
                 return new DamageResponse() { Status = DamageResponse.DamageStatus.Deflected, DamageReceived = 0};
-            Debug.Log($"{Faction} took {damagePackage.DamageAmount} damage. Health: {Health}");
-            float remainingHealth = Mathf.Clamp(Health - damagePackage.DamageAmount, 0, MaxHealth);
+
+            if (damagePackage.Type == DamageType.EffectSlow)
+            {
+                if (!IsGrounded)
+                    return new DamageResponse() { Status = DamageResponse.DamageStatus.Deflected, DamageReceived = 0};
+                TakeSlowEffect(damagePackage);
+                return new DamageResponse() { Status = DamageResponse.DamageStatus.Taken, DamageReceived = 0};
+            }
+            
+            float remainingHealth = Mathf.Clamp(Health - damagePackage.GetDamage(), 0, MaxHealth);
+            Debug.Log($"{Faction} took {damagePackage.GetDamage()} damage. Health: {Health} Remaining health: {remainingHealth}");
             TakeDamageRpc(damagePackage);
 
-            return new DamageResponse() { Status = DamageResponse.DamageStatus.Taken, DamageReceived = damagePackage.DamageAmount, RemainingHealth = remainingHealth};
+            return new DamageResponse() { Status = DamageResponse.DamageStatus.Taken, DamageReceived = damagePackage.GetDamage(), RemainingHealth = remainingHealth};
         }
+
+        public abstract void TakeSlowEffect(DamagePackage damagePackage);
         
         [Rpc(SendTo.Owner)]
         public void TakeDamageRpc(DamagePackage damagePackage)
         {
-            Health = Mathf.Clamp(Health - damagePackage.DamageAmount, 0, MaxHealth);
+            Health = Mathf.Clamp(Health - damagePackage.GetDamage(), 0, MaxHealth);
             OnTakeDamage(damagePackage);
             if (!Alive)
                 Die();
@@ -179,22 +197,24 @@ namespace Gameplay.Units
 
 
         public bool Died { get; protected set; } = false;
+        protected bool Destroying;
 
         public virtual void Die()
         {
             if (Died) return;
             Died = true;
-            if (IsOwner)
-                GetComponent<NetworkObject>().Despawn();
+            if (IsOwner && TryGetComponent<NetworkObject>(out var networkObject))
+                networkObject.Despawn();
             Debug.Log("[Unit]: Die");
             // Despawn invokes Destroy on all clients
-            EventManager.TriggerEvent("UnitDeath", this);
+            EventManager.TriggerEvent(Constants.TypedEvents.UnitDeath, this);
             onUnitDeath.Invoke(this);
             Factions.RemoveMember(faction, this);
         }
         
         public override void OnDestroy()
         {
+            Destroying = true;
             if (!Died)
                 Die();
             base.OnDestroy();
@@ -207,6 +227,14 @@ namespace Gameplay.Units
             Factions.AddMember(faction, this);
         }
 
-        public Module[] GetModules() => _modules;
+        public virtual void OnUnitKilled(NetworkObject target, DamagePackage damagePackage, DamageResponse damageResponse)
+        {
+            if (!IsOwner)
+                return;
+            Debug.Log($"Killed {target.name}");
+            killCount.Value += 1;
+        }
+
+        public Module[] GetModules() => Modules;
     }
 }

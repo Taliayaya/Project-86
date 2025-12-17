@@ -1,3 +1,4 @@
+using System;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -30,14 +31,15 @@ public class SurfaceNormalAlignment : NetworkBehaviour
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    private void Awake()
     {
         CompileRaycasts();
     }
 
     private void CompileRaycasts()
     {
-        if (IsOwner)
+        if (true || IsOwner)
         {
             // Converts dummy raycast gameobjects into an ECS like data structure
             rayPositions = new Vector3[weightRaycasts.Length];

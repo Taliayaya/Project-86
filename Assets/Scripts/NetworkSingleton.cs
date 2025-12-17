@@ -80,7 +80,7 @@ public abstract class NetworkSingleton<T> : NetworkSingleton where T : NetworkBe
     /// </summary>
     protected virtual void OnAwake() { }
 
-    protected virtual void OnDestroy()
+    public override void OnDestroy()
     {
         if (_instance == this)
         {

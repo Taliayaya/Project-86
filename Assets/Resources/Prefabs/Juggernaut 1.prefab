@@ -918,6 +918,15 @@ MonoBehaviour:
     m_Bits: 129
   maxRaycastDistance: 500
   aiIgnore: 0
+  onFire:
+    m_PersistentCalls:
+      m_Calls: []
+  onHit:
+    m_PersistentCalls:
+      m_Calls: []
+  onKill:
+    m_PersistentCalls:
+      m_Calls: []
   gunTransform: {fileID: 8312456271205130426}
   gunAudioSource: {fileID: 6963457486633022638}
   reloadAudioSource: {fileID: 0}
@@ -930,6 +939,7 @@ MonoBehaviour:
   _animator: {fileID: 0}
   _rb: {fileID: 0}
   recoilBodyTorque: {x: 0, y: 0, z: 0}
+  accuracy: 0.9
   canFire: 1
   _currentAmmoRemaining: 0
 --- !u!82 &6963457486633022638
@@ -1209,6 +1219,15 @@ MonoBehaviour:
     m_Bits: 129
   maxRaycastDistance: 500
   aiIgnore: 0
+  onFire:
+    m_PersistentCalls:
+      m_Calls: []
+  onHit:
+    m_PersistentCalls:
+      m_Calls: []
+  onKill:
+    m_PersistentCalls:
+      m_Calls: []
   gunTransform: {fileID: 5599080660028326426}
   gunAudioSource: {fileID: 7708746117937629143}
   reloadAudioSource: {fileID: 0}
@@ -1221,6 +1240,7 @@ MonoBehaviour:
   _animator: {fileID: 0}
   _rb: {fileID: 0}
   recoilBodyTorque: {x: 0, y: 0, z: 0}
+  accuracy: 0.9
   canFire: 1
   _currentAmmoRemaining: 0
 --- !u!82 &7708746117937629143
@@ -1544,6 +1564,8 @@ MonoBehaviour:
   strength: 800
   damper: 8
   velocity: 40
+  collidersToIgnore: []
+  grapplePoint: {fileID: 0}
   grapplingCd: 2
 --- !u!120 &2395102274153453874
 LineRenderer:
@@ -2042,6 +2064,8 @@ MonoBehaviour:
   strength: 800
   damper: 8
   velocity: 40
+  collidersToIgnore: []
+  grapplePoint: {fileID: 0}
   grapplingCd: 2
 --- !u!120 &3912913817003197451
 LineRenderer:
@@ -2881,7 +2905,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 422551785
+  GlobalObjectIdHash: 1684480287
   InScenePlacedSourceGlobalObjectIdHash: 1684480287
   DeferredDespawnTick: 0
   Ownership: 4
@@ -2928,20 +2952,25 @@ MonoBehaviour:
   onUnitDeath:
     m_PersistentCalls:
       m_Calls: []
+  killCount:
+    m_InternalValue: 0
   engineAudioSource: {fileID: 4781548308717753424}
   engineAudioSo: {fileID: 11400000, guid: cdbf35fdc54510f4e8c98c65ac06db71, type: 2}
   faction: 0
+  Priority: 5
   juggernautParameters: {fileID: 11400000, guid: 6c4a4c7a46816b44b895f909655cdc26,
     type: 2}
   gravity: -10
   groundDrag: 3
   airborneHeight: 2.2
+  gripLossAngle: 20
   maxFloorAngle: 30
-  feetEnds:
-  - {fileID: 580562808694063259}
-  - {fileID: 7740810250565838929}
-  - {fileID: 595478753095964960}
-  - {fileID: 8414661099592531005}
+  fallGravityMult: 2.5
+  lowJumpGravityMult: 2
+  wallFallingMult: 2.5
+  dashingMaxUpwardSpeed: 2.5
+  allowMoveOnStart: 1
+  grappleModule: {fileID: 0}
   modelTransform: {fileID: 7708000740794298556}
   canRotate: 1
   zoomCamera: {fileID: 8270994993198790707}
@@ -3032,6 +3061,7 @@ MonoBehaviour:
         m_CallState: 2
   test: 1000
   _state: 0
+  deathPrefab: {fileID: 0}
   impulseSource: {fileID: 5315611825733000085}
 --- !u!82 &4781548308717753424
 AudioSource:
@@ -3616,6 +3646,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5e5b784d78f414a8d27dc91e97fc313, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &6345245526215369972
 GameObject:
   m_ObjectHideFlags: 0
@@ -3916,6 +3947,15 @@ MonoBehaviour:
     m_Bits: 129
   maxRaycastDistance: 500
   aiIgnore: 0
+  onFire:
+    m_PersistentCalls:
+      m_Calls: []
+  onHit:
+    m_PersistentCalls:
+      m_Calls: []
+  onKill:
+    m_PersistentCalls:
+      m_Calls: []
   gunTransform: {fileID: 6603496790180004737}
   gunAudioSource: {fileID: 2303210759000440079}
   reloadAudioSource: {fileID: 4968307064373507097}
@@ -3928,6 +3968,7 @@ MonoBehaviour:
   _animator: {fileID: 0}
   _rb: {fileID: 0}
   recoilBodyTorque: {x: 0, y: 0, z: 0}
+  accuracy: 0.9
   canFire: 1
   _currentAmmoRemaining: 0
 --- !u!82 &2303210759000440079
@@ -5501,21 +5542,9 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.8
   m_Center: {x: 0, y: 1.08, z: 0.3}
---- !u!1 &580562808694063259 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: -8672011589618726351, guid: 09c8b97c02210ac45882a9b0b6759e35,
-    type: 3}
-  m_PrefabInstance: {fileID: 1128223912551238314}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &586304502740200769 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 09c8b97c02210ac45882a9b0b6759e35,
-    type: 3}
-  m_PrefabInstance: {fileID: 1128223912551238314}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &595478753095964960 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 570780051979899786, guid: 09c8b97c02210ac45882a9b0b6759e35,
     type: 3}
   m_PrefabInstance: {fileID: 1128223912551238314}
   m_PrefabAsset: {fileID: 0}
@@ -5573,12 +5602,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1128223912551238314}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &7740810250565838929 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7261104707577979643, guid: 09c8b97c02210ac45882a9b0b6759e35,
-    type: 3}
-  m_PrefabInstance: {fileID: 1128223912551238314}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8092066566013441737 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -7729563778147229, guid: 09c8b97c02210ac45882a9b0b6759e35,
@@ -5594,12 +5617,6 @@ Transform:
 --- !u!4 &8270976136622251161 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9034266285603411507, guid: 09c8b97c02210ac45882a9b0b6759e35,
-    type: 3}
-  m_PrefabInstance: {fileID: 1128223912551238314}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &8414661099592531005 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: -329149782432581993, guid: 09c8b97c02210ac45882a9b0b6759e35,
     type: 3}
   m_PrefabInstance: {fileID: 1128223912551238314}
   m_PrefabAsset: {fileID: 0}
@@ -5969,7 +5986,7 @@ MonoBehaviour:
     AnkleYawCorrection: 0
     _FinalIKPos: {x: 0, y: 0, z: 0}
   BaseLegAnimating:
-    StepMoveDuration: 0.25
+    StepMoveDuration: 0.5
     MoveToGoalCurve:
       serializedVersion: 2
       m_Curve:
@@ -6191,7 +6208,7 @@ MonoBehaviour:
   _EditorAllowAutoUpdateFeetParams: 1
   _EditorCategory: 1
   _EditorSetupCategory: 0
-  _EditorMotionCategory: 1
+  _EditorMotionCategory: 2
   _EditorExtraCategory: 1
   setupPose:
     MainHipsPose:

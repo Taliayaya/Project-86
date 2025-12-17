@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections;
 using Cinemachine;
+using Managers;
 using ScriptableObjects;
 using UI;
 using UI.HUD;
 using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 using UnityEngine.VFX;
+using Random = UnityEngine.Random;
 
 namespace Gameplay.Mecha
 {
@@ -28,7 +31,11 @@ namespace Gameplay.Mecha
         [SerializeField] private LayerMask fireBulletLayerMask = 1;
         [SerializeField] private float maxRaycastDistance = 500;
         public bool aiIgnore = false;
-        
+
+
+        public UnityEvent onFire;
+        public UnityEvent<NetworkObject, DamagePackage, DamageResponse> onHit;
+        public UnityEvent<NetworkObject, DamagePackage, DamageResponse> onKill;
         [Header("References")]
         [SerializeField] private Transform gunTransform;
         [SerializeField] private AudioSource gunAudioSource;
@@ -50,6 +57,7 @@ namespace Gameplay.Mecha
         [SerializeField] private NetworkAnimator _animator;
         [SerializeField] private Rigidbody _rb;
         [SerializeField] private Vector3 recoilBodyTorque;
+        public float accuracy = 0.9f;
         
         
         public bool canFire = true;
@@ -85,6 +93,7 @@ namespace Gameplay.Mecha
 
         protected virtual void Awake()
         {
+            _waitForFireRate = new WaitForSeconds(1/ammo.fireRate);
             if (gunCheckCanShoot == null)
                 gunCheckCanShoot = transform;
             _gunTransformCollider = gunTransform.parent.GetComponent<Collider>();
@@ -172,26 +181,27 @@ namespace Gameplay.Mecha
             EventManager.TriggerEvent("OnNoAmmo", new AmmoPopUpData(ammo.gunTypeName, 2f));
         }
         
+        private static readonly WaitForSeconds WaitFor100Ms = new WaitForSeconds(0.1f);
+        private static readonly WaitForSeconds WaitFor500Ms = new WaitForSeconds(0.5f);
+        private WaitForSeconds _waitForFireRate;
         /// <summary>
         /// Player related method
         /// </summary>
         /// <returns></returns>
         private IEnumerator FireOnHeld()
         {
-            
             while (_isHeld && _currentAmmoRemaining > 0)
             {
                 PlayBulletSoundRpc(false);
                 Shoot();
-                yield return new WaitForSeconds(1/ammo.fireRate);
+                yield return _waitForFireRate;
             }
             if (_currentAmmoRemaining <= 0)
             {
                 TriggerNoAmmoPopUp();
             }
 
-
-            yield return new WaitForSeconds(0.1f);
+            yield return WaitFor100Ms;
         }
 
 
@@ -224,10 +234,10 @@ namespace Gameplay.Mecha
                 _lastShotTime = Time.time;
                 Shoot(cameraTransform);
                 PlayBulletSoundRpc();
-                yield return new WaitForSeconds(fireRate);
+                yield return _waitForFireRate;
             }
 
-            yield return new WaitForSeconds(0.1f);
+            yield return WaitFor100Ms;
         }
         
         private float _lastShotTime;
@@ -261,17 +271,17 @@ namespace Gameplay.Mecha
                 if (!canShoot(gunCheckCanShoot))
                 {
                     Debug.Log(transform.name + " can't shoot");
-                    yield return new WaitForSeconds(1f);
+                    yield return WaitFor500Ms;
                     continue;
                 }
 
                 _lastShotTime = Time.time;
                 Shoot(cameraTransform);
                 PlayBulletSoundRpc();
-                yield return new WaitForSeconds(fireRate);
+                yield return _waitForFireRate;
             }
 
-            yield return new WaitForSeconds(0.1f);
+            yield return WaitFor100Ms;
         }
 
 
@@ -322,9 +332,9 @@ namespace Gameplay.Mecha
         {
             muzzleFlash.Play();
             muzzleLight.enabled = false;
-            yield return new WaitForSeconds(0.1f);
+            yield return WaitFor100Ms;
             muzzleLight.enabled = true;
-            yield return new WaitForSeconds(0.1f);
+            yield return WaitFor100Ms;
             muzzleLight.enabled = false;
         }
         
@@ -341,19 +351,22 @@ namespace Gameplay.Mecha
                 var direction = (hit.point - gunTransform.position).normalized;
                 if (Vector3.Angle(bulletDirection, direction) < 45)
                     bulletDirection = direction;
-                Debug.DrawRay(gunTransform.position, bulletDirection * 100, Color.red, 1f);
+                Debug.DrawLine(origin.position, hit.point, Color.red, 1f);
             }
             else
             {
-                Debug.DrawRay(gunTransform.position, bulletDirection * 100, Color.green, 1f);
+                Debug.DrawRay(gunTransform.position, bulletDirection * maxRaycastDistance, Color.green, 1f);
             }
+            
+            bulletDirection = ReduceAccuracy(bulletDirection);
 
             if (muzzleFlash)
             {
                 PlayMuzzleFlashRpc();
             }
 
-            var bullet = Instantiate(ammo.prefab, gunTransform.position, Quaternion.identity);
+            var bullet = PoolManager.Instance.Instantiate(ammo.prefab, gunTransform.position, Quaternion.identity);
+            
             // colliders
             var bulletCollider = bullet.GetComponentInChildren<Collider>();
             if (_gunTransformCollider != null)
@@ -365,16 +378,23 @@ namespace Gameplay.Mecha
             bulletScript.Init(ammo, faction);
             bulletScript.InitLifeTime(ammo.maxLifetime);
 
+            bulletScript.ClearListeners();
+            bulletScript.onHit.AddListener(OnBulletHit);
+            bulletScript.onKill.AddListener(OnBulletKill);
+
             var bulletRb = bullet.GetComponent<Rigidbody>();
+            bulletRb.angularVelocity = Vector3.zero;
+            bulletRb.linearVelocity = Vector3.zero;
             bulletRb.AddForce(bulletDirection * ammo.forcePower, ForceMode.Impulse);
             var rot = bulletRb.rotation.eulerAngles;
             bulletRb.rotation = Quaternion.Euler(rot.x, gunTransform.eulerAngles.y, rot.z);
             
             // network spawning related
             var bulletNetworkObject = bullet.GetComponent<NetworkObject>();
-            if (NetworkManager.Singleton.IsConnectedClient)
+            if (NetworkManager.Singleton.IsConnectedClient && !bulletNetworkObject.IsSpawned)
                 bulletNetworkObject.SpawnWithOwnership(NetworkManager.Singleton.LocalClientId, true);
             
+            onFire?.Invoke();
             canFire = false;
             if (ammo.reloadSound != null)
                 Invoke(nameof(PlayReloadSound), 0.3f);
@@ -393,6 +413,19 @@ namespace Gameplay.Mecha
         private void PlayReloadSound()
         {
             reloadAudioSource.PlayOneShot(ammo.reloadSound);
+        }
+
+        private Vector3 ReduceAccuracy(Vector3 directionToTarget)
+        {
+            float maxError = ammo.maxAngleError * (1f - accuracy);
+
+            Vector3 inaccurateDirection = Vector3.RotateTowards(
+                directionToTarget,
+                Random.insideUnitSphere,
+                maxError * Mathf.Deg2Rad,
+                0.0f
+            );
+            return inaccurateDirection;
         }
 
         [Rpc(SendTo.ClientsAndHost)]
@@ -442,6 +475,16 @@ namespace Gameplay.Mecha
         public void SetCamera(CinemachineVirtualCamera cam)
         {
             cameraTransform = cam.transform;
+        }
+
+        public void OnBulletHit(NetworkObject target, DamagePackage damagePackage, DamageResponse damageResponse)
+        {
+            onHit?.Invoke(target, damagePackage, damageResponse);
+        }
+
+        public void OnBulletKill(NetworkObject target, DamagePackage damagePackage, DamageResponse damageResponse)
+        {
+            onKill?.Invoke(target, damagePackage, damageResponse);
         }
     }
 }

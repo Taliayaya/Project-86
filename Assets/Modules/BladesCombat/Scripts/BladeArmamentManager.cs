@@ -12,6 +12,7 @@ namespace BladesCombat
         [SerializeField] private BladeSharedData SharedData;
         [SerializeField] private bool HasSeparateControls;
         [SerializeField] private bool isEmitting;
+        [SerializeField] private bool isListening;
 
         private BladeSwitcher _bladeSwitcher = new BladeSwitcher();
         private BladeCollision _bladeCollision = new BladeCollision();
@@ -59,6 +60,7 @@ namespace BladesCombat
                 _bladeCollision
             };
             _bladeSwitcher.IsEmitting = IsOwner && isEmitting;
+            _bladeSwitcher.IsListening = IsOwner && isListening;
 
             foreach (BladeComponent component in _bladeComponents)
             {
@@ -145,6 +147,7 @@ namespace BladesCombat
 
         private void OnBladeTriggerEnter(Collider other, bool isLeft)
         {
+            Debug.Log($"Trigger Entered: {other.name}");
             TriggerData data = new TriggerData() { IsLeftBlade = isLeft };
             _triggerFeature.Invoke(c => c.OnTriggerEnter(other, data));
             OnBladeTriggerEntered?.Invoke(other, data);

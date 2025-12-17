@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Armament.Shared;
 using Networking.Widgets.Core.Base.ChatService.Interfaces;
 using Networking.Widgets.Core.Base.Session;
+using Networking.Widgets.Core.Base.Widget;
 using Networking.Widgets.Core.Base.Widget.Interfaces;
 using Unity.Multiplayer.Widgets;
 using Unity.Services.Lobbies;

@@ -11,7 +11,7 @@ namespace Gameplay.Units
         [SerializeField] private NetworkVariable<float> health = new(100);
         [SerializeField] private float armor = 10;
         [SerializeField] private Faction faction = Faction.Legion;
-        [SerializeField] private GameObject deathEffect;
+        [SerializeField] protected GameObject deathEffect;
         
         [SerializeField] private List<MonoBehaviour> componentsToDisableOnDeath;
         
@@ -27,17 +27,17 @@ namespace Gameplay.Units
 
         public DamageResponse TakeDamage(DamagePackage damagePackage)
         {
-            if (damagePackage.IsBullet && damagePackage.DamageAmount < Armor)
+            if (damagePackage.Type == DamageType.Bullet && damagePackage.GetDamage() < Armor)
                 return new DamageResponse() { Status = DamageResponse.DamageStatus.Deflected, DamageReceived = 0 };
-            Debug.Log($"{Faction} took {damagePackage.DamageAmount} damage. Health: {Health}");
+            Debug.Log($"{Faction} took {damagePackage.GetDamage()} damage. Health: {Health}");
             
             // its speculative health calculation but mostly correct
-            float remainingHealth = Mathf.Clamp(Health - damagePackage.DamageAmount, 0, MaxHealth);
+            float remainingHealth = Mathf.Clamp(Health - damagePackage.GetDamage(), 0, MaxHealth);
             TakeDamageRpc(damagePackage);
 
             return new DamageResponse()
             {
-                Status = DamageResponse.DamageStatus.Taken, DamageReceived = damagePackage.DamageAmount,
+                Status = DamageResponse.DamageStatus.Taken, DamageReceived = damagePackage.GetDamage(),
                 RemainingHealth = remainingHealth
             };
         }
@@ -45,7 +45,7 @@ namespace Gameplay.Units
         [Rpc(SendTo.Owner)]
         public void TakeDamageRpc(DamagePackage damagePackage)
         {
-            Health = Mathf.Clamp(Health - damagePackage.DamageAmount, 0, MaxHealth);
+            Health = Mathf.Clamp(Health - damagePackage.GetDamage(), 0, MaxHealth);
             if (!IsAlive)
                 Die();
             OnTakeDamage(damagePackage);

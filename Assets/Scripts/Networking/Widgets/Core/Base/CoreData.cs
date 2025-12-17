@@ -1,4 +1,3 @@
-using Unity.Multiplayer.Widgets;
 using Unity.Services.Multiplayer;
 using WidgetConfiguration = Networking.Widgets.Core.Configuration.WidgetConfiguration;
 
