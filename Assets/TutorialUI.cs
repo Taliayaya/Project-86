@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Armament.Shared;
 using ScriptableObjects.Tutorial;
 using TMPro;
 using UI;
@@ -16,6 +17,10 @@ public class TutorialUI : MonoBehaviour
     [SerializeField] private TMP_Text descriptionText;
     [SerializeField] private TMP_Text titleText;
     [SerializeField] private Image image;
+
+
+    [SerializeField] private TMP_Text secondaryDescriptionText;
+    [SerializeField] private Image secondaryImage;
     
     [Header("Menu References")]
     [SerializeField] private RectTransform menuContentParent;
@@ -25,9 +30,17 @@ public class TutorialUI : MonoBehaviour
     
     private int _currentTutorialIndex = 0;
 
+    private Vector2 _defaultImageSize;
+    
     private void Awake()
     {
+        SaveImageSize();
         AddTutorialsMenu();
+    }
+
+    private void SaveImageSize()
+    {
+        _defaultImageSize = image.rectTransform.sizeDelta;
     }
 
     private void AddTutorialsMenu()
@@ -52,6 +65,21 @@ public class TutorialUI : MonoBehaviour
         titleText.text = tutorial.title;
         image.sprite = tutorial.image;
         _currentTutorialIndex = index;
+
+        image.rectTransform.sizeDelta = GetImageSize(tutorial.image, tutorial.PreserveAspectRatio);
+
+        secondaryDescriptionText.gameObject.SetActive(tutorial.HasSecondaryContent);
+        secondaryImage.transform.parent.gameObject.SetActive(tutorial.HasSecondaryContent);
+
+        if (tutorial.HasSecondaryContent)
+        {
+            secondaryDescriptionText.text = tutorial.SecondaryInfo.Description;
+            secondaryImage.sprite = tutorial.SecondaryInfo.Image;
+
+            secondaryImage.rectTransform.sizeDelta =
+                GetImageSize(tutorial.SecondaryInfo.Image, tutorial.SecondaryInfo.PreserveAspectRatio);
+        }
+        
     }
     
     
@@ -73,5 +101,16 @@ public class TutorialUI : MonoBehaviour
     public void Close()
     {
         WindowManager.Close();
+    }
+
+    private Vector2 GetImageSize(Sprite sprite, bool preserveRatio)
+    {
+        if (!preserveRatio)
+            return _defaultImageSize;
+
+        float ratio = sprite.rect.width / sprite.rect.height;
+
+
+        return _defaultImageSize.SetY(_defaultImageSize.y * ratio);
     }
 }
