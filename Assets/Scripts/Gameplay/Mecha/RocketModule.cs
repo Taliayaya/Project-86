@@ -199,6 +199,11 @@ namespace Gameplay.Mecha
             StartCoroutine(ReloadCoroutine());
         }
 
+        public void Reload(float delay)
+        {
+            Invoke(nameof(Reload), delay);
+        }
+
         public IEnumerator ReloadCoroutine()
         {
             IsReloading = true;

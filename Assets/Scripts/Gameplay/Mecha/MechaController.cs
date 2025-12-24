@@ -145,6 +145,8 @@ namespace Gameplay.Mecha
                 _cameraView = value;
 
                 vCamera.gameObject.SetActive(value == View.FirstPerson);
+                gunCamera.gameObject.SetActive(value == View.Cannon);
+                
                 zoomCamera.gameObject.SetActive(value is View.FirstPerson or View.Cannon);
                 
                 freeLookCamera.gameObject.SetActive(value == View.FreeLook);
@@ -155,7 +157,6 @@ namespace Gameplay.Mecha
                 onCameraViewChanged?.Invoke(ActiveCamera);
                 CameraZoom = Zoom.Default;
                 EventManager.TriggerEvent(Constants.TypedEvents.OnToggleCockpitView, value == View.FirstPerson && juggernautParameters.toggleCockpitView);
-                
             }
 
         }
@@ -272,7 +273,6 @@ namespace Gameplay.Mecha
             }
             EventManager.TriggerEvent("OnUpdateHealth", 1f);
             EventManager.TriggerEvent(Constants.TypedEvents.OnToggleCockpitView, juggernautParameters.toggleCockpitView);
-            PlayerManager.Player = this;
         }
 
         public void ReInit()

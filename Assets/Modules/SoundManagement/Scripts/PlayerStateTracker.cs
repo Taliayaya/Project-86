@@ -36,12 +36,16 @@ namespace SoundManagement
 
 		private void Start()
 		{
+			EventManager.AddListener(Constants.TypedEvents.OnPlayerChanged, OnPlayerChanged);
+			EventManager.AddListener(Constants.TypedEvents.OnTakeDamage, OnTakeDamage);
 			EventManager.AddListener(SoundEventName.OnDinosauriaAimed, OnDinosauriaAimed);
 			EventManager.AddListener(SoundEventName.OnDinosauriaDead, OnDinosauriaDead);
 		}
 
+
 		private void OnDestroy()
 		{
+			EventManager.RemoveListener(Constants.TypedEvents.OnPlayerChanged, OnPlayerChanged);
 			EventManager.RemoveListener(SoundEventName.OnDinosauriaAimed, OnDinosauriaAimed);
 			EventManager.RemoveListener(SoundEventName.OnDinosauriaDead, OnDinosauriaDead);
 		}
@@ -151,6 +155,20 @@ namespace SoundManagement
 		private void OnDinosauriaDead()
 		{
 			_hasDinosauriaAimed = false;
+		}
+		
+		private void OnPlayerChanged(object arg0)
+		{
+			_healthPercent = 1f;
+		}
+		
+		private void OnTakeDamage(object arg0)
+		{
+			// if we take damage during exploration / death music playing
+			// => action is continuing
+			_destroyed = false;
+			// it has a guard condition
+			BGMPlayer.Instance.PlayCombat();
 		}
 	}
 }

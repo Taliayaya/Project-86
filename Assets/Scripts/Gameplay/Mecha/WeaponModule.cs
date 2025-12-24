@@ -207,6 +207,7 @@ namespace Gameplay.Mecha
 
         public Coroutine StartShootDuringTime(float time, Func<Transform, bool> canShoot)
         {
+            StopCoroutine(nameof(ShootDuringTime));
             _shootCoroutine = StartCoroutine(ShootDuringTime(time, canShoot));
             return _shootCoroutine;
         }

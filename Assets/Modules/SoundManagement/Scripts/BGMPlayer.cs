@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Armament.Shared;
@@ -293,7 +294,8 @@ namespace SoundManagement
 				CombatBGMState.Default => _combat1,
 				CombatBGMState.Intense => _combat2Intense,
 				CombatBGMState.Dinosauria => _combat3Dinosauria,
-				CombatBGMState.Death => _death1
+				CombatBGMState.Death => _death1,
+				_ => throw new ArgumentOutOfRangeException(nameof(combatState), combatState, null)
 			};
 		}
 

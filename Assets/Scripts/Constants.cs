@@ -144,6 +144,7 @@ public static class Constants
         // TODO : Add all the typed event names cause i couldnt be bothered -nemo
         
         public const string OnPlayerChanged = "OnPlayerChanged";
+        public const string OnTakeDamage = "OnTakeDamage";
         public const string UnitDeath = "UnitDeath";
 
     }

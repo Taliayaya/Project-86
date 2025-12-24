@@ -89,5 +89,14 @@ namespace Gameplay
                 JumpDone();
             }
         }
+
+        private void OnCollisionStay(Collision other)
+        {
+            if (other.gameObject.layer == LayerMask.NameToLayer("Default") ||
+                other.gameObject.layer == LayerMask.NameToLayer("Damageable"))
+            {
+                JumpDone();
+            }
+        }
     }
 }
