@@ -39,6 +39,14 @@ namespace SoundManagement.Utils
 
 			string playingBGMName = currentPlaying.Name;
 
+			if (_player.PlayingMusic == PlayingBGM.Game)
+			{
+				playingBGMName = _player.IsCombat
+					? _player.CombatState.ToString()
+					: CombatBGMState.Exploration.ToString();
+
+			}
+
 			GUILayout.Label($"Playing <b>{playingBGMName}</b>", _richText);
 			
 			bool isMuted = UnityEditor.EditorUtility.audioMasterMute;

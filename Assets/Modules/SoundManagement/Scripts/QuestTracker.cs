@@ -77,13 +77,16 @@ namespace SoundManagement
 
 		private void UpdateBGMByQuest()
 		{
+			
 			if (IsCombatQuest())
 			{
-				BGMPlayer.Instance.PlayCombat();
+				BGMPlayer.Instance.SetIsCombat(true);
+				BGMPlayer.Instance.UpdateCombatState();
 			}
 			else
 			{
-				BGMPlayer.Instance.PlayExploration();
+				BGMPlayer.Instance.SetIsCombat(false);
+				BGMPlayer.Instance.UpdateCombatState();
 			}
 		}
 

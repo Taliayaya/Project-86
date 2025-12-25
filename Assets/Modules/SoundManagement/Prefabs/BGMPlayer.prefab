@@ -52,34 +52,13 @@ MonoBehaviour:
       Data3: -2041059662
       Data4: 488602578
     Path: event:/BGM/Menu 1
-  ExplorationBGM:
-    Guid:
-      Data1: -897805916
-      Data2: 1104264381
-      Data3: -1722756419
-      Data4: -1374102629
-    Path: event:/BGM/Exploration 1
-  Combat1BGM:
+  GameBGM:
     Guid:
       Data1: -206704535
       Data2: 1075527818
       Data3: 53715883
       Data4: -199849249
-    Path: event:/BGM/Combat 1
-  Combat2IntenseBGM:
-    Guid:
-      Data1: 926607600
-      Data2: 1169962849
-      Data3: -999273829
-      Data4: 1291104273
-    Path: event:/BGM/Combat 2 (Intense)
-  Combat3DinosauriaBGM:
-    Guid:
-      Data1: -1508960309
-      Data2: 1235236760
-      Data3: -806385225
-      Data4: -131023233
-    Path: event:/BGM/Combat 3 (Dinosauria)
+    Path: event:/BGM/Game
   Death1BGM:
     Guid:
       Data1: -1069555192
@@ -87,3 +66,4 @@ MonoBehaviour:
       Data3: 2059608468
       Data4: 561345965
     Path: event:/BGM/Death 1
+  ShowInfoWindow: 1

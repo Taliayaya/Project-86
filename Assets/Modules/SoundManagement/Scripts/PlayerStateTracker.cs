@@ -118,6 +118,7 @@ namespace SoundManagement
 
 			if (isIntense)
 			{
+				Debug.LogError($"Intense");
 				return CombatBGMState.Intense;
 			}
 
@@ -125,10 +126,11 @@ namespace SoundManagement
 
 			if (isDinosauriaAiming)
 			{
+				Debug.LogError($"Dinosauria");
 				return CombatBGMState.Dinosauria;
 			}
 
-			return CombatBGMState.Default;
+			return CombatBGMState.Normal;
 		}
 
 		private bool IsDinosauriaAimed()
@@ -140,7 +142,10 @@ namespace SoundManagement
 		{
 			const float lowHpThreshold = 0.3f;
 			const float lowAmmoThreshold = 0.3f;
-			return _healthPercent <= lowHpThreshold || _ammoSum <= lowAmmoThreshold;
+			bool state = _healthPercent <= lowHpThreshold || _ammoSum <= lowAmmoThreshold;
+			// Debug.LogError($"IsIntense: {state}, {_healthPercent} <= {lowHpThreshold} || {_ammoSum} <= {lowAmmoThreshold}");
+			
+			return state;
 		}
 
 		private void OnDinosauriaAimed()

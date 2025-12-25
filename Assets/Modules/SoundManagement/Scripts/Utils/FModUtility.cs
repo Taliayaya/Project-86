@@ -57,6 +57,8 @@ namespace SoundManagement.Utils
 
 		public static void FadeOut(this BoolCache<EventInstance> reference, float duration = 1f)
 		{
+			if (!reference.HasValue) return;
+			if (!reference.Value.IsPlaying()) return;
 			reference.Value.FadeOut(duration);
 		}
 
