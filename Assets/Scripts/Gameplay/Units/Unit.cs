@@ -108,6 +108,8 @@ namespace Gameplay.Units
             engineAudioSource.clip = engineAudioSo.engineSpeeding;
             engineAudioSource.loop = true;
             engineAudioSource.Play();
+            
+            EventManager.TriggerEvent(Constants.TypedEvents.UnitSpawn, this);
         }
 
         protected virtual void OnEnable()

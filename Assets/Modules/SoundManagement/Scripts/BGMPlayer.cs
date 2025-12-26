@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Armament.Shared;
@@ -15,11 +16,8 @@ namespace SoundManagement
 	public class BGMPlayer : Singleton<BGMPlayer>
 	{
 		[SerializeField] private EventReference MenuBGM;
-		[SerializeField] private EventReference ExplorationBGM;
-		[SerializeField] private EventReference Combat1BGM;
-		[SerializeField] private EventReference Combat2IntenseBGM;
-		[SerializeField] private EventReference Combat3DinosauriaBGM;
-		[SerializeField] private EventReference Death1BGM;
+		[SerializeField] private EventReference GameBGM;
+		[SerializeField] private EventReference DeathBGM;
 
 		[Foldout("Debug")]
 		[SerializeField] private bool ShowInfoWindow = true;
@@ -31,11 +29,33 @@ namespace SoundManagement
 
 		private bool _isInMenu;
 		private BoolCache<EventInstance> _menu = new();
-		private BoolCache<EventInstance> _exploration = new();
-		private BoolCache<EventInstance> _combat1 = new();
-		private BoolCache<EventInstance> _combat2Intense = new();
-		private BoolCache<EventInstance> _combat3Dinosauria = new();
-		private BoolCache<EventInstance> _death1 = new();
+		private BoolCache<EventInstance> _game = new();
+		private BoolCache<EventInstance> _death = new();
+
+		[SerializeField] private bool _isInCombat;
+		public bool IsInCombat
+		{
+			get => _isInCombat;
+			set
+			{
+				if (_isInCombat == value) return;
+				_isInCombat = value;
+				_game.Value.setParameterByName("IsCombat", value ? 1f : 0f);
+			}
+		}
+
+		[SerializeField] private CombatBGMState _intensity;
+
+		public CombatBGMState Intensity
+		{
+			get => _intensity;
+			set
+			{
+				if (_intensity == value) return;
+				_intensity = value;
+				_game.Value.setParameterByName("Intensity", (int) value);
+			}
+		}
 
 		private MusicCollection _allMusics;
 		private Dictionary<PlayingBGM, MusicCollection> _associatedMusics = new();
@@ -72,21 +92,15 @@ namespace SoundManagement
 		private void SetMusicHandlersNames()
 		{
 			_menu.Name = MenuBGM.GetEventName();
-			_exploration.Name = ExplorationBGM.GetEventName();
-			_combat1.Name = Combat1BGM.GetEventName();
-			_combat2Intense.Name = Combat2IntenseBGM.GetEventName();
-			_combat3Dinosauria.Name = Combat3DinosauriaBGM.GetEventName();
-			_death1.Name = Death1BGM.GetEventName();
+			_game.Name = GameBGM.GetEventName();
+			_death.Name = DeathBGM.GetEventName();
 		}
 
 		private void ApplyMusicInitializers()
 		{
 			_menu.SetInitialization(() => CreateBGMInstance(MenuBGM));
-			_exploration.SetInitialization(() => CreateBGMInstance(ExplorationBGM));
-			_combat1.SetInitialization(() => CreateBGMInstance(Combat1BGM));
-			_combat2Intense.SetInitialization(() => CreateBGMInstance(Combat2IntenseBGM));
-			_combat3Dinosauria.SetInitialization(() => CreateBGMInstance(Combat3DinosauriaBGM));
-			_death1.SetInitialization(() => CreateBGMInstance(Death1BGM));
+			_game.SetInitialization(() => CreateBGMInstance(GameBGM));
+			_death.SetInitialization(() => CreateBGMInstance(DeathBGM));
 		}
 
 		private void InitAllMusicsList()
@@ -94,12 +108,12 @@ namespace SoundManagement
 			_associatedMusics = new Dictionary<PlayingBGM, MusicCollection>()
 			{
 				{ PlayingBGM.Menu, new MusicCollection(_menu) },
-				{ PlayingBGM.Exploration, new MusicCollection(_exploration) },
-				{ PlayingBGM.Combat, new MusicCollection(_combat1, _combat2Intense, _combat3Dinosauria, _death1) },
+				{ PlayingBGM.Game, new MusicCollection(_game, _death) },
 			};
+			
 
 			_allMusics = new MusicCollection(
-				_menu, _exploration, _combat1, _combat2Intense, _combat3Dinosauria, _death1
+				_menu, _game, _death
 			);
 		}
 
@@ -172,7 +186,7 @@ namespace SoundManagement
 			FadeOutOthers(PlayingBGM.Menu, 2f);
 
 			_playing = PlayingBGM.Menu;
-
+			
 			_menu.TryInitialize();
 
 			_menu.Value.start();
@@ -182,40 +196,27 @@ namespace SoundManagement
 			Debug.Log($"Playing Menu");
 		}
 
+		public void PlayGame()
+		{
+			if (_playing == PlayingBGM.Game) return;
+			FadeOutOthers(PlayingBGM.Game, GetFadeoutDurationByState());
+			_playing = PlayingBGM.Game;
+			_game.TryInitialize();
+			_game.Value.start();
+			_game.FadeIn(true, 5f);
+			Debug.Log($"Playing Game");
+		}
+
 		public void PlayExploration()
 		{
-			if (_playing == PlayingBGM.Exploration) return;
-
-			FadeOutOthers(PlayingBGM.Exploration, GetFadeoutDurationByState());
-
-			_playing = PlayingBGM.Exploration;
-
-			_exploration.TryInitialize();
-
-			_exploration.Value.start();
-
-			_exploration.FadeIn(true, 5f);
-
-			Debug.Log($"Playing exploration");
+			PlayGame();
+			IsInCombat = false;
 		}
 
 		public void PlayCombat()
 		{
-			if (_playing == PlayingBGM.Combat) return;
-
-			FadeOutOthers(PlayingBGM.Combat, GetFadeoutDurationByState(ifNotMenu: 3f));
-
-			_playing = PlayingBGM.Combat;
-
-			BoolCache<EventInstance> combatMusic = GetMusicByCombatState(_combatState);
-
-			combatMusic.TryInitialize();
-
-			combatMusic.Value.start();
-
-			combatMusic.FadeIn(true, 3f);
-
-			Debug.Log($"Playing combat [{combatMusic.Name}]");
+			PlayGame();
+			IsInCombat = true;
 		}
 
 		private float GetFadeoutDurationByState(float ifNotMenu = 5f, float ifMenu = 2f)
@@ -256,47 +257,6 @@ namespace SoundManagement
 			}
 		}
 
-		public void SetCombatState(CombatBGMState combatState)
-		{
-			if (_playing == PlayingBGM.Combat)
-			{
-				if (combatState != _combatState)
-				{
-					BoolCache<EventInstance> targetMusic = GetMusicByCombatState(combatState);
-					var except = _associatedMusics[PlayingBGM.Combat].Except(new[] { targetMusic });
-
-					if (except.Any())
-					{
-						foreach (BoolCache<EventInstance> music in except)
-						{
-							music.FadeOut(3f);
-						}
-					}
-
-					targetMusic.TryInitialize();
-
-					targetMusic.Value.start();
-
-					targetMusic.FadeIn(true, 3f);
-
-					Debug.Log($"Playing combat [{targetMusic.Name}]");
-				}
-			}
-
-			_combatState = combatState;
-		}
-
-		private BoolCache<EventInstance> GetMusicByCombatState(CombatBGMState combatState)
-		{
-			return combatState switch
-			{
-				CombatBGMState.Default => _combat1,
-				CombatBGMState.Intense => _combat2Intense,
-				CombatBGMState.Dinosauria => _combat3Dinosauria,
-				CombatBGMState.Death => _death1
-			};
-		}
-
 		private void FadeOutOthers(PlayingBGM except, float duration = 4f)
 		{
 			foreach (var (key, value) in _associatedMusics)
@@ -331,20 +291,10 @@ namespace SoundManagement
 
 		public ReadonlyBoolCache<EventInstance> GetCurrentPlaying()
 		{
-			if (_playing == PlayingBGM.Combat)
-			{
-				BoolCache<EventInstance> state = GetMusicByCombatState(_combatState);
-				if (state == null) return null;
-				
-				return state.Readonly;
-			}
-			else
-			{
-				BoolCache<EventInstance> state = _associatedMusics[_playing].Collection.First();
-				if (state == null) return null;
-				
-				return state.Readonly;
-			}
+			BoolCache<EventInstance> state = _associatedMusics[_playing].Collection.First();
+			if (state == null) return null;
+
+			return state.Readonly;
 		}
 
 #if UNITY_EDITOR

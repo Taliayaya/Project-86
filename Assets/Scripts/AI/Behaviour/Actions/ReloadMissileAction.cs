@@ -12,6 +12,7 @@ public partial class ReloadMissileAction : Action
 {
     [SerializeReference] public BlackboardVariable<GameObject> Agent;
     [SerializeReference] public BlackboardVariable<RocketModule> RocketModule;
+    [SerializeReference] public BlackboardVariable<float> reloadTime;
 
     protected override Status OnStart()
     {
@@ -25,7 +26,7 @@ public partial class ReloadMissileAction : Action
             }
         }
 
-        RocketModule.Value.Reload();
+        RocketModule.Value.Reload(reloadTime.Value);
         return Status.Success;
     }
 }

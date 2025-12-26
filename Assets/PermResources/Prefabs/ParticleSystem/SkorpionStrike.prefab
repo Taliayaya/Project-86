@@ -262,7 +262,7 @@ MonoBehaviour:
     m_ImpactRadius: 100
     m_DirectionMode: 0
     m_DissipationMode: 2
-    m_DissipationDistance: 400
+    m_DissipationDistance: 200
     m_PropagationSpeed: 343
   m_DefaultVelocity: {x: 0, y: -1, z: 0}
 --- !u!108 &5221295596551421021
@@ -5208,7 +5208,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   impulseSource: {fileID: 3411043553921580762}
-  explosionVelocity: {x: 0, y: 8, z: 0}
+  explosionVelocity: {x: 0, y: 5, z: 0}
   minimapIcon: {fileID: 7078228152484178533}
   zoneDecalProjector: {fileID: 6512638956278123431}
   strikesPerSecond: 3

@@ -8,7 +8,7 @@ namespace SoundManagement
 
 		private void Start()
 		{
-			BGMPlayer.Instance.SetCombatState(CombatBGMState.Default);
+			BGMPlayer.Instance.Intensity = CombatBGMState.Default;
 
 			bool isInCombat = false;
 			if (!IsInMenu)
