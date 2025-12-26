@@ -254,7 +254,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 137823618
+  GlobalObjectIdHash: 8928467
   InScenePlacedSourceGlobalObjectIdHash: 8928467
   DeferredDespawnTick: 0
   Ownership: 1
@@ -2537,6 +2537,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 267656748106901400}
+    - targetCorrespondingSourceObject: {fileID: 5835721708916757235, guid: ca9c5e66ece1ad543b65df9b72def84e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7279466058427252586}
     - targetCorrespondingSourceObject: {fileID: -2201275699333198272, guid: ca9c5e66ece1ad543b65df9b72def84e,
         type: 3}
       insertIndex: -1
@@ -2545,6 +2549,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 6801889543893125148}
+    - targetCorrespondingSourceObject: {fileID: -2201275699333198272, guid: ca9c5e66ece1ad543b65df9b72def84e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 919821326946395926}
     - targetCorrespondingSourceObject: {fileID: -8368211266618076942, guid: ca9c5e66ece1ad543b65df9b72def84e,
         type: 3}
       insertIndex: -1
@@ -2561,6 +2569,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1684486383312337477}
+    - targetCorrespondingSourceObject: {fileID: 5387722599937442218, guid: ca9c5e66ece1ad543b65df9b72def84e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2720541493365865863}
     - targetCorrespondingSourceObject: {fileID: -4798852649112693913, guid: ca9c5e66ece1ad543b65df9b72def84e,
         type: 3}
       insertIndex: -1
@@ -2601,7 +2613,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -2629,11 +2641,32 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -1808896590112627363, guid: ca9c5e66ece1ad543b65df9b72def84e, type: 3}
+--- !u!135 &2720541493365865863
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 991803411434085559}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.07863774
+  m_Center: {x: -0.0031941794, y: -1.9038793e-10, z: -0.0000000047683715}
 --- !u!4 &1344325582790388465 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -3049326016659851284, guid: ca9c5e66ece1ad543b65df9b72def84e,
@@ -2663,7 +2696,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -2691,7 +2724,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -2740,6 +2773,27 @@ MonoBehaviour:
   damageMultiplier: 1
   deathEffectPosition: {fileID: 1931211425675192169}
   parentToDeathPosition: 1
+--- !u!135 &7279466058427252586
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1727758431782555630}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.05256527
+  m_Center: {x: -0.0019843392, y: -0.0000000037640113, z: -0.00015745871}
 --- !u!4 &1783532260623593489 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6901484946921762060, guid: ca9c5e66ece1ad543b65df9b72def84e,
@@ -2769,7 +2823,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -2829,6 +2883,27 @@ MonoBehaviour:
   damageMultiplier: 1
   deathEffectPosition: {fileID: 0}
   parentToDeathPosition: 1
+--- !u!135 &919821326946395926
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2771369293837407069}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.036672
+  m_Center: {x: -0.03, y: 0.0000000024379725, z: 0}
 --- !u!1 &3092878133337943732 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -1303085531697024087, guid: ca9c5e66ece1ad543b65df9b72def84e,
@@ -2852,7 +2927,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -2910,7 +2985,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -3036,7 +3111,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -3142,7 +3217,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -3966,7 +4041,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30

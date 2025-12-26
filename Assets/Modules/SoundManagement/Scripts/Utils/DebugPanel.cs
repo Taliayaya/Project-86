@@ -14,7 +14,8 @@ namespace SoundManagement.Utils
 		{
 			_player = bgmPlayer;
 		}
-		
+
+#if UNITY_EDITOR
 		public void OnGUI()
 		{
 			if (!_inited)
@@ -34,19 +35,20 @@ namespace SoundManagement.Utils
 		private void DrawMutedText(int id)
 		{
 			if (_player == null) return;
-			
+
 			ReadonlyBoolCache<EventInstance> currentPlaying = _player.GetCurrentPlaying();
 
 			string playingBGMName = currentPlaying.Name;
 
 			GUILayout.Label($"Playing <b>{playingBGMName}</b>", _richText);
-			
+
 			bool isMuted = UnityEditor.EditorUtility.audioMasterMute;
-			
+
 			if (isMuted)
 				GUILayout.Label($"Audio is <b><color=red>DISABLED</color></b>", _richText);
 
 			GUI.DragWindow();
 		}
+#endif
 	}
 }

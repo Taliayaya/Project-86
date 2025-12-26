@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Gameplay;
 using Gameplay.Mecha;
+using Gameplay.Units;
 using UnityEngine;
 
 namespace SoundManagement
@@ -40,7 +41,9 @@ namespace SoundManagement
 			EventManager.AddListener(Constants.TypedEvents.OnTakeDamage, OnTakeDamage);
 			EventManager.AddListener(SoundEventName.OnDinosauriaAimed, OnDinosauriaAimed);
 			EventManager.AddListener(SoundEventName.OnDinosauriaDead, OnDinosauriaDead);
+			EventManager.AddListener(Constants.TypedEvents.UnitSpawn, OnUnitSpawned);
 		}
+
 
 
 		private void OnDestroy()
@@ -106,26 +109,19 @@ namespace SoundManagement
 
 		private void CheckState()
 		{
-			CombatBGMState combatState = GetCombatState();
-			if (combatState != BGMPlayer.Instance.CombatState)
-			{
-				BGMPlayer.Instance.SetCombatState(combatState);
-			}
+			BGMPlayer.Instance.Intensity = GetCombatState();
 		}
 
 		private CombatBGMState GetCombatState()
 		{
-			if (_destroyed) return CombatBGMState.Death;
-
-
+			// if (_destroyed) return CombatBGMState.Death;
 			bool isIntense = IsIntenseCombatState();
+			bool isDinosauriaAiming = IsDinosauriaAimed();
 
 			if (isIntense)
 			{
-				return CombatBGMState.Intense;
+				return isDinosauriaAiming ? CombatBGMState.DinosauriaIntense : CombatBGMState.Intense;
 			}
-
-			bool isDinosauriaAiming = IsDinosauriaAimed();
 
 			if (isDinosauriaAiming)
 			{
@@ -155,6 +151,15 @@ namespace SoundManagement
 		private void OnDinosauriaDead()
 		{
 			_hasDinosauriaAimed = false;
+		}
+		
+		private void OnUnitSpawned(object arg0)
+		{
+			if (arg0 is Unit unit)
+			{
+				if (unit.unitType == UnitType.Dinosauria)
+					_hasDinosauriaAimed = true;
+			}
 		}
 		
 		private void OnPlayerChanged(object arg0)

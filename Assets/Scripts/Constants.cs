@@ -146,6 +146,7 @@ public static class Constants
         public const string OnPlayerChanged = "OnPlayerChanged";
         public const string OnTakeDamage = "OnTakeDamage";
         public const string UnitDeath = "UnitDeath";
+        public const string UnitSpawn = "UnitSpawn";
 
     }
 

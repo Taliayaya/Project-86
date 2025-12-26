@@ -77,9 +77,14 @@ namespace SoundManagement.Utils
 
 		public static string GetEventName(this EventReference reference)
 		{
+#if UNITY_EDITOR
 			string eventName = reference.Path.Substring(reference.Path.LastIndexOf('/') + 1);
+#else
+			string eventName = reference.Guid.ToString();
+#endif
 			return eventName;
 		}
+
 		public static string GetEventName(this EventInstance reference)
 		{
 			if (reference.getDescription(out EventDescription description) == RESULT.OK && description.getPath(out string path) == RESULT.OK)
