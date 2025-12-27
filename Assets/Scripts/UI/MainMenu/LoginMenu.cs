@@ -78,6 +78,13 @@ namespace UI.MainMenu
 
         public async void OnPlayAnonymousClicked()
         {
+            if (string.IsNullOrWhiteSpace(usernameInput.text))
+            {
+                feedbackText.text = "Please enter a username.";
+                feedbackText.color = errorColor;
+                return;
+            }
+
             try
             {
                 playAnonymousButton.interactable = false;
