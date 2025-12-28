@@ -3,15 +3,16 @@
 	public enum PlayingBGM
 	{
 		Menu,
-		Exploration,
-		Combat
+		Game,
+		Death
 	}
 
 	public enum CombatBGMState
 	{
 		Default,
-		Dinosauria,
 		Intense,
-		Death
+		Dinosauria,
+		DinosauriaIntense,
+		End
 	}
 }

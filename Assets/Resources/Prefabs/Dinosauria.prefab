@@ -308,6 +308,7 @@ Transform:
   m_Children:
   - {fileID: 2101416268217339994}
   - {fileID: 3045722324338141481}
+  - {fileID: 7606283943864134623}
   m_Father: {fileID: 75400199608566631}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &7965270686725992004
@@ -427,6 +428,7 @@ MonoBehaviour:
     target: {fileID: 0}
     rotationSpeed: 35
     lockZAxis: 1
+    IsMainTurret: 0
     yAngle:
       min: 0
       max: 0
@@ -440,6 +442,7 @@ MonoBehaviour:
     target: {fileID: 0}
     rotationSpeed: 70
     lockZAxis: 1
+    IsMainTurret: 0
     yAngle:
       min: -60
       max: 140
@@ -453,6 +456,7 @@ MonoBehaviour:
     target: {fileID: 0}
     rotationSpeed: 70
     lockZAxis: 1
+    IsMainTurret: 0
     yAngle:
       min: -60
       max: 140
@@ -9328,6 +9332,54 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &7997242565717456494
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7606283943864134623}
+  - component: {fileID: 5134326366027960224}
+  m_Layer: 0
+  m_Name: Turret Tracker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7606283943864134623
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7997242565717456494}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5495974026926177958}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5134326366027960224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7997242565717456494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d311c0f676e44a269b1af6010c87ac55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DinosauriaUnit: {fileID: 5133340453581848025}
+  Controller: {fileID: 4502831402250996778}
+  CheckOnlyMainTurret: 0
+  minAngleToShoot: 15
 --- !u!1 &8129480281750763147
 GameObject:
   m_ObjectHideFlags: 0

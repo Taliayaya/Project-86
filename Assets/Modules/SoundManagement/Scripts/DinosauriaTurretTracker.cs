@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Gameplay.Units;
 using UnityEngine;
@@ -31,6 +32,7 @@ namespace SoundManagement
 			}
 
 			DinosauriaUnit.onUnitDeath.AddListener(Dead);
+			StartCoroutine(CheckAimedRoutine());
 		}
 
 		private void Dead(Unit unit)
@@ -48,26 +50,30 @@ namespace SoundManagement
 			}
 		}
 
-
-		private void Update()
+		IEnumerator CheckAimedRoutine()
 		{
-			if (_dead) return;
-			if (_alreadyAimed) return;
-			
-			foreach (CannonController.TurretData turretData in _turretsForCheck)
+			while (true)
 			{
-				if (turretData.target == null) return;
+				if (_dead) yield break;
+				if (_alreadyAimed) yield break;
 
-				if (EnemyInRange(turretData.turret, turretData.target))
+				foreach (CannonController.TurretData turretData in _turretsForCheck)
 				{
-					_alreadyAimed = true;
+					if (turretData.target == null) continue;
 
-					Debug.LogError($"Aimed at target");
-					EventManager.TriggerEvent(SoundEventName.OnDinosauriaAimed);
+					if (EnemyInRange(turretData.turret, turretData.target))
+					{
+						_alreadyAimed = true;
+						Debug.LogError($"Aimed at target");
+						EventManager.TriggerEvent(SoundEventName.OnDinosauriaAimed);
+						yield break;
+					}
+
+					yield return new WaitForFixedUpdate();
 				}
+				yield return new WaitForSeconds(.5f);
 			}
 		}
-		
 		
 		public bool EnemyInRange(Transform turret, Transform target)
 		{
