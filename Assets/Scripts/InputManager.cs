@@ -217,9 +217,15 @@ public class InputManager : Singleton<InputManager>
     private bool _pauseCd = false;
     public void OnResume()
     {
+        if (WindowManager.WindowOpenedCount > 1)
+        {
+            WindowManager.Close();
+            return;
+        }
+
         EventManager.TriggerEvent("OnResume");
-    }
-    
+    }    
+
     private void OnResumeFollow()
     {
         WindowManager.Close();

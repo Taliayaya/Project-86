@@ -462,9 +462,12 @@ namespace Gameplay.Mecha
         
         public void ResetAmmo()
         {
+            if (ammo == null || ammo.maxAmmo <= 0)
+                return;
+
             CurrentAmmoRemaining = ammo.maxAmmo;
-        }
-        
+        } 
+
         public void CanShoot(bool canShoot)
         {
             listenOrTriggersEvents = canShoot;
