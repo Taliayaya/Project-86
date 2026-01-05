@@ -77,6 +77,11 @@ namespace Gameplay.Mecha
         public float ReloadTime => ammo.reloadTime;
         public string WeaponName => ammo.gunTypeName;
 
+        public bool UsesAmmo =>
+            ammo != null &&
+            ammo.maxAmmo > 0 &&
+            ammo.fireRate > 0 &&
+            ammo.prefab != null;
 
         public int CurrentAmmoRemaining
         {
