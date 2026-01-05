@@ -80,8 +80,8 @@ namespace Gameplay.Units
 
         private void Reload(WeaponModule weaponModule)
         {
-            UpdateAmmoAmount(weaponModule);
-            
+            if (weaponModule.MaxAmmo <= 0) return;
+            UpdateAmmoAmount(weaponModule);           
         }
 
         public void Reload(WeaponModule[] weaponModules, Unit unit, bool emitEventsForce = false)

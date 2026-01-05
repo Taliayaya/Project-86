@@ -464,9 +464,6 @@ namespace Gameplay.Mecha
         public void ResetAmmo()
         {
             if (!HasAuthority) return;
-            if (ammo == null || ammo.maxAmmo <= 0)
-                return;
-
             CurrentAmmoRemaining = ammo.maxAmmo;
         } 
 
