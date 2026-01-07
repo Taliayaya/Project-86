@@ -80,8 +80,8 @@ namespace Gameplay.Units
 
         private void Reload(WeaponModule weaponModule)
         {
+            if (!weaponModule.UsesAmmo) return;
             UpdateAmmoAmount(weaponModule);
-            
         }
 
         public void Reload(WeaponModule[] weaponModules, Unit unit, bool emitEventsForce = false)
@@ -101,12 +101,12 @@ namespace Gameplay.Units
             for (int i = 0; i < weaponModules.Length; i++)
             {
                 var weaponModule = weaponModules[i];
-                if (emitEvents || emitEventsForce)
+                if ((emitEvents || emitEventsForce) && weaponModule.UsesAmmo)
                     EventManager.TriggerEvent("OnReloadWeaponModule", new ReloadModuleData(i, weaponModules.Length, this, weaponModule.WeaponName, weaponModule.ReloadTime, weaponModule.Type));
                 yield return new WaitForSeconds(weaponModule.ReloadTime);
                 Reload(weaponModule);
             }
-            
+
             // Allowing firing again
             IsReloading = false;
             foreach (var weaponModule in weaponModules)
@@ -120,8 +120,8 @@ namespace Gameplay.Units
             _copyAmmoStacks[index].ammoAmount -= ammoToAdd;
             weaponModule.CurrentAmmoRemaining += ammoToAdd;
         }
-        
-        
+
+
         #endregion
 
         private void OnDrawGizmosSelected()

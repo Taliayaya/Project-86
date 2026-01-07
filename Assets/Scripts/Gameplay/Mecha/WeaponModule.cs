@@ -77,6 +77,11 @@ namespace Gameplay.Mecha
         public float ReloadTime => ammo.reloadTime;
         public string WeaponName => ammo.gunTypeName;
 
+        public bool UsesAmmo =>
+            ammo != null &&
+            ammo.maxAmmo > 0 &&
+            ammo.fireRate > 0 &&
+            ammo.prefab != null;
 
         public int CurrentAmmoRemaining
         {
@@ -104,6 +109,7 @@ namespace Gameplay.Mecha
 
         private void Start()
         {
+            if (!HasAuthority) return;
             CurrentAmmoRemaining = ammo.maxAmmo;
         }
 
@@ -462,9 +468,10 @@ namespace Gameplay.Mecha
         
         public void ResetAmmo()
         {
+            if (!HasAuthority) return;
             CurrentAmmoRemaining = ammo.maxAmmo;
-        }
-        
+        } 
+
         public void CanShoot(bool canShoot)
         {
             listenOrTriggersEvents = canShoot;
