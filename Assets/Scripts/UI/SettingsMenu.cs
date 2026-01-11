@@ -1,3 +1,9 @@
+/* TODO:
+ * 1. Integrate the new resolution logic into the already existing dropdown
+ * 2. Make Resolution list not get picked up by Awake() initialization (?)
+ * 3. Clean up le code
+ */
+
 using DefaultNamespace;
 using Firebase.Analytics;
 using ScriptableObjects.GameParameters;
@@ -96,12 +102,6 @@ namespace UI
                 (s) => ResetCategory(parameters, settingsUI));
             foreach (var fieldName in parameters.FieldsToShowInGame)
             {
-                if (parameters is GraphicsParameters graphics && fieldName == "current_resolution")
-                {
-                    AddResolutionDropdown(graphics, settingsUI.contentParent);
-                    continue;
-                }
-
                 var paramWrapper = Instantiate(contentParameterPrefab, settingsUI.contentParent);
                 var field = parameterType.GetField(fieldName);
                 if (field == null)
@@ -117,6 +117,8 @@ namespace UI
                     AddSlider(field, parameters, fieldName, paramWrapper.transform);
                 else if (field.FieldType.IsEnum)
                     AddDropdown(field, parameters, fieldName, paramWrapper.transform);
+                else if (field.FieldType == typeof(ResolutionData))
+                    AddResolutionDropdown(parameters as GraphicsParameters, paramWrapper.transform);
                 else
                     Debug.LogError($"[SettingsMenu] Field type \"{field.FieldType}\" not supported");
             }
@@ -186,10 +188,7 @@ namespace UI
 
         private void AddResolutionDropdown(GraphicsParameters graphics, Transform parent)
         {
-            var paramWrapper = Instantiate(contentParameterPrefab, parent);
-            paramWrapper.transform.GetComponentInChildren<TextMeshProUGUI>().text = "Resolution";
-
-            var dropdownGo = Instantiate(dropdownPrefab, paramWrapper.transform);
+            var dropdownGo = Instantiate(dropdownPrefab, parent);
             var dropdown = dropdownGo.GetComponentInChildren<TMP_Dropdown>();
             dropdown.options.Clear();
 
