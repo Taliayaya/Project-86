@@ -28,7 +28,7 @@ namespace ScriptableObjects.GameParameters
 
         public override string ToString()
         {
-            return $"{width}x{height}@{refresh_rate}";
+            return $"{width}x{height}@{refresh_rate}Hz";
         }
     }
 
@@ -49,15 +49,13 @@ namespace ScriptableObjects.GameParameters
 
         public override string GetParametersName => "Graphics";
 
-        private void OnEnable()
+        public void Initialize()
         {
-            // ERROR: not getting triggered for some reason?
-            Debug.Log("Adding listeners for resolution and quality");
             EventManager.AddListener("UpdateGameParameter:quality", OnUpdateGraphicsQuality);
             EventManager.AddListener("UpdateGameParameter:resolution", OnResolutionChanged);
         }
 
-        private void OnDisable()
+        public void Deinitialize()
         {
             EventManager.RemoveListener("UpdateGameParameter:quality", OnUpdateGraphicsQuality);
             EventManager.RemoveListener("UpdateGameParameter:resolution", OnResolutionChanged);
@@ -65,12 +63,13 @@ namespace ScriptableObjects.GameParameters
 
         private void OnUpdateGraphicsQuality(object _)
         {
+            Debug.Log("Changing Graphics Quality to " + quality);
             QualitySettings.SetQualityLevel((int)quality, true);
         }
 
         private void OnResolutionChanged(object _)
         {
-            Debug.Log("applying new resolution");
+            Debug.Log("Changing resolution to " + current_resolution);
             ApplyResolution(current_resolution);
         }
 

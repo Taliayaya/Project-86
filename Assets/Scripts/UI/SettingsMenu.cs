@@ -1,8 +1,9 @@
+using DefaultNamespace;
+using Firebase.Analytics;
+using ScriptableObjects.GameParameters;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using DefaultNamespace;
-using ScriptableObjects.GameParameters;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,9 +28,14 @@ namespace UI
             _gameParametersMap = new Dictionary<string, GameParameters>();
             var gameParametersArray = Resources.LoadAll<GameParameters>("ScriptableObjects/Parameters");
             foreach (var parameter in gameParametersArray)
+            {
                 _gameParametersMap.Add(parameter.GetParametersName, parameter);
+                if (parameter is GraphicsParameters graphics)
+                {
+                    graphics.Initialize();
+                }
+            }
         }
-
 
         #region Dynamic Creation of the UI
 
@@ -191,7 +197,7 @@ namespace UI
             for (int i = 0; i < graphics.resolutions.Count; i++)
             {
                 var res = graphics.resolutions[i];
-                dropdown.options.Add(new TMP_Dropdown.OptionData($"{res.width}x{res.height}@{res.refresh_rate}"));
+                dropdown.options.Add(new TMP_Dropdown.OptionData($"{res.width}x{res.height}@{res.refresh_rate}Hz"));
                 if (res.Equals(graphics.current_resolution))
                     selectedIndex = i;
             }
@@ -231,8 +237,5 @@ namespace UI
         }
 
         #endregion
-
-
-
     }
 }
