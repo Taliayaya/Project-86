@@ -1,9 +1,4 @@
-/* TODO:
- * 1. Integrate the new resolution logic into the already existing dropdown
- * 2. Make Resolution list not get picked up by Awake() initialization (?)
- * 3. Clean up le code
- */
-
+// TODO: Add an option to choose the right display/screen
 using DefaultNamespace;
 using Firebase.Analytics;
 using ScriptableObjects.GameParameters;
@@ -97,6 +92,7 @@ namespace UI
 
             var parameters = _gameParametersMap[menu];
             var parameterType = parameters.GetType();
+            GraphicsParameters graphics = parameters as GraphicsParameters;
             settingsUI.onResetButton.RemoveAllListeners();
             settingsUI.onResetButton.AddListener(
                 (s) => ResetCategory(parameters, settingsUI));
@@ -115,10 +111,8 @@ namespace UI
                     AddToggle(field, parameters, fieldName, paramWrapper.transform);
                 else if (field.FieldType == typeof(int) || field.FieldType == typeof(float))
                     AddSlider(field, parameters, fieldName, paramWrapper.transform);
-                else if (field.FieldType.IsEnum)
-                    AddDropdown(field, parameters, fieldName, paramWrapper.transform);
-                else if (field.FieldType == typeof(ResolutionData))
-                    AddResolutionDropdown(parameters as GraphicsParameters, paramWrapper.transform);
+                else if (field.FieldType.IsEnum || field.FieldType == typeof(ResolutionData))
+                    AddDropdown(field, parameters, graphics, fieldName, paramWrapper.transform);
                 else
                     Debug.LogError($"[SettingsMenu] Field type \"{field.FieldType}\" not supported");
             }
@@ -161,6 +155,7 @@ namespace UI
         private void AddDropdown(
             FieldInfo fieldInfo,
             GameParameters parameters,
+            GraphicsParameters graphics,
             string parameter,
             Transform parent = null
         )
@@ -170,46 +165,52 @@ namespace UI
             dropdown.options.Clear();
 
             var fieldType = fieldInfo.FieldType;
-            var enumNames = fieldType.GetEnumNames();
+            var isEnum = fieldType.IsEnum;
+            var isResolution = fieldType == typeof(ResolutionData);
 
-            foreach (var enumName in enumNames)
+            if (isEnum)
             {
-                dropdown.options.Add(new TMP_Dropdown.OptionData(enumName));
+                var enumNames = fieldType.GetEnumNames();
+
+                foreach (var enumName in enumNames)
+                {
+                    dropdown.options.Add(new TMP_Dropdown.OptionData(enumName));
+                }
+
+                dropdown.value = (int)fieldInfo.GetValue(parameters);
+
+                dropdown.onValueChanged.AddListener(value =>
+                    OnGameSettingsDropdownValueChanged(parameters, fieldInfo, parameter, value)
+                );
             }
 
-            dropdown.value = (int)fieldInfo.GetValue(parameters);
+            else if (isResolution)
+            {
+                if (graphics == null)
+                    return;
 
-            dropdown.onValueChanged.AddListener(value =>
-                OnGameSettingsDropdownValueChanged(parameters, fieldInfo, parameter, value)
-            );
+                int selectedIndex = 0;
+                for (int i = 0; i < graphics.resolutions.Count; i++)
+                {
+                    var res = graphics.resolutions[i];
+                    dropdown.options.Add(new TMP_Dropdown.OptionData($"{res.width}x{res.height}@{res.refresh_rate}Hz"));
+                    if (res.Equals(graphics.current_resolution))
+                        selectedIndex = i;
+                }
+
+                dropdown.onValueChanged.AddListener(index =>
+                {
+                    if (index >= 0 && index < graphics.resolutions.Count)
+                    {
+                        graphics.current_resolution = graphics.resolutions[index];
+                        EventManager.TriggerEvent("UpdateGameParameter:resolution",
+                                (object)graphics.current_resolution);
+                    }
+                });
+                dropdown.value = selectedIndex;
+            }
 
             return;
-        }
-
-        private void AddResolutionDropdown(GraphicsParameters graphics, Transform parent)
-        {
-            var dropdownGo = Instantiate(dropdownPrefab, parent);
-            var dropdown = dropdownGo.GetComponentInChildren<TMP_Dropdown>();
-            dropdown.options.Clear();
-
-            int selectedIndex = 0;
-            for (int i = 0; i < graphics.resolutions.Count; i++)
-            {
-                var res = graphics.resolutions[i];
-                dropdown.options.Add(new TMP_Dropdown.OptionData($"{res.width}x{res.height}@{res.refresh_rate}Hz"));
-                if (res.Equals(graphics.current_resolution))
-                    selectedIndex = i;
-            }
-
-            dropdown.onValueChanged.AddListener(index =>
-            {
-                if (index >= 0 && index < graphics.resolutions.Count)
-                {
-                    graphics.current_resolution = graphics.resolutions[index];
-                    EventManager.TriggerEvent("UpdateGameParameter:resolution", (object)graphics.current_resolution);
-                }
-            });
-            dropdown.value = selectedIndex;
         }
 
         private void OnGameSettingsDropdownValueChanged(GameParameters parameters, FieldInfo fieldInfo, string parameter, int value)
