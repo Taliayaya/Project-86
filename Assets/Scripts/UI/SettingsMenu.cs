@@ -16,11 +16,11 @@ namespace UI
         [SerializeField] private GameObject togglePrefab;
         [SerializeField] private GameObject dropdownPrefab;
         [SerializeField] private GameObject contentParameterPrefab;
-        
+
         [Header("References")]
-        
+
         private Dictionary<string, GameParameters> _gameParametersMap;
-        
+
         private void Awake()
         {
             // Loading game parameters into the dictionary with its name as a key and a reference to the object as a value
@@ -46,7 +46,7 @@ namespace UI
         public override void ResetSettings(SettingsUI settingsUI)
         {
             // not used, custom
-            
+
         }
 
         public GameObject AddSettingsMenu(SettingsUI settingsUI, string menuContentName)
@@ -78,22 +78,33 @@ namespace UI
         private void SetGameSettingsContent(string menu, SettingsUI settingsUI)
         {
             settingsUI.menuContentName.text = menu;
-            
+
             // Destroy the previous content
             foreach (Transform child in settingsUI.contentParent)
                 Destroy(child.gameObject);
-            
+
             var parameters = _gameParametersMap[menu];
             var parameterType = parameters.GetType();
             settingsUI.onResetButton.RemoveAllListeners();
             settingsUI.onResetButton.AddListener(
                 (s) => ResetCategory(parameters, settingsUI));
-            
             foreach (var fieldName in parameters.FieldsToShowInGame)
             {
+                if (parameters is GraphicsParameters graphics && fieldName == "current_resolution")
+                {
+                    AddResolutionDropdown(graphics, settingsUI.contentParent);
+                    continue;
+                }
+
                 var paramWrapper = Instantiate(contentParameterPrefab, settingsUI.contentParent);
-                paramWrapper.transform.GetComponentInChildren<TextMeshProUGUI>().text = fieldName;
                 var field = parameterType.GetField(fieldName);
+                if (field == null)
+                {
+                    Debug.LogError($"[SettingsMenu] Field not found: {fieldName}");
+                    continue;
+                }
+
+                paramWrapper.transform.GetComponentInChildren<TextMeshProUGUI>().text = fieldName;
                 if (field.FieldType == typeof(bool))
                     AddToggle(field, parameters, fieldName, paramWrapper.transform);
                 else if (field.FieldType == typeof(int) || field.FieldType == typeof(float))
@@ -103,8 +114,9 @@ namespace UI
                 else
                     Debug.LogError($"[SettingsMenu] Field type \"{field.FieldType}\" not supported");
             }
+
         }
-        
+
         private void ResetCategory(GameParameters parameters, SettingsUI settingsUI)
         {
             parameters.ResetToDefault();
@@ -122,7 +134,7 @@ namespace UI
         private void AddSlider(FieldInfo fieldInfo, GameParameters parameters, string parameter, Transform parent = null)
         {
             bool isRange = Attribute.IsDefined(fieldInfo, typeof(RangeAttribute), false);
-            
+
             if (!isRange)
                 return;
 
@@ -137,18 +149,62 @@ namespace UI
                 : (float)fieldInfo.GetValue(parameters);
             sliderComponent.onValueChanged.AddListener((value) => OnGameSettingsSliderValueChanged(parameters, fieldInfo, parameter, value));
         }
-        
-        private void AddDropdown(FieldInfo fieldInfo, GameParameters parameters, string parameter, Transform parent = null)
+
+        private void AddDropdown(
+            FieldInfo fieldInfo,
+            GameParameters parameters,
+            string parameter,
+            Transform parent = null
+        )
         {
             var dropdownGo = Instantiate(dropdownPrefab, parent);
             var dropdown = dropdownGo.GetComponentInChildren<TMP_Dropdown>();
             dropdown.options.Clear();
-            foreach (var enumName in fieldInfo.FieldType.GetEnumNames())
+
+            var fieldType = fieldInfo.FieldType;
+            var enumNames = fieldType.GetEnumNames();
+
+            foreach (var enumName in enumNames)
             {
                 dropdown.options.Add(new TMP_Dropdown.OptionData(enumName));
             }
+
             dropdown.value = (int)fieldInfo.GetValue(parameters);
-            dropdown.onValueChanged.AddListener((value) => OnGameSettingsDropdownValueChanged(parameters, fieldInfo, parameter, value));
+
+            dropdown.onValueChanged.AddListener(value =>
+                OnGameSettingsDropdownValueChanged(parameters, fieldInfo, parameter, value)
+            );
+
+            return;
+        }
+
+        private void AddResolutionDropdown(GraphicsParameters graphics, Transform parent)
+        {
+            var paramWrapper = Instantiate(contentParameterPrefab, parent);
+            paramWrapper.transform.GetComponentInChildren<TextMeshProUGUI>().text = "Resolution";
+
+            var dropdownGo = Instantiate(dropdownPrefab, paramWrapper.transform);
+            var dropdown = dropdownGo.GetComponentInChildren<TMP_Dropdown>();
+            dropdown.options.Clear();
+
+            int selectedIndex = 0;
+            for (int i = 0; i < graphics.resolutions.Count; i++)
+            {
+                var res = graphics.resolutions[i];
+                dropdown.options.Add(new TMP_Dropdown.OptionData($"{res.width}x{res.height}@{res.refresh_rate}"));
+                if (res.Equals(graphics.current_resolution))
+                    selectedIndex = i;
+            }
+
+            dropdown.onValueChanged.AddListener(index =>
+            {
+                if (index >= 0 && index < graphics.resolutions.Count)
+                {
+                    graphics.current_resolution = graphics.resolutions[index];
+                    EventManager.TriggerEvent("UpdateGameParameter:resolution", (object)graphics.current_resolution);
+                }
+            });
+            dropdown.value = selectedIndex;
         }
 
         private void OnGameSettingsDropdownValueChanged(GameParameters parameters, FieldInfo fieldInfo, string parameter, int value)
@@ -162,7 +218,7 @@ namespace UI
             fieldInfo.SetValue(parameters, isOn);
             EventManager.TriggerEvent($"UpdateGameParameter:{gameParameter}", isOn);
         }
-        
+
         private void OnGameSettingsSliderValueChanged(GameParameters parameters, FieldInfo fieldInfo, string gameParameter, float value)
         {
             if (fieldInfo.FieldType == typeof(int))
@@ -173,10 +229,10 @@ namespace UI
                 fieldInfo.SetValue(parameters, value);
             EventManager.TriggerEvent($"UpdateGameParameter:{gameParameter}", value);
         }
-        
+
         #endregion
-        
-        
+
+
 
     }
 }

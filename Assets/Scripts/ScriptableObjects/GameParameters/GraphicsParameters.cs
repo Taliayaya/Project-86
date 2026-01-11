@@ -1,6 +1,6 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace ScriptableObjects.GameParameters
 {
@@ -12,23 +12,47 @@ namespace ScriptableObjects.GameParameters
         High
     }
 
-    public enum ResolutionOption
+    [System.Serializable]
+    public struct ResolutionData
     {
-        R_1280x720,
-        R_1920x1080,
-        R_2560x1440
+        public int width;
+        public int height;
+        public int refresh_rate;
+
+        public ResolutionData(int width, int height, int refresh_rate)
+        {
+            this.width = width;
+            this.height = height;
+            this.refresh_rate = refresh_rate;
+        }
+
+        public override string ToString()
+        {
+            return $"{width}x{height}@{refresh_rate}";
+        }
     }
 
-    [CreateAssetMenu(fileName = "Graphics Parameters", menuName = "Scriptable Objects/Graphics Parameters")]
+    [CreateAssetMenu(
+        fileName = "Graphics Parameters",
+        menuName = "Scriptable Objects/Graphics Parameters"
+    )]
     public class GraphicsParameters : GameParameters
     {
+        [HideInInspector]
+        public List<ResolutionData> resolutions = new List<ResolutionData>();
+        public ResolutionData current_resolution;
+
         public GraphicsQuality quality = GraphicsQuality.Medium;
-        [Range(0, 100)] public int detailsDensity = 100;
+
+        [Range(0, 100)]
+        public int detailsDensity = 100;
+
         public override string GetParametersName => "Graphics";
-        public ResolutionOption resolution = ResolutionOption.R_1920x1080;
 
         private void OnEnable()
         {
+            // ERROR: not getting triggered for some reason?
+            Debug.Log("Adding listeners for resolution and quality");
             EventManager.AddListener("UpdateGameParameter:quality", OnUpdateGraphicsQuality);
             EventManager.AddListener("UpdateGameParameter:resolution", OnResolutionChanged);
         }
@@ -39,36 +63,60 @@ namespace ScriptableObjects.GameParameters
             EventManager.RemoveListener("UpdateGameParameter:resolution", OnResolutionChanged);
         }
 
-        private void OnUpdateGraphicsQuality(object arg0)
+        private void OnUpdateGraphicsQuality(object _)
         {
-            Debug.Log("Changing Graphics Quality to " + arg0);
-            QualitySettings.SetQualityLevel((int) quality, true);
+            QualitySettings.SetQualityLevel((int)quality, true);
         }
-        private void OnResolutionChanged(object arg0)
+
+        private void OnResolutionChanged(object _)
         {
-            resolution = (ResolutionOption)arg0;
+            Debug.Log("applying new resolution");
+            ApplyResolution(current_resolution);
+        }
 
-            switch (resolution)
+        [Obsolete]
+        private void ApplyResolution(ResolutionData res)
+        {
+            Screen.SetResolution(
+                res.width,
+                res.height,
+                Screen.fullScreenMode,
+                res.refresh_rate
+            );
+        }
+
+        private void BuildResolutionList()
+        {
+            resolutions.Clear();
+
+            foreach (var r in Screen.resolutions)
             {
-                case ResolutionOption.R_1280x720:
-                    Screen.SetResolution(1280, 720, Screen.fullScreen);
-                    break;
+                int refreshRate = Mathf.RoundToInt((float)r.refreshRateRatio.value);
 
-                case ResolutionOption.R_1920x1080:
-                    Screen.SetResolution(1920, 1080, Screen.fullScreen);
-                    break;
+                var data = new ResolutionData(
+                    r.width,
+                    r.height,
+                    refreshRate
+                );
 
-                case ResolutionOption.R_2560x1440:
-                    Screen.SetResolution(2560, 1440, Screen.fullScreen);
-                    break;
+                if (!resolutions.Contains(data))
+                {
+                    resolutions.Add(data);
+                }
             }
+
+            int initial_index = resolutions.Count - 1;
+            current_resolution = resolutions.Count > 0 ? resolutions[initial_index] : default;
         }
 
         public override void LoadFromFile()
         {
             base.LoadFromFile();
-            QualitySettings.SetQualityLevel((int) quality, true);
-            OnResolutionChanged(resolution);
+
+            BuildResolutionList();
+            ApplyResolution(current_resolution);
+
+            QualitySettings.SetQualityLevel((int)quality, true);
         }
     }
 }
