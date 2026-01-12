@@ -38,14 +38,14 @@ namespace ScriptableObjects.GameParameters
     )]
     public class GraphicsParameters : GameParameters
     {
-        [HideInInspector]
-        public List<ResolutionData> resolutions = new List<ResolutionData>();
         public ResolutionData current_resolution;
-
         public GraphicsQuality quality = GraphicsQuality.Medium;
 
         [Range(0, 100)]
         public int detailsDensity = 100;
+
+        [HideInInspector]
+        public List<ResolutionData> resolutions = new List<ResolutionData>();
 
         public override string GetParametersName => "Graphics";
 
@@ -73,48 +73,32 @@ namespace ScriptableObjects.GameParameters
             ApplyResolution(current_resolution);
         }
 
-        [Obsolete]
         private void ApplyResolution(ResolutionData res)
         {
-            Screen.SetResolution(
-                res.width,
-                res.height,
-                Screen.fullScreenMode,
-                res.refresh_rate
-            );
+            Screen.SetResolution(res.width, res.height, Screen.fullScreenMode, res.refresh_rate);
         }
 
         private void BuildResolutionList()
         {
             resolutions.Clear();
-
             foreach (var r in Screen.resolutions)
             {
                 int refreshRate = Mathf.RoundToInt((float)r.refreshRateRatio.value);
-
-                var data = new ResolutionData(
-                    r.width,
-                    r.height,
-                    refreshRate
-                );
-
+                var data = new ResolutionData(r.width, r.height, refreshRate);
                 if (!resolutions.Contains(data))
-                {
                     resolutions.Add(data);
-                }
             }
-
-            int initial_index = resolutions.Count - 1;
-            current_resolution = resolutions.Count > 0 ? resolutions[initial_index] : default;
+            if (!resolutions.Contains(current_resolution))
+            {
+                current_resolution = resolutions[^1];
+            }
         }
 
         public override void LoadFromFile()
         {
             base.LoadFromFile();
-
             BuildResolutionList();
             ApplyResolution(current_resolution);
-
             QualitySettings.SetQualityLevel((int)quality, true);
         }
     }

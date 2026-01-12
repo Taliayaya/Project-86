@@ -18,6 +18,7 @@ for (int i = 0; i < displays.Count; i++)
 }
 https://docs.unity3d.com/ScriptReference/Screen.MoveMainWindowTo.html
  */
+
 using DefaultNamespace;
 using Firebase.Analytics;
 using ScriptableObjects.GameParameters;
@@ -135,7 +136,6 @@ namespace UI
                 else
                     Debug.LogError($"[SettingsMenu] Field type \"{field.FieldType}\" not supported");
             }
-
         }
 
         private void ResetCategory(GameParameters parameters, SettingsUI settingsUI)
