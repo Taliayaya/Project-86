@@ -1,7 +1,6 @@
 /* TODO: 
- * 0. Add quality and resolution events as constants?
- * 1. Make a general List method for screen and resolution both
- * 2. Make isResolution section call OnGameSettingsDropdownValueChanged as well
+ * 1. Add quality and resolution events as constants?
+ * 2. Make a general List method for screen and resolution both
  * 3. Add an option to choose the right display/screen
  * Useful code:
  * [HideInInspector]
@@ -217,16 +216,19 @@ namespace UI
                         selectedIndex = i;
                 }
 
+                dropdown.value = selectedIndex;
+
                 dropdown.onValueChanged.AddListener(index =>
                 {
                     if (index >= 0 && index < graphics.resolutions.Count)
                     {
                         graphics.current_resolution = graphics.resolutions[index];
-                        EventManager.TriggerEvent("UpdateGameParameter:resolution",
-                                (object)graphics.current_resolution);
+                        FieldInfo currentResField = typeof(GraphicsParameters).GetField(nameof(GraphicsParameters.current_resolution));
+                        currentResField.SetValue(graphics, graphics.resolutions[index]);
+
+                        OnGameSettingsDropdownValueChanged(graphics, currentResField, "resolution", index);
                     }
                 });
-                dropdown.value = selectedIndex;
             }
 
             return;
@@ -234,8 +236,21 @@ namespace UI
 
         private void OnGameSettingsDropdownValueChanged(GameParameters parameters, FieldInfo fieldInfo, string parameter, int value)
         {
-            fieldInfo.SetValue(parameters, value);
-            EventManager.TriggerEvent($"UpdateGameParameter:{parameter}", value);
+            if (fieldInfo.FieldType == typeof(ResolutionData))
+            {
+                var graphics = parameters as GraphicsParameters;
+                if (graphics != null && value >= 0 && value < graphics.resolutions.Count)
+                {
+                    graphics.current_resolution = graphics.resolutions[value];
+                    EventManager.TriggerEvent($"UpdateGameParameter:{parameter}", graphics.current_resolution);
+                }
+            }
+
+            else
+            {
+                fieldInfo.SetValue(parameters, value);
+                EventManager.TriggerEvent($"UpdateGameParameter:{parameter}", value);
+            }
         }
 
         private void OnGameSettingsToggleValueChanged(GameParameters parameters, FieldInfo fieldInfo, string gameParameter, bool isOn)
