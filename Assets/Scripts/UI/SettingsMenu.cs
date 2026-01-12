@@ -1,4 +1,23 @@
-// TODO: Add an option to choose the right display/screen
+/* TODO: 
+ * 0. Add quality and resolution events as constants?
+ * 1. Make a general List method for screen and resolution both
+ * 2. Make isResolution section call OnGameSettingsDropdownValueChanged as well
+ * 3. Add an option to choose the right display/screen
+ * Useful code:
+ * [HideInInspector]
+public List<DisplayInfo> displays = new List<DisplayInfo>();
+public DisplayInfo current_display;
+Screen.GetDisplayLayout(displays);
+for (int i = 0; i < displays.Count; i++)
+{
+    DisplayInfo d = displays[i];
+
+    Debug.Log(
+        $"Display {i}: {d.name} ({d.width}x{d.height})"
+    );
+}
+https://docs.unity3d.com/ScriptReference/Screen.MoveMainWindowTo.html
+ */
 using DefaultNamespace;
 using Firebase.Analytics;
 using ScriptableObjects.GameParameters;
