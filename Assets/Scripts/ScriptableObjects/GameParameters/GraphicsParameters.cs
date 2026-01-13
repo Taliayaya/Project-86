@@ -1,4 +1,3 @@
-// TODO: naming convention (resolution and display instead of current_...)
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -96,8 +95,8 @@ namespace ScriptableObjects.GameParameters
     public class GraphicsParameters : GameParameters
     {
         public GraphicsQuality quality = GraphicsQuality.Medium;
-        public ResolutionData current_resolution;
-        public DisplayData current_display;
+        public ResolutionData resolution;
+        public DisplayData display;
 
         [Range(0, 100)]
         public int detailsDensity = 100;
@@ -114,15 +113,15 @@ namespace ScriptableObjects.GameParameters
         public void Initialize()
         {
             EventManager.AddListener("UpdateGameParameter:quality", OnUpdateGraphicsQuality);
-            EventManager.AddListener("UpdateGameParameter:current_resolution", OnChangeResolution);
-            EventManager.AddListener("UpdateGameParameter:current_display", OnChangeDisplay);
+            EventManager.AddListener("UpdateGameParameter:resolution", OnChangeResolution);
+            EventManager.AddListener("UpdateGameParameter:display", OnChangeDisplay);
         }
 
         public void Deinitialize()
         {
             EventManager.RemoveListener("UpdateGameParameter:quality", OnUpdateGraphicsQuality);
-            EventManager.RemoveListener("UpdateGameParameter:current_resolution", OnChangeResolution);
-            EventManager.RemoveListener("UpdateGameParameter:current_display", OnChangeDisplay);
+            EventManager.RemoveListener("UpdateGameParameter:resolution", OnChangeResolution);
+            EventManager.RemoveListener("UpdateGameParameter:display", OnChangeDisplay);
         }
 
         private void OnUpdateGraphicsQuality(object _)
@@ -133,15 +132,15 @@ namespace ScriptableObjects.GameParameters
 
         private void OnChangeResolution(object _)
         {
-            Debug.Log("Changing resolution to " + current_resolution);
-            ApplyResolution(current_resolution);
+            Debug.Log("Changing resolution to " + resolution);
+            ApplyResolution(resolution);
         }
 
         private void OnChangeDisplay(object _)
         {
-            Debug.Log("Changing display to " + current_display.name);
-            ApplyDisplay(current_display);
-            ApplyResolution(current_resolution);
+            Debug.Log("Changing display to " + display.name);
+            ApplyDisplay(display);
+            ApplyResolution(resolution);
         }
 
         #region Helper Functions
@@ -180,8 +179,8 @@ namespace ScriptableObjects.GameParameters
                 if (!resolutions.Contains(data))
                     resolutions.Add(data);
             }
-            if (!resolutions.Contains(current_resolution))
-                current_resolution = resolutions[^1];
+            if (!resolutions.Contains(resolution))
+                resolution = resolutions[^1];
         }
 
         private void BuildDisplayList()
@@ -203,8 +202,8 @@ namespace ScriptableObjects.GameParameters
                     displays.Add(displayData);
             }
 
-            if (!displays.Contains(current_display))
-                current_display = displays[0];
+            if (!displays.Contains(display))
+                display = displays[0];
         }
 
         #endregion
@@ -213,7 +212,8 @@ namespace ScriptableObjects.GameParameters
             base.LoadFromFile();
             BuildDisplayList();
             BuildResolutionList();
-            ApplyResolution(current_resolution);
+            ApplyDisplay(display);
+            ApplyResolution(resolution);
             QualitySettings.SetQualityLevel((int)quality, true);
         }
     }

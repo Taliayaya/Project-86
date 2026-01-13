@@ -1,9 +1,8 @@
-using DefaultNamespace;
-using Firebase.Analytics;
-using ScriptableObjects.GameParameters;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using DefaultNamespace;
+using ScriptableObjects.GameParameters;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -180,9 +179,9 @@ namespace UI
                 );
             }
             else if (fieldType == typeof(ResolutionData))
-                ListDropdown(dropdown, fieldInfo, graphics, parameter, graphics.resolutions, graphics.current_resolution);
+                ListDropdown(dropdown, fieldInfo, graphics, parameter, graphics.resolutions, graphics.resolution);
             else if (fieldType == typeof(DisplayData))
-                ListDropdown(dropdown, fieldInfo, graphics, parameter, graphics.displays, graphics.current_display);
+                ListDropdown(dropdown, fieldInfo, graphics, parameter, graphics.displays, graphics.display);
             return;
         }
 
@@ -222,14 +221,14 @@ namespace UI
             var graphics = parameters as GraphicsParameters;
             if (fieldInfo.FieldType == typeof(ResolutionData))
             {
-                graphics.current_resolution = graphics.resolutions[value];
-                EventManager.TriggerEvent($"UpdateGameParameter:{parameter}", graphics.current_resolution);
+                graphics.resolution = graphics.resolutions[value];
+                EventManager.TriggerEvent($"UpdateGameParameter:{parameter}", graphics.resolution);
             }
 
             else if (fieldInfo.FieldType == typeof(DisplayData))
             {
-                graphics.current_display = graphics.displays[value];
-                EventManager.TriggerEvent($"UpdateGameParameter:{parameter}", graphics.current_display);
+                graphics.display = graphics.displays[value];
+                EventManager.TriggerEvent($"UpdateGameParameter:{parameter}", graphics.display);
             }
 
             else
@@ -259,4 +258,3 @@ namespace UI
         #endregion
     }
 }
-
