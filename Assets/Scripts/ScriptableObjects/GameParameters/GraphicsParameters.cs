@@ -12,6 +12,7 @@ namespace ScriptableObjects.GameParameters
         High
     }
 
+    // custom structs instead of built-in ones because of serializability
     [System.Serializable]
     public struct ResolutionData
     {
@@ -32,6 +33,38 @@ namespace ScriptableObjects.GameParameters
         }
     }
 
+    [System.Serializable]
+    public struct DisplayData
+    {
+        public string name;
+        public Vector2Int position;
+        public Vector2Int resolution;
+
+        public DisplayData(string name, Vector2Int position, Vector2Int resolution)
+        {
+            this.name = name;
+            this.position = position;
+            this.resolution = resolution;
+        }
+
+        public override string ToString()
+        {
+            return $"{name} ({resolution.x} x {resolution.y})";
+        }
+
+        // Optional: implement Equals if you want to use List.Contains
+        public override bool Equals(object obj)
+        {
+            if (obj is not DisplayData other) return false;
+            return name == other.name && position == other.position && resolution.Equals(other.resolution);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(name, position, resolution);
+        }
+    }
+
     [CreateAssetMenu(
         fileName = "Graphics Parameters",
         menuName = "Scriptable Objects/Graphics Parameters"
@@ -40,7 +73,7 @@ namespace ScriptableObjects.GameParameters
     {
         public GraphicsQuality quality = GraphicsQuality.Medium;
         public ResolutionData current_resolution;
-        public DisplayInfo current_display;
+        public DisplayData current_display;
 
         [Range(0, 100)]
         public int detailsDensity = 100;
@@ -50,7 +83,7 @@ namespace ScriptableObjects.GameParameters
         public List<ResolutionData> resolutions = new List<ResolutionData>();
 
         [HideInInspector]
-        public List<DisplayInfo> displays = new List<DisplayInfo>();
+        public List<DisplayData> displays = new List<DisplayData>();
 
         public override string GetParametersName => "Graphics";
 
@@ -83,13 +116,33 @@ namespace ScriptableObjects.GameParameters
         private void OnChangeDisplay(object _)
         {
             Debug.Log("Changing display to " + current_display.name);
-            Screen.MoveMainWindowTo(current_display, Vector2Int.zero);
+            ApplyDisplay(current_display);
             ApplyResolution(current_resolution);
         }
 
         private void ApplyResolution(ResolutionData res)
         {
             Screen.SetResolution(res.width, res.height, Screen.fullScreenMode, res.refresh_rate);
+        }
+
+        private void ApplyDisplay(DisplayData disp)
+        {
+            List<DisplayInfo> available_displays = new List<DisplayInfo>();
+            Screen.GetDisplayLayout(available_displays);
+
+            // find DisplayInfo that matches DisplayData to pass to Screen.MoveMainWindowTo
+            DisplayInfo? targetDisplay = null;
+            foreach (var d in available_displays)
+            {
+                if (d.name == disp.name &&
+                    d.width == disp.resolution.x &&
+                    d.height == disp.resolution.y)
+                {
+                    targetDisplay = d;
+                    break;
+                }
+            }
+            Screen.MoveMainWindowTo(targetDisplay.Value, Vector2Int.zero);
         }
 
         private void BuildResolutionList()
@@ -109,7 +162,22 @@ namespace ScriptableObjects.GameParameters
         private void BuildDisplayList()
         {
             displays.Clear();
-            Screen.GetDisplayLayout(displays);
+
+            List<DisplayInfo> available_displays = new List<DisplayInfo>();
+            Screen.GetDisplayLayout(available_displays);
+
+            foreach (var d in available_displays)
+            {
+                var displayData = new DisplayData(
+                    d.name,
+                    new Vector2Int(d.workArea.x, d.workArea.y),
+                    new Vector2Int(d.width, d.height)
+                );
+
+                if (!displays.Contains(displayData))
+                    displays.Add(displayData);
+            }
+
             if (!displays.Contains(current_display))
                 current_display = displays[0];
         }

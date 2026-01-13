@@ -115,7 +115,7 @@ namespace UI
                     AddToggle(field, parameters, fieldName, paramWrapper.transform);
                 else if (field.FieldType == typeof(int) || field.FieldType == typeof(float))
                     AddSlider(field, parameters, fieldName, paramWrapper.transform);
-                else if (field.FieldType.IsEnum || field.FieldType == typeof(ResolutionData) || field.FieldType == typeof(DisplayInfo))
+                else if (field.FieldType.IsEnum || field.FieldType == typeof(ResolutionData) || field.FieldType == typeof(DisplayData))
                     AddDropdown(field, parameters, graphics, fieldName, paramWrapper.transform);
                 else
                     Debug.LogError($"[SettingsMenu] Field type \"{field.FieldType}\" not supported");
@@ -170,6 +170,7 @@ namespace UI
             var fieldType = fieldInfo.FieldType;
             var isEnum = fieldType.IsEnum;
             var isResolution = fieldType == typeof(ResolutionData);
+            var isDisplay = fieldType == typeof(DisplayData);
 
             if (isEnum)
             {
@@ -196,7 +197,7 @@ namespace UI
                 for (int i = 0; i < graphics.resolutions.Count; i++)
                 {
                     var res = graphics.resolutions[i];
-                    dropdown.options.Add(new TMP_Dropdown.OptionData($"{res.width} x {res.height} ({res.refresh_rate}Hz)"));
+                    dropdown.options.Add(new TMP_Dropdown.OptionData(res.ToString()));
                     if (res.Equals(graphics.current_resolution))
                         selectedIndex = i;
                 }
@@ -216,6 +217,35 @@ namespace UI
                 });
             }
 
+            else if (isDisplay)
+            {
+                if (graphics == null || graphics.displays.Count == 0) return;
+
+                int selectedIndex = 0;
+                for (int i = 0; i < graphics.displays.Count; i++)
+                {
+                    var display = graphics.displays[i];
+                    dropdown.options.Add(new TMP_Dropdown.OptionData(display.ToString()));
+                    if (display.name == graphics.current_display.name &&
+                        display.resolution == graphics.current_display.resolution)
+                        selectedIndex = i;
+                }
+
+                dropdown.value = selectedIndex;
+
+                dropdown.onValueChanged.AddListener(index =>
+                {
+                    if (index >= 0 && index < graphics.displays.Count)
+                    {
+                        graphics.current_display = graphics.displays[index];
+                        FieldInfo currentDisplayField = typeof(GraphicsParameters).GetField(nameof(GraphicsParameters.current_display));
+                        currentDisplayField.SetValue(graphics, graphics.displays[index]);
+
+                        OnGameSettingsDropdownValueChanged(graphics, currentDisplayField, "display", index);
+                    }
+                });
+            }
+
             return;
         }
 
@@ -228,6 +258,16 @@ namespace UI
                 {
                     graphics.current_resolution = graphics.resolutions[value];
                     EventManager.TriggerEvent($"UpdateGameParameter:{parameter}", graphics.current_resolution);
+                }
+            }
+
+            else if (fieldInfo.FieldType == typeof(DisplayData))
+            {
+                var graphics = parameters as GraphicsParameters;
+                if (graphics != null && value >= 0 && value < graphics.displays.Count)
+                {
+                    graphics.current_display = graphics.displays[value];
+                    EventManager.TriggerEvent($"UpdateGameParameter:{parameter}", graphics.current_display);
                 }
             }
 
