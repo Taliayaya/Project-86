@@ -1,3 +1,4 @@
+// TODO: naming convention (resolution and display instead of current_...)
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,9 +13,11 @@ namespace ScriptableObjects.GameParameters
         High
     }
 
+    # region Structs
     // custom structs instead of built-in ones because of serializability
+
     [System.Serializable]
-    public struct ResolutionData
+    public struct ResolutionData : IEquatable<ResolutionData>
     {
         public int width;
         public int height;
@@ -27,14 +30,30 @@ namespace ScriptableObjects.GameParameters
             this.refresh_rate = refresh_rate;
         }
 
+        public bool Equals(ResolutionData other)
+        {
+            return width == other.width && height == other.height && refresh_rate == other.refresh_rate;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is ResolutionData other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(width, height, refresh_rate);
+        }
+
         public override string ToString()
         {
             return $"{width} x {height} ({refresh_rate}Hz)";
         }
     }
 
+
     [System.Serializable]
-    public struct DisplayData
+    public struct DisplayData : IEquatable<DisplayData>
     {
         public string name;
         public Vector2Int position;
@@ -47,11 +66,28 @@ namespace ScriptableObjects.GameParameters
             this.resolution = resolution;
         }
 
+        public bool Equals(DisplayData other)
+        {
+            return name == other.name && position == other.position && resolution == other.resolution;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is DisplayData other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(name, position, resolution);
+        }
+
         public override string ToString()
         {
             return $"{name} ({resolution.x} x {resolution.y})";
         }
     }
+
+    #endregion
 
     [CreateAssetMenu(
         fileName = "Graphics Parameters",
@@ -68,25 +104,25 @@ namespace ScriptableObjects.GameParameters
 
         // use lists instead of the default supported enums because the data are dynamically generated
         [HideInInspector]
-        public List<ResolutionData> resolutions = new List<ResolutionData>();
+        public List<ResolutionData> resolutions = new();
 
         [HideInInspector]
-        public List<DisplayData> displays = new List<DisplayData>();
+        public List<DisplayData> displays = new();
 
         public override string GetParametersName => "Graphics";
 
         public void Initialize()
         {
             EventManager.AddListener("UpdateGameParameter:quality", OnUpdateGraphicsQuality);
-            EventManager.AddListener("UpdateGameParameter:resolution", OnChangeResolution);
-            EventManager.AddListener("UpdateGameParameter:display", OnChangeDisplay);
+            EventManager.AddListener("UpdateGameParameter:current_resolution", OnChangeResolution);
+            EventManager.AddListener("UpdateGameParameter:current_display", OnChangeDisplay);
         }
 
         public void Deinitialize()
         {
             EventManager.RemoveListener("UpdateGameParameter:quality", OnUpdateGraphicsQuality);
-            EventManager.RemoveListener("UpdateGameParameter:resolution", OnChangeResolution);
-            EventManager.RemoveListener("UpdateGameParameter:display", OnChangeDisplay);
+            EventManager.RemoveListener("UpdateGameParameter:current_resolution", OnChangeResolution);
+            EventManager.RemoveListener("UpdateGameParameter:current_display", OnChangeDisplay);
         }
 
         private void OnUpdateGraphicsQuality(object _)

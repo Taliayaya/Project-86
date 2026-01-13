@@ -1,8 +1,3 @@
-/* TODO: 
- * 1. Add an option to choose the right display/screen
- * 2. Make a general List method for display and resolution both
- */
-
 using DefaultNamespace;
 using Firebase.Analytics;
 using ScriptableObjects.GameParameters;
@@ -168,11 +163,8 @@ namespace UI
             dropdown.options.Clear();
 
             var fieldType = fieldInfo.FieldType;
-            var isEnum = fieldType.IsEnum;
-            var isResolution = fieldType == typeof(ResolutionData);
-            var isDisplay = fieldType == typeof(DisplayData);
 
-            if (isEnum)
+            if (fieldType.IsEnum)
             {
                 var enumNames = fieldType.GetEnumNames();
 
@@ -187,88 +179,57 @@ namespace UI
                     OnGameSettingsDropdownValueChanged(parameters, fieldInfo, parameter, value)
                 );
             }
-
-            else if (isResolution)
-            {
-                if (graphics == null)
-                    return;
-
-                int selectedIndex = 0;
-                for (int i = 0; i < graphics.resolutions.Count; i++)
-                {
-                    var res = graphics.resolutions[i];
-                    dropdown.options.Add(new TMP_Dropdown.OptionData(res.ToString()));
-                    if (res.Equals(graphics.current_resolution))
-                        selectedIndex = i;
-                }
-
-                dropdown.value = selectedIndex;
-
-                dropdown.onValueChanged.AddListener(index =>
-                {
-                    if (index >= 0 && index < graphics.resolutions.Count)
-                    {
-                        graphics.current_resolution = graphics.resolutions[index];
-                        FieldInfo currentResField = typeof(GraphicsParameters).GetField(nameof(GraphicsParameters.current_resolution));
-                        currentResField.SetValue(graphics, graphics.resolutions[index]);
-
-                        OnGameSettingsDropdownValueChanged(graphics, currentResField, "resolution", index);
-                    }
-                });
-            }
-
-            else if (isDisplay)
-            {
-                if (graphics == null || graphics.displays.Count == 0) return;
-
-                int selectedIndex = 0;
-                for (int i = 0; i < graphics.displays.Count; i++)
-                {
-                    var display = graphics.displays[i];
-                    dropdown.options.Add(new TMP_Dropdown.OptionData(display.ToString()));
-                    if (display.name == graphics.current_display.name &&
-                        display.resolution == graphics.current_display.resolution)
-                        selectedIndex = i;
-                }
-
-                dropdown.value = selectedIndex;
-
-                dropdown.onValueChanged.AddListener(index =>
-                {
-                    if (index >= 0 && index < graphics.displays.Count)
-                    {
-                        graphics.current_display = graphics.displays[index];
-                        FieldInfo currentDisplayField = typeof(GraphicsParameters).GetField(nameof(GraphicsParameters.current_display));
-                        currentDisplayField.SetValue(graphics, graphics.displays[index]);
-
-                        OnGameSettingsDropdownValueChanged(graphics, currentDisplayField, "display", index);
-                    }
-                });
-            }
-
+            else if (fieldType == typeof(ResolutionData))
+                ListDropdown(dropdown, fieldInfo, graphics, parameter, graphics.resolutions, graphics.current_resolution);
+            else if (fieldType == typeof(DisplayData))
+                ListDropdown(dropdown, fieldInfo, graphics, parameter, graphics.displays, graphics.current_display);
             return;
+        }
+
+        // helper function to unify list behaviour, also for any future use
+        private void ListDropdown<T>(
+            TMP_Dropdown dropdown,
+            FieldInfo fieldInfo,
+            GraphicsParameters graphics,
+            string parameter,
+            List<T> data_list,
+            T current_value
+        ) where T : IEquatable<T>
+        {
+            dropdown.options.Clear();
+
+            int selectedIndex = 0;
+            for (int i = 0; i < data_list.Count; i++)
+            {
+                var new_value = data_list[i];
+                dropdown.options.Add(new TMP_Dropdown.OptionData(new_value.ToString()));
+                if (new_value.Equals(current_value))
+                    selectedIndex = i;
+            }
+
+            dropdown.value = selectedIndex;
+
+            dropdown.onValueChanged.AddListener(index =>
+            {
+                var value = data_list[index];
+                fieldInfo.SetValue(graphics, value);
+                OnGameSettingsDropdownValueChanged(graphics, fieldInfo, parameter, index);
+            });
         }
 
         private void OnGameSettingsDropdownValueChanged(GameParameters parameters, FieldInfo fieldInfo, string parameter, int value)
         {
+            var graphics = parameters as GraphicsParameters;
             if (fieldInfo.FieldType == typeof(ResolutionData))
             {
-                var graphics = parameters as GraphicsParameters;
-                if (graphics != null && value >= 0 && value < graphics.resolutions.Count)
-                {
-                    graphics.current_resolution = graphics.resolutions[value];
-                    EventManager.TriggerEvent($"UpdateGameParameter:{parameter}", graphics.current_resolution);
-                }
+                graphics.current_resolution = graphics.resolutions[value];
+                EventManager.TriggerEvent($"UpdateGameParameter:{parameter}", graphics.current_resolution);
             }
 
             else if (fieldInfo.FieldType == typeof(DisplayData))
             {
-                var graphics = parameters as GraphicsParameters;
-                if (graphics != null && value >= 0 && value < graphics.displays.Count)
-                {
-                    graphics.current_display = graphics.displays[value];
-                    EventManager.TriggerEvent($"UpdateGameParameter:{parameter}", graphics.current_display);
-                }
+                graphics.current_display = graphics.displays[value];
+                EventManager.TriggerEvent($"UpdateGameParameter:{parameter}", graphics.current_display);
             }
 
             else
