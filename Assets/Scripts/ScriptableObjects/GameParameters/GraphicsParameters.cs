@@ -51,18 +51,6 @@ namespace ScriptableObjects.GameParameters
         {
             return $"{name} ({resolution.x} x {resolution.y})";
         }
-
-        // Optional: implement Equals if you want to use List.Contains
-        public override bool Equals(object obj)
-        {
-            if (obj is not DisplayData other) return false;
-            return name == other.name && position == other.position && resolution.Equals(other.resolution);
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(name, position, resolution);
-        }
     }
 
     [CreateAssetMenu(
@@ -120,6 +108,7 @@ namespace ScriptableObjects.GameParameters
             ApplyResolution(current_resolution);
         }
 
+        #region Helper Functions
         private void ApplyResolution(ResolutionData res)
         {
             Screen.SetResolution(res.width, res.height, Screen.fullScreenMode, res.refresh_rate);
@@ -182,6 +171,7 @@ namespace ScriptableObjects.GameParameters
                 current_display = displays[0];
         }
 
+        #endregion
         public override void LoadFromFile()
         {
             base.LoadFromFile();
