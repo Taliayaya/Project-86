@@ -1,21 +1,6 @@
 /* TODO: 
- * 1. Add quality and resolution events as constants?
- * 2. Make a general List method for screen and resolution both
- * 3. Add an option to choose the right display/screen
- * Useful code:
- * [HideInInspector]
-public List<DisplayInfo> displays = new List<DisplayInfo>();
-public DisplayInfo current_display;
-Screen.GetDisplayLayout(displays);
-for (int i = 0; i < displays.Count; i++)
-{
-    DisplayInfo d = displays[i];
-
-    Debug.Log(
-        $"Display {i}: {d.name} ({d.width}x{d.height})"
-    );
-}
-https://docs.unity3d.com/ScriptReference/Screen.MoveMainWindowTo.html
+ * 1. Add an option to choose the right display/screen
+ * 2. Make a general List method for display and resolution both
  */
 
 using DefaultNamespace;
@@ -130,7 +115,7 @@ namespace UI
                     AddToggle(field, parameters, fieldName, paramWrapper.transform);
                 else if (field.FieldType == typeof(int) || field.FieldType == typeof(float))
                     AddSlider(field, parameters, fieldName, paramWrapper.transform);
-                else if (field.FieldType.IsEnum || field.FieldType == typeof(ResolutionData))
+                else if (field.FieldType.IsEnum || field.FieldType == typeof(ResolutionData) || field.FieldType == typeof(DisplayInfo))
                     AddDropdown(field, parameters, graphics, fieldName, paramWrapper.transform);
                 else
                     Debug.LogError($"[SettingsMenu] Field type \"{field.FieldType}\" not supported");
@@ -211,7 +196,7 @@ namespace UI
                 for (int i = 0; i < graphics.resolutions.Count; i++)
                 {
                     var res = graphics.resolutions[i];
-                    dropdown.options.Add(new TMP_Dropdown.OptionData($"{res.width}x{res.height}@{res.refresh_rate}Hz"));
+                    dropdown.options.Add(new TMP_Dropdown.OptionData($"{res.width} x {res.height} ({res.refresh_rate}Hz)"));
                     if (res.Equals(graphics.current_resolution))
                         selectedIndex = i;
                 }
@@ -273,3 +258,4 @@ namespace UI
         #endregion
     }
 }
+

@@ -28,7 +28,7 @@ namespace ScriptableObjects.GameParameters
 
         public override string ToString()
         {
-            return $"{width}x{height}@{refresh_rate}Hz";
+            return $"{width} x {height} ({refresh_rate}Hz)";
         }
     }
 
@@ -38,27 +38,34 @@ namespace ScriptableObjects.GameParameters
     )]
     public class GraphicsParameters : GameParameters
     {
-        public ResolutionData current_resolution;
         public GraphicsQuality quality = GraphicsQuality.Medium;
+        public ResolutionData current_resolution;
+        public DisplayInfo current_display;
 
         [Range(0, 100)]
         public int detailsDensity = 100;
 
+        // use lists instead of the default supported enums because the data are dynamically generated
         [HideInInspector]
         public List<ResolutionData> resolutions = new List<ResolutionData>();
+
+        [HideInInspector]
+        public List<DisplayInfo> displays = new List<DisplayInfo>();
 
         public override string GetParametersName => "Graphics";
 
         public void Initialize()
         {
             EventManager.AddListener("UpdateGameParameter:quality", OnUpdateGraphicsQuality);
-            EventManager.AddListener("UpdateGameParameter:resolution", OnResolutionChanged);
+            EventManager.AddListener("UpdateGameParameter:resolution", OnChangeResolution);
+            EventManager.AddListener("UpdateGameParameter:display", OnChangeDisplay);
         }
 
         public void Deinitialize()
         {
             EventManager.RemoveListener("UpdateGameParameter:quality", OnUpdateGraphicsQuality);
-            EventManager.RemoveListener("UpdateGameParameter:resolution", OnResolutionChanged);
+            EventManager.RemoveListener("UpdateGameParameter:resolution", OnChangeResolution);
+            EventManager.RemoveListener("UpdateGameParameter:display", OnChangeDisplay);
         }
 
         private void OnUpdateGraphicsQuality(object _)
@@ -67,9 +74,16 @@ namespace ScriptableObjects.GameParameters
             QualitySettings.SetQualityLevel((int)quality, true);
         }
 
-        private void OnResolutionChanged(object _)
+        private void OnChangeResolution(object _)
         {
             Debug.Log("Changing resolution to " + current_resolution);
+            ApplyResolution(current_resolution);
+        }
+
+        private void OnChangeDisplay(object _)
+        {
+            Debug.Log("Changing display to " + current_display.name);
+            Screen.MoveMainWindowTo(current_display, Vector2Int.zero);
             ApplyResolution(current_resolution);
         }
 
@@ -89,14 +103,21 @@ namespace ScriptableObjects.GameParameters
                     resolutions.Add(data);
             }
             if (!resolutions.Contains(current_resolution))
-            {
                 current_resolution = resolutions[^1];
-            }
+        }
+
+        private void BuildDisplayList()
+        {
+            displays.Clear();
+            Screen.GetDisplayLayout(displays);
+            if (!displays.Contains(current_display))
+                current_display = displays[0];
         }
 
         public override void LoadFromFile()
         {
             base.LoadFromFile();
+            BuildDisplayList();
             BuildResolutionList();
             ApplyResolution(current_resolution);
             QualitySettings.SetQualityLevel((int)quality, true);
