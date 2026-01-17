@@ -85,6 +85,7 @@ namespace Gameplay.Mecha
         [ContextMenu("Launch Rocket")]
         public void LaunchNextRocket()
         {
+            if (!target) return;
             RocketSalve salve = rocketSalves[_currentSalve];
             bool launched = SalveLaunchRocket(salve, _currentRocket);
             if (!launched && NextSalve())
@@ -147,7 +148,7 @@ namespace Gameplay.Mecha
             for (int i = 0; i < salve.LaunchPointsCount; i++)
             {
                 // if the target got destroyed, stop launching rockets
-                if (target == null)
+                if (!target)
                     break;
                 Vector3 targetPosition = ComputeIdealTargetPosition(target);
                 if (SalveLaunchRocket(salve, i))
