@@ -98,6 +98,7 @@ public static class Constants
                 public const string PauseLegion = "PauseLegion";
                 
                 public const string SpawnAmeise = "SpawnAmeise";
+                public const string SpawnGrauwolf = "SpawnGrauwolf";
                 public const string SpawnLowe = "SpawnLowe";
                 public const string SpawnDinosauria = "SpawnDinosauria";
             }

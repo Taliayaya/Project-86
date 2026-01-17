@@ -597,6 +597,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "SpawnGrauwolf",
+                    "type": "Button",
+                    "id": "98426774-3e17-4eb2-9233-6b8fa8873607",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -795,6 +804,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "SpawnDinosauria",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6bda3f81-6b63-4c21-bfc0-d64540a5371b",
+                    "path": "<Keyboard>/numpad4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SpawnGrauwolf",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c117d341-0e71-4643-862a-f2a6608fecf7",
+                    "path": "<Keyboard>/4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SpawnGrauwolf",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
