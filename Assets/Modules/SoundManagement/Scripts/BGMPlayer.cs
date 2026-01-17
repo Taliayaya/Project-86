@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Armament.Shared;
 using DefaultNamespace.Sound;
+using FMOD;
 using FMOD.Studio;
 using FMODUnity;
 using NaughtyAttributes;
@@ -189,20 +190,34 @@ namespace SoundManagement
 			
 			_menu.TryInitialize();
 
-			_menu.Value.start();
+			// This was failing because the music can take some time to load the file
+			// and not be ready in time which ends in a failure. So we restart it after a little while.
+			var result = _menu.Value.start();
+			if (result != RESULT.OK)
+			{
+				Debug.LogError($"Failed to start Menu BGM: {result}");
+				Invoke(nameof(PlayMenuMusic), 0.5f);
+				return;
+			}
 
 			_menu.FadeIn(true, 2f);
 
-			Debug.Log($"Playing Menu");
+			Debug.Log($"Playing Menu ({result})");
 		}
 
 		public void PlayGame()
 		{
 			if (_playing == PlayingBGM.Game) return;
 			FadeOutOthers(PlayingBGM.Game, GetFadeoutDurationByState());
-			_playing = PlayingBGM.Game;
 			_game.TryInitialize();
-			_game.Value.start();
+			var result = _game.Value.start();
+			if (result != RESULT.OK)
+			{
+				Debug.LogError($"Failed to start Game BGM: {result}");
+				Invoke(nameof(PlayGame), 0.5f);
+				return;
+			}
+			_playing = PlayingBGM.Game;
 			_game.FadeIn(true, 5f);
 			Debug.Log($"Playing Game");
 		}

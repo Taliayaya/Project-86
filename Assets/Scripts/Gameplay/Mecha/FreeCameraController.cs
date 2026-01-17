@@ -41,6 +41,7 @@ namespace Gameplay.Mecha
                 EventManager.AddListener(Constants.TypedEvents.Inputs.FreeCamera.SpawnAmeise, OnSpawnAmeise);
                 EventManager.AddListener(Constants.TypedEvents.Inputs.FreeCamera.SpawnDinosauria, OnSpawnDinosauria);
                 EventManager.AddListener(Constants.TypedEvents.Inputs.FreeCamera.SpawnLowe, OnSpawnLowe);
+                EventManager.AddListener(Constants.TypedEvents.Inputs.FreeCamera.SpawnGrauwolf, OnSpawnGrauwolf);
             }
         }
 
@@ -57,11 +58,13 @@ namespace Gameplay.Mecha
                 EventManager.RemoveListener(Constants.TypedEvents.Inputs.FreeCamera.SpawnAmeise, OnSpawnAmeise);
                 EventManager.RemoveListener(Constants.TypedEvents.Inputs.FreeCamera.SpawnDinosauria, OnSpawnDinosauria);
                 EventManager.RemoveListener(Constants.TypedEvents.Inputs.FreeCamera.SpawnLowe, OnSpawnLowe);
+                EventManager.RemoveListener(Constants.TypedEvents.Inputs.FreeCamera.SpawnGrauwolf, OnSpawnGrauwolf);
 
                 Factions.Pause(Faction.Legion, false);
             }
         }
-        
+
+
         private void OnExitPhotoMode()
         {
             EventManager.RemoveListener(Constants.Events.Inputs.FreeCamera.OnExitPhotoMode, OnExitPhotoMode);
@@ -133,6 +136,11 @@ namespace Gameplay.Mecha
         {
             SpawnUnitBelow(UnitType.Lowe);
         }
+        
+        private void OnSpawnGrauwolf(object arg0)
+        {
+            SpawnUnitBelow(UnitType.Grauwolf);
+        }
 
         private void OnPauseLegion(object arg0)
         {
@@ -157,6 +165,9 @@ namespace Gameplay.Mecha
                     break;
                 case UnitType.Dinosauria:
                     SpawnUnit(demoParameters.dinosauriaPrefab, position, rotation);
+                    break;
+                case UnitType.Grauwolf:
+                    SpawnUnit(demoParameters.grauwolfPrefab, position, rotation);
                     break;
             }
         }

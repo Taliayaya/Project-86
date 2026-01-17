@@ -345,6 +345,11 @@ public class InputManager : Singleton<InputManager>
         EventManager.TriggerEvent(Constants.TypedEvents.Inputs.FreeCamera.SpawnAmeise, null);
     }
 
+    private void OnSpawnGrauwolf(InputValue inputValue)
+    {
+        EventManager.TriggerEvent(Constants.TypedEvents.Inputs.FreeCamera.SpawnGrauwolf, null);
+    }
+
     #endregion
 
     #region MainMenu Action Map

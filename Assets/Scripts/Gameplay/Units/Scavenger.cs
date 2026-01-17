@@ -55,7 +55,7 @@ namespace Gameplay.Units
             {
                 Vector3 explosionPosition = transform.position;
                 
-                if (Physics.Raycast(transform.position, Vector3.down, out var hit, 100, 1));
+                if (Physics.Raycast(transform.position, Vector3.down, out var hit, 100, 1))
                     explosionPosition = hit.point;
                 Instantiate(scavengerParameters.deathExplodePrefab, explosionPosition, Quaternion.identity);
             }
