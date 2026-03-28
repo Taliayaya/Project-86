@@ -13283,22 +13283,6 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     AlignWithDesiredMoveDirection: 0
-  UseHips: 1
-  HipsHeightStepBlend: 1
-  HipsHeightStepSpeed: 0.37
-  HipsAdjustStyle: 0
-  StabilizeCenterOfMass: 0.15
-  AnimationIsStablePose: 0.75
-  StabilizingSpeed: 0.375
-  PushHipsOnLegMove: 0.025
-  NormalizePush: 1
-  PushReactionSpeed: 0.14
-  PushYBlend: 1
-  HipsStretchPreventer: 0.06
-  StretchPreventerSpeed: 0.8
-  StabilizeOnIsMoving: 0.15
-  _Hips_Modules_ExtraWOffset: {x: 0, y: 0, z: 0}
-  _Hips_Modules_ExtraRotOffset: {x: 0, y: 0, z: 0}
   ExtraHipsHubs: []
   HipsHubsHandling: 1
   HipsHubsBlend: 1
@@ -13343,11 +13327,28 @@ MonoBehaviour:
       Damping: 10
       BrakePower: 0.2
   StabilityAlgorithm: 1
+  UseHips: 1
+  HipsHeightStepBlend: 1
+  HipsHeightStepSpeed: 0.37
+  HipsAdjustStyle: 0
+  StabilizeCenterOfMass: 0.15
+  AnimationIsStablePose: 0.75
+  StabilizingSpeed: 0.375
+  PushHipsOnLegMove: 0.025
+  NormalizePush: 1
+  PushReactionSpeed: 0.14
+  PushYBlend: 1
+  HipsStretchPreventer: 0.06
+  StretchPreventerSpeed: 0.8
+  StabilizeOnIsMoving: 0.15
+  _Hips_Modules_ExtraWOffset: {x: 0, y: 0, z: 0}
+  _Hips_Modules_ExtraRotOffset: {x: 0, y: 0, z: 0}
   Legs:
   - G_CustomForceAttach: 0
     G_CustomForceNOTDetach: 0
     G_CustomForceDetach: 0
     G_CustomForceNOTAttach: 0
+    _FinalIKPos: {x: 0, y: 0, z: 0}
     Owner: {fileID: 8256466478378288406}
     LegBlendWeight: 1
     LegMoveSpeedMultiplier: 0.97668356
@@ -13374,11 +13375,11 @@ MonoBehaviour:
     AnkleForward: {x: -0.9145101, y: -0.03698933, z: 0.40286857}
     FootMiddlePosition: 0.5
     AnkleYawCorrection: 0
-    _FinalIKPos: {x: 0, y: 0, z: 0}
   - G_CustomForceAttach: 0
     G_CustomForceNOTDetach: 0
     G_CustomForceDetach: 0
     G_CustomForceNOTAttach: 0
+    _FinalIKPos: {x: 0, y: 0, z: 0}
     Owner: {fileID: 8256466478378288406}
     LegBlendWeight: 1
     LegMoveSpeedMultiplier: 0.997587
@@ -13405,11 +13406,11 @@ MonoBehaviour:
     AnkleForward: {x: 0.91450995, y: -0.036988854, z: 0.40286875}
     FootMiddlePosition: 0.5
     AnkleYawCorrection: 0
-    _FinalIKPos: {x: 0, y: 0, z: 0}
   - G_CustomForceAttach: 0
     G_CustomForceNOTDetach: 0
     G_CustomForceDetach: 0
     G_CustomForceNOTAttach: 0
+    _FinalIKPos: {x: 0, y: 0, z: 0}
     Owner: {fileID: 8256466478378288406}
     LegBlendWeight: 1
     LegMoveSpeedMultiplier: 0.97813004
@@ -13436,11 +13437,11 @@ MonoBehaviour:
     AnkleForward: {x: -0.9145096, y: 0.036989644, z: -0.40286958}
     FootMiddlePosition: 0.5
     AnkleYawCorrection: 0
-    _FinalIKPos: {x: 0, y: 0, z: 0}
   - G_CustomForceAttach: 0
     G_CustomForceNOTDetach: 0
     G_CustomForceDetach: 0
     G_CustomForceNOTAttach: 0
+    _FinalIKPos: {x: 0, y: 0, z: 0}
     Owner: {fileID: 8256466478378288406}
     LegBlendWeight: 1
     LegMoveSpeedMultiplier: 0.9443543
@@ -13467,7 +13468,6 @@ MonoBehaviour:
     AnkleForward: {x: 0.91450965, y: 0.036989734, z: -0.40286976}
     FootMiddlePosition: 0.5
     AnkleYawCorrection: 0
-    _FinalIKPos: {x: 0, y: 0, z: 0}
   BaseLegAnimating:
     StepMoveDuration: 0.5
     MoveToGoalCurve:
@@ -13689,8 +13689,8 @@ MonoBehaviour:
   _Editor_EnsureCount: 0
   _Editor_OnValidateTrigger: 1
   _EditorAllowAutoUpdateFeetParams: 1
-  _EditorCategory: 1
-  _EditorSetupCategory: 1
+  _EditorCategory: 0
+  _EditorSetupCategory: 3
   _EditorMotionCategory: 2
   _EditorExtraCategory: 1
   setupPose:
@@ -13715,9 +13715,9 @@ MonoBehaviour:
   Calibrate: 1
   AnimatePhysics: 0
   UnscaledDeltaTime: 0
-  DisableIfInvisible: {fileID: 0}
+  DisableIfInvisible: {fileID: 8220015564261566198}
   DisableIfInvisibleExtraRenderers: []
-  FadeOffAtDistance: 0
+  FadeOffAtDistance: 400
   GroundMask:
     serializedVersion: 2
     m_Bits: 1
@@ -13823,6 +13823,12 @@ Transform:
 --- !u!4 &7965262252593639798 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4993247010217307183, guid: a87ca33298026e542b67924d105399dc,
+    type: 3}
+  m_PrefabInstance: {fileID: 3153039131356126553}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &8220015564261566198 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6472381818403126191, guid: a87ca33298026e542b67924d105399dc,
     type: 3}
   m_PrefabInstance: {fileID: 3153039131356126553}
   m_PrefabAsset: {fileID: 0}

@@ -20,6 +20,7 @@ public partial class DetectEnemyAction : Action
     [SerializeReference] public BlackboardVariable<List<Unit>> visibleTargets;
     [SerializeReference] public BlackboardVariable<List<string>> Layers;
     [SerializeReference] public BlackboardVariable<float> detectFrequency = new(1f);
+    [SerializeReference] public BlackboardVariable<bool> reportToNetwork = new(true);
     
     [CreateProperty] List<Unit> _allEnemies = new List<Unit>();
 
@@ -88,8 +89,9 @@ public partial class DetectEnemyAction : Action
                 continue;
             }
 
-            LegionNetwork.Instance.ReportTargetRpc(enemy.NetworkObject, TargetInfo.VisibilityStatus.Visible,
-                enemy.transform.position);
+            if (reportToNetwork.Value)
+                LegionNetwork.Instance.ReportTargetRpc(enemy.NetworkObject, TargetInfo.VisibilityStatus.Visible,
+                    enemy.transform.position);
 
             _nextVisibleTargets.Add(enemy);
             yield return null;

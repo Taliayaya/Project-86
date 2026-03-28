@@ -670,6 +670,7 @@ MonoBehaviour:
     - {fileID: 4026500804840221669}
   HasSeparateControls: 0
   isEmitting: 0
+  isListening: 0
 --- !u!1 &2701167047763494186
 GameObject:
   m_ObjectHideFlags: 0
@@ -1840,22 +1841,6 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     AlignWithDesiredMoveDirection: 0
-  UseHips: 1
-  HipsHeightStepBlend: 1
-  HipsHeightStepSpeed: 0.7
-  HipsAdjustStyle: 0
-  StabilizeCenterOfMass: 0.8
-  AnimationIsStablePose: 0.75
-  StabilizingSpeed: 0.375
-  PushHipsOnLegMove: 0
-  NormalizePush: 1
-  PushReactionSpeed: 0.3
-  PushYBlend: 1
-  HipsStretchPreventer: 0
-  StretchPreventerSpeed: 0.8
-  StabilizeOnIsMoving: 0.5
-  _Hips_Modules_ExtraWOffset: {x: 0, y: 0, z: 0}
-  _Hips_Modules_ExtraRotOffset: {x: 0, y: 0, z: 0}
   ExtraHipsHubs: []
   HipsHubsHandling: 1
   HipsHubsBlend: 1
@@ -1900,11 +1885,28 @@ MonoBehaviour:
       Damping: 10
       BrakePower: 0.2
   StabilityAlgorithm: 1
+  UseHips: 1
+  HipsHeightStepBlend: 1
+  HipsHeightStepSpeed: 0.7
+  HipsAdjustStyle: 0
+  StabilizeCenterOfMass: 0.8
+  AnimationIsStablePose: 0.75
+  StabilizingSpeed: 0.375
+  PushHipsOnLegMove: 0
+  NormalizePush: 1
+  PushReactionSpeed: 0.3
+  PushYBlend: 1
+  HipsStretchPreventer: 0
+  StretchPreventerSpeed: 0.8
+  StabilizeOnIsMoving: 0.5
+  _Hips_Modules_ExtraWOffset: {x: 0, y: 0, z: 0}
+  _Hips_Modules_ExtraRotOffset: {x: 0, y: 0, z: 0}
   Legs:
   - G_CustomForceAttach: 0
     G_CustomForceNOTDetach: 0
     G_CustomForceDetach: 0
     G_CustomForceNOTAttach: 0
+    _FinalIKPos: {x: 0, y: 0, z: 0}
     Owner: {fileID: 7917483162082701955}
     LegBlendWeight: 1
     LegMoveSpeedMultiplier: 0.817667
@@ -1931,11 +1933,11 @@ MonoBehaviour:
     AnkleForward: {x: 0.76065403, y: -0.4890707, z: -0.42686656}
     FootMiddlePosition: 0.5
     AnkleYawCorrection: 0
-    _FinalIKPos: {x: 0, y: 0, z: 0}
   - G_CustomForceAttach: 0
     G_CustomForceNOTDetach: 0
     G_CustomForceDetach: 0
     G_CustomForceNOTAttach: 0
+    _FinalIKPos: {x: 0, y: 0, z: 0}
     Owner: {fileID: 7917483162082701955}
     LegBlendWeight: 1
     LegMoveSpeedMultiplier: 0.854873
@@ -1962,11 +1964,11 @@ MonoBehaviour:
     AnkleForward: {x: -0.76065415, y: -0.4890709, z: -0.42686623}
     FootMiddlePosition: 0.5
     AnkleYawCorrection: 0
-    _FinalIKPos: {x: 0, y: 0, z: 0}
   - G_CustomForceAttach: 0
     G_CustomForceNOTDetach: 0
     G_CustomForceDetach: 0
     G_CustomForceNOTAttach: 0
+    _FinalIKPos: {x: 0, y: 0, z: 0}
     Owner: {fileID: 7917483162082701955}
     LegBlendWeight: 1
     LegMoveSpeedMultiplier: 0.82349205
@@ -1993,11 +1995,11 @@ MonoBehaviour:
     AnkleForward: {x: 1.0000001, y: 0.0000004951777, z: 0.00000010987563}
     FootMiddlePosition: 0.5
     AnkleYawCorrection: 0
-    _FinalIKPos: {x: 0, y: 0, z: 0}
   - G_CustomForceAttach: 0
     G_CustomForceNOTDetach: 0
     G_CustomForceDetach: 0
     G_CustomForceNOTAttach: 0
+    _FinalIKPos: {x: 0, y: 0, z: 0}
     Owner: {fileID: 7917483162082701955}
     LegBlendWeight: 1
     LegMoveSpeedMultiplier: 0.92145455
@@ -2024,11 +2026,11 @@ MonoBehaviour:
     AnkleForward: {x: 0.7633923, y: 0.4730612, z: 0.43982363}
     FootMiddlePosition: 0.5
     AnkleYawCorrection: 0
-    _FinalIKPos: {x: 0, y: 0, z: 0}
   - G_CustomForceAttach: 0
     G_CustomForceNOTDetach: 0
     G_CustomForceDetach: 0
     G_CustomForceNOTAttach: 0
+    _FinalIKPos: {x: 0, y: 0, z: 0}
     Owner: {fileID: 7917483162082701955}
     LegBlendWeight: 1
     LegMoveSpeedMultiplier: 0.80839866
@@ -2055,11 +2057,11 @@ MonoBehaviour:
     AnkleForward: {x: -0.76339245, y: 0.4730615, z: 0.4398234}
     FootMiddlePosition: 0.5
     AnkleYawCorrection: 0
-    _FinalIKPos: {x: 0, y: 0, z: 0}
   - G_CustomForceAttach: 0
     G_CustomForceNOTDetach: 0
     G_CustomForceDetach: 0
     G_CustomForceNOTAttach: 0
+    _FinalIKPos: {x: 0, y: 0, z: 0}
     Owner: {fileID: 7917483162082701955}
     LegBlendWeight: 1
     LegMoveSpeedMultiplier: 0.89378464
@@ -2086,7 +2088,6 @@ MonoBehaviour:
     AnkleForward: {x: -0.9999999, y: 0.0000001423088, z: 0.00000017735147}
     FootMiddlePosition: 0.5
     AnkleYawCorrection: 0
-    _FinalIKPos: {x: 0, y: 0, z: 0}
   BaseLegAnimating:
     StepMoveDuration: 0.25
     MoveToGoalCurve:
@@ -2336,7 +2337,7 @@ MonoBehaviour:
   UnscaledDeltaTime: 0
   DisableIfInvisible: {fileID: 6169657502854119467}
   DisableIfInvisibleExtraRenderers: []
-  FadeOffAtDistance: 1000
+  FadeOffAtDistance: 400
   GroundMask:
     serializedVersion: 2
     m_Bits: 1

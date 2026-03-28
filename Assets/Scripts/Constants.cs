@@ -112,6 +112,12 @@ public static class Constants
 
             public const string OnJump = "OnJump";
         }
+        
+        public static class Discord
+        {
+            public const string UpdateActivity = "Discord::UpdateActivity";
+            public const string UpdateLobby = "Discord::UpdateLobby";
+        }
 
         public static class Chat
         {
@@ -158,6 +164,8 @@ public static class Constants
             public const string PersonalMark = "PersonalMark";
             public const string JuggernautArmament = "JuggernautArmament";
         }
+
+        public const string AppLaunchCmd = "project-86://";
     }
 
     public static class Integrations

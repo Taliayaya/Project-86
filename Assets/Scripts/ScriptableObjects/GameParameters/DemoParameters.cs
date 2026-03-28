@@ -13,6 +13,7 @@ namespace ScriptableObjects.GameParameters
         [Range(100, 1000)] public int grauwolfHealth = 200;
         [Range(100, 1500)] public int loweHealth = 500;
         [Range(100, 1500)] public int dinosauriaHealth = 5000;
+        [Range(100, 1500)] public int allyJuggernautHealth = 3000;
         [Range(0, 100)] public int ameiseLoweRatio = 66;
         public GameObject ameisePrefab;
         public GameObject grauwolfPrefab;
@@ -30,7 +31,7 @@ namespace ScriptableObjects.GameParameters
                 UnitType.Grauwolf => grauwolfHealth,
                 // UnitType.Skorpion => 0,
                 // UnitType.None => 0,
-                // UnitType.Juggernaut => 0,
+                UnitType.Juggernaut => allyJuggernautHealth,
                 // UnitType.Scavenger => 0,
                 _ => throw new ArgumentOutOfRangeException(nameof(unit), unit, null)
             };

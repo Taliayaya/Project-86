@@ -2976,6 +2976,7 @@ MonoBehaviour:
   zoomCamera: {fileID: 8270994993198790707}
   tpsZoomCamera: {fileID: 8270994993198790707}
   vCamera: {fileID: 4876268210665776530}
+  gunCamera: {fileID: 0}
   tpsCamera: {fileID: 2349200728944498173}
   freeLookCamera: {fileID: 4824406540714744850}
   forwardMask:
@@ -5572,6 +5573,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1128223912551238314}
   m_PrefabAsset: {fileID: 0}
+--- !u!23 &2812632287883012796 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2927405188626538518, guid: 09c8b97c02210ac45882a9b0b6759e35,
+    type: 3}
+  m_PrefabInstance: {fileID: 1128223912551238314}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3439766386098154806 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2311684603074733980, guid: 09c8b97c02210ac45882a9b0b6759e35,
@@ -5800,22 +5807,6 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     AlignWithDesiredMoveDirection: 0
-  UseHips: 1
-  HipsHeightStepBlend: 1
-  HipsHeightStepSpeed: 0.37
-  HipsAdjustStyle: 0
-  StabilizeCenterOfMass: 0.15
-  AnimationIsStablePose: 0.75
-  StabilizingSpeed: 0.375
-  PushHipsOnLegMove: 0.025
-  NormalizePush: 1
-  PushReactionSpeed: 0.14
-  PushYBlend: 1
-  HipsStretchPreventer: 0.06
-  StretchPreventerSpeed: 0.8
-  StabilizeOnIsMoving: 0.15
-  _Hips_Modules_ExtraWOffset: {x: 0, y: 0, z: 0}
-  _Hips_Modules_ExtraRotOffset: {x: 0, y: 0, z: 0}
   ExtraHipsHubs: []
   HipsHubsHandling: 1
   HipsHubsBlend: 1
@@ -5860,11 +5851,28 @@ MonoBehaviour:
       Damping: 10
       BrakePower: 0.2
   StabilityAlgorithm: 1
+  UseHips: 1
+  HipsHeightStepBlend: 1
+  HipsHeightStepSpeed: 0.37
+  HipsAdjustStyle: 0
+  StabilizeCenterOfMass: 0.15
+  AnimationIsStablePose: 0.75
+  StabilizingSpeed: 0.375
+  PushHipsOnLegMove: 0.025
+  NormalizePush: 1
+  PushReactionSpeed: 0.14
+  PushYBlend: 1
+  HipsStretchPreventer: 0.06
+  StretchPreventerSpeed: 0.8
+  StabilizeOnIsMoving: 0.15
+  _Hips_Modules_ExtraWOffset: {x: 0, y: 0, z: 0}
+  _Hips_Modules_ExtraRotOffset: {x: 0, y: 0, z: 0}
   Legs:
   - G_CustomForceAttach: 0
     G_CustomForceNOTDetach: 0
     G_CustomForceDetach: 0
     G_CustomForceNOTAttach: 0
+    _FinalIKPos: {x: 0, y: 0, z: 0}
     Owner: {fileID: 5009670203228888221}
     LegBlendWeight: 1
     LegMoveSpeedMultiplier: 0.97668356
@@ -5891,11 +5899,11 @@ MonoBehaviour:
     AnkleForward: {x: 0.0037276745, y: -0.99998367, z: 0.00430201}
     FootMiddlePosition: 0.5
     AnkleYawCorrection: 0
-    _FinalIKPos: {x: 0, y: 0, z: 0}
   - G_CustomForceAttach: 0
     G_CustomForceNOTDetach: 0
     G_CustomForceDetach: 0
     G_CustomForceNOTAttach: 0
+    _FinalIKPos: {x: 0, y: 0, z: 0}
     Owner: {fileID: 5009670203228888221}
     LegBlendWeight: 1
     LegMoveSpeedMultiplier: 0.997587
@@ -5922,11 +5930,11 @@ MonoBehaviour:
     AnkleForward: {x: -0.002756536, y: -0.9999434, z: 0.010256708}
     FootMiddlePosition: 0.5
     AnkleYawCorrection: 0
-    _FinalIKPos: {x: 0, y: 0, z: 0}
   - G_CustomForceAttach: 0
     G_CustomForceNOTDetach: 0
     G_CustomForceDetach: 0
     G_CustomForceNOTAttach: 0
+    _FinalIKPos: {x: 0, y: 0, z: 0}
     Owner: {fileID: 5009670203228888221}
     LegBlendWeight: 1
     LegMoveSpeedMultiplier: 0.97813004
@@ -5953,11 +5961,11 @@ MonoBehaviour:
     AnkleForward: {x: -0.00060775876, y: -0.9999993, z: -0.0007008314}
     FootMiddlePosition: 0.5
     AnkleYawCorrection: 0
-    _FinalIKPos: {x: 0, y: 0, z: 0}
   - G_CustomForceAttach: 0
     G_CustomForceNOTDetach: 0
     G_CustomForceDetach: 0
     G_CustomForceNOTAttach: 0
+    _FinalIKPos: {x: 0, y: 0, z: 0}
     Owner: {fileID: 5009670203228888221}
     LegBlendWeight: 1
     LegMoveSpeedMultiplier: 0.9443543
@@ -5984,7 +5992,6 @@ MonoBehaviour:
     AnkleForward: {x: 0.006272912, y: -0.9999585, z: 0.006605208}
     FootMiddlePosition: 0.5
     AnkleYawCorrection: 0
-    _FinalIKPos: {x: 0, y: 0, z: 0}
   BaseLegAnimating:
     StepMoveDuration: 0.5
     MoveToGoalCurve:
@@ -6206,10 +6213,10 @@ MonoBehaviour:
   _Editor_EnsureCount: 0
   _Editor_OnValidateTrigger: 1
   _EditorAllowAutoUpdateFeetParams: 1
-  _EditorCategory: 1
-  _EditorSetupCategory: 0
-  _EditorMotionCategory: 2
-  _EditorExtraCategory: 1
+  _EditorCategory: 0
+  _EditorSetupCategory: 3
+  _EditorMotionCategory: 3
+  _EditorExtraCategory: 2
   setupPose:
     MainHipsPose:
       SourceTransform: {fileID: 0}
@@ -6232,9 +6239,9 @@ MonoBehaviour:
   Calibrate: 1
   AnimatePhysics: 0
   UnscaledDeltaTime: 0
-  DisableIfInvisible: {fileID: 0}
+  DisableIfInvisible: {fileID: 2812632287883012796}
   DisableIfInvisibleExtraRenderers: []
-  FadeOffAtDistance: 0
+  FadeOffAtDistance: 400
   GroundMask:
     serializedVersion: 2
     m_Bits: 1

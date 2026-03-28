@@ -32,6 +32,7 @@ namespace AI
     public class LegionSquad : NetworkBehaviour
     {
         [SerializeField] private bool isLeader;
+        [SerializeField] private Faction faction;
         public SquadMemberState squadMemberState;
         public Rigidbody rb;
         public LegionSquad leader;
@@ -158,7 +159,7 @@ namespace AI
         {
             while (true)
             {
-                var legions = Factions.GetMembers(Faction.Legion);
+                var legions = Factions.GetMembers(faction);
                 foreach (var legion in legions)
                 {
                     float distance = Vector3.Distance(transform.position, legion.transform.position);

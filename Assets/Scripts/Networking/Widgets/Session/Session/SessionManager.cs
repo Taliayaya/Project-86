@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Integrations;
 using Networking.Widgets.Core.Base;
 using Networking.Widgets.Core.Base.Session;
 using Networking.Widgets.Core.Base.Widget;
@@ -28,6 +29,8 @@ namespace Networking.Widgets.Session.Session
         Dictionary<string, string> m_PlayerIdToName = new Dictionary<string, string>();
 
         ISession m_ActiveSession;
+
+        private string _lobbySecret;
 
         internal ISession ActiveSession
         {

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using Armament.Shared;
 using Cosmetic;
 using DefaultNamespace.Sound;
+using Discord.Sdk;
 using Gameplay;
+using Integrations;
 using Networking;
 using Networking.RpcRequestStructs;
 using Networking.Widgets.Session.Session;
@@ -61,18 +63,19 @@ namespace UI.MainMenu
 
         private void OnEnable()
         {
-            EventManager.AddListener("SessionJoined", OnSessionJoined);
+            EventManager.AddListener(Constants.TypedEvents.Session.SessionJoined, OnSessionJoined);
         }
 
         private void OnDisable()
         {
-            EventManager.RemoveListener("SessionJoined", OnSessionJoined);
+            EventManager.RemoveListener(Constants.TypedEvents.Session.SessionJoined, OnSessionJoined);
         }
 
         void OnSessionJoined(object arg0)
         {
             if (!IsHost)
                 return;
+            DiscordManager.Instance.CreateLobby((id) => OnDiscordLobbyCallback(id, _selectedRegionPointsSo.regionName));
             Debug.Log("Session Joined");
             // WriteUserConfigurationToLobby();
             startMultiplayerButton.gameObject.SetActive(true);
@@ -95,7 +98,19 @@ namespace UI.MainMenu
             });
             _regionPointObjects.Add(regionPointComponent);
         }
-
+        
+        private static void OnDiscordLobbyCallback(ulong lobbyId, string mission)
+        {
+            RichPresence.LobbyDetails lobbyDetails = new()
+            {
+                LobbyId = lobbyId.ToString(),
+                LobbySecret = SessionManager.Instance.ActiveSession.Code,
+                State =  mission + $" (in Lobby)",
+                Details = "Waiting for players",
+                MaxLobbySize = SessionManager.Instance.ActiveSession.MaxPlayers
+            };
+            EventManager.TriggerEvent(Constants.TypedEvents.Discord.UpdateLobby, lobbyDetails);
+        }
         private void OpenWindow()
         {
             windowPanel.SetActive(true);
