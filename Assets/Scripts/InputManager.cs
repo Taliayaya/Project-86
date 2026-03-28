@@ -36,14 +36,17 @@ public class InputManager : Singleton<InputManager>
         EventManager.AddListener("RebindStarted", OnRebindStarted);
         EventManager.AddListener("DeleteSave", OnDeleteSave);
         EventManager.AddListener("OnResume", OnResumeFollow);
+        EventManager.AddListener(Constants.Events.Session.ReturnToMainMenu, OnReturnToMainMenu);
     }
-        
+
+
     private void OnDisable()
     {
         EventManager.RemoveListener("OnDeath", OnDeath);
         EventManager.RemoveListener("RebindStarted", OnRebindStarted);
         EventManager.RemoveListener("DeleteSave", OnDeleteSave);
         EventManager.RemoveListener("OnResume", OnResumeFollow);
+        EventManager.RemoveListener(Constants.Events.Session.ReturnToMainMenu, OnReturnToMainMenu);
     }
 
     #region Juggernaut Action Map
@@ -214,9 +217,15 @@ public class InputManager : Singleton<InputManager>
     private bool _pauseCd = false;
     public void OnResume()
     {
+        if (WindowManager.WindowOpenedCount > 1)
+        {
+            WindowManager.Close();
+            return;
+        }
+
         EventManager.TriggerEvent("OnResume");
-    }
-    
+    }    
+
     private void OnResumeFollow()
     {
         WindowManager.Close();
@@ -225,6 +234,11 @@ public class InputManager : Singleton<InputManager>
         _playerInput.SwitchCurrentActionMap("Juggernaut");
     }
 
+    private void OnReturnToMainMenu()
+    {
+        _playerInput.SwitchCurrentActionMap("MainMenu");
+        Cursor.lockState = CursorLockMode.Confined;
+    }
     #endregion
 
     #region Death Action Map
@@ -309,6 +323,31 @@ public class InputManager : Singleton<InputManager>
         EventManager.TriggerEvent(Constants.Events.Inputs.OnToggleHUD, true);
         EventManager.TriggerEvent(Constants.Events.Inputs.FreeCamera.OnExitPhotoMode);
         HealthBar.IsVisible = true;
+    }
+
+    private void OnPauseLegion(InputValue inputValue)
+    {
+        Debug.Log("Pausing Legion");
+        EventManager.TriggerEvent(Constants.TypedEvents.Inputs.FreeCamera.PauseLegion, null);
+    }
+
+    private void OnSpawnLowe(InputValue inputValue)
+    {
+        EventManager.TriggerEvent(Constants.TypedEvents.Inputs.FreeCamera.SpawnLowe, null);
+    }
+    
+    private void OnSpawnDinosauria(InputValue inputValue)
+    {
+        EventManager.TriggerEvent(Constants.TypedEvents.Inputs.FreeCamera.SpawnDinosauria, null);
+    }
+    private void OnSpawnAmeise(InputValue inputValue)
+    {
+        EventManager.TriggerEvent(Constants.TypedEvents.Inputs.FreeCamera.SpawnAmeise, null);
+    }
+
+    private void OnSpawnGrauwolf(InputValue inputValue)
+    {
+        EventManager.TriggerEvent(Constants.TypedEvents.Inputs.FreeCamera.SpawnGrauwolf, null);
     }
 
     #endregion

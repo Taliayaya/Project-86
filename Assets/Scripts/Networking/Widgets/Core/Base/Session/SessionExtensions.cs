@@ -1,7 +1,6 @@
-using Networking.Widgets.Core.Base.Session;
 using Unity.Services.Multiplayer;
 
-namespace Unity.Multiplayer.Widgets
+namespace Networking.Widgets.Core.Base.Session
 {
     public static class SessionExtensions
     {
@@ -12,6 +11,19 @@ namespace Unity.Multiplayer.Widgets
                 if (player.Id == playerId)
                 {
                     return player.Properties[SessionConstants.playerNamePropertyKey].Value;
+                }
+            }
+
+            return null;
+        }
+        
+        public static IReadOnlyPlayer GetPlayer(this ISession session, string playerId)
+        {
+            foreach (var player in session.Players)
+            {
+                if (player.Id == playerId)
+                {
+                    return player;
                 }
             }
 

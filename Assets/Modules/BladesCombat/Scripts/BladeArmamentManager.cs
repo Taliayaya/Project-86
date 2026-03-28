@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using BladesCombat.Utils;
 using BladesCombatTutorial;
+using Unity.Netcode;
 using UnityEngine;
 namespace BladesCombat
 {
-    public class BladeArmamentManager : MonoBehaviour
+    public class BladeArmamentManager : NetworkBehaviour
     {
         [SerializeField] private BladeSharedData SharedData;
         [SerializeField] private bool HasSeparateControls;
+        [SerializeField] private bool isEmitting;
+        [SerializeField] private bool isListening;
 
         private BladeSwitcher _bladeSwitcher = new BladeSwitcher();
         private BladeCollision _bladeCollision = new BladeCollision();
@@ -31,15 +34,22 @@ namespace BladesCombat
             InitComponents();
             EnableComponents();
         }
-
+        
         private void OnDisable()
         {
             DisableComponents();
         }
 
+        public override void OnNetworkSpawn()
+        {
+            base.OnNetworkSpawn();
+            InitComponents();
+            EnableComponents();
+        }
+
         private void InitComponents()
         {
-            if (_initedComponents)
+            if (_initedComponents || !IsOwner)
             {
                 return;
             }
@@ -49,6 +59,8 @@ namespace BladesCombat
                 _bladeSwitcher,
                 _bladeCollision
             };
+            _bladeSwitcher.IsEmitting = IsOwner && isEmitting;
+            _bladeSwitcher.IsListening = IsOwner && isListening;
 
             foreach (BladeComponent component in _bladeComponents)
             {
@@ -58,6 +70,8 @@ namespace BladesCombat
             PrepareUpdatableComponents();
             PrepareTriggerComponents();
             SubscribeToBladeTriggers();
+
+            _initedComponents = true;
         }
 
         private void PrepareUpdatableComponents()
@@ -107,6 +121,8 @@ namespace BladesCombat
 
         private void EnableComponents()
         {
+            if (!_initedComponents || !IsOwner)
+                return;
             foreach (BladeComponent component in _bladeComponents)
             {
                 component.Enable();
@@ -115,6 +131,8 @@ namespace BladesCombat
 
         private void DisableComponents()
         {
+            if (!_initedComponents || !IsOwner)
+                return;
             foreach (BladeComponent component in _bladeComponents)
             {
                 component.Disable();
@@ -123,13 +141,13 @@ namespace BladesCombat
 
         private void Update()
         {
-
-
-            _updateFeature.Invoke();
+            if (_initedComponents && IsOwner)
+                _updateFeature.Invoke();
         }
 
         private void OnBladeTriggerEnter(Collider other, bool isLeft)
         {
+            Debug.Log($"Trigger Entered: {other.name}");
             TriggerData data = new TriggerData() { IsLeftBlade = isLeft };
             _triggerFeature.Invoke(c => c.OnTriggerEnter(other, data));
             OnBladeTriggerEntered?.Invoke(other, data);

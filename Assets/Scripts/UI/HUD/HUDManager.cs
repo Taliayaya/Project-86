@@ -42,6 +42,8 @@ namespace UI.HUD
             //EventManager.AddListener("OnRespawn", OnRespawn);
             EventManager.AddListener("OnDistanceForward", OnUpdateDistance);
             EventManager.AddListener("OnMechaStateChange", OnMechaStateChange);
+            EventManager.AddListener(Constants.Events.BladeOpened, OnBladeOpened);
+            EventManager.AddListener(Constants.Events.BladeClosed, OnBladeClosed);
         }
 
         private void OnDisable()
@@ -59,6 +61,8 @@ namespace UI.HUD
             //EventManager.RemoveListener("OnRespawn", OnRespawn);
             EventManager.RemoveListener("OnDistanceForward", OnUpdateDistance);
             EventManager.RemoveListener("OnMechaStateChange", OnMechaStateChange);
+            EventManager.RemoveListener(Constants.Events.BladeOpened, OnBladeOpened);
+            EventManager.RemoveListener(Constants.Events.BladeClosed, OnBladeClosed);
         }
 
         private void OnDestroy()
@@ -240,6 +244,19 @@ namespace UI.HUD
         private TextMeshProUGUI secondaryAmmoLeftText;
         [SerializeField] private TextMeshProUGUI secondaryAmmoRightText;
         [SerializeField] private GameObject secondaryAmmoPanel;
+        
+        
+        private void OnBladeClosed()
+        {
+            secondaryAmmoLeftText.text = "OFF";
+            secondaryAmmoRightText.text = "OFF";
+        }
+
+        private void OnBladeOpened()
+        {
+            secondaryAmmoLeftText.text = "ON";
+            secondaryAmmoRightText.text = "ON";
+        }
         
         private void OnUpdateSecondaryAmmoLeft(object amountRemaining)
         {

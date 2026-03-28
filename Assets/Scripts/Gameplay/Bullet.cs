@@ -4,6 +4,7 @@ using Managers;
 using ScriptableObjects;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Gameplay
 {
@@ -15,7 +16,12 @@ namespace Gameplay
         private AmmoSO _ammoSo;
         private NetworkVariable<int> _ammoName = new NetworkVariable<int>();
 
+        public UnityEvent<NetworkObject, DamagePackage, DamageResponse> onHit;
+        public UnityEvent<NetworkObject, DamagePackage, DamageResponse> onKill;
+
         private float Damage => Ammo.damageCurve.Evaluate((_origin - transform.position).magnitude);
+
+        public Rigidbody rb;
 
         private DamagePackage _damagePackage;
         private float _lifeTime;
@@ -25,10 +31,21 @@ namespace Gameplay
 
         private void Start()
         {
-            _origin = transform.position;
+            if (!rb)
+                rb = GetComponent<Rigidbody>();
             _impulseSource = GetComponent<CinemachineImpulseSource>();
             var layer = LayerMask.NameToLayer("Projectiles");
             Physics.IgnoreLayerCollision(layer, layer, true);
+        }
+
+        private void OnDisable()
+        {
+            // ClearListeners();
+        }
+
+        private void OnEnable()
+        {
+            _origin = transform.position;
         }
 
         public void Init(AmmoSO ammoSo, Faction factionOrigin)
@@ -36,6 +53,12 @@ namespace Gameplay
             _ammoSo = ammoSo;
             _ammoName.Value = AmmoReferences.Instance.GetAmmoIndex(ammoSo.name);
             _factionOrigin = factionOrigin;
+        }
+
+        public void ClearListeners()
+        {
+            onHit.RemoveAllListeners();
+            onKill.RemoveAllListeners();
         }
 
         public override void OnNetworkSpawn()
@@ -77,24 +100,30 @@ namespace Gameplay
         {
             if (!IsSpawned || !HasAuthority)
                 return;
-            Debug.LogWarning("Bullet INFO:" + Ammo + " " + _factionOrigin + " " + _origin + " " + _ammoSo);
             _damagePackage = new DamagePackage()
             {
+                Type = DamageType.Bullet,
                 Faction = _factionOrigin,
-                DamageAmount = Damage,
-                DamageSourcePosition = _origin,
-                DamageAudioClip = Ammo.onHitSound,
-                BulletSize = Ammo.bulletSize,
-                IsBullet = true
+                
+                Bullet = new BulletData()
+                {
+                    Damage = Damage,
+                    Size = Ammo.bulletSize,
+                    HitPoint = other.contacts[0].point,
+                },
+                Audio = Ammo.onHitSound,
             };
             ApplyCameraShake();
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
 
-            //Debug.Log("bullet hit " + other.gameObject.name + other.collider.name);
-            // commented to avoid damaging twice
-            bool isHealthComponent = other.collider.CompareTag("HealthComponent");
+            Debug.Log("bullet hit " + other.gameObject.name + other.collider.name);
             IHealth health;
-            if (((isHealthComponent && other.collider.TryGetComponent(out health)) ||
-                 other.gameObject.TryGetComponent(out health)) && Ammo.explosionRadius == 0)
+            bool hasHealth = other.collider.TryGetComponent(out health);
+            bool parentHasHealth = false;
+            if (!hasHealth)
+                parentHasHealth = other.rigidbody && other.rigidbody.TryGetComponent(out health);
+            if (hasHealth || parentHasHealth)
             {
                 // If the bullet hit a non-hitbox, don't damage it and play a special effect
                 // like the bullet ricocheting off the armor
@@ -104,17 +133,32 @@ namespace Gameplay
                     return;
                 }
 
+                PoolManager.Instance.BackToPool(gameObject);
                 Debug.Log("Bullet hit " + other.collider.name + " on " + other.gameObject.name + " for " +
-                          _damagePackage.DamageAmount + " damage");
+                          _damagePackage.Bullet.Damage + " damage");
                 DamageResponse response = health.TakeDamage(_damagePackage);
                 if (response.Status == DamageResponse.DamageStatus.Deflected)
                 {
                     DeflectBulletRpc(other.contacts[0].point, other.contacts[0].normal);
                     return;
                 }
+                
+                onHit.Invoke(other.gameObject.GetComponent<NetworkObject>(), _damagePackage, response);
 
-                // implement on it effect
-                Destroy(gameObject);
+                if (_ammoSo.hitEffect)
+                {
+                    // implement on hit effect
+                    var rotation = Quaternion.LookRotation(other.contacts[0].point - _origin);
+                    var effect = PoolManager.Instance.Instantiate(_ammoSo.hitEffect, _damagePackage.Bullet.HitPoint, rotation);
+                    effect.transform.SetParent(other.collider.transform, true);
+                }
+
+                if (response.IsDead)
+                {
+                    Debug.Log($"Bullet killed {other.gameObject.name} ({response.RemainingHealth}");
+                    onKill.Invoke(other.gameObject.GetComponent<NetworkObject>(), _damagePackage, response);
+                }
+
                 return;
             }
             else
@@ -128,7 +172,7 @@ namespace Gameplay
 
             if (Ammo.explosionRadius == 0)
             {
-                Destroy(gameObject);
+                PoolManager.Instance.BackToPool(gameObject);
                 return;
             }
 
@@ -147,7 +191,7 @@ namespace Gameplay
             }
 
             Instantiate(Ammo.explosionPrefab, position, Quaternion.LookRotation(position - _origin));
-            Destroy(gameObject);
+            PoolManager.Instance.BackToPool(gameObject);
         }
 
         [Rpc(SendTo.ClientsAndHost)]
@@ -161,8 +205,6 @@ namespace Gameplay
                 effect.transform.localScale *= Ammo.armorMissEffectSizeMult;
                 Debug.Log("Armor Miss Effect");
             }
-
-            Destroy(gameObject);
         }
 
         [Rpc(SendTo.ClientsAndHost)]
@@ -170,10 +212,16 @@ namespace Gameplay
         {
             GameObject missEffect;
             if (Ammo.missEffectLookTop)
-                missEffect = Instantiate(Ammo.missEffect, point, Quaternion.Euler(-90, 0, 0));
+                missEffect = PoolManager.Instance.Instantiate(Ammo.missEffect, point, Quaternion.Euler(-90, 0, 0));
             else
-                missEffect = Instantiate(Ammo.missEffect, point,
+                missEffect = PoolManager.Instance.Instantiate(Ammo.missEffect, point,
                     Quaternion.LookRotation(point - _origin));
+
+            if (missEffect.TryGetComponent<ParticleSystem>(out var particles))
+            {
+                particles.Clear();
+                particles.Play();
+            }
             missEffect.transform.localScale *= Ammo.missEffectSizeMult;
         }
 
@@ -186,7 +234,7 @@ namespace Gameplay
 
         private void Expire()
         {
-            Destroy(gameObject);
+            PoolManager.Instance.BackToPool(gameObject);
         }
     }
 }

@@ -1,9 +1,13 @@
 using System;
 using System.Collections.Generic;
+using Armament.Shared;
+using Cosmetic;
 using DefaultNamespace.Sound;
 using Gameplay;
 using Networking;
 using Networking.RpcRequestStructs;
+using Networking.Widgets.Session.Session;
+using ScriptableObjects.Skins;
 using ScriptableObjects.UI;
 using TMPro;
 using Unity.Netcode;
@@ -55,8 +59,22 @@ namespace UI.MainMenu
             startMultiplayerButton.gameObject.SetActive(false);
         }
 
-        public void CreatedSession()
+        private void OnEnable()
         {
+            EventManager.AddListener("SessionJoined", OnSessionJoined);
+        }
+
+        private void OnDisable()
+        {
+            EventManager.RemoveListener("SessionJoined", OnSessionJoined);
+        }
+
+        void OnSessionJoined(object arg0)
+        {
+            if (!IsHost)
+                return;
+            Debug.Log("Session Joined");
+            // WriteUserConfigurationToLobby();
             startMultiplayerButton.gameObject.SetActive(true);
             startMultiplayerButton.onClick.RemoveAllListeners();
             startMultiplayerButton.onClick.AddListener(() => StartSession(true));
@@ -131,21 +149,22 @@ namespace UI.MainMenu
             if (!IsHost)
                 return;
             Debug.Log("Set mission for lobby");
-            var lobbyIds = await LobbyService.Instance.GetJoinedLobbiesAsync();
-            Debug.Assert(lobbyIds.Count == 1, "expected only one lobby, not parties implemented yet");
 
-            UpdateLobbyOptions options = new UpdateLobbyOptions();
-            options.HostId = AuthenticationService.Instance.PlayerId;
-
-
-            options.Data = new Dictionary<string, DataObject>()
+            IHostSession session = SessionManager.Instance.ActiveSession.AsHost();
+            
+            session.SetProperties(
+            new Dictionary<string, SessionProperty>()
             {
                 {
-                    "missionName", new DataObject(visibility: DataObject.VisibilityOptions.Public,
-                            mission.name)
+                    "missionName", new SessionProperty(mission.name)
                 }
-            };
-            await LobbyService.Instance.UpdateLobbyAsync(lobbyIds[0], options);
+            });
+            await session.SavePropertiesAsync();
+        }
+
+        private static void OnLobbyChanged()
+        {
+            throw new NotImplementedException();
         }
 
         // async void SendUserInfoToLobby()

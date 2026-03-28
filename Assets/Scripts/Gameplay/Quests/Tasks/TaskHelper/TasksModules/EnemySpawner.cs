@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Gameplay.Units;
+using Unity.AI.Navigation;
+using Unity.Behavior;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
@@ -29,9 +31,8 @@ namespace Gameplay.Quests.Tasks.TaskHelper.TasksModules
         
         [SerializeField] private List<GameObject> enemiesPrefabs = new List<GameObject>();
 
-        [Header("Advanced settings")] [SerializeField]
-        private bool areaAsGoal = false;
-        [SerializeField] private Transform enemyGoal;
+        [Header("Advanced settings")]
+        [SerializeField] private List<GameObject> patrolPoints;
         [SerializeField] private float delayBeforeSpawn = 0;
 
         [Header("Debug")]
@@ -54,8 +55,9 @@ namespace Gameplay.Quests.Tasks.TaskHelper.TasksModules
             {
                 i--;
                 position = transform.position + UnityEngine.Random.insideUnitSphere * radius;
-            } while (i > 0 && NavMesh.SamplePosition(position, out hit, 100, NavMesh.AllAreas));
-            
+            } while (i > 0 && !NavMesh.SamplePosition(position, out hit, 100, NavMesh.AllAreas));
+
+            NavMeshSurface nav;
             var enemy = Instantiate(unitPrefab, hit.position , Quaternion.Euler(0, Random.Range(0, 360), 0));
             Debug.Log("[EnemySpawner]: Spawned unit.");
             if (NetworkManager.Singleton.IsConnectedClient)
@@ -75,8 +77,8 @@ namespace Gameplay.Quests.Tasks.TaskHelper.TasksModules
                 {
                     var unit = SpawnUnit(enemiesPrefabs[i], spawnRadius);
                     _enemies[i * (spawnCount / enemiesPrefabs.Count) + j] = unit;
-                    if (areaAsGoal)
-                        unit.GetComponent<AIAgent>().AddDestinationGoal(enemyGoal.position);
+                    if (patrolPoints.Count > 0)
+                        unit.GetComponent<BehaviorGraphAgent>().SetVariableValue("PatrolPoints", patrolPoints);
                     yield return null;
                 }
             }

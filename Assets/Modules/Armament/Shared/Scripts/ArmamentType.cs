@@ -6,6 +6,5 @@ namespace Armament.Shared
 	{
 		MachineGun,
 		Blades
-		
 	}
 }

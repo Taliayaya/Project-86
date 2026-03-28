@@ -7,13 +7,14 @@ namespace Scripts
 		[SerializeField] private Transform Tip;
 		[SerializeField] private Transform Base;
 		[SerializeField] private float ForceApplication;
+		[SerializeField] private float lifetime = 30f;
 
 		private MeshSlicing _slicing;
 		
 		private void Start()
 		{
 
-			_slicing = new MeshSlicing(Tip, Base, ForceApplication);
+			_slicing = new MeshSlicing(Tip, Base, ForceApplication, lifetime);
 		}
 
 		private void OnTriggerEnter(Collider other)

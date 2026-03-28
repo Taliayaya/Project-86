@@ -20,6 +20,7 @@ public class WaveLegionSpawner : MonoBehaviour
     public DemoParameters demoParameters;
     public bool autoStart = false;
     public int maxTotalUnit = 200;
+    public int maxSameUnit = 10;
     [Tooltip("Where the enemies are headed after spawning")]public Transform initialGoal;
     public GameObject prefab;
 
@@ -89,6 +90,11 @@ public class WaveLegionSpawner : MonoBehaviour
                 break;
             case UnitType.Republic:
                 break;
+            case UnitType.Grauwolf:
+                SpawnLegion(demoParameters.grauwolfPrefab);
+                break;
+            case UnitType.Skorpion:
+                break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(type), type, null);
         }
@@ -113,6 +119,15 @@ public class WaveLegionSpawner : MonoBehaviour
         {
 
             int unitCount = (int)unitCountPerWave.Evaluate(_waveNumber);
+            
+            // dont spawn next wave if too many same units exist
+            int alreadyExistingType = legionUnits.FindAll(unit => unit.unitType == legionType).Count;
+            if (alreadyExistingType + unitCount >= maxSameUnit)
+            {
+                yield return new WaitForSeconds(15);
+                continue;
+            }
+
             StartCoroutine(SpawnNLegion(unitCount, legionType));
             
             float waveIntervalTime = waveInterval.Evaluate(_waveNumber);

@@ -93,10 +93,18 @@ public abstract class Singleton<T> : Singleton where T : MonoBehaviour
 
 public abstract class Singleton : MonoBehaviour
 {
-    public bool Quitting { get; private set; }
+    public static bool Quitting { get; private set; }
     #region  Methods
+    
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void Init()
+    {
+        Application.quitting += () => Quitting = true;
+    }
+
     private void OnApplicationQuit()
     {
+        Quitting = true;
         OnApplicationQuitting();
     }
 

@@ -94,81 +94,13 @@ If downloading the launcher is too much for you, you can simply download the lat
 
 --- 
 
-## Key Bindings
-A non-exhaustive list of the available keybinds. Note that these are the default ones.
-You can see their description and rebind them in the settings. 
-- **Movement:** W, A, S, D (or equivalent in your language)
-- **Main Weapon:** Left Click
-- **Secondary Weapon:** Right Click
-- **Zoom In/Out:** Mouse Wheel (up to 8.0X)
-- **Rotate Juggernaut:** Mouse Movement
-- **Pause/Settings:** ESC
-- **Revive:** Space (when destroyed)
-- **Follow Scavenger:** F
-- **Hold Scavenger:** H
-- **Go To Mode:** G (enter design target mode, left click to confirm)
-- **Cancel Go To Mode:** Recast G
-- **Hide (automatic):** No key (activated when Scavenger is damaged)
-- **HUD Window Edit Mode:** Alt
-- **Increase Movement Speed:** Shift
-
-## Game Menus
-
-Some menu that you may find interesting to know...
-
-### Pause Menu
-
-Access the pause menu by pressing ESC. Here, you can navigate various settings and parameters.
-
-### Settings
-
-Explore and modify game parameters, including testing features, in the Settings menu.
-
-### Guide
-
-Refer to the guide to understand crucial game features. Check for updates after each release for additional information. Feel free to suggest ideas as we're open to community input.
-
-### Main Menu
-
-Navigate through screens using F1, F2, and F3.
-
 ## Before Reporting
 
 Please be aware that juggernaut stats, sounds, and visual effects are temporary and subject to change. Report issues, bugs, or suggest improvements on the Issue page, Discord Community Server, or share your ideas.
 
 ## How to Contribute
 
-> **⚠ This section is not to download the game**. It is for people willing to help the project development, coding and so on. [Go back to the download game section](#download)
-
-Project 86 is an open source fan game. Hence, anyone can freely contribute to his project and this part is here to help you to set up.
-First, make sure to join the [discord server](https://discord.gg/Yh2TQH97yA). By doing so, communications will be made easier and you'll have access to the current tasks. These tasks are not only coding tasks. There are modeling, coding, musics, level design, art, story/lore, etc. Enough to find something you may do!
-
-Secondly, make sure to have Unity. We are currently using `Unity 6000.0.32f1` (this will change with time). Make sure to have the same one. 
-
-> > We recently upgraded from 2021.3.29f1, make sure your Unity Version is up to date!!!
-> We recently upgraded from 2022.3.21f1, make sure your Unity Version is up to date!!!
-
-Thirdly, you have to download the files. Github seems to have issue making the ZIP file of the project so avoid using it. We recommend you to CLONE the project.
-If you are new to Git and Github, this may seem frightening for you. If you are new to it, you should download the following softwares:
-- [Github Desktop](https://desktop.github.com/) : To simplify the use of git if you are new to it.
-- [Git](https://git-scm.com/) : Essential to clone the project and add your modifications (and used by Github Desktop, maybe the software installs Git for you?)
-- [Git LFS](https://git-lfs.com/) : An extension of Git used to manipulate the large files of our project, such as textures and models.
-
-You first want to FORK the project into your github account (by clicking on the fork button on the page). This will create a "copy" of the project to your account where you'll have full rights to manipulate it and being then able to request to add your changes to the main project
-
->  You can be added to the contributors and directly be able to contribute from the main repository
-
-You then want to clone the project with `git@github.com:Taliayaya/Project-86.git` (your fork URL) or open it with Github Desktop
-![image](https://github.com/Taliayaya/Project-86/assets/84530101/35dbcc61-ffe5-4c93-b25f-08ca13c29324)
-
-When this is done, you simply want to open the root with Unity and the version used. This will generate more files so make sure to have enough space to work on the project (At least 20 Go)
-You then later on want to COMMIT and PUSH your and changes. For that, we advise you to contact us if you're new to all that.
-
-To download the `Additional Assets` folder and some others to fully open this project, please download it from this link: https://drive.google.com/file/d/1yTOwTFJjrSXIZ2UjOxB6FsIsNqfp8Ad-/view?usp=sharing
-and extract it so that it is at the root of the `Assets` folder 
-
-> Note: Previously, the `Additional Assets` folder was tracked using `Git LFS`. However, the bandwidth was consumed too fast (within a week). Hence, as this folder was taking 90% of the storage, it was removed from it.
-> This file shouldn't have much modification or breaking change but should still be updated once in a while. (follow the discord for more information)
+This section was moved to the Wiki: https://github.com/Taliayaya/Project-86/wiki/Project-Installation
 
 ## Disclaimer
 
@@ -186,3 +118,4 @@ Your support is invaluable in making this project a reality!
 
 - Website: https://github.com/Project-86-Community/Project-86-Website
 - Launcher: https://github.com/Project-86-Community/Project-86-Launcher
+- FMOD: https://github.com/Project-86-Community/Project-86-FMOD

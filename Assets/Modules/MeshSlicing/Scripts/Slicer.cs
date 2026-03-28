@@ -77,6 +77,14 @@ namespace Assets.Scripts
 
 			objectToCut.GetComponent<MeshFilter>().mesh = oldPartMesh;
 			newPart.GetComponent<MeshFilter>().mesh = newPartMesh;
+			oldPartMesh.RecalculateTangents();
+			oldPartMesh.RecalculateNormals();
+			oldPartMesh.RecalculateBounds();
+			
+			newPartMesh.RecalculateTangents();
+			newPartMesh.RecalculateNormals();
+			newPartMesh.RecalculateBounds();
+			
 
 			SetupCollidersAndRigidBodys(objectToCut.gameObject, oldPartMesh, false);
 			SetupCollidersAndRigidBodys(newPart, newPartMesh, sliceable.UseGravity);

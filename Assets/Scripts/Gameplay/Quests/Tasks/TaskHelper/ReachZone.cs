@@ -13,6 +13,11 @@ namespace Gameplay.Quests.Tasks.TaskHelper
         public GameObject miniMapIcon;
         public Marker marker;
         
+        private void OnEnable()
+        {
+            miniMapIcon.SetActive(true);
+            marker.gameObject.SetActive(true);
+        }
         private void OnDisable()
         {
             miniMapIcon.SetActive(false);

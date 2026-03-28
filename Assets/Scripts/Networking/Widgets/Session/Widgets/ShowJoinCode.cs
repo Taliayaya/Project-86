@@ -1,6 +1,7 @@
+using Networking.Widgets.Core.Base.Widget;
 using Networking.Widgets.Core.Base.Widget.Interfaces;
+using Networking.Widgets.Session.Session;
 using TMPro;
-using Unity.Multiplayer.Widgets;
 using Unity.Services.Multiplayer;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -21,6 +22,12 @@ namespace Networking.Widgets.Session.Widgets
 
         void Start()
         {
+            if (SessionManager.Instance.ActiveSession != null)
+            {
+                Session = SessionManager.Instance.ActiveSession;
+                OnSessionJoined();
+            }
+
             if(m_Text == null)
                 m_Text = GetComponentInChildren<TMP_Text>();
             if(m_CopyCodeButton == null)

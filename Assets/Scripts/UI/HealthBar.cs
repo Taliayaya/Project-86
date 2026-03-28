@@ -27,9 +27,9 @@ namespace UI
         {
             if (toggleable)
             {
-                EventManager.AddListener(Constants.TypedEvents.OnToggleHealthBar, OnToggleHealthBar);    
-                gameObject.SetActive(IsVisible);
+                EventManager.AddListener(Constants.TypedEvents.OnToggleHealthBar, OnToggleHealthBar);  
             }
+            gameObject.SetActive(false);
         }
         
         private void OnDestroy()
@@ -42,11 +42,20 @@ namespace UI
             if (healthText)
                 healthText.text = $"{health:F0} / {maxHealth}"; 
             healthSlider.value = health / maxHealth;
+            
+            // enable health bar if they took damage
+            if (!Mathf.Approximately(health, maxHealth))
+                gameObject.SetActive(IsVisible);
         }
         
         private void OnToggleHealthBar(object arg0)
         {
-            gameObject.SetActive((bool) arg0);
+            bool toggle = (bool) arg0;
+            // if hp bar is full, hide
+            if (Mathf.Approximately(healthSlider.value, healthSlider.maxValue))
+                toggle = false;
+
+            gameObject.SetActive(toggle);
         }
     }
 }

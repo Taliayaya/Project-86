@@ -44,7 +44,7 @@ namespace AI.BehaviourTree.BasicNodes
 
         protected override State OnUpdate()
         {
-            if (_aiAgent.Agent.remainingDistance < 1f || _aiAgent.Agent.velocity.magnitude < 1f || !_aiAgent.Agent.hasPath)
+            if (_aiAgent.Agent.Agent.remainingDistance < 1f || _aiAgent.Agent.Agent.velocity.magnitude < 1f || !_aiAgent.Agent.Agent.hasPath)
             {
                 if (_patrolPoints != null && _patrolPoints.MoveNext())
                     _aiAgent.SetDestination(_patrolPoints.Current);

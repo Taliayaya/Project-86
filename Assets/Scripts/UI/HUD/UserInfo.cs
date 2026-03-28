@@ -6,7 +6,6 @@ using TMPro;
 using UnityEngine;
 using Unity.Netcode;
 
-using Unity.Multiplayer.Widgets;
 using Networking.Widgets.Session.Session;
 using ScriptableObjects.GameParameters;
 using Utility;

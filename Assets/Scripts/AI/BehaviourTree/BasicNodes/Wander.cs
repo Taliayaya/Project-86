@@ -30,7 +30,7 @@ namespace AI.BehaviourTree.BasicNodes
 
         protected override State OnUpdate()
         {
-            if (_agent.Agent.remainingDistance < 1f || _agent.Agent.velocity.magnitude < 1f || !_agent.Agent.hasPath)
+            if (_agent.Agent.Agent.remainingDistance < 1f || _agent.Agent.Agent.velocity.magnitude < 1f || !_agent.Agent.Agent.hasPath)
                 WanderAround();
             return State.Success;
         }
@@ -51,7 +51,7 @@ namespace AI.BehaviourTree.BasicNodes
             {
                 Vector3 finalPosition = hit.position;
                 _agent.SetDestination(finalPosition);
-                if (_agent.Agent.pathStatus == NavMeshPathStatus.PathComplete)
+                if (_agent.Agent.Agent.pathStatus == NavMeshPathStatus.PathComplete)
                 {
                     _goal = null;
                     blackBoard.RemoveValue("goal");

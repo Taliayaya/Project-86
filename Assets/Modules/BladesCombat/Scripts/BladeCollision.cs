@@ -41,7 +41,7 @@ namespace BladesCombat
             
             if (!other.TryGetComponent(out IHealth health))
             {
-                Debug.LogError($"{other.name} doesn't have health component");
+                Debug.Log($"{other.name} doesn't have health component");
                 return;
             }
 
@@ -68,12 +68,14 @@ namespace BladesCombat
             Debug.LogError($"{other.name} taking damage: {SharedData.FullDamage}");
             health.TakeDamage(new DamagePackage()
             {
-                BulletSize = 0,
-                DamageAmount = SharedData.FullDamage,
-                DamageAudioClip = null,
-                DamageSourcePosition = Vector3.zero,
-                IsBullet = false,
-                Faction = Faction.Republic
+                Type = DamageType.Blade,
+                Faction = Faction.Republic,
+                SourcePosition = Vector3.zero,
+                
+                Blade = new BladeData()
+                {
+                    Damage = SharedData.FullDamage
+                },
             });
 
         }

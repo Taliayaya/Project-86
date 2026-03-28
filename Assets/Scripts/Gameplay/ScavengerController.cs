@@ -109,10 +109,10 @@ namespace Gameplay
         private Vector3 _enemyOrigin;
         private void OnHealthChange(DamagePackage arg0)
         {
-            Debug.Log("Take damage of " + arg0.DamageAmount);
-            if (arg0.DamageAmount >= 5)
+            Debug.Log("Take damage of " + arg0.GetDamage());
+            if (arg0.GetDamage() >= 5)
                 State = ScavengerState.Hide;
-            _enemyOrigin = arg0.DamageSourcePosition;
+            _enemyOrigin = arg0.SourcePosition;
         }
         
         public void Seek(Vector3 location)

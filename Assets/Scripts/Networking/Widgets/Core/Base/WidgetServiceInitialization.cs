@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using Networking.Widgets.Core.Base.Widget;
-using Unity.Multiplayer.Widgets;
 using Unity.Services.Core;
 using UnityEngine;
 

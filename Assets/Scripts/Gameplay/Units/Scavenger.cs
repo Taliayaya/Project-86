@@ -27,8 +27,6 @@ namespace Gameplay.Units
         public AudioClip hideSound;
         public AudioSource audioSource;
 
-        public override float Priority => 1;
-
         public bool IsReloading { get; private set; } = false;
         private string _name;
         public string Name { get; set; }
@@ -36,6 +34,10 @@ namespace Gameplay.Units
         private int GetAmmoIndex(WeaponModule.WeaponType weaponType)
         {
             return ammoStacks.FindIndex((w) => w.weaponType == weaponType && w.ammoAmount > 0);
+        }
+
+        public override void TakeSlowEffect(DamagePackage damagePackage)
+        {
         }
 
         public override void OnTakeDamage(DamagePackage damagePackage)
@@ -53,7 +55,7 @@ namespace Gameplay.Units
             {
                 Vector3 explosionPosition = transform.position;
                 
-                if (Physics.Raycast(transform.position, Vector3.down, out var hit, 100, 1));
+                if (Physics.Raycast(transform.position, Vector3.down, out var hit, 100, 1))
                     explosionPosition = hit.point;
                 Instantiate(scavengerParameters.deathExplodePrefab, explosionPosition, Quaternion.identity);
             }
@@ -78,8 +80,8 @@ namespace Gameplay.Units
 
         private void Reload(WeaponModule weaponModule)
         {
+            if (!weaponModule.UsesAmmo) return;
             UpdateAmmoAmount(weaponModule);
-            
         }
 
         public void Reload(WeaponModule[] weaponModules, Unit unit, bool emitEventsForce = false)
@@ -99,12 +101,12 @@ namespace Gameplay.Units
             for (int i = 0; i < weaponModules.Length; i++)
             {
                 var weaponModule = weaponModules[i];
-                if (emitEvents || emitEventsForce)
+                if ((emitEvents || emitEventsForce) && weaponModule.UsesAmmo)
                     EventManager.TriggerEvent("OnReloadWeaponModule", new ReloadModuleData(i, weaponModules.Length, this, weaponModule.WeaponName, weaponModule.ReloadTime, weaponModule.Type));
                 yield return new WaitForSeconds(weaponModule.ReloadTime);
                 Reload(weaponModule);
             }
-            
+
             // Allowing firing again
             IsReloading = false;
             foreach (var weaponModule in weaponModules)
@@ -118,8 +120,8 @@ namespace Gameplay.Units
             _copyAmmoStacks[index].ammoAmount -= ammoToAdd;
             weaponModule.CurrentAmmoRemaining += ammoToAdd;
         }
-        
-        
+
+
         #endregion
 
         private void OnDrawGizmosSelected()

@@ -8,7 +8,7 @@ namespace Utility
         public Vector3 rotation;
         public Transform targetRotation;
 
-        private void Update()
+        private void FixedUpdate()
         {
             transform.rotation = targetRotation ? targetRotation.rotation : Quaternion.Euler(rotation);
         }

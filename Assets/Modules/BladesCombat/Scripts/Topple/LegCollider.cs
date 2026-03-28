@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 namespace BladesCombat.Topple
 {
 	public class LegCollider : MonoBehaviour
@@ -7,11 +9,22 @@ namespace BladesCombat.Topple
 
 		[SerializeField] private bool IsLeftLeg;
 		[SerializeField] private int LegIndex;
+		
+		List<GameObject> _parts = new List<GameObject>();
 		public bool IsLeft => IsLeftLeg;
 		public int Index => LegIndex;
 
-		public void RemoveLeg()
+		private void OnDestroy()
 		{
+			foreach (var part in _parts)
+			{
+				Destroy(part);
+			}
+		}
+
+		public void RemoveLeg(GameObject part)
+		{
+			_parts.Add(part);
 			DirectionCalculator.RemoveLeg(this);
 		}
 	}

@@ -1,9 +1,7 @@
-using System;
-using Networking.Widgets.Core.Base.Widget;
 using Networking.Widgets.Core.Base.Widget.Interfaces;
 using UnityEngine;
 
-namespace Unity.Multiplayer.Widgets
+namespace Networking.Widgets.Core.Base.Widget
 {
     /// <summary>
     /// Base Class for Widgets.

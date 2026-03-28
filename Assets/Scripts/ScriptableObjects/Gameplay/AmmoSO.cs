@@ -16,6 +16,7 @@ namespace ScriptableObjects
         public float reloadTime = 1f;
         public float maxLifetime = 5;
         public float forcePower = 500f;
+        public float maxAngleError = 10f;
         [Tooltip("In mm")] public float bulletSize = 10f;
 
         [Header("Explosion Properties")] [Range(0, 200)]
@@ -38,6 +39,7 @@ namespace ScriptableObjects
         // if the miss effect should always look upward or the player
         public bool missEffectLookTop = false;
 
+        public GameObject hitEffect;
         [Header("Armor Miss Effect")] public GameObject armorMissEffect;
         public float armorMissEffectSizeMult = 1f;
 

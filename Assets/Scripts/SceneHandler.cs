@@ -25,6 +25,8 @@ public class SceneHandler : Singleton<SceneHandler>
     private bool _init;
     private static bool _preloaded;
     
+    public bool ChangingScene { get; private set; }
+    
 
     private void OnEnable()
     {
@@ -112,6 +114,9 @@ public class SceneHandler : Singleton<SceneHandler>
             EventManager.TriggerEvent(Constants.TypedEvents.LoadingScene, (_activeSceneData, _loadingAsyncOperation));
         }
 
+        if (!_isReload)
+            PreviousSceneCleanup();
+        ChangingScene = true;
         if (NetworkManager.Singleton.IsHost)
         {
             LoadSceneMode mode = _isReload ? LoadSceneMode.Single : LoadSceneMode.Additive;
@@ -124,17 +129,21 @@ public class SceneHandler : Singleton<SceneHandler>
         switch (sceneEvent.SceneEventType)
         {
             case SceneEventType.Load:
+                ChangingScene = true;
                 Debug.Log($"Loading scene {sceneEvent.SceneName}");
                 WindowManager.CloseAll();
                 _loadingAsyncOperation = sceneEvent.AsyncOperation;
                 ShowLoadingUI();
                 DisableSceneObjects(SceneManager.GetActiveScene());
                 EventManager.TriggerEvent(Constants.TypedEvents.LoadingScene, (_activeSceneData, _loadingAsyncOperation));
+                if (!_isReload)
+                    PreviousSceneCleanup();
                 break;
             case SceneEventType.LoadComplete:
                 // only handle ourselves here
                 if (sceneEvent.ClientId != NetworkManager.Singleton.LocalClientId)
                     return;
+                ChangingScene = false;
                 if (_currentScene.HasValue && _currentScene.Value.name == sceneEvent.SceneName)
                     return;
                 Debug.Log($"Scene {sceneEvent.SceneName} loaded.");
@@ -173,7 +182,10 @@ public class SceneHandler : Singleton<SceneHandler>
     {
         var activeScene = SceneManager.GetActiveScene();
         Debug.Log($"Unloading scene {activeScene.name}");
-        NetworkManager.Singleton.SceneManager.UnloadScene(activeScene);
+        if (activeScene.name == "MainMenu")
+            SceneManager.UnloadSceneAsync(activeScene);
+        else
+            NetworkManager.Singleton.SceneManager.UnloadScene(activeScene);
     }
 
     IEnumerator SynchronizePostLoad()
@@ -192,14 +204,10 @@ public class SceneHandler : Singleton<SceneHandler>
     {
         if (!NetworkManager.Singleton.IsHost)
             yield break;
-        Debug.Log("Host is spawning players");
+        Debug.Log("Host is spawning itself");
         var respawnManager = FindAnyObjectByType<RespawnManager>();
-        foreach (var client in NetworkManager.Singleton.ConnectedClientsList)
-        {
-            Debug.Log("Host is spawning player " + client.ClientId);
-            var playerObject = respawnManager.SpawnPlayer(client.ClientId);
-            PlayerManager.PlayerObjects[client.ClientId] = playerObject;
-        }
+        var playerObject = respawnManager.SpawnPlayer(NetworkManager.Singleton.LocalClientId);
+        PlayerManager.PlayerObjects[NetworkManager.Singleton.LocalClientId] = playerObject;
 
         Debug.Log("Auto spawning for late users");
         NetworkManager.Singleton.OnClientConnectedCallback -= LateUserSpawn;
@@ -208,8 +216,6 @@ public class SceneHandler : Singleton<SceneHandler>
 
     IEnumerator PostSceneLoad(SceneEvent sceneEvent, bool setActiveScene = true)
     {
-        if (!_isReload)
-            PreviousSceneCleanup();
         yield return null;
         
         var terrains =
@@ -248,6 +254,10 @@ public class SceneHandler : Singleton<SceneHandler>
         else
         {
             Debug.Log("Client is waiting for its player object to spawn");
+            var respawnManager = FindAnyObjectByType<RespawnManager>();
+            // Debug.Log("Host is spawning player " + .ClientId);
+            var playerObject = respawnManager.SpawnPlayer(sceneEvent.ClientId);
+            PlayerManager.PlayerObjects[sceneEvent.ClientId] = playerObject;
         }
         yield return null;
         OnPlay();

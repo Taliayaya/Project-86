@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Linq;
+using Armament.Shared;
+using Cosmetic;
 using Gameplay.Mecha;
+using Networking;
+using Networking.Widgets.Core.Base.Session;
+using Networking.Widgets.Session.Session;
 using Unity.Netcode;
 using Unity.Services.Lobbies;
 using Unity.Services.Multiplayer;
@@ -46,10 +51,10 @@ namespace Gameplay
         private const bool DestroyWithScene = true;
         
         //[ServerRpc]
-        public GameObject Respawn(GameObject prefab, GameObject spawnPoint, ulong clientId)
+        public GameObject Respawn(GameObject prefab, GameObject spawnPoint, ulong clientId, bool useRandomOffset = true)
         {
             // random offset
-            var offset = new Vector3(UnityEngine.Random.Range(-10f, 10f), 0, UnityEngine.Random.Range(-10f, 10f));
+            var offset = useRandomOffset ? new Vector3(UnityEngine.Random.Range(-10f, 10f), 0, UnityEngine.Random.Range(-10f, 10f)) : Vector3.zero;
             var go = Instantiate(prefab, spawnPoint.transform.position + offset, spawnPoint.transform.rotation);
             go.name = "Player" + clientId;
 
@@ -59,19 +64,41 @@ namespace Gameplay
                 go.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, DestroyWithScene);
                 //go.GetComponent<MechaController>().ReInit();
             }
-
+            ApplyJuggernautConfig(go, clientId);
+            
             return go;
         }
-        
+
+        void ApplyJuggernautConfig(GameObject go, ulong clientId)
+        {
+            var armamentSection = go.transform.GetChild(2);
+            Debug.Assert(armamentSection.name == "Armament", "Armament section not found");
+            
+            MissionManager.Instance.GetPlayerByNetworkId(clientId, out var playerInfo);
+            IReadOnlyPlayer player = SessionManager.Instance.ActiveSession.GetPlayer(playerInfo.Value.PlayerId.Value);
+            Enum.TryParse(player.Properties[Constants.Properties.Session.JuggernautArmament].Value, out ArmamentType armament);
+            
+            var switcher1 = armamentSection.GetComponentInChildren<ArmamentComponentSwitcher>();
+            var switcher2 = armamentSection.GetComponentInChildren<ArmamentSwitcher>();
+            switcher1.ChangedArmament(armament);
+            switcher2.ChangedArmament(armament);
+        }
+
         public GameObject SpawnPlayer()
         {
             return SpawnPlayer(NetworkManager.Singleton.LocalClientId);
         }
 
+        private Transform GetPlayerSpawnPoint(ulong clientId)
+        {
+            return spawnPoint.GetChild((int)clientId);
+        }
+
         public GameObject SpawnPlayer(ulong clientId)
         {
-            Debug.Log("spawnpoint: " + spawnPoint);
-            return Respawn(playerPrefab, spawnPoint.gameObject, clientId);
+            var spawn = GetPlayerSpawnPoint(clientId);
+            Debug.Log($"Spawning Player{clientId} on {spawn.name}");
+            return Respawn(playerPrefab, spawn.gameObject, clientId, false);
         }
 
         public GameObject Respawn(GameObject prefab, int spawnPointIndex)
@@ -100,7 +127,13 @@ namespace Gameplay
             }
             var closestSpawnPoint = _respawnPoints.Min(x => Vector3.Distance(x.transform.position, position));
             var spawnPoint = _respawnPoints.First(x => Math.Abs(Vector3.Distance(x.transform.position, position) - closestSpawnPoint) < 0.5);
-            return Respawn(prefab, spawnPoint, NetworkManager.Singleton.LocalClientId);
+            var player = Respawn(prefab, spawnPoint, NetworkManager.Singleton.LocalClientId);
+            return player;
+        }
+
+        private void JuggernautConfig()
+        {
+            
         }
 
         public void OnRespawn(object arg)

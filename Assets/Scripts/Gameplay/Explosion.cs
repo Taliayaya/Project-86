@@ -6,19 +6,21 @@ namespace Gameplay
     public class Explosion : MonoBehaviour
     {
         public float delayBeforeExplosion = 0.1f;
-        public int maxAllowedCollisions = 20;
+        public int maxAllowedCollisions = 50;
         public int deathExplodeRadius = 10;
         public LayerMask deathExplodeLayerMask = 1;
         public AnimationCurve damageCurve;
+        public Faction faction = Faction.Neutral;
         
         public float Damage(float time) => damageCurve.Evaluate(time);
 
         public void Awake()
         {
-            Invoke(nameof(AOEExplode), delayBeforeExplosion);
+            if (delayBeforeExplosion >= 0)
+                Invoke(nameof(AoeExplode), delayBeforeExplosion);
         }
         
-        private void AOEExplode()
+        public void AoeExplode()
         {
             var colliders = new Collider[maxAllowedCollisions];
             var size = Physics.OverlapSphereNonAlloc(transform.position, deathExplodeRadius, colliders, deathExplodeLayerMask);
@@ -30,9 +32,14 @@ namespace Gameplay
                     var distance = Vector3.Distance(transform.position, hit.transform.position);
                     var damagePackage = new DamagePackage
                     {
-                        DamageAmount = Damage(distance),
-                        DamageSourcePosition = transform.position,
-                        Faction = Faction.Neutral
+                        Type = DamageType.Explosion,
+                        Explosion = new ExplosionData()
+                        {
+                            Damage = Damage(distance),
+                            Radius = deathExplodeRadius
+                        },
+                        SourcePosition = transform.position,
+                        Faction = faction
                     };
                     health.TakeDamage(damagePackage);
                 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BladesCombat.Topple;
 using UnityEngine;
 namespace BladesCombat
@@ -11,6 +12,7 @@ namespace BladesCombat
 		[SerializeField] private Transform RightBase;
 
 		[SerializeField] private float ForceApplication;
+		[SerializeField] private float cutLifetime = 30f;
 		
 		[SerializeField] private BladeArmamentManager BladeManager;
 
@@ -21,29 +23,30 @@ namespace BladesCombat
 		{
 			BladeManager.OnBladeTriggerEntered += TriggerEntered;
 			BladeManager.OnBladeTriggerExited += TriggerExited;
-			_leftSlicer = new MeshSlicing(LeftTip, LeftBase, ForceApplication);
-			_rightSlicer = new MeshSlicing(RightTip, RightBase, ForceApplication);
+			_leftSlicer = new MeshSlicing(LeftTip, LeftBase, ForceApplication, cutLifetime);
+			_rightSlicer = new MeshSlicing(RightTip, RightBase, ForceApplication, cutLifetime);
 			
 			_leftSlicer.OnSliced += Sliced;
 			_rightSlicer.OnSliced += Sliced;
 		}
-		private void Sliced(GameObject slicedObject)
+
+		private void Sliced(GameObject slicedObject, GameObject part)
 		{
 			if (slicedObject.TryGetComponent(out LegCollider legCollider))
 			{
-				legCollider.RemoveLeg();
+				legCollider.RemoveLeg(part);
 			}
 		}
 		private void TriggerEntered(Collider other, TriggerData data)
 		{
 			MeshSlicing slicer = data.IsLeftBlade ? _leftSlicer : _rightSlicer;
-			Debug.LogError($"{(data.IsLeftBlade ? "Left" : "Right")} trigger entered: {other.name}");
+			// Debug.LogError($"{(data.IsLeftBlade ? "Left" : "Right")} trigger entered: {other.name}");
 			slicer.OnTriggerEnter(other);
 		}
 		private void TriggerExited(Collider other, TriggerData data)
 		{
 			MeshSlicing slicer = data.IsLeftBlade ? _leftSlicer : _rightSlicer;
-			Debug.LogError($"{(data.IsLeftBlade ? "Left" : "Right")} trigger exited: {other.name}");
+			// Debug.LogError($"{(data.IsLeftBlade ? "Left" : "Right")} trigger exited: {other.name}");
 			slicer.OnTriggerExit(other);
 		}
 	}

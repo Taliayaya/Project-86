@@ -18,8 +18,18 @@ namespace UI
         private void OnEnable()
         {
             EventManager.AddListener("OnPause", OnPause);
+            NetworkManager.Singleton.OnClientDisconnectCallback += SingletonOnOnClientDisconnectCallback;
         }
-        
+
+        private void SingletonOnOnClientDisconnectCallback(ulong clientId)
+        {
+            if (clientId == NetworkManager.ServerClientId)
+            {
+                Debug.Log("Host disconnected, quitting session...");
+                StartCoroutine(QuitSession());
+            }
+        }
+
         private void OnDisable()
         {
             EventManager.RemoveListener("OnPause", OnPause);
@@ -57,6 +67,7 @@ namespace UI
             Debug.Log("IsSignedIn: " + AuthenticationService.Instance.IsSignedIn);
             var task = SessionManager.Instance.LeaveSession();
             yield return new WaitUntil(() => task.IsCompleted);
+            EventManager.TriggerEvent(Constants.Events.Session.ReturnToMainMenu);
             Debug.Log("IsSignedIn: " + AuthenticationService.Instance.IsSignedIn);
             GameManager.Instance.Pause(false);
             // NetworkManager.Singleton.DisconnectClient(NetworkManager.Singleton.LocalClientId, "Return to main menu");

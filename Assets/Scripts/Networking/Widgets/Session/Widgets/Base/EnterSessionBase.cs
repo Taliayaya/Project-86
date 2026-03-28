@@ -1,4 +1,5 @@
 using Networking.Widgets.Core.Base;
+using Networking.Widgets.Core.Base.Widget;
 using Networking.Widgets.Core.Base.Widget.Interfaces;
 using Networking.Widgets.Session.Session;
 using Unity.Multiplayer.Widgets;

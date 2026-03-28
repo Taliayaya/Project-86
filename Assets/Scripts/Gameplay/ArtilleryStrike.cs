@@ -7,6 +7,7 @@ using UI.HUD;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.VFX;
+using Random = UnityEngine.Random;
 
 public class ArtilleryStrike : MonoBehaviour
 {
@@ -76,15 +77,24 @@ public class ArtilleryStrike : MonoBehaviour
     {
         Debug.Log($"Try Applying damage to {target.name}");
         if (!target.TryGetComponent(out IHealth health))
-            return;
+        {
+            if (!target.gameObject.TryGetComponent(out health))
+                return;
+        }
+
         Debug.Log($"Applying damage to {target.name}");
         float distance = Vector3.Distance(origin, target.transform.position);
         DamagePackage damagePackage = new DamagePackage()
         {
+            Type = DamageType.Explosion,
             Faction = Faction.Neutral,
-            DamageAmount = damageCurve.Evaluate(distance / damageRadius),
-            DamageSourcePosition = origin,
-            IsBullet = false,
+            
+            Explosion = new ExplosionData()
+            {
+                Damage = damageCurve.Evaluate(distance / damageRadius),
+                Radius = damageRadius
+            },
+            SourcePosition = origin,
         };
         health.TakeDamage(damagePackage);
     }
@@ -112,10 +122,11 @@ public class ArtilleryStrike : MonoBehaviour
         }
     }
 
-    IEnumerator StrikeExecution(float strikeDuration_, float strikesPerSecond_, float strikeRadius_, float delay)
+    IEnumerator StrikeExecution(float strikeDuration_, float strikesPerSecond_, float strikeRadius_, float delay, uint seed)
     {
         yield return StartCoroutine(StrikePrevention(delay));
         _particleSystem.Stop();
+        _particleSystem.randomSeed = seed;
         var main = _particleSystem.main;
         main.duration = strikeDuration_;
         var emission = _particleSystem.emission;
@@ -129,15 +140,16 @@ public class ArtilleryStrike : MonoBehaviour
         minimapIcon.gameObject.SetActive(false);
     }
 
-    public void SendStrike(float strikeDuration_, float strikesPerSecond_, float strikeRadius_, float delay)
+    public void SendStrike(float strikeDuration_, float strikesPerSecond_, float strikeRadius_, float delay, uint seed)
     {
-        StartCoroutine(StrikeExecution(strikeDuration_, strikesPerSecond_, strikeRadius_, delay));
+        StartCoroutine(StrikeExecution(strikeDuration_, strikesPerSecond_, strikeRadius_, delay, seed));
     }
     
     [ContextMenu("Send Strike")]
     public void SendStrike()
     {
-        SendStrike(strikeDuration, strikesPerSecond, strikeRadius, 0);
+        uint randomSeed = (uint)Random.Range(int.MinValue, int.MaxValue);
+        SendStrike(strikeDuration, strikesPerSecond, strikeRadius, 0, randomSeed);
     }
     
     public void DestroyAfter(float time)
