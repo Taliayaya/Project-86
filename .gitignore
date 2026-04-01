@@ -1,5 +1,3 @@
-"/Assets/Additional\ Assets/"
-
 # This .gitignore file should be placed at the root of your Unity project directory
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
@@ -80,7 +78,6 @@ crashlytics-build.properties
 /[Aa]ssets/NEMODESM_PERSONAL_ASSETS**
 
 # Assets
-Assets/Additional*
 Assets/EasyRoads*
 Assets/FImpossible*
 Assets/Firebase*
@@ -91,3 +88,6 @@ Assets/ZRN*
 Assets/Text*
 Assets/Terrain*
 
+# Lights
+*dir.png*
+*light.exr*
