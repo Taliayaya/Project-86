@@ -166,10 +166,11 @@ namespace AI
                     if (distance > squadSO.squadMergeDistance)
                         continue;
                     
-                    Debug.Log($"Mering {name} with {legion.name} at distance {distance}");
+                    Debug.Log($"Merging {name} with {legion.name} at distance {distance}");
 
                     // squad are close to each other : merge them
-                    var legionSquad = legion.GetComponent<LegionSquad>();
+                    if (!legion.TryGetComponent<LegionSquad>(out var legionSquad))
+                        continue;
                     var newLeader = MergeSquad(legionSquad);
                     newLeader.UpdateSquadPosition();
                 }
