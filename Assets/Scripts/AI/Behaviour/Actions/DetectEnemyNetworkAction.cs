@@ -112,7 +112,8 @@ public partial class DetectEnemyNetworkAction : Action
                 continue;
             }
 
-            LegionNetwork.Instance.ReportTargetRpc(enemy.NetworkObject, TargetInfo.VisibilityStatus.Visible,
+            if (enemy.NetworkObject.IsSpawned)
+                LegionNetwork.Instance.ReportTargetRpc(enemy.NetworkObject, TargetInfo.VisibilityStatus.Visible,
                 enemy.transform.position);
 
             _nextVisibleTargets.Add(enemy);

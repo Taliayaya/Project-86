@@ -176,8 +176,6 @@ namespace Gameplay.Units
             // if we paused, dont start doing anything
             if (Factions.IsPaused(Faction)) return;
             
-            if (isAutonomous)
-                _behaviourTreeRunner.StartAI();
             if (rotateMainBodyTowardsEnemy)
                 RotateTowardsEnemy();
             if (!navmeshRotate)
@@ -332,7 +330,6 @@ namespace Gameplay.Units
         
         public void StartAI()
         {
-            _behaviourTreeRunner.StartAI();
         }
 
         public void StartMaintainIdealDistance(Transform closestTarget)
