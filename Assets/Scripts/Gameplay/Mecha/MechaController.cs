@@ -602,23 +602,51 @@ namespace Gameplay.Mecha
         }
         private IEnumerator JumpCoroutine()
         {
-            if(!canJump || !_isGrounded)
+            if (!canJump || !_isGrounded)
                 yield break;
 
-            _rigidbody.AddForce(Vector3.up * juggernautParameters.jumpPower, UnityEngine.ForceMode.Acceleration);
+            Vector3 stableNormal = surfaceAlignment.normal;
+            Vector3 rawNormal = surfaceAlignment.rawNormal;
 
-            // jump is now on cooldown
+            // Fallback safety
+            if (stableNormal == Vector3.zero)
+                stableNormal = Vector3.up;
+            if (rawNormal == Vector3.zero)
+                rawNormal = Vector3.up;
+
+            float angle = Vector3.Angle(rawNormal, Vector3.up);
+            Vector3 jumpDir;
+
+            if (angle < 35f)
+            {
+                // Flat ground: jump straight up
+                jumpDir = Vector3.up;
+            }
+            else if (angle < 70f)
+            {
+                // Slope: blend between world up and the stable surface normal
+                float t = Mathf.InverseLerp(35f, 70f, angle);
+                jumpDir = Vector3.Normalize(Vector3.Lerp(Vector3.up, stableNormal, t));
+            }
+            else
+            {
+                // Very steep surface: jump mostly away from the surface,
+                // but keep a little upward motion so it still feels like a jump
+                jumpDir = Vector3.Normalize(rawNormal + Vector3.up * 0.2f);
+            }
+
+            _rigidbody.AddForce(jumpDir * juggernautParameters.jumpPower, ForceMode.Acceleration);
+
             canJump = false;
             isJumping = true;
 
             float elapsedTime = 0.0f;
-            //float jumpTime = 0.5f;
 
             while (isJumping)
             {
                 yield return null;
                 elapsedTime += Time.deltaTime;
-                
+
                 isJumping = Input.GetKey("space");
                 if (!isJumping || elapsedTime > juggernautParameters.maxJumpDuration)
                 {
