@@ -635,7 +635,7 @@ namespace Gameplay.Mecha
                 jumpDir = Vector3.Normalize(rawNormal + Vector3.up * 0.2f);
             }
 
-            _rigidbody.AddForce(jumpDir * juggernautParameters.jumpPower, ForceMode.Acceleration);
+            _rigidbody.AddForce(jumpDir * juggernautParameters.jumpPower, ForceMode.VelocityChange);
 
             canJump = false;
             isJumping = true;
