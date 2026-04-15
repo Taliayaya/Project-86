@@ -37,16 +37,16 @@ namespace FMODUnity
             if (NotFoundWarning == null)
             {
                 Texture warningIcon = EditorUtils.LoadImage("NotFound.png");
-                NotFoundWarning = new GUIContent(L10n.Tr("Parameter Not Found"), warningIcon);
+                NotFoundWarning = new GUIContent("Parameter Not Found", warningIcon);
             }
 
-            EditorGUILayout.PropertyField(trigger, new GUIContent(L10n.Tr("Trigger")));
+            EditorGUILayout.PropertyField(trigger, new GUIContent("Trigger"));
             if (trigger.enumValueIndex >= (int)EmitterGameEvent.TriggerEnter && trigger.enumValueIndex <= (int)EmitterGameEvent.TriggerExit2D)
             {
                 tag.stringValue = EditorGUILayout.TagField("Collision Tag", tag.stringValue);
             }
 
-            EditorGUILayout.PropertyField(param, new GUIContent(L10n.Tr("Parameter")));
+            EditorGUILayout.PropertyField(param, new GUIContent("Parameter"));
 
             if (param.stringValue != currentPath)
             {
@@ -67,7 +67,7 @@ namespace FMODUnity
             {
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    EditorGUILayout.PrefixLabel(L10n.Tr("Override Value"));
+                    EditorGUILayout.PrefixLabel("Override Value");
                     value.floatValue = EditorUtils.DrawParameterValueLayout(value.floatValue, editorParamRef);
                 }
             }

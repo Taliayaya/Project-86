@@ -40,7 +40,7 @@ namespace FMODUnity
         [MenuItem(ReorganizerMenuItemPath)]
         public static void ShowWindow()
         {
-            FileReorganizer reorganizer = GetWindow<FileReorganizer>(L10n.Tr("FMOD File Reorganizer"));
+            FileReorganizer reorganizer = GetWindow<FileReorganizer>("FMOD File Reorganizer");
             reorganizer.minSize = new Vector2(850, 600);
 
             reorganizer.PopulateTasks();
@@ -65,7 +65,7 @@ namespace FMODUnity
                     platform = platform,
                     source = source,
                     destination = destination,
-                    statusText = string.Format(L10n.Tr("{0} will be moved to\n{1}"), source, destination),
+                    statusText = string.Format("{0} will be moved to\n{1}", source, destination),
                 };
             }
 
@@ -75,7 +75,7 @@ namespace FMODUnity
                     type = Type.RemoveFolder,
                     status = Status.Pending,
                     source = path,
-                    statusText = string.Format(L10n.Tr("{0} will be removed if it is empty"), path),
+                    statusText = string.Format("{0} will be removed if it is empty", path),
                 };
             }
 
@@ -87,7 +87,7 @@ namespace FMODUnity
                     platform = platform,
                     source = path,
                     statusText = string.Format(
-                        L10n.Tr("{0} is missing.\nYou may need to reinstall the {1} support package from {2}."),
+                        "{0} is missing.\nYou may need to reinstall the {1} support package from {2}.",
                         path, platform.DisplayName, EditorSettings.DownloadURL),
                 };
             }
@@ -99,7 +99,7 @@ namespace FMODUnity
                     status = Status.Pending,
                     platform = platform,
                     source = path,
-                    statusText = string.Format(L10n.Tr("{0} will be removed"), path),
+                    statusText = string.Format("{0} will be removed", path),
                 };
             }
 
@@ -228,12 +228,12 @@ namespace FMODUnity
 
                 if (missingCount == 1)
                 {
-                    message = L10n.Tr("There is a file missing. Select it above for more information.");
+                    message = "There is a file missing. Select it above for more information.";
                 }
                 else
                 {
                     message = string.Format(
-                        L10n.Tr("There are {0} files missing. Select them above for more information."), missingCount);
+                        "There are {0} files missing. Select them above for more information.", missingCount);
                 }
 
                 statusContent = new GUIContent(message, Resources.StatusIcon[Task.Status.Missing]);
@@ -298,27 +298,27 @@ namespace FMODUnity
                 MultiColumnHeaderState.Column[] columns = new MultiColumnHeaderState.Column[] {
                     new MultiColumnHeaderState.Column()
                     {
-                        headerContent = new GUIContent(L10n.Tr("Task #")),
+                        headerContent = new GUIContent("Task #"),
                         width = 50,
                         autoResize = false,
                         allowToggleVisibility = false,
                     },
                     new MultiColumnHeaderState.Column()
                     {
-                        headerContent = new GUIContent(L10n.Tr("Status")),
+                        headerContent = new GUIContent("Status"),
                         width = 100,
                         autoResize = false,
                         allowToggleVisibility = false,
                     },
                     new MultiColumnHeaderState.Column() {
-                        headerContent = new GUIContent(L10n.Tr("Platform")),
+                        headerContent = new GUIContent("Platform"),
                         width = 150,
                         autoResize = false,
                         allowToggleVisibility = false,
                     },
                     new MultiColumnHeaderState.Column()
                     {
-                        headerContent = new GUIContent(L10n.Tr("Description")),
+                        headerContent = new GUIContent("Description"),
                         minWidth = 500,
                         allowToggleVisibility = false,
                     },
@@ -361,7 +361,7 @@ namespace FMODUnity
                 else
                 {
                     TreeViewItem item = new TreeViewItem(0);
-                    item.displayName = L10n.Tr("Nothing to do here.");
+                    item.displayName = "Nothing to do here.";
 
                     root.AddChild(item);
                 }
@@ -595,7 +595,7 @@ namespace FMODUnity
 
                 EditorGUI.BeginDisabledGroup(true);
 
-                GUI.Label(suffixRect, L10n.Tr("if empty"), Resources.SuffixStyle());
+                GUI.Label(suffixRect, "if empty", Resources.SuffixStyle());
 
                 EditorGUI.EndDisabledGroup();
             }
@@ -664,7 +664,7 @@ namespace FMODUnity
 
             public static readonly GUIContent SourcePrefix = new GUIContent("Move");
             public static readonly GUIContent DestinationPrefix = new GUIContent("to");
-            public static readonly GUIContent RemovePrefix = new GUIContent(L10n.Tr("Remove"));
+            public static readonly GUIContent RemovePrefix = new GUIContent("Remove");
 
             private static Vector2 prefixSize;
 
@@ -686,10 +686,10 @@ namespace FMODUnity
 
             public static readonly Dictionary<Task.Status, GUIContent> StatusContent =
                 new Dictionary<Task.Status, GUIContent>() {
-                {  Task.Status.Pending, new GUIContent(L10n.Tr("Pending"), StatusIcon[Task.Status.Pending]) },
-                {  Task.Status.Succeeded, new GUIContent(L10n.Tr("Succeeded"), StatusIcon[Task.Status.Succeeded]) },
-                {  Task.Status.Failed, new GUIContent(L10n.Tr("Failed"), StatusIcon[Task.Status.Failed]) },
-                {  Task.Status.Missing, new GUIContent(L10n.Tr("Missing"), StatusIcon[Task.Status.Missing]) },
+                {  Task.Status.Pending, new GUIContent("Pending", StatusIcon[Task.Status.Pending]) },
+                {  Task.Status.Succeeded, new GUIContent("Succeeded", StatusIcon[Task.Status.Succeeded]) },
+                {  Task.Status.Failed, new GUIContent("Failed", StatusIcon[Task.Status.Failed]) },
+                {  Task.Status.Missing, new GUIContent("Missing", StatusIcon[Task.Status.Missing]) },
             };
 
             public static GUIStyle StatusColumnStyle()
@@ -832,14 +832,14 @@ namespace FMODUnity
 
             GUILayout.BeginHorizontal();
 
-            if (GUILayout.Button(L10n.Tr("Cancel"), GUILayout.Height(buttonHeight)))
+            if (GUILayout.Button("Cancel", GUILayout.Height(buttonHeight)))
             {
                 Cancel();
             }
 
             EditorGUI.BeginDisabledGroup(IsProcessing());
 
-            if (GUILayout.Button(L10n.Tr("Refresh"), GUILayout.Height(buttonHeight)))
+            if (GUILayout.Button("Refresh", GUILayout.Height(buttonHeight)))
             {
                 PopulateTasks();
             }
@@ -850,13 +850,13 @@ namespace FMODUnity
             {
                 EditorGUI.BeginDisabledGroup(true);
 
-                GUILayout.Button(string.Format(L10n.Tr("Processing Task {0} of {1}"), currentTask, taskCount), GUILayout.Height(buttonHeight));
+                GUILayout.Button(string.Format("Processing Task {0} of {1}", currentTask, taskCount), GUILayout.Height(buttonHeight));
 
                 EditorGUI.EndDisabledGroup();
             }
             else
             {
-                if (GUILayout.Button(string.Format(L10n.Tr("Process {0} Tasks"), taskCount), GUILayout.Height(buttonHeight)))
+                if (GUILayout.Button(string.Format("Process {0} Tasks", taskCount), GUILayout.Height(buttonHeight)))
                 {
                     StartProcessing();
                 }
@@ -949,10 +949,6 @@ namespace FMODUnity
                 new MoveRecord() { source = FMODRoot + "/src/fmodplugins.cpp", destination = "obsolete" },
                 new MoveRecord() { source = FMODRoot + "/src/fmod_static_plugin_support.h", destination = "obsolete" },
                 new MoveRecord() { source = FMODSource + "/CodeGeneration.cs", destination = "src/Editor" },
-
-                // Release 2.3 layout
-                new MoveRecord() { source = FMODRoot + "/platforms/html5/lib/libfmodstudiounityplugin.bc", destination = "obsolete" },
-                new MoveRecord() { source = FMODRoot + "/platforms/html5/lib/libfmodstudiounitypluginL.bc", destination = "obsolete" },
             };
 
             private static readonly string[] fmodFoldersToCleanUp = {
@@ -1283,17 +1279,17 @@ namespace FMODUnity
 
                 currentTask = task.step;
 
-                yield return string.Format(L10n.Tr("Moving {0} to {1}"), task.source, task.destination);
+                yield return string.Format("Moving {0} to {1}", task.source, task.destination);
 
                 string result = AssetDatabase.MoveAsset(task.source, task.destination);
 
                 if (string.IsNullOrEmpty(result))
                 {
-                    task.SetSucceeded(string.Format(L10n.Tr("{0} was moved to\n{1}"), task.source, task.destination));
+                    task.SetSucceeded(string.Format("{0} was moved to\n{1}", task.source, task.destination));
                 }
                 else
                 {
-                    task.SetFailed(string.Format(L10n.Tr("{0} could not be moved to\n{1}: '{2}'"),
+                    task.SetFailed(string.Format("{0} could not be moved to\n{1}: '{2}'",
                         task.source, task.destination, result));
                 }
 
@@ -1314,11 +1310,11 @@ namespace FMODUnity
 
                 if (AssetDatabase.MoveAssetToTrash(task.source))
                 {
-                    task.SetSucceeded(string.Format(L10n.Tr("{0} was removed"), task.source));
+                    task.SetSucceeded(string.Format("{0} was removed", task.source));
                 }
                 else
                 {
-                    task.SetFailed(string.Format(L10n.Tr("{0} could not be removed"), task.source));
+                    task.SetFailed(string.Format("{0} could not be removed", task.source));
                 }
 
                 yield return task.statusText;
@@ -1347,31 +1343,31 @@ namespace FMODUnity
         {
             if (!Directory.Exists(Application.dataPath + "/../" + task.source))
             {
-                task.SetSucceeded(string.Format(L10n.Tr("{0} has already been removed"), task.source));
+                task.SetSucceeded(string.Format("{0} has already been removed", task.source));
                 yield break;
             }
 
             if (!AssetDatabase.IsValidFolder(task.source))
             {
-                task.SetFailed(string.Format(L10n.Tr("{0} is not a valid folder"), task.source));
+                task.SetFailed(string.Format("{0} is not a valid folder", task.source));
                 yield break;
             }
 
             if (!IsFolderEmpty(task.source))
             {
-                task.SetFailed(string.Format(L10n.Tr("{0} is not empty"), task.source));
+                task.SetFailed(string.Format("{0} is not empty", task.source));
                 yield break;
             }
 
-            yield return string.Format(L10n.Tr("Removing empty folder {0}"), task.source);
+            yield return string.Format("Removing empty folder {0}", task.source);
 
             if (AssetDatabase.MoveAssetToTrash(task.source))
             {
-                task.SetSucceeded(string.Format(L10n.Tr("{0} was removed"), task.source));
+                task.SetSucceeded(string.Format("{0} was removed", task.source));
             }
             else
             {
-                task.SetFailed(string.Format(L10n.Tr("{0} could not be removed"), task.source));
+                task.SetFailed(string.Format("{0} could not be removed", task.source));
             }
 
             yield return task.statusText;

@@ -10,7 +10,7 @@ namespace FMOD
 {
     public partial class VERSION
     {
-        public const string dll = "fmodstudio" + suffix;
+        public const string dll = "fmodstudio" + dllSuffix;
     }
 }
 
@@ -18,7 +18,7 @@ namespace FMOD.Studio
 {
     public partial class STUDIO_VERSION
     {
-        public const string dll = "fmodstudio" + VERSION.suffix;
+        public const string dll = "fmodstudio" + dllSuffix;
     }
 }
 #endif
