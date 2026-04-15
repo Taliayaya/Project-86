@@ -11,12 +11,11 @@ namespace FMODUnity
     {
         public EventReference EventReference;
 
-        [Obsolete("Use the EventReference field instead")]
+        [Obsolete("Use the EventReference field instead.")]
         public string Event = "";
 
         [FormerlySerializedAs("PlayEvent")]
         public EmitterGameEvent EventPlayTrigger = EmitterGameEvent.None;
-        [Obsolete("Use the EventPlayTrigger field instead")]
         public EmitterGameEvent PlayEvent
         {
             get { return EventPlayTrigger; }
@@ -24,7 +23,6 @@ namespace FMODUnity
         }
         [FormerlySerializedAs("StopEvent")]
         public EmitterGameEvent EventStopTrigger = EmitterGameEvent.None;
-        [Obsolete("Use the EventStopTrigger field instead")]
         public EmitterGameEvent StopEvent
         {
             get { return EventStopTrigger; }
@@ -235,13 +233,9 @@ namespace FMODUnity
 
             IsActive = true;
 
-            if (is3D && Settings.Instance.StopEventsOutsideMaxDistance)
+            if (is3D && !isOneshot && Settings.Instance.StopEventsOutsideMaxDistance)
             {
-                if (!isOneshot)
-                {
-                    RegisterActiveEmitter(this);
-                }
-
+                RegisterActiveEmitter(this);
                 UpdatePlayingStatus(true);
             }
             else

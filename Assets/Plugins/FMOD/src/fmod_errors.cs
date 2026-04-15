@@ -1,12 +1,12 @@
 /* ==============================================================================================  */
 /* FMOD Core / Studio API - Error string header file.                                              */
-/* Copyright (c), Firelight Technologies Pty, Ltd. 2004-2025.                                      */
+/* Copyright (c), Firelight Technologies Pty, Ltd. 2004-2026.                                      */
 /*                                                                                                 */
 /* Use this header if you want to store or display a string version / english explanation          */
 /* of the FMOD error codes.                                                                        */
 /*                                                                                                 */
 /* For more detail visit:                                                                          */
-/* https://fmod.com/docs/2.03/api/core-api-common.html#fmod_result                                 */
+/* https://fmod.com/docs/2.02/api/core-api-common.html#fmod_result                                 */
 /* =============================================================================================== */
 
 namespace FMOD

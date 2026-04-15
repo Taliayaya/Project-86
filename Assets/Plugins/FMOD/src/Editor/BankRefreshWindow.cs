@@ -26,7 +26,7 @@ namespace FMODUnity
             if (instance == null)
             {
                 instance = CreateInstance<BankRefreshWindow>();
-                instance.titleContent = new GUIContent(L10n.Tr("FMOD Bank Refresh Status"));
+                instance.titleContent = new GUIContent("FMOD Bank Refresh Status");
                 instance.minSize = new Vector2(400, 200);
                 instance.maxSize = new Vector2(1000, 200);
 
@@ -138,19 +138,19 @@ namespace FMODUnity
 
             if (timeSinceFileChange != float.MaxValue)
             {
-                GUILayout.Label(string.Format(L10n.Tr("The FMOD source banks changed {0} ago."),
+                GUILayout.Label(string.Format("The FMOD source banks changed {0} ago.",
                     EditorUtils.DurationString(timeSinceFileChange)), labelStyle);
 
                 float timeUntilBankRefresh = BankRefresher.TimeUntilBankRefresh();
 
                 if (timeUntilBankRefresh == 0)
                 {
-                    GUILayout.Label(L10n.Tr("Refreshing banks now..."), labelStyle);
+                    GUILayout.Label("Refreshing banks now...", labelStyle);
                     readyToRefreshBanks = true;
                 }
                 else if (timeUntilBankRefresh != float.MaxValue)
                 {
-                    if (DrawCountdown(L10n.Tr("Refreshing banks"), timeUntilBankRefresh, Settings.Instance.BankRefreshCooldown, labelStyle)
+                    if (DrawCountdown("Refreshing banks", timeUntilBankRefresh, Settings.Instance.BankRefreshCooldown, labelStyle)
                         || ConsumeEscapeKey())
                     {
                         BankRefresher.DisableAutoRefresh();
@@ -158,18 +158,18 @@ namespace FMODUnity
                 }
                 else
                 {
-                    GUILayout.Label(L10n.Tr("Would you like to refresh banks?"), labelStyle);
+                    GUILayout.Label("Would you like to refresh banks?", labelStyle);
                 }
             }
             else
             {
                 if (lastRefreshError == null)
                 {
-                    GUILayout.Label(L10n.Tr("The FMOD banks are up to date."), labelStyle);
+                    GUILayout.Label("The FMOD banks are up to date.", labelStyle);
                 }
                 else
                 {
-                    GUILayout.Label(L10n.Tr("Bank refresh failed:"), largeErrorStyle);
+                    GUILayout.Label("Bank refresh failed:", largeErrorStyle);
                     GUILayout.Box(lastRefreshError, errorStyle, GUILayout.ExpandWidth(true));
                 }
             }
@@ -178,7 +178,7 @@ namespace FMODUnity
             {
                 float timeUntilClose = Mathf.Max(0, closeTime - Time.realtimeSinceStartup);
 
-                if (DrawCountdown(L10n.Tr("Closing"), timeUntilClose, CloseDelay, labelStyle) || ConsumeEscapeKey())
+                if (DrawCountdown("Closing", timeUntilClose, CloseDelay, labelStyle) || ConsumeEscapeKey())
                 {
                     closeTime = float.MaxValue;
                 }
@@ -187,7 +187,7 @@ namespace FMODUnity
 
         private static bool DrawCountdown(string text, float remainingTime, float totalTime, GUIStyle labelStyle)
         {
-            GUILayout.Label(string.Format(L10n.Tr("{0} in {1}..."), text, EditorUtils.DurationString(remainingTime)), labelStyle);
+            GUILayout.Label(string.Format("{0} in {1}...", text, EditorUtils.DurationString(remainingTime)), labelStyle);
 
             const float boxHeight = 2;
 
@@ -200,7 +200,7 @@ namespace FMODUnity
 
             GUI.DrawTexture(boxRect, EditorGUIUtility.whiteTexture);
 
-            GUIContent cancelContent = new GUIContent(L10n.Tr("Cancel"));
+            GUIContent cancelContent = new GUIContent("Cancel");
 
             controlRect = EditorGUILayout.GetControlRect(false, EditorGUIUtility.singleLineHeight * 2);
 
@@ -223,12 +223,12 @@ namespace FMODUnity
             Rect refreshRect = rect;
             refreshRect.xMin = closeRect.xMax;
 
-            if (GUI.Button(closeRect, L10n.Tr("Close")))
+            if (GUI.Button(closeRect, "Close"))
             {
                 Close();
             }
 
-            if (GUI.Button(refreshRect, L10n.Tr("Refresh Banks Now")))
+            if (GUI.Button(refreshRect, "Refresh Banks Now"))
             {
                 EventManager.RefreshBanks();
             }

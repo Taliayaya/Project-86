@@ -15,8 +15,8 @@ namespace FMODUnity
             var banks = serializedObject.FindProperty("Banks");
             var preload = serializedObject.FindProperty("PreloadSamples");
 
-            EditorGUILayout.PropertyField(load, new GUIContent(L10n.Tr("Load")));
-            EditorGUILayout.PropertyField(unload, new GUIContent(L10n.Tr("Unload")));
+            EditorGUILayout.PropertyField(load, new GUIContent("Load"));
+            EditorGUILayout.PropertyField(unload, new GUIContent("Unload"));
 
             if ((load.enumValueIndex >= 3 && load.enumValueIndex <= 6) ||
                 (unload.enumValueIndex >= 3 && unload.enumValueIndex <= 6))
@@ -24,12 +24,12 @@ namespace FMODUnity
                 tag.stringValue = EditorGUILayout.TagField("Collision Tag", tag.stringValue);
             }
 
-            EditorGUILayout.PropertyField(preload, new GUIContent(L10n.Tr("Preload Sample Data")));
+            EditorGUILayout.PropertyField(preload, new GUIContent("Preload Sample Data"));
 
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.PrefixLabel(L10n.Tr("Banks"));
+            EditorGUILayout.PrefixLabel("Banks");
             EditorGUILayout.BeginVertical();
-            if (GUILayout.Button(L10n.Tr("Add Bank"), GUILayout.ExpandWidth(false)))
+            if (GUILayout.Button("Add Bank", GUILayout.ExpandWidth(false)))
             {
                 banks.InsertArrayElementAtIndex(banks.arraySize);
                 SerializedProperty newBank = banks.GetArrayElementAtIndex(banks.arraySize - 1);
@@ -37,7 +37,7 @@ namespace FMODUnity
 
                 EventBrowser browser = CreateInstance<EventBrowser>();
 
-                browser.titleContent = new GUIContent(L10n.Tr("Select FMOD Bank"));
+                browser.titleContent = new GUIContent("Select FMOD Bank");
 
                 browser.ChooseBank(newBank);
                 browser.ShowUtility();

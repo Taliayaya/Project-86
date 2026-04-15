@@ -33,7 +33,7 @@ namespace FMODUnity
 
         public override void OnInspectorGUI()
         {
-            var newTargetEmitter = EditorGUILayout.ObjectField(L10n.Tr("Target"), targetEmitter, typeof(StudioEventEmitter), true) as StudioEventEmitter;
+            var newTargetEmitter = EditorGUILayout.ObjectField("Target", targetEmitter, typeof(StudioEventEmitter), true) as StudioEventEmitter;
             if (newTargetEmitter != targetEmitter)
             {
                 emitters.ClearArray();
@@ -60,7 +60,7 @@ namespace FMODUnity
                 return;
             }
 
-            EditorGUILayout.PropertyField(trigger, new GUIContent(L10n.Tr("Trigger")));
+            EditorGUILayout.PropertyField(trigger, new GUIContent("Trigger"));
 
             if (trigger.enumValueIndex >= (int)EmitterGameEvent.TriggerEnter && trigger.enumValueIndex <= (int)EmitterGameEvent.TriggerExit2D)
             {
