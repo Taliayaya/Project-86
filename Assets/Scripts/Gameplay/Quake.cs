@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Cinemachine;
 using Gameplay.Units;
+using Unity.Cinemachine;
 using UnityEngine;
 
 namespace Gameplay

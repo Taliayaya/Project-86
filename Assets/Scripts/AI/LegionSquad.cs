@@ -305,7 +305,7 @@ namespace AI
                 return this;
 
             Debug.Log(
-                $"[LegionSquad] Merge {name}[{IsLeader}-{GetInstanceID()}] with {squadToMerge.name}[{squadToMerge.IsLeader}-{squadToMerge.GetInstanceID()}");
+                $"[LegionSquad] Merge {name}[{IsLeader}-{GetEntityId()}] with {squadToMerge.name}[{squadToMerge.IsLeader}-{squadToMerge.GetEntityId()}");
             // Add the squad leader as a member
             squadInfo.members.Add(squadToMerge);
             squadToMerge.leader = this;

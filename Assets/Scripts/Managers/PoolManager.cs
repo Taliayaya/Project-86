@@ -11,24 +11,24 @@ namespace Managers
     }
     public class PoolManager : Singleton<PoolManager>
     {
-        private Dictionary<int, Pool> _pools = new Dictionary<int, Pool>();
-        private Dictionary<int, int> _objectToPrefab = new Dictionary<int, int>();
+        private Dictionary<EntityId, Pool> _pools = new Dictionary<EntityId, Pool>();
+        private Dictionary<EntityId, EntityId> _objectToPrefab = new Dictionary<EntityId, EntityId>();
 
         public GameObject Instantiate(GameObject prefab, Vector3 position, Quaternion rotation)
         {
-            if (!_pools.TryGetValue(prefab.GetInstanceID(), out var pool))
+            if (!_pools.TryGetValue(prefab.GetEntityId(), out var pool))
             {
-                _pools[prefab.GetInstanceID()] = new Pool()
+                _pools[prefab.GetEntityId()] = new Pool()
                 {
                     Queue = new Queue<GameObject>()
                 };
-                pool = _pools[prefab.GetInstanceID()];
+                pool = _pools[prefab.GetEntityId()];
             }
 
             if (pool.IsEmpty)
             {
                 var instance = GameObject.Instantiate(prefab, position, rotation);
-                _objectToPrefab[instance.GetInstanceID()] = prefab.GetInstanceID();
+                _objectToPrefab[instance.GetEntityId()] = prefab.GetEntityId();
                 return instance;
             }
             else
@@ -48,7 +48,7 @@ namespace Managers
             
             // if we can't find the parent, just destroy the object
             // it can happen during a network sync
-            if (!_objectToPrefab.TryGetValue(instance.GetInstanceID(), out var prefabId))
+            if (!_objectToPrefab.TryGetValue(instance.GetEntityId(), out var prefabId))
             {
                 Destroy(instance);
                 return;
