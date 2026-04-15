@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using Armament.Shared;
-using Cinemachine;
+using Unity.Cinemachine;
 using Gameplay.Units;
 using Networking;
 using Networking.Widgets.Session.Session;
@@ -66,10 +66,10 @@ namespace Gameplay.Mecha
         [Header("Cameras")]
         [SerializeField] private Camera zoomCamera;
         [SerializeField] private Camera tpsZoomCamera;
-        [SerializeField] private CinemachineVirtualCamera vCamera;
-        [SerializeField] private CinemachineVirtualCamera gunCamera;
-        [SerializeField] private CinemachineVirtualCamera tpsCamera;
-        [SerializeField] private CinemachineFreeLook freeLookCamera;
+        [SerializeField] private CinemachineCamera vCamera;
+        [SerializeField] private CinemachineCamera gunCamera;
+        [SerializeField] private CinemachineCamera tpsCamera;
+        [SerializeField] private CinemachineCamera freeLookCamera;
         [SerializeField] private LayerMask forwardMask;
 
         [Header("Main Recoil")]
@@ -78,7 +78,7 @@ namespace Gameplay.Mecha
         [SerializeField] private float recoilCounterForce = 1f;
 
 
-        [Header("Events")] [SerializeField] private UnityEvent<CinemachineVirtualCamera> onCameraViewChanged;
+        [Header("Events")] [SerializeField] private UnityEvent<CinemachineCamera> onCameraViewChanged;
         #endregion
 
         #region Private Fields
@@ -126,7 +126,7 @@ namespace Gameplay.Mecha
         private View _cameraView = View.FirstPerson;
         private View _cameraPreviousView = View.FirstPerson;
 
-        private CinemachineVirtualCamera ActiveCamera => CameraView switch
+        private CinemachineCamera ActiveCamera => CameraView switch
         {
             View.FirstPerson => vCamera,
             View.Cannon => gunCamera,

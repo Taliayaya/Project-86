@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections;
-using Cinemachine;
+using Unity.Cinemachine;
 using Managers;
 using ScriptableObjects;
 using UI;
@@ -480,7 +480,7 @@ namespace Gameplay.Mecha
                 RegisterPlayerEvents();
         }
 
-        public void SetCamera(CinemachineVirtualCamera cam)
+        public void SetCamera(CinemachineCamera cam)
         {
             cameraTransform = cam.transform;
         }

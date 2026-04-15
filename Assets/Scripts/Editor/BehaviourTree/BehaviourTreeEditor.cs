@@ -90,7 +90,7 @@ namespace Editor
                 if (tree)
                     _treeView?.PopulateView(tree);
             }
-            else if (tree && AssetDatabase.CanOpenAssetInEditor(tree.GetInstanceID()))
+            else if (tree && AssetDatabase.CanOpenAssetInEditor(tree.GetEntityId()))
             {
                 _treeView.PopulateView(tree);
             }

@@ -1,9 +1,11 @@
 using System;
 using System.Text;
 using System.Threading.Tasks;
+#if USE_FIREBASE_AUTH
 using Firebase.Auth;
 using Firebase.Auth.Providers;
 using Firebase.Auth.Repository;
+#endif
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using UnityEngine;
@@ -17,8 +19,10 @@ namespace Networking
         [SerializeField] private string providerName = "oidc-firebase";
         public bool IsSignedIn => AuthenticationService.Instance.IsSignedIn;
 
+    #if USE_FIREBASE_AUTH
         public FirebaseAuthClient Client { get; private set; }
         public static FirebaseAuthClient AuthClient => Instance.Client;
+    #endif
         
         public string PlayerName => AuthenticationService.Instance.PlayerName;
 
@@ -28,6 +32,7 @@ namespace Networking
             UnityServices.InitializeAsync();
 
             Debug.Log("[NetworkManager] Awake");
+#if USE_FIREBASE_AUTH
             var config = new FirebaseAuthConfig()
             {
                 ApiKey = "AIzaSyCW-PJ1X-hqYt_od8xa9fptDgrpb9RcqIQ",
@@ -39,6 +44,7 @@ namespace Networking
                 UserRepository = new FileUserRepository("Project-86-Community/Project-86")
             };
             Client = new FirebaseAuthClient(config);
+#endif
             UnityServices.Initialized += async () =>
             {
                 Debug.Log("[NetworkManager] UnityServices Initialized");
@@ -64,6 +70,7 @@ namespace Networking
             return decoded;
         }
 
+#if USE_FIREBASE_AUTH
         public async Task CreateUserWithEmailAndPasswordAsync(string email, string password, string username)
         {
             var res = await AuthClient.CreateUserWithEmailAndPasswordAsync(email, password, username);
@@ -83,6 +90,7 @@ namespace Networking
                 Debug.LogError("SignUp failed.");
             }
         }
+#endif
         
         public async Task AnonymousSignInAsync(string username)
         {
@@ -97,7 +105,7 @@ namespace Networking
             if (AuthenticationService.Instance.IsSignedIn)
             {
                 await  AuthenticationService.Instance.UpdatePlayerNameAsync(username);
-                EventManager.TriggerEvent(Constants.TypedEvents.Auth.OnLoginSuccess, AuthClient.User);
+                EventManager.TriggerEvent(Constants.TypedEvents.Auth.OnLoginSuccess, null);
                 Debug.Log("SignUp is successful.");
             }
             else
@@ -105,7 +113,8 @@ namespace Networking
                 Debug.LogError("Login failed.");
             }
         }
-
+        
+#if USE_FIREBASE_AUTH
         public async Task LoginUserWithEmailAndPasswordAsync(string email, string password)
         {
             var res = await AuthClient.SignInWithEmailAndPasswordAsync(email, password);
@@ -121,6 +130,7 @@ namespace Networking
                 Debug.LogError("Login failed.");
             }
         }
+#endif
 
         [ContextMenu("RefreshSession")]
         public async Task<bool> OldSessionStillActive()
@@ -137,9 +147,10 @@ namespace Networking
             Debug.Log("Shall not be there: " + AuthenticationService.Instance.IsSignedIn);
             if (AuthenticationService.Instance.IsSignedIn)
             {
-                EventManager.TriggerEvent(Constants.TypedEvents.Auth.OnLoginSuccess, AuthClient.User);
+                EventManager.TriggerEvent(Constants.TypedEvents.Auth.OnLoginSuccess, null);
                 return true;
             }
+#if USE_FIREBASE_AUTH
             else if (AuthClient.User != null)
             {
                 var token = await AuthClient.User.GetIdTokenAsync(true);
@@ -150,11 +161,13 @@ namespace Networking
                 EventManager.TriggerEvent(Constants.TypedEvents.Auth.OnLoginSuccess, AuthClient.User);
                 return true;
             }
+#endif
 
             return false;
         }
 
 
+#if USE_FIREBASE_AUTH
         public static string GetAuthErrorReason(FirebaseAuthException ex)
         {
             if (ex is FirebaseAuthHttpException httpEx)
@@ -187,5 +200,6 @@ namespace Networking
                 _ => "Email or password is incorrect.",
             };
         }
+#endif
     }
 }

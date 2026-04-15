@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Mail;
 using System.Threading.Tasks;
-using Firebase.Auth;
 using Networking;
 using TMPro;
 using Unity.Services.Authentication;
@@ -39,10 +38,11 @@ namespace UI.MainMenu
                 feedbackText.text = "Already logged in.";
                 feedbackText.color = successColor;
                 onLoginSuccess.Invoke();
-                EventManager.TriggerEvent(Constants.TypedEvents.Auth.OnLoginSuccess, AuthManager.AuthClient);
+                EventManager.TriggerEvent(Constants.TypedEvents.Auth.OnLoginSuccess, null);
             }
         }
 
+    #if USE_FIREBASE_AUTH
         async Task SignInWithUsernamePasswordAsync(string username, string password)
         {
             try
@@ -75,6 +75,7 @@ namespace UI.MainMenu
                 Debug.LogException(ex);
             }
         }
+    #endif
 
         public async void OnPlayAnonymousClicked()
         {
@@ -123,8 +124,9 @@ namespace UI.MainMenu
                 }
                 else
                 {
-                    feedbackText.text = "";
-                    await SignInWithUsernamePasswordAsync(emailInput.text, passwordInput.text);
+                    feedbackText.text = "LOGIN NOT IMPLEMENTED";
+                    Debug.LogError("LOGIN NOT IMPLEMENTED");
+                    // await SignInWithUsernamePasswordAsync(emailInput.text, passwordInput.text);
                 }
             }
             catch (FormatException)
