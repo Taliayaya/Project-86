@@ -44,14 +44,14 @@ namespace UI.HUD
                 Debug.Log("Marker became invisible");
                 var markerNavigation = Instantiate(markerPrefab, markerContainer).GetComponent<Image>();
                 markerNavigation.sprite = marker.icon;
-                markerNavigation.name = marker.GetInstanceID().ToString();
+                markerNavigation.name = marker.GetEntityId().ToString();
                 markerNavigation.color = marker.color;
                 _markers.Add((marker, markerNavigation.transform));
             }
             else
             {
                 Debug.Log("Marker became visible");
-                var markerNavigation = _markers.Find(x => x.transform.name == marker.GetInstanceID().ToString());
+                var markerNavigation = _markers.Find(x => x.transform.name == marker.GetEntityId().ToString());
                 if (markerNavigation.transform)
                 {
                     _markers.Remove(markerNavigation);

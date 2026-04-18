@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Cinemachine;
+using Unity.Cinemachine;
 using TMPro;
 using UnityEngine;
 
@@ -9,7 +9,7 @@ public class TypePassword : MonoBehaviour
     [SerializeField] private float timeToType = 1.5f;
     [SerializeField] private int maxCharacters = 10;
 
-    [SerializeField] private CinemachineVirtualCamera virtualCamera;
+    [SerializeField] private CinemachineCamera virtualCamera;
     [SerializeField] private GameObject loginCanvas;
     [SerializeField] private GameObject[] screensCanvas;
     private TMP_InputField _inputField;

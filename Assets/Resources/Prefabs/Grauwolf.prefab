@@ -156,7 +156,7 @@ Transform:
   m_GameObject: {fileID: 1852269891137364137}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -71.96, y: 0, z: 463.25}
+  m_LocalPosition: {x: -71.96, y: 2, z: 463.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -210,7 +210,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 7
-  m_BaseOffset: 0
+  m_BaseOffset: 2
   m_WalkableMask: 1
   m_ObstacleAvoidanceType: 4
 --- !u!114 &3264233702990340985
@@ -228,6 +228,9 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   sprintSpeedMultiplier: 1.2
   isEngineOn:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
     m_InternalValue: 1
 --- !u!114 &2011865202434850982
 MonoBehaviour:
@@ -332,7 +335,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 4391838872661691230, guid: 86627ef9b19d90447a04b809d9fb5949,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: d6323de1d74d99c4cb3dc14e494e3640, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: d6323de1d74d99c4cb3dc14e494e3640, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -426,10 +429,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1852269891137364137}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 10000
-  m_Drag: 0.5
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0.5
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -481,6 +484,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   killCount:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
   engineAudioSource: {fileID: 5550094954360685574}
   engineAudioSo: {fileID: 11400000, guid: cdbf35fdc54510f4e8c98c65ac06db71, type: 2}
@@ -535,6 +541,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   isLeader: 1
+  faction: 0
   squadMemberState: 0
   rb: {fileID: 6292228892694612715}
   leader: {fileID: 0}
@@ -546,8 +553,14 @@ MonoBehaviour:
     formation: 0
     members: []
     unitKilledCount:
+      UpdateTraits:
+        MinSecondsBetweenUpdates: 0
+        MaxSecondsBetweenUpdates: 0
       m_InternalValue: 0
     unitLostCount:
+      UpdateTraits:
+        MinSecondsBetweenUpdates: 0
+        MaxSecondsBetweenUpdates: 0
       m_InternalValue: 0
   agent: {fileID: 3264233702990340985}
   leaderCrownHeight: 10
@@ -979,6 +992,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   health:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
     m_InternalValue: 50
   armor: 5
   faction: 1
@@ -1277,7 +1293,7 @@ Transform:
   m_GameObject: {fileID: 6270237679203186205}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1683,6 +1699,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  NetworkAnimatorExpanded: 0
+  AuthorityMode: 0
+  m_Animator: {fileID: 4126196478676126337}
   TransitionStateInfoList:
   - IsCrossFadeExit: 0
     Layer: 0
@@ -1698,7 +1717,25 @@ MonoBehaviour:
     TransitionDuration: 0.25
     TriggerNameHash: 914953469
     TransitionIndex: 0
-  m_Animator: {fileID: 4126196478676126337}
+  AnimatorParameterEntries:
+    ParameterEntries:
+    - name: LauncherOpen
+      NameHash: 1127684630
+      Synchronize: 1
+      ParameterType: 9
+    - name: LauncherClose
+      NameHash: 914953469
+      Synchronize: 1
+      ParameterType: 9
+    - name: Attack
+      NameHash: 1080829965
+      Synchronize: 1
+      ParameterType: 9
+    - name: AttackIndex
+      NameHash: 1829795364
+      Synchronize: 1
+      ParameterType: 3
+  AnimatorParametersExpanded: 0
 --- !u!114 &7917483162082701955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2570,6 +2607,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 89.98, y: 180, z: 0}
 --- !u!212 &1546855413898772276
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2588,6 +2626,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2609,9 +2649,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 1ba5bbce93235d64698239e0cfa16f0e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2621,7 +2663,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1001 &5474797203707071013
 PrefabInstance:
@@ -3188,6 +3229,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   health:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
     m_InternalValue: 100
   armor: 5
   faction: 1

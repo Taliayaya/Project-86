@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Cinemachine;
-using Firebase.Auth;
+using Unity.Cinemachine;
 using Networking;
 using TMPro;
 using UnityEngine;
@@ -12,9 +11,9 @@ namespace UI.MainMenu
 {
     public class MainMenuManager : Singleton<MainMenuManager>
     {
-        [SerializeField] private CinemachineVirtualCamera mainMenuCamera;
-        [SerializeField] private CinemachineVirtualCamera gameModeCamera;
-        [SerializeField] private CinemachineVirtualCamera settingsCamera;
+        [SerializeField] private CinemachineCamera mainMenuCamera;
+        [SerializeField] private CinemachineCamera gameModeCamera;
+        [SerializeField] private CinemachineCamera settingsCamera;
         [SerializeField] private Button toMainLeftButton;
         [SerializeField] private Button toMainRightButton;
         
@@ -23,7 +22,7 @@ namespace UI.MainMenu
         
         [SerializeField] private List<TMP_Text> multiplayerTexts = new List<TMP_Text>();
         
-        private CinemachineVirtualCamera _currentCamera;
+        private CinemachineCamera _currentCamera;
 
         protected override void OnAwake()
         {
@@ -47,7 +46,7 @@ namespace UI.MainMenu
 
         private void OnAuthentication(object arg0)
         {
-            if (arg0 is not User user)
+            if (arg0 is null)
                 return;
             if (AuthManager.Instance.IsSignedIn)
             {

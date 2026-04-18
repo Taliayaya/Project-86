@@ -210,7 +210,7 @@ PrefabInstance:
     - target: {fileID: 5009670203228888221, guid: 95f4efd5279b9094da54c69047e49be4,
         type: 3}
       propertyPath: finalScaleReference
-      value: 0.027995368
+      value: 0.027995313
       objectReference: {fileID: 0}
     - target: {fileID: 6332846349530842250, guid: 95f4efd5279b9094da54c69047e49be4,
         type: 3}
@@ -255,6 +255,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1678518791}
+    - targetCorrespondingSourceObject: {fileID: 4781548308717753427, guid: 95f4efd5279b9094da54c69047e49be4,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1412221819277986356}
   m_SourcePrefab: {fileID: 100100000, guid: 95f4efd5279b9094da54c69047e49be4, type: 3}
 --- !u!82 &8913735906525485569 stripped
 AudioSource:
@@ -290,9 +294,15 @@ MonoBehaviour:
   onUnitDeath:
     m_PersistentCalls:
       m_Calls: []
+  killCount:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
   engineAudioSource: {fileID: 8913735906525485569}
   engineAudioSo: {fileID: 11400000, guid: cdbf35fdc54510f4e8c98c65ac06db71, type: 2}
   faction: 0
+  Priority: 5
   agentSo: {fileID: 11400000, guid: 831d2b915ee58de4aaf062221eef3d3c, type: 2}
   isAutonomous: 1
   orderPriority: 0
@@ -304,13 +314,18 @@ MonoBehaviour:
     sideViewColor: {r: 0, g: 1, b: 1, a: 1}
   patrolWaypoints: []
   rotateMainBodyTowardsEnemy: 1
+  navmeshRotate: 1
+  onCollisionEnterEvent:
+    m_PersistentCalls:
+      m_Calls: []
   demoParameters: {fileID: 11400000, guid: 54207af3f0293d54a84e4a6024f5506d, type: 2}
+  graphAgent: {fileID: 0}
   onTargetChanged:
     m_PersistentCalls:
       m_Calls: []
-  isRotating: 0
   _firstChild: {fileID: 0}
   _sensor: {fileID: 0}
+  torqueDamageForce: 0
 --- !u!114 &1678518790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -347,3 +362,25 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &1412221819277986356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8913735906525485570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Behavior::Unity.Behavior.BehaviorGraphAgent
+  ShowTopMostFoldoutHeaderGroup: 1
+  m_Graph: {fileID: 0}
+  m_BlackboardVariableOverridesList: []
+  m_OriginalGraph: {fileID: 0}
+  m_IsInitialised: 0
+  m_IsStarted: 0
+  NetcodeRunOnlyOnOwner: 0
+  references:
+    version: 2
+    RefIds: []

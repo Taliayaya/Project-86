@@ -10,9 +10,9 @@ namespace FMOD
     public partial class VERSION
     {
 #if UNITY_STANDALONE_WIN
-        public const string dll = "fmodstudio" + suffix;
+        public const string dll = "fmodstudio" + dllSuffix;
 #elif UNITY_WSA
-        public const string dll = "fmod" + suffix;
+        public const string dll = "fmod" + dllSuffix;
 #endif
     }
 }
@@ -22,7 +22,7 @@ namespace FMOD.Studio
     public partial class STUDIO_VERSION
     {
 #if UNITY_STANDALONE_WIN || UNITY_WSA
-        public const string dll = "fmodstudio" + VERSION.suffix;
+        public const string dll = "fmodstudio" + dllSuffix;
 #endif
     }
 }
