@@ -134,8 +134,15 @@ namespace FMODUnity
                 }
                 else
                 {
-                    int index = EventReference.Path.LastIndexOf("/");
-                    OwningClip.displayName = EventReference.Path.Substring(index + 1);
+                    if (EventReference.Path == null)
+                    {
+                        EventReference.Path = "";
+                    }
+                    else
+                    {
+                        int index = EventReference.Path.LastIndexOf("/");
+                        OwningClip.displayName = EventReference.Path.Substring(index + 1);
+                    }
                 }
             }
             if (behavior != null)

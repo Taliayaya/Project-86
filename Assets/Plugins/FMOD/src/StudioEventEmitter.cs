@@ -11,11 +11,12 @@ namespace FMODUnity
     {
         public EventReference EventReference;
 
-        [Obsolete("Use the EventReference field instead.")]
+        [Obsolete("Use the EventReference field instead")]
         public string Event = "";
 
         [FormerlySerializedAs("PlayEvent")]
         public EmitterGameEvent EventPlayTrigger = EmitterGameEvent.None;
+        [Obsolete("Use the EventPlayTrigger field instead")]
         public EmitterGameEvent PlayEvent
         {
             get { return EventPlayTrigger; }
@@ -23,6 +24,7 @@ namespace FMODUnity
         }
         [FormerlySerializedAs("StopEvent")]
         public EmitterGameEvent EventStopTrigger = EmitterGameEvent.None;
+        [Obsolete("Use the EventStopTrigger field instead")]
         public EmitterGameEvent StopEvent
         {
             get { return EventStopTrigger; }
@@ -154,23 +156,23 @@ namespace FMODUnity
             if (!isQuitting)
             {
                 HandleGameEvent(EmitterGameEvent.ObjectDestroy);
+            }
 
-                if (instance.isValid())
+            if (instance.isValid())
+            {
+                RuntimeManager.DetachInstanceFromGameObject(instance);
+                if (eventDescription.isValid() && isOneshot)
                 {
-                    RuntimeManager.DetachInstanceFromGameObject(instance);
-                    if (eventDescription.isValid() && isOneshot)
-                    {
-                        instance.release();
-                        instance.clearHandle();
-                    }
+                    instance.release();
+                    instance.clearHandle();
                 }
+            }
 
-                DeregisterActiveEmitter(this);
+            DeregisterActiveEmitter(this);
 
-                if (Preload)
-                {
-                    eventDescription.unloadSampleData();
-                }
+            if (Preload)
+            {
+                eventDescription.unloadSampleData();
             }
         }
 
@@ -233,9 +235,13 @@ namespace FMODUnity
 
             IsActive = true;
 
-            if (is3D && !isOneshot && Settings.Instance.StopEventsOutsideMaxDistance)
+            if (is3D && Settings.Instance.StopEventsOutsideMaxDistance)
             {
-                RegisterActiveEmitter(this);
+                if (!isOneshot)
+                {
+                    RegisterActiveEmitter(this);
+                }
+
                 UpdatePlayingStatus(true);
             }
             else

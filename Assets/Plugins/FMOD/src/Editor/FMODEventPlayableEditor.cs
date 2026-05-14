@@ -68,10 +68,15 @@ namespace FMODUnity
 
         private void RefreshEventRef()
         {
-            if (eventPath != eventPlayable.EventReference.Path)
+            string path;
+#if FMOD_SERIALIZE_GUID_ONLY
+            path = EditorUtils.PathFromGUID(eventPlayable.EventReference.Guid);
+#else
+            path = eventPlayable.EventReference.Path;
+#endif
+            if (eventPath != path)
             {
-                eventPath = eventPlayable.EventReference.Path;
-
+                eventPath = path;
                 if (!string.IsNullOrEmpty(eventPath))
                 {
                     editorEventRef = EventManager.EventFromPath(eventPath);

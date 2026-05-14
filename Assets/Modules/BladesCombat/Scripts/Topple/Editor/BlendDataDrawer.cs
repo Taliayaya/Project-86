@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 using Utility;
-namespace Editor
+namespace EEditor
 {
 	[CustomPropertyDrawer(typeof(BlendData<>))]
 	public class BlendDataDrawer : PropertyDrawer

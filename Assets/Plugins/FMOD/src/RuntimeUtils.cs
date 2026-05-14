@@ -112,7 +112,9 @@ namespace FMODUnity
             Guid = eventReference.Guid;
 
 #if UNITY_EDITOR
+#if !FMOD_SERIALIZE_GUID_ONLY
             Path = eventReference.Path;
+#endif
 #endif
         }
     }

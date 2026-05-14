@@ -2,7 +2,7 @@ using Cosmetic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Editor
+namespace EEditor
 {
     [CustomEditor(typeof(ChangeSkin))]
     public class ChangeSkinEditor : UnityEditor.Editor

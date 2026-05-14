@@ -10,7 +10,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using Debug = UnityEngine.Debug;
 
-namespace Editor.InspectorWindows
+namespace EEditor.InspectorWindows
 {
     public class OpenUpmSearcher : EditorWindow
     {

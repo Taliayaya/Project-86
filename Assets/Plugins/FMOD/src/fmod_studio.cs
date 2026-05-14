@@ -3,7 +3,7 @@
 /* Copyright (c), Firelight Technologies Pty, Ltd. 2004-2026.                               */
 /*                                                                                          */
 /* For more detail visit:                                                                   */
-/* https://fmod.com/docs/2.02/api/studio-api.html                                           */
+/* https://fmod.com/docs/2.03/api/studio-api.html                                           */
 /* ======================================================================================== */
 
 using System;
@@ -15,8 +15,8 @@ namespace FMOD.Studio
 {
     public partial class STUDIO_VERSION
     {
-#if !UNITY_2019_4_OR_NEWER
-        public const string dll     = "fmodstudio";
+#if !UNITY_2021_3_OR_NEWER
+        public const string dll = "fmodstudio" + VERSION.suffix;
 #endif
     }
 
@@ -677,6 +677,10 @@ namespace FMOD.Studio
             pinnedArray.Free();
             return result;
         }
+        public RESULT loadBankMemory(IntPtr buffer, int length, LOAD_BANK_FLAGS flags, out Bank bank)
+        {
+            return FMOD_Studio_System_LoadBankMemory(this.handle, buffer, length, LOAD_MEMORY_MODE.LOAD_MEMORY, flags, out bank.handle);
+        }
         public RESULT loadBankCustom(BANK_INFO info, LOAD_BANK_FLAGS flags, out Bank bank)
         {
             info.size = Marshal.SizeOf<BANK_INFO>();
@@ -1304,6 +1308,10 @@ namespace FMOD.Studio
         {
             return FMOD_Studio_EventInstance_GetDescription(this.handle, out description.handle);
         }
+        public RESULT getSystem(out System system)
+        {
+            return FMOD_Studio_EventInstance_GetSystem(this.handle, out system.handle);
+        }
         public RESULT getVolume(out float volume)
         {
             return FMOD_Studio_EventInstance_GetVolume(this.handle, out volume, IntPtr.Zero);
@@ -1484,6 +1492,8 @@ namespace FMOD.Studio
         private static extern bool   FMOD_Studio_EventInstance_IsValid                     (IntPtr _event);
         [DllImport(STUDIO_VERSION.dll)]
         private static extern RESULT FMOD_Studio_EventInstance_GetDescription              (IntPtr _event, out IntPtr description);
+        [DllImport(STUDIO_VERSION.dll)]
+        private static extern RESULT FMOD_Studio_EventInstance_GetSystem                   (IntPtr _event, out IntPtr system);
         [DllImport(STUDIO_VERSION.dll)]
         private static extern RESULT FMOD_Studio_EventInstance_GetVolume                   (IntPtr _event, out float volume, IntPtr zero);
         [DllImport(STUDIO_VERSION.dll)]

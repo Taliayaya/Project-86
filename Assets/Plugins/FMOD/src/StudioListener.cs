@@ -12,6 +12,12 @@ namespace FMODUnity
         [SerializeField]
         private GameObject attenuationObject = null;
 
+        public GameObject AttenuationObject
+        {
+            get { return attenuationObject; }
+            set { attenuationObject = value; }
+        }
+
         private Vector3 lastFramePosition = Vector3.zero;
 
 #if UNITY_PHYSICS_EXIST
