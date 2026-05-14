@@ -1,0 +1,25 @@
+{
+    "name": "FMODUnityHaptics",
+    "references": [
+        "FMODUnity",
+        "Unity.XR.OpenXR",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "UNITY_6000_0_OR_NEWER"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.unity.xr.openxr",
+            "expression": "1.0.0",
+            "define": "UNITY_OPENXR_EXIST"
+        }
+    ],
+    "noEngineReferences": false
+}

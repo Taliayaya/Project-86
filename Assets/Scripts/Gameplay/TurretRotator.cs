@@ -241,7 +241,7 @@ public class CannonController : NetworkBehaviour
 
     public void SetTurret0Target(Unit target)
     {
-        turrets[0].target = target.transform;
+        turrets[0].target = target == null ? null : target.transform;
     }
     public void SetTurret0Target(TargetInfo target)
     {
@@ -256,6 +256,26 @@ public class CannonController : NetworkBehaviour
     public void SetTurret2Target(Unit target)
     {
         turrets[2].target = target == null ? null : target.transform;
+    }
+    
+    public void SetTurret3Target(Unit target)
+    {
+        turrets[3].target = target == null ? null : target.transform;
+    }
+    
+    public void SetTurret4Target(Unit target)
+    {
+        turrets[4].target = target == null ? null : target.transform;
+    }
+    
+    public void SetTurret5Target(Unit target)
+    {
+        turrets[5].target = target == null ? null : target.transform;
+    }
+    
+    public void SetTurret6Target(Unit target)
+    {
+        turrets[6].target = target == null ? null : target.transform;
     }
 
     public void StopTurret0()
@@ -273,6 +293,21 @@ public class CannonController : NetworkBehaviour
         turrets[2].canRotate = false;
     }
     
+    public void StopTurret3()
+    {
+        turrets[3].canRotate = false;
+    }
+    
+    public void StopTurret4()
+    {
+        turrets[4].canRotate = false;
+    }
+    
+    public void StopTurret5()
+    {
+        turrets[5].canRotate = false;
+    }
+    
     public void StartTurret0()
     {
         turrets[0].canRotate = true;
@@ -286,6 +321,26 @@ public class CannonController : NetworkBehaviour
     public void StartTurret2()
     {
         turrets[2].canRotate = true;
+    }
+    
+    public void StartTurret3()
+    {
+        turrets[3].canRotate = true;
+    }
+    
+    public void StartTurret4()
+    {
+        turrets[4].canRotate = true;
+    }
+    
+    public void StartTurret5()
+    {
+        turrets[5].canRotate = true;
+    }
+    
+    public void StartTurret6()
+    {
+        turrets[6].canRotate = true;
     }
 
     public void CooldownTurret0(float duration)
