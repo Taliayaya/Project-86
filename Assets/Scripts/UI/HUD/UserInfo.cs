@@ -29,7 +29,8 @@ namespace UI.HUD
                 keepRotation.targetRotation = minimapParameters.rotateWithPlayer ? PlayerManager.Player.transform.GetComponentInChildren<UserInfo>().transform : null;
             }
 
-            MissionManager.Instance.Players.OnListChanged += OnListChanged;
+            if (MissionManager.Instance)
+                MissionManager.Instance.Players.OnListChanged += OnListChanged;
 
             var netobj = GetComponentInParent<NetworkObject>();
             _clientId = netobj.OwnerClientId;
@@ -44,6 +45,12 @@ namespace UI.HUD
 
         public void UpdateUsername()
         {
+            if (MissionManager.Instance == null)
+            {
+                SetUsername("Juggernaut");
+                return;
+            }
+            
             if (!MissionManager.Instance.GetPlayerByNetworkId(_clientId, out PlayerInfo? info))
             {
                 Debug.Log("[UserInfo] No player");

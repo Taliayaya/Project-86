@@ -3,7 +3,7 @@
 /* Copyright (c), Firelight Technologies Pty, Ltd. 2004-2026.                               */
 /*                                                                                          */
 /* For more detail visit:                                                                   */
-/* https://fmod.com/docs/2.02/api/core-api.html                                             */
+/* https://fmod.com/docs/2.03/api/core-api.html                                             */
 /* ======================================================================================== */
 
 using System;
@@ -19,9 +19,21 @@ namespace FMOD
     */
     public partial class VERSION
     {
-        public const int    number = 0x00020234;
-#if !UNITY_2019_4_OR_NEWER
-        public const string dll    = "fmod";
+        public const int number = 0x00020313;
+
+        /*
+            Define FMOD_DEBUG or FMOD_LOGGING to select appropriate libraries
+        */
+#if FMOD_DEBUG
+        public const string suffix = "D";
+#elif FMOD_LOGGING || DEVELOPMENT_BUILD
+        public const string suffix = "L";
+#else
+        public const string suffix = "";
+#endif
+
+#if !UNITY_2021_3_OR_NEWER
+        public const string dll = "fmod" + suffix;
 #endif
     }
 
@@ -208,6 +220,8 @@ namespace FMOD
         PERSONAL,
         VIBRATION,
         AUX,
+        PASSTHROUGH,
+        VR_VIBRATION,
 
         MAX
     }
@@ -231,6 +245,7 @@ namespace FMOD
         TYPE_FILE               = 0x00000200,
         TYPE_CODEC              = 0x00000400,
         TYPE_TRACE              = 0x00000800,
+        TYPE_VIRTUAL            = 0x00001000,
 
         DISPLAY_TIMESTAMPS      = 0x00010000,
         DISPLAY_LINENUMBERS     = 0x00020000,
@@ -536,15 +551,14 @@ namespace FMOD
         PREMIX                 = 0x00000020,
         POSTMIX                = 0x00000040,
         ERROR                  = 0x00000080,
-        MIDMIX                 = 0x00000100,
-        THREADDESTROYED        = 0x00000200,
-        PREUPDATE              = 0x00000400,
-        POSTUPDATE             = 0x00000800,
-        RECORDLISTCHANGED      = 0x00001000,
-        BUFFEREDNOMIX          = 0x00002000,
-        DEVICEREINITIALIZE     = 0x00004000,
-        OUTPUTUNDERRUN         = 0x00008000,
-        RECORDPOSITIONCHANGED  = 0x00010000,
+        THREADDESTROYED        = 0x00000100,
+        PREUPDATE              = 0x00000200,
+        POSTUPDATE             = 0x00000400,
+        RECORDLISTCHANGED      = 0x00000800,
+        BUFFEREDNOMIX          = 0x00001000,
+        DEVICEREINITIALIZE     = 0x00002000,
+        OUTPUTUNDERRUN         = 0x00004000,
+        RECORDPOSITIONCHANGED  = 0x00008000,
         ALL                    = 0xFFFFFFFF,
     }
 
@@ -594,6 +608,7 @@ namespace FMOD
         SIDECHAIN,
         SEND,
         SEND_SIDECHAIN,
+        PREALLOCATED,
 
         MAX,
     }
@@ -654,8 +669,7 @@ namespace FMOD
 
     public struct PORT_INDEX
     {
-        public const ulong NONE               = 0xFFFFFFFFFFFFFFFF;
-        public const ulong FLAG_VR_CONTROLLER = 0x1000000000000000;
+        public const ulong NONE = 0xFFFFFFFFFFFFFFFF;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -823,7 +837,7 @@ namespace FMOD
         public int                 maxVorbisCodecs;
         public int                 maxAT9Codecs;
         public int                 maxFADPCMCodecs;
-        public int                 maxPCMCodecs;
+        public int                 maxOpusCodecs;
         public int                 ASIONumChannels;
         public IntPtr              ASIOChannelList;
         public IntPtr              ASIOSpeakerList;
@@ -837,7 +851,6 @@ namespace FMOD
         public DSP_RESAMPLER       resamplerMethod;
         public uint                randomSeed;
         public int                 maxConvolutionThreads;
-        public int                 maxOpusCodecs;
         public int                 maxSpatialObjects;
     }
 
@@ -1279,7 +1292,12 @@ namespace FMOD
         // System information functions.
         public RESULT getVersion(out uint version)
         {
-            return FMOD5_System_GetVersion(this.handle, out version);
+            uint buildnumber;
+            return getVersion(out version, out buildnumber);
+        }
+        public RESULT getVersion(out uint version, out uint buildnumber)
+        {
+            return FMOD5_System_GetVersion(this.handle, out version, out buildnumber);
         }
         public RESULT getOutputHandle(out IntPtr handle)
         {
@@ -1354,6 +1372,10 @@ namespace FMOD
         public RESULT createDSPByType(DSP_TYPE type, out DSP dsp)
         {
             return FMOD5_System_CreateDSPByType(this.handle, type, out dsp.handle);
+        }
+        public RESULT createDSPConnection(DSPCONNECTION_TYPE type, out DSPConnection connection)
+        {
+            return FMOD5_System_CreateDSPConnection(this.handle, type, out connection.handle);
         }
         public RESULT createChannelGroup(string name, out ChannelGroup channelgroup)
         {
@@ -1630,7 +1652,7 @@ namespace FMOD
         [DllImport(VERSION.dll)]
         private static extern RESULT FMOD5_System_GetSpeakerModeChannels    (IntPtr system, SPEAKERMODE mode, out int channels);
         [DllImport(VERSION.dll)]
-        private static extern RESULT FMOD5_System_GetVersion                (IntPtr system, out uint version);
+        private static extern RESULT FMOD5_System_GetVersion                (IntPtr system, out uint version, out uint buildnumber);
         [DllImport(VERSION.dll)]
         private static extern RESULT FMOD5_System_GetOutputHandle           (IntPtr system, out IntPtr handle);
         [DllImport(VERSION.dll)]
@@ -1653,6 +1675,8 @@ namespace FMOD
         private static extern RESULT FMOD5_System_CreateDSP                 (IntPtr system, ref DSP_DESCRIPTION description, out IntPtr dsp);
         [DllImport(VERSION.dll)]
         private static extern RESULT FMOD5_System_CreateDSPByType           (IntPtr system, DSP_TYPE type, out IntPtr dsp);
+        [DllImport(VERSION.dll)]
+        private static extern RESULT FMOD5_System_CreateDSPConnection       (IntPtr system, DSPCONNECTION_TYPE type, out IntPtr connection);
         [DllImport(VERSION.dll)]
         private static extern RESULT FMOD5_System_CreateChannelGroup        (IntPtr system, byte[] name, out IntPtr channelgroup);
         [DllImport(VERSION.dll)]
@@ -1843,11 +1867,6 @@ namespace FMOD
         {
             return FMOD5_Sound_ReadData(this.handle, buffer, (uint)buffer.Length, out read);
         }
-        [Obsolete("Use Sound.readData(byte[], out uint) or Sound.readData(byte[]) instead.")]
-        public RESULT readData(IntPtr buffer, uint length, out uint read)
-        {
-            return FMOD5_Sound_ReadData(this.handle, buffer, length, out read);
-        }
         public RESULT seekData(uint pcm)
         {
             return FMOD5_Sound_SeekData(this.handle, pcm);
@@ -2004,8 +2023,6 @@ namespace FMOD
         private static extern RESULT FMOD5_Sound_ReadData                (IntPtr sound, byte[] buffer, uint length, IntPtr zero);
         [DllImport(VERSION.dll)]
         private static extern RESULT FMOD5_Sound_ReadData                (IntPtr sound, byte[] buffer, uint length, out uint read);
-        [DllImport(VERSION.dll)]
-        private static extern RESULT FMOD5_Sound_ReadData                (IntPtr sound, IntPtr buffer, uint length, out uint read);
         [DllImport(VERSION.dll)]
         private static extern RESULT FMOD5_Sound_SeekData                (IntPtr sound, uint pcm);
         [DllImport(VERSION.dll)]
@@ -3273,6 +3290,10 @@ namespace FMOD
         {
             return FMOD5_DSP_AddInput(this.handle, input.handle, out connection.handle, type);
         }
+        public RESULT addInputPreallocated(DSP input, DSPConnection connection)
+        {
+            return FMOD5_DSP_AddInput(this.handle, input.handle, out connection.handle, DSPCONNECTION_TYPE.PREALLOCATED);
+        }
         public RESULT disconnectFrom(DSP target, DSPConnection connection)
         {
             return FMOD5_DSP_DisconnectFrom(this.handle, target.handle, connection.handle);
@@ -3470,6 +3491,8 @@ namespace FMOD
         private static extern RESULT FMOD5_DSP_AddInput                  (IntPtr dsp, IntPtr input, IntPtr zero, DSPCONNECTION_TYPE type);
         [DllImport(VERSION.dll)]
         private static extern RESULT FMOD5_DSP_AddInput                  (IntPtr dsp, IntPtr input, out IntPtr connection, DSPCONNECTION_TYPE type);
+        [DllImport(VERSION.dll)]
+        private static extern RESULT FMOD5_DSP_AddInputPreallocated      (IntPtr dsp, IntPtr input, out IntPtr connection);
         [DllImport(VERSION.dll)]
         private static extern RESULT FMOD5_DSP_DisconnectFrom            (IntPtr dsp, IntPtr target, IntPtr connection);
         [DllImport(VERSION.dll)]

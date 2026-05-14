@@ -152,7 +152,14 @@ namespace FMODUnity
         public string TargetBankFolder = "";
 
         [SerializeField]
+#if FMOD_SERIALIZE_GUID_ONLY
+        public EventLinkage EventLinkage = EventLinkage.GUID;
+#else
         public EventLinkage EventLinkage = EventLinkage.Path;
+#endif
+
+        [SerializeField]
+        public bool SerializeGUIDsOnly;
 
         [SerializeField]
         public FMOD.DEBUG_FLAGS LoggingLevel = FMOD.DEBUG_FLAGS.WARNING;

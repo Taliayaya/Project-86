@@ -5,7 +5,7 @@ using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Editor
+namespace EEditor
 {
     public class BehaviourTreeEditor : EditorWindow
     {
