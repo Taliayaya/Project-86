@@ -14,6 +14,7 @@ namespace Gameplay.Units
         [SerializeField] protected GameObject deathEffect;
         
         [SerializeField] private List<MonoBehaviour> componentsToDisableOnDeath;
+        [SerializeField] protected bool destroyOnDeath = true;
         
         [Header("Events")]
         public UnityEvent<HealthComponent> OnDeath;
@@ -65,9 +66,15 @@ namespace Gameplay.Units
             
             foreach (var script in componentsToDisableOnDeath)
             {
-                Destroy(script);
+                if (destroyOnDeath)
+                    Destroy(script);
+                else
+                    script.enabled = false;
             }
-            Destroy(this);
+            if (destroyOnDeath)
+                Destroy(this);
+            else
+                enabled = false;
         }
 
         protected virtual void Start()
