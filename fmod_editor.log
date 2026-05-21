@@ -1,0 +1,30 @@
+[LOG] FMOD_System_Create                       : Header version = 2.03.13. Current version = 2.03.13.
+[LOG] system_create                            : Header version = 2.03.13. Current version = 2.03.13.
+[LOG] SystemI::setOutputInternal               : Setting output to 'FMOD PulseAudio Output'
+[LOG] Manager::init                            : maxchannels = 256 studioflags = 00000006 flags 00000000 extradriverdata (nil).
+[LOG] SystemI::init                            : Initialize version=20313 (162576), maxchannels=256, flags=0x00020000
+[LOG] OutputPulseAudio::PulseAudio_RegisterLib : Loaded PulseAudio version 17.0.0.
+[LOG] PulseAudio_EnumOutputCallback            : Found output device NAME:alsa_output.pci-0000_01_00.1.hdmi-stereo DESC:GB203 High Definition Audio Controller Digital Stereo (HDMI) CHANNELS:2 RATE:48000.
+[LOG] PulseAudio_EnumOutputCallback            : Found output device NAME:alsa_output.usb-Logitech_G733_Gaming_Headset_0000000000000000-00.analog-stereo DESC:G733 Gaming Headset Analog Stereo CHANNELS:2 RATE:48000.
+[LOG] PulseAudio_EnumOutputCallback            : Found output device NAME:alsa_output.pci-0000_0c_00.6.analog-stereo DESC:Ryzen HD Audio Controller Analog Stereo CHANNELS:2 RATE:48000.
+[LOG] PulseAudio_EnumInputCallback             : Found input device NAME:alsa_output.pci-0000_01_00.1.hdmi-stereo.monitor DESC:Monitor of GB203 High Definition Audio Controller Digital Stereo (HDMI) CHANNELS:2 RATE:48000.
+[LOG] PulseAudio_EnumInputCallback             : Found input device NAME:alsa_output.usb-Logitech_G733_Gaming_Headset_0000000000000000-00.analog-stereo.monitor DESC:Monitor of G733 Gaming Headset Analog Stereo CHANNELS:2 RATE:48000.
+[LOG] PulseAudio_EnumInputCallback             : Found input device NAME:alsa_input.usb-Logitech_G733_Gaming_Headset_0000000000000000-00.mono-fallback DESC:G733 Gaming Headset Mono CHANNELS:1 RATE:48000.
+[LOG] PulseAudio_EnumInputCallback             : Found input device NAME:alsa_input.usb-GG-258-201102_Depstech_webcam_MIC_01.00.00-02.analog-stereo DESC:Depstech webcam MIC Analog Stereo CHANNELS:2 RATE:48000.
+[LOG] PulseAudio_EnumInputCallback             : Found input device NAME:alsa_output.pci-0000_0c_00.6.analog-stereo.monitor DESC:Monitor of Ryzen HD Audio Controller Analog Stereo CHANNELS:2 RATE:48000.
+[LOG] PulseAudio_EnumInputCallback             : Found input device NAME:alsa_input.pci-0000_0c_00.6.analog-stereo DESC:Ryzen HD Audio Controller Analog Stereo CHANNELS:2 RATE:48000.
+[LOG] Thread::initThread                       : Init FMOD stream thread. Affinity: 0x4000000000000003, Priority: 0xFFFF7FFB, Stack Size: 98304, Semaphore: No, Sleep Time: 10, Looping: Yes.
+[LOG] SystemI::DSPCodecPoolRegister            : register codec pool for pool type 0
+[LOG] Thread::initThread                       : Init FMOD mixer thread. Affinity: 0x4000000000000001, Priority: 0xFFFF7FFA, Stack Size: 81920, Semaphore: No, Sleep Time: 0, Looping: Yes.
+[LOG] AsyncManager::init                       : manager 0x557329a86128 isAsync 0 updatePeriod 0.02
+[LOG] AsyncManager::init                       : done
+[LOG] PlaybackSystem::init                     : 
+[LOG] Thread::initThread                       : Init FMOD Studio sample load thread. Affinity: 0x4000000000000003, Priority: 0xFFFF7FFD, Stack Size: 98304, Semaphore: No, Sleep Time: 1, Looping: No.
+[LOG] PlaybackSystem::init                     : done
+[LOG] Thread::initThread                       : Init FMOD Studio bank load thread. Affinity: 0x4000000000000003, Priority: 0xFFFF7FFD, Stack Size: 98304, Semaphore: No, Sleep Time: 1, Looping: No.
+[LOG] Manager::init                            : done.
+[LOG] BankLoader::serializeBank                : fileversion = 146, compatVersion = 146 (oldest = 44, newest = 146)
+[LOG] BankLoader::serializeBank                : fileversion = 146, compatVersion = 146 (oldest = 44, newest = 146)
+[LOG] BankLoader::serializeBank                : fileversion = 146, compatVersion = 146 (oldest = 44, newest = 146)
+[LOG] PlaybackSystem::acquireMasterBus         : Setting master channel group format to 6
+[ERR] ~Global                                  : assertion: 'gSystemInitCount == 0' failed

@@ -156,23 +156,23 @@ namespace FMODUnity
             if (!isQuitting)
             {
                 HandleGameEvent(EmitterGameEvent.ObjectDestroy);
+            }
 
-                if (instance.isValid())
+            if (instance.isValid())
+            {
+                RuntimeManager.DetachInstanceFromGameObject(instance);
+                if (eventDescription.isValid() && isOneshot)
                 {
-                    RuntimeManager.DetachInstanceFromGameObject(instance);
-                    if (eventDescription.isValid() && isOneshot)
-                    {
-                        instance.release();
-                        instance.clearHandle();
-                    }
+                    instance.release();
+                    instance.clearHandle();
                 }
+            }
 
-                DeregisterActiveEmitter(this);
+            DeregisterActiveEmitter(this);
 
-                if (Preload)
-                {
-                    eventDescription.unloadSampleData();
-                }
+            if (Preload)
+            {
+                eventDescription.unloadSampleData();
             }
         }
 

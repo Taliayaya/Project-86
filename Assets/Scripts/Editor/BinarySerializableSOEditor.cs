@@ -4,7 +4,7 @@ using ScriptableObjects;
 using UnityEditor;
 using UnityEngine;
 
-namespace Editor
+namespace EEditor
 {
     [CustomEditor(typeof(BinarySerializableSO), true ), CanEditMultipleObjects]
     public class BinarySerializableSOEditor : UnityEditor.Editor

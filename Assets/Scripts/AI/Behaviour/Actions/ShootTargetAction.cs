@@ -19,6 +19,7 @@ public partial class ShootTargetAction : Action
     [SerializeReference] public BlackboardVariable<float> ShootDuration;
     [SerializeReference] public BlackboardVariable<float> AngleToShoot = new(10f);
     [SerializeReference] public BlackboardVariable<float> DistanceShootAlways = new(10f);
+    [SerializeReference] public BlackboardVariable<float> RaycastInterval = new(0.5f);
     [SerializeReference] public BlackboardVariable<List<string>> Layers;
     
     [CreateProperty] WeaponModule[] _weaponModules;
@@ -70,6 +71,8 @@ public partial class ShootTargetAction : Action
         return true;
     }
 
+    private float _lastRaycastTime;
+
     public bool EnemyInRange(Transform turret)
     {
         if (!Target.Value)
@@ -85,7 +88,10 @@ public partial class ShootTargetAction : Action
 
         if (angle >= AngleToShoot.Value * 0.5f)
             return false;
-        
+
+        if (Time.time - _lastRaycastTime < RaycastInterval.Value)
+            return true;
+        _lastRaycastTime = Time.time;
         return PerformRaycast(turret.position, direction);
     }
 }

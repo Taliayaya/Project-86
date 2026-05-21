@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Armament.Shared;
-using Cinemachine;
+using Unity.Cinemachine;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -13,10 +13,10 @@ namespace Armament.MainMenu
 	{
 		public static HangarCameraManager Instance;
 
-		[SerializeField] private CinemachineVirtualCamera HangarCamera;
-		[SerializeField] private CinemachineVirtualCamera PersonalMarkCamera;
-		[SerializeField] private CinemachineVirtualCamera ArmamentLeftCamera;
-		[SerializeField] private CinemachineVirtualCamera ArmamentRightCamera;
+		[SerializeField] private CinemachineCamera HangarCamera;
+		[SerializeField] private CinemachineCamera PersonalMarkCamera;
+		[SerializeField] private CinemachineCamera ArmamentLeftCamera;
+		[SerializeField] private CinemachineCamera ArmamentRightCamera;
 		[SerializeField] private Transform JuggernautVisual;
 
 		private HangarCameraBlendConfigurer _blendConfigurer;

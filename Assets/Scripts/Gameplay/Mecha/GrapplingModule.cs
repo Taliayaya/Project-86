@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Cinemachine;
+using Unity.Cinemachine;
 using ScriptableObjects.GameParameters;
 using UI;
 using UI.HUD;
@@ -326,7 +326,7 @@ namespace Gameplay.Mecha
             StopGrapple(false);
         }
         
-        public void SetCamera(CinemachineVirtualCamera vcam)
+        public void SetCamera(CinemachineCamera vcam)
         {
             cam = vcam.transform;
         }

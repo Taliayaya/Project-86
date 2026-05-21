@@ -25,8 +25,6 @@ namespace FMODUnity
         private const string StringBankExtension = "strings.bank";
         private const string BankExtension = "bank";
 
-        private static HashSet<string> newBankPaths = new HashSet<string>();
-
 #if UNITY_EDITOR
         [MenuItem("FMOD/Refresh Banks", priority = 1)]
         public static void RefreshBanks()
@@ -36,7 +34,8 @@ namespace FMODUnity
             if (eventCache != null)
             {
                 OnCacheChange();
-                if (Settings.Instance.ImportType == ImportType.AssetBundle)
+                // The !StagingSystem.SourceLibsExist test ensures that we are not referencing an unpopulated cache.
+                if (Settings.Instance.ImportType == ImportType.AssetBundle && !StagingSystem.SourceLibsExist)
                 {
                     UpdateBankStubAssets(EditorUserBuildSettings.activeBuildTarget);
                 }
@@ -609,7 +608,6 @@ namespace FMODUnity
             BuildStatusWatcher.OnBuildStarted += () => {
                 BuildTargetChanged();
                 CopyToStreamingAssets(EditorUserBuildSettings.activeBuildTarget);
-                ApplyFMODLabel();
             };
             BuildStatusWatcher.OnBuildEnded += () => {
                 UpdateBankStubAssets(EditorUserBuildSettings.activeBuildTarget);
@@ -826,6 +824,7 @@ namespace FMODUnity
             }
 
             bool madeChanges = false;
+            HashSet<string> bankPaths = new HashSet<string>();
 
             try
             {
@@ -882,7 +881,7 @@ namespace FMODUnity
 
                         string assetString = targetPathFull.Replace(Application.dataPath, "Assets");
                         AssetDatabase.ImportAsset(assetString);
-                        newBankPaths.Add(assetString);
+                        bankPaths.Add(assetString);
                     }
                 }
 
@@ -906,6 +905,7 @@ namespace FMODUnity
                 AssetDatabase.Refresh();
                 RuntimeUtils.DebugLogFormat("FMOD Studio: copy banks for platform {0} : copying banks from {1} to {2} succeeded",
                     platform.DisplayName, bankSourceFolder, bankTargetFolder);
+                ApplyFMODLabel(bankPaths);
             }
         }
 
@@ -950,6 +950,8 @@ namespace FMODUnity
             }
 
             bool madeChanges = false;
+
+            HashSet<string> bankPaths = new HashSet<string>();
 
             Directory.CreateDirectory(bankTargetFolder);
 
@@ -1022,8 +1024,7 @@ namespace FMODUnity
                             string assetPath = targetPathFull.Replace(Application.dataPath, "Assets");
                             AssetDatabase.ImportAsset(assetPath);
 
-                            UnityEngine.Object obj = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(assetPath);
-                            AssetDatabase.SetLabels(obj, new string[] { FMODLabel });
+                            bankPaths.Add(assetPath);
                         }
                     }
                 }
@@ -1046,6 +1047,7 @@ namespace FMODUnity
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
                 Debug.LogFormat("FMOD: Updated bank stubs in {0} to match {1}", bankTargetFolder, bankSourceFolder);
+                ApplyFMODLabel(bankPaths);
             }
         }
 
@@ -1411,9 +1413,9 @@ namespace FMODUnity
             }
         }
 
-        private static void ApplyFMODLabel()
+        private static void ApplyFMODLabel(HashSet<string> bankPaths)
         {
-            foreach (string assetPath in newBankPaths)
+            foreach (string assetPath in bankPaths)
             {
                 if (!AssetHasLabel(assetPath, FMODLabel))
                 {
@@ -1421,8 +1423,6 @@ namespace FMODUnity
                     AssetDatabase.SetLabels(obj, new string[] { FMODLabel });
                 }
             }
-
-            newBankPaths.Clear();
         }
     }
 }

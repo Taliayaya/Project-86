@@ -1,6 +1,6 @@
 /* ======================================================================================== */
 /* FMOD Core API - DSP header file.                                                         */
-/* Copyright (c), Firelight Technologies Pty, Ltd. 2004-2025.                               */
+/* Copyright (c), Firelight Technologies Pty, Ltd. 2004-2026.                               */
 /*                                                                                          */
 /* Use this header if you are wanting to develop your own DSP plugin to use with FMODs      */
 /* dsp system.  With this header you can make your own DSP plugin that FMOD can             */
@@ -266,7 +266,8 @@ namespace FMOD
         DSP_PARAMETER_DATA_TYPE_FFT =                       -4,
         DSP_PARAMETER_DATA_TYPE_3DATTRIBUTES_MULTI =        -5,
         DSP_PARAMETER_DATA_TYPE_ATTENUATION_RANGE =         -6,
-        DSP_PARAMETER_DATA_TYPE_DYNAMIC_RESPONSE =          -7
+        DSP_PARAMETER_DATA_TYPE_DYNAMIC_RESPONSE =          -7,
+        DSP_PARAMETER_DATA_TYPE_FINITE_LENGTH =             -8
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -347,6 +348,12 @@ namespace FMOD
         public int numchannels;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
         public float[] rms;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct DSP_PARAMETER_FINITE_LENGTH
+    {
+        public int finite;
     }
 
     [StructLayout(LayoutKind.Sequential)]
