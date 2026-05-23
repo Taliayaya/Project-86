@@ -18,6 +18,8 @@ public class BeamTrigger : MonoBehaviour
     [SerializeField] float beamChargeTime = 0.5f;
     [SerializeField] float beamTravelTime = 0.4f;
     [SerializeField] float explosionDuration = 3f;
+    [SerializeField] private float explosionRadius = 200;
+    [SerializeField] private int maxAllowedCollisions = 50;
     [SerializeField] private Animator animator;
     [Header("Wings")]
     [SerializeField] private float wingDowntime = 3f;
@@ -46,11 +48,22 @@ public class BeamTrigger : MonoBehaviour
     [SerializeField] private float rumbleDuration = 0.2f;
     [SerializeField] private float rumbleMaxDistance = 1000;
     
+    private Vector3 _explosionScale;
+
+    private Tween _scaleTween;
+    private Tween _intensityTween;
+    private Tween _lightTween;
+
+    public bool InProgress { get; private set; }
+    public bool Charging { get; private set; }
+    private Coroutine _shootCoroutine;
 
     private void Start()
     {
         explosionVFX.transform.SetParent(null, true);
         explosionVFX.transform.rotation = Quaternion.identity;
+        _explosionScale = explosionVFX.transform.localScale;
+        _colliders = new Collider[maxAllowedCollisions];
     }
 
     private void SetAnimatorTrigger(string trigger)
@@ -81,47 +94,84 @@ public class BeamTrigger : MonoBehaviour
         rumbleSource.GenerateImpulseAt(explosionPosition, rumbleIntensity * Vector3.down);
     }
 
+    private Collider[] _colliders;
     IEnumerator ChargingBeam()
     {
+        Charging = true;
         SetAnimatorTrigger("PrepareShoot");
         ChargingAudio();
-        DOTween.To(() => lensFlare.scale, v => lensFlare.scale = v, flareChargingScale, flareTransitionDuration);
+        _scaleTween = DOTween.To(() => lensFlare.scale, v => lensFlare.scale = v, flareChargingScale, flareTransitionDuration * _power);
 
-        DOTween.To(() => lensFlare.intensity, v => lensFlare.intensity = v, flareChargingIntensity, flareTransitionDuration);
-        DOTween.To(() => flareLight.intensity, v => flareLight.intensity = v, flareChargingIntensity, flareTransitionDuration);
+        _intensityTween = DOTween.To(() => lensFlare.intensity, v => lensFlare.intensity = v, flareChargingIntensity, flareTransitionDuration * _power);
+        _lightTween = DOTween.To(() => flareLight.intensity, v => flareLight.intensity = v, flareChargingIntensity, flareTransitionDuration * _power);
 
         
-        yield return new WaitForSeconds(beamChargeTime);
+        yield return new WaitForSeconds(beamChargeTime * _power);
         
         SetAnimatorTrigger("Shoot");
-        DOTween.To(() => lensFlare.scale, v => lensFlare.scale = v, flarePrepareShootScale, flarePrepareTransitionDuration);
-        DOTween.To(() => lensFlare.intensity, v => lensFlare.intensity = v, flarePrepareShootIntensity, flarePrepareTransitionDuration);
-        DOTween.To(() => flareLight.intensity, v => flareLight.intensity = v, flareLightPrepareShootIntensity, flarePrepareTransitionDuration);
+        _scaleTween = DOTween.To(() => lensFlare.scale, v => lensFlare.scale = v, flarePrepareShootScale, flarePrepareTransitionDuration);
+        _intensityTween = DOTween.To(() => lensFlare.intensity, v => lensFlare.intensity = v, flarePrepareShootIntensity, flarePrepareTransitionDuration);
+        _lightTween = DOTween.To(() => flareLight.intensity, v => flareLight.intensity = v, flareLightPrepareShootIntensity, flarePrepareTransitionDuration);
 
         yield return new WaitForSeconds(wingDowntime);
+        Charging = false;
         beamTravelVFX.SetVector3("StartPosition", transform.position);
         beamTravelVFX.SetVector3("ExplosionPosition", ExplosionPoint.position);
         beamTravelVFX.SendEvent("Trigger");
         beamChargingVFX.SendEvent("StopEffect");
         audioSource.Stop();
-        yield return  new WaitForSeconds(beamTravelTime);
+        yield return  new WaitForSeconds(beamTravelTime * _power);
         flareLight.intensity = 0;
         lensFlare.intensity = 0;
         lensFlare.scale = 0;
         explosionVFX.SetVector3("ExplosionPosition", ExplosionPoint.position);
-        explosionVFX.SetFloat("explosionDuration", explosionDuration);
+        explosionVFX.SetFloat("explosionDuration", explosionDuration * _power);
         explosionVFX.SendEvent("Trigger");
+        
         StartCoroutine(RumbleDelay());
-        yield return new WaitForSeconds(explosionDuration);
+        yield return new WaitForFixedUpdate();
+        var size = Physics.OverlapSphereNonAlloc(ExplosionPoint.position, explosionRadius * _power, _colliders);
+        for (int i = 0; i < size; i++)
+        {
+            var hit = _colliders[i];
+            if (hit.CompareTag("Destructible"))
+                hit.SendMessage("Damage", 100, SendMessageOptions.DontRequireReceiver);
+            else if (hit.TryGetComponent(out IHealth health))
+            {
+                // var distance = Vector3.Distance(transform.position, hit.transform.position)
+            }
+        }
+        yield return new WaitForSeconds(explosionDuration * _power);
         explosionVFX.SendEvent("StopEffect"); 
         
         // return explosion point forward to have the turret go back straight
         ExplosionPoint.SetParent(transform.parent, true);
         ExplosionPoint.position = transform.position + transform.parent.forward * 100;
+        InProgress = false;
     }
 
-    public void ShootBeam(Vector3 position)
+    public void InterruptCharge()
     {
+        if (!Charging) return;
+        StopCoroutine(_shootCoroutine);
+        _lightTween.Kill();
+        _intensityTween.Kill();
+        _scaleTween.Kill();
+        flareLight.intensity = 0;
+        lensFlare.intensity = 0;
+        lensFlare.scale = 0;
+        Charging = false;
+        
+        beamChargingVFX.SendEvent("StopEffect");
+        beamChargingVFX.Stop();
+        audioSource.Stop();
+    }
+
+    private float _power;
+    public void ShootBeam(Vector3 position, float power = 1f)
+    {
+        _power = power;
+        InProgress = true;
         // detach the explosion point for it not to move (it will bug lightnings bolts otherwise)
         ExplosionPoint.position = position;
         ExplosionPoint.transform.SetParent(null, true);
@@ -130,11 +180,12 @@ public class BeamTrigger : MonoBehaviour
         beamTravelVFX.SetVector3("ExplosionPosition", ExplosionPoint.position);
         beamTravelVFX.SetFloat("VFX Scale", transform.localScale.x);
         beamChargingVFX.SetVector3("ExplosionPosition", ExplosionPoint.position);
-        beamChargingVFX.SetFloat("ChargingTime", beamChargeTime + wingDowntime);
+        beamChargingVFX.SetFloat("ChargingTime", beamChargeTime * power + wingDowntime);
         beamChargingVFX.SendEvent("Trigger"); 
         explosionVFX.SetVector3("ExplosionPosition", ExplosionPoint.position);
-        explosionVFX.SetFloat("explosionDuration", explosionDuration);
-        StartCoroutine(ChargingBeam());
+        explosionVFX.SetFloat("explosionDuration", explosionDuration * power);
+        explosionVFX.transform.localScale = _explosionScale * power;
+        _shootCoroutine = StartCoroutine(ChargingBeam());
     }
 
     
@@ -146,6 +197,5 @@ public class BeamTrigger : MonoBehaviour
         {
             ShootBeam(ExplosionPoint.position);
         }
-
     }
 }

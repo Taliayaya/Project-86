@@ -62,9 +62,10 @@ public class CannonController : NetworkBehaviour
         }
     }
 
+    public bool ownerOnly = true;
     void FixedUpdate()
     {
-        if (!IsOwner)
+        if (ownerOnly && !IsOwner)
             return;
         // Rotate each turret towards its respective target individually
         foreach (var turretData in turrets)

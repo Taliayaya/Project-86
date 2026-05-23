@@ -22,7 +22,7 @@ namespace AI
         public class Crystal
         {
             public Status status;
-            public MeshRenderer meshRenderer;
+            public Renderer renderer;
             public Collider collider;
             public HealthComponent healthComponent;
             
@@ -45,6 +45,7 @@ namespace AI
         [SerializeField] private float blinkDuration = 0.5f;
         [SerializeField] private float blinkStrength = 5f;
         public List<Crystal> sideCrystals;
+        public Crystal mainCrystal;
         
         public BehaviorGraphAgent agent;
 
@@ -69,18 +70,32 @@ namespace AI
         }
 
         private readonly string _emissionProperty = "_EmissionColor";
-        
+
+        private void Activate(Crystal crystal)
+        {
+            crystal.status = Status.Active;
+            crystal.renderer.material.DOColor(crystal.GetColor(activeColorGradient), activationDuration);
+            crystal.renderer.material.DOColor(crystal.GetColor(activeColorGradient), _emissionProperty,
+                activationDuration);
+            crystal.collider.enabled = true;
+            
+            crystal.onActivated?.Invoke();
+        }
+
         [ContextMenu("Activate")]
         public void Activate()
         {
-            sideCrystals.ForEach(crystal =>
-            {
-                crystal.status = Status.Active;
-                crystal.meshRenderer.material.DOColor(crystal.GetColor(activeColorGradient), activationDuration);
-                crystal.meshRenderer.material.DOColor(crystal.GetColor(activeColorGradient), _emissionProperty, activationDuration);
-                crystal.collider.enabled = true;
-                crystal.onActivated?.Invoke();
-            });
+            sideCrystals.ForEach(Activate);
+        }
+
+        private void Deactivate(Crystal crystal)
+        {
+            crystal.status = Status.Invincible;
+            crystal.renderer.material.DOColor(inActiveColor, deactivationDuration);
+            crystal.renderer.material.DOColor(inActiveColor, _emissionProperty, deactivationDuration);
+            crystal.collider.enabled = false;
+            
+            crystal.onDeactivated?.Invoke();
         }
         
         [ContextMenu("Deactivate")]
@@ -89,10 +104,7 @@ namespace AI
             bool bothCrystalsDestroyed = sideCrystals[0].IsDestroyed && sideCrystals[1].IsDestroyed;
             sideCrystals.ForEach(crystal =>
             {
-                crystal.status = Status.Invincible;
-                crystal.meshRenderer.material.DOColor(inActiveColor, deactivationDuration);
-                crystal.meshRenderer.material.DOColor(inActiveColor, _emissionProperty, deactivationDuration);
-                crystal.collider.enabled = false;
+                Deactivate(crystal);
                 
                 // regenerate crystals if destroyed
                 if (bothCrystalsDestroyed)
@@ -100,9 +112,10 @@ namespace AI
                     crystal.healthComponent.Health = crystal.healthComponent.MaxHealth;
                     crystal.onRegenerated?.Invoke();
                 }
-                crystal.onDeactivated?.Invoke();
-
             });
+            
+            if (mainCrystal.status == Status.Active)
+                Deactivate(mainCrystal);
         }
 
         public void CheckDestroyed()
@@ -111,6 +124,11 @@ namespace AI
             {
                 onBothCrystalsDestroyed?.Invoke();
                 agent.SetVariableValue("State", MorphoState.Stunned);
+            }
+
+            if (mainCrystal.IsDestroyed)
+            {
+                agent.SetVariableValue("Phase", Phase.Phase3);
             }
         }
 
@@ -129,20 +147,25 @@ namespace AI
                 CheckDestroyed();
                 crystal.onDestroyed?.Invoke();
             }
-            crystal.meshRenderer.material.DOKill();
+            crystal.renderer.material.DOKill();
 
             Sequence s = DOTween.Sequence();
             Sequence sEmission = DOTween.Sequence();
 
             // white flash
-            s.Append(crystal.meshRenderer.material.DOColor(Color.white * blinkStrength, blinkDuration * 0.5f));
-            sEmission.Append(crystal.meshRenderer.material.DOColor(Color.white * blinkStrength, _emissionProperty,
+            s.Append(crystal.renderer.material.DOColor(Color.white * blinkStrength, blinkDuration * 0.5f));
+            sEmission.Append(crystal.renderer.material.DOColor(Color.white * blinkStrength, _emissionProperty,
                 blinkDuration * 0.5f));
 
             // orange color becoming stronger
-            s.Append(crystal.meshRenderer.material.DOColor(crystal.GetColor(activeColorGradient), blinkDuration * 0.5f));
-            sEmission.Append(crystal.meshRenderer.material.DOColor(crystal.GetColor(activeColorGradient), _emissionProperty,
+            s.Append(crystal.renderer.material.DOColor(crystal.GetColor(activeColorGradient), blinkDuration * 0.5f));
+            sEmission.Append(crystal.renderer.material.DOColor(crystal.GetColor(activeColorGradient), _emissionProperty,
                 blinkDuration * 0.5f));
+        }
+
+        public void OnMainCrystalTookDamage(HealthComponent _, DamagePackage damagePackage)
+        {
+            CrystalTakeDamage(mainCrystal, damagePackage);
         }
 
         public void OnLeftCrystalTookDamage(HealthComponent _, DamagePackage damagePackage)
@@ -155,11 +178,13 @@ namespace AI
             CrystalTakeDamage(sideCrystals[1], damagePackage);
         }
 
+#if UNITY_EDITOR
         [ContextMenu("Test Damage")]
         public void TestDamage()
         {
             OnLeftCrystalTookDamage(null, new DamagePackage());
             OnRightCrystalTookDamage(null, new DamagePackage());
         }
+#endif
     }
 }

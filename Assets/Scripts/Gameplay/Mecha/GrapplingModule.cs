@@ -262,6 +262,11 @@ namespace Gameplay.Mecha
             _joint.maxDistance = distance; // 0.25f;
             // _joint.maxDistance = math.clamp(math.min(_joint.maxDistance - grapplePullSpeed * Time.fixedDeltaTime, distance), 0.25f, maxGrappleDistance);
             _joint.minDistance = distance * 0.25f; // 0.25f;
+
+            if (grapplePoint.transform.parent != null)
+            {
+                grapplePoint.transform.parent.SendMessage("OnGrapplePull", SendMessageOptions.DontRequireReceiver);
+            }
         }
         
 

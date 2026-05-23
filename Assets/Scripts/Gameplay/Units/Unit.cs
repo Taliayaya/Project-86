@@ -157,6 +157,14 @@ namespace Gameplay.Units
                 TakeSlowEffect(damagePackage);
                 return new DamageResponse() { Status = DamageResponse.DamageStatus.Taken, DamageReceived = 0};
             }
+
+            if (damagePackage.Type == DamageType.EffectPush)
+            {
+                Debug.Log("Received push effect");
+                _rb.linearVelocity = Vector3.zero;
+                _rb.AddForce(damagePackage.Knockback.Direction * damagePackage.Knockback.Strength, ForceMode.Impulse);
+                return new DamageResponse() { Status = DamageResponse.DamageStatus.Taken, DamageReceived = 0};
+            }
             
             float remainingHealth = Mathf.Clamp(Health - damagePackage.GetDamage(), 0, MaxHealth);
             Debug.Log($"{Faction} took {damagePackage.GetDamage()} damage. Health: {Health} Remaining health: {remainingHealth}");
