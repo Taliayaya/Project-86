@@ -265,7 +265,8 @@ namespace Gameplay.Mecha
 
             if (grapplePoint.transform.parent != null)
             {
-                grapplePoint.transform.parent.SendMessage("OnGrapplePull", SendMessageOptions.DontRequireReceiver);
+                if (grapplePoint.transform.parent.CompareTag("Interactable"))
+                    grapplePoint.transform.parent.SendMessageUpwards("OnGrapplePull", SendMessageOptions.DontRequireReceiver);
             }
         }
         

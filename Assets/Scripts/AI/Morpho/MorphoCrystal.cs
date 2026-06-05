@@ -35,6 +35,7 @@ namespace AI
             public UnityEvent onRegenerated;
             public UnityEvent onActivated;
             public UnityEvent onDeactivated;
+            public UnityEvent<float, float> onHealthChanged;
         }
 
         
@@ -86,6 +87,11 @@ namespace AI
         public void Activate()
         {
             sideCrystals.ForEach(Activate);
+        }
+
+        public void ActivateMainCrystal()
+        {
+            Activate(mainCrystal);
         }
 
         private void Deactivate(Crystal crystal)
@@ -161,6 +167,8 @@ namespace AI
             s.Append(crystal.renderer.material.DOColor(crystal.GetColor(activeColorGradient), blinkDuration * 0.5f));
             sEmission.Append(crystal.renderer.material.DOColor(crystal.GetColor(activeColorGradient), _emissionProperty,
                 blinkDuration * 0.5f));
+            
+            crystal.onHealthChanged?.Invoke(crystal.healthComponent.Health, crystal.healthComponent.MaxHealth);
         }
 
         public void OnMainCrystalTookDamage(HealthComponent _, DamagePackage damagePackage)

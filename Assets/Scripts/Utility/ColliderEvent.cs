@@ -34,7 +34,7 @@ namespace Utility
         {
             if (other.attachedRigidbody == _rigidbody)
                 return;
-            if (!string.IsNullOrEmpty(tagFilter) && !other.CompareTag(tagFilter))
+            if (!string.IsNullOrEmpty(tagFilter) && other.attachedRigidbody && !other.attachedRigidbody.CompareTag(tagFilter))
                 return;
             onTriggerEnter?.Invoke(other);
         }
@@ -43,7 +43,7 @@ namespace Utility
         {
             if (other.attachedRigidbody == _rigidbody)
                 return;
-            if (tagFilter != null && !other.CompareTag(tagFilter))
+            if (!string.IsNullOrEmpty(tagFilter) && other.attachedRigidbody && !other.attachedRigidbody.CompareTag(tagFilter))
                 return;
             onTriggerExit?.Invoke(other);
         }

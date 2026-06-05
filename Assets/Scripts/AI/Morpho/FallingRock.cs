@@ -18,9 +18,13 @@ namespace AI
         [SerializeField] private VisualEffect dust;
         [SerializeField] private float multiplier = 4000;
         
+        [SerializeField] private MorphoObstacleChannel morphoObstacleChannel;
+        [SerializeField] private bool fallOnAwake;
+        
         void Awake()
         {
-            TriggerFall();
+            if (fallOnAwake)
+                TriggerFall();
         }
 
         public void TriggerFall()
@@ -49,8 +53,6 @@ namespace AI
         
         void Explode()
         {
-            // Ici tu peux instancier des particules de poussière/cailloux
-            // et détruire ou désactiver le gros rocher
             Destroy(gameObject, 0.1f);
         }
 
@@ -61,9 +63,7 @@ namespace AI
             {
                 if (other.attachedRigidbody.gameObject.CompareTag("Morpho"))
                 {
-                    var agent = other.attachedRigidbody.GetComponent<BehaviorGraphAgent>();
-                    agent.SetVariableValue("CruiseMode", MorphoCruiseMode.Braking);
-                    agent.SetVariableValue("Target", obstacle.transform);
+                    morphoObstacleChannel.SendEventMessage(obstacle.transform);
                 }
             }
         }
