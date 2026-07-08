@@ -1,0 +1,1644 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3120207565413813544
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2916208483909587786}
+  - component: {fileID: 1461270145607251353}
+  m_Layer: 16
+  m_Name: TrackForwardDetector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2916208483909587786
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3120207565413813544}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 820841198607591264}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &1461270145607251353
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3120207565413813544}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 20
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!1001 &7385719972218058152
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 43303904677369200, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 43303904677369200, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 251902221499132997, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 723787218015960790, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1333805468064447394, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1398102215292358895, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1398102215292358895, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1398102215292358895, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 1398102215292358895, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1781333684904874856, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2248799020339820196, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2507336597940813419, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: GoBackSpeed
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: _Editor_Category
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: IncludedColliders.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[0].ProceduralPosition.x
+      value: 1558.441
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[0].ProceduralPosition.y
+      value: 162.65762
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[0].ProceduralPosition.z
+      value: 903.29834
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[0].ProceduralRotation.w
+      value: 0.010396842
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[0].ProceduralRotation.x
+      value: -0.003856603
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[0].ProceduralRotation.y
+      value: 0.9375171
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[0].ProceduralRotation.z
+      value: 0.34776244
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[1].ProceduralPosition.x
+      value: 1558.6353
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[1].ProceduralPosition.y
+      value: 170.19125
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[1].ProceduralPosition.z
+      value: 894.54297
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[1].ProceduralRotation.w
+      value: 0.010396842
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[1].ProceduralRotation.x
+      value: -0.003856603
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[1].ProceduralRotation.y
+      value: 0.9375171
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[1].ProceduralRotation.z
+      value: 0.34776244
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[2].ProceduralPosition.x
+      value: 1558.8071
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[2].ProceduralPosition.y
+      value: 170.0563
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[2].ProceduralPosition.z
+      value: 889.56104
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[2].ProceduralRotation.w
+      value: 0.017240556
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[2].ProceduralRotation.x
+      value: 0.00023332123
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[2].ProceduralRotation.y
+      value: 0.9997598
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[2].ProceduralRotation.z
+      value: -0.013530027
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[3].ProceduralPosition.x
+      value: 1559.0443
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[3].ProceduralPosition.y
+      value: 169.95901
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[3].ProceduralPosition.z
+      value: 884.58093
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[3].ProceduralRotation.w
+      value: 0.023791667
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[3].ProceduralRotation.x
+      value: 0.00023210884
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[3].ProceduralRotation.y
+      value: 0.9996693
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[3].ProceduralRotation.z
+      value: -0.009752662
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[4].ProceduralPosition.x
+      value: 1559.3373
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[4].ProceduralPosition.y
+      value: 169.89522
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[4].ProceduralPosition.z
+      value: 879.60333
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[4].ProceduralRotation.w
+      value: 0.029389968
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[4].ProceduralRotation.x
+      value: 0.00018800987
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[4].ProceduralRotation.y
+      value: 0.99954754
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[4].ProceduralRotation.z
+      value: -0.0063941823
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[5].ProceduralPosition.x
+      value: 1559.6738
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[5].ProceduralPosition.y
+      value: 169.86136
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[5].ProceduralPosition.z
+      value: 874.68243
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[5].ProceduralRotation.w
+      value: 0.034135774
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[5].ProceduralRotation.x
+      value: 0.000117164025
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[5].ProceduralRotation.y
+      value: 0.99941134
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[5].ProceduralRotation.z
+      value: -0.003430274
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[6].ProceduralPosition.x
+      value: 1560.0295
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[6].ProceduralPosition.y
+      value: 169.85365
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[6].ProceduralPosition.z
+      value: 870.0332
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[6].ProceduralRotation.w
+      value: 0.038171347
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[6].ProceduralRotation.x
+      value: 0.000031540614
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[6].ProceduralRotation.y
+      value: 0.9992709
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[6].ProceduralRotation.z
+      value: -0.0008256877
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[7].ProceduralPosition.x
+      value: 1560.417
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[7].ProceduralPosition.y
+      value: 169.86731
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[7].ProceduralPosition.z
+      value: 865.38654
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[7].ProceduralRotation.w
+      value: 0.04158304
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[7].ProceduralRotation.x
+      value: -0.00006089509
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[7].ProceduralRotation.y
+      value: 0.999134
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[7].ProceduralRotation.z
+      value: 0.0014631532
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[8].ProceduralPosition.x
+      value: 1560.8312
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[8].ProceduralPosition.y
+      value: 169.89955
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[8].ProceduralPosition.z
+      value: 860.74225
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[8].ProceduralRotation.w
+      value: 0.044458184
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[8].ProceduralRotation.x
+      value: -0.00015370813
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[8].ProceduralRotation.y
+      value: 0.99900526
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[8].ProceduralRotation.z
+      value: 0.003453925
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[9].ProceduralPosition.x
+      value: 1561.2676
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[9].ProceduralPosition.y
+      value: 169.94785
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[9].ProceduralPosition.z
+      value: 856.10016
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[9].ProceduralRotation.w
+      value: 0.04684931
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[9].ProceduralRotation.x
+      value: -0.00024262254
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[9].ProceduralRotation.y
+      value: 0.99888855
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[9].ProceduralRotation.z
+      value: 0.00517303
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[10].ProceduralPosition.x
+      value: 1561.7224
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[10].ProceduralPosition.y
+      value: 170.00972
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[10].ProceduralPosition.z
+      value: 851.45996
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[10].ProceduralRotation.w
+      value: 0.048833624
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[10].ProceduralRotation.x
+      value: -0.00032401702
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[10].ProceduralRotation.y
+      value: 0.9987849
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[10].ProceduralRotation.z
+      value: 0.0066270595
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[11].ProceduralPosition.x
+      value: 1562.1919
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[11].ProceduralPosition.y
+      value: 170.08289
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[11].ProceduralPosition.z
+      value: 846.8214
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[11].ProceduralRotation.w
+      value: 0.050411914
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[11].ProceduralRotation.x
+      value: -0.0003955394
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[11].ProceduralRotation.y
+      value: 0.9986977
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[11].ProceduralRotation.z
+      value: 0.007835932
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[12].ProceduralPosition.x
+      value: 1562.6732
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[12].ProceduralPosition.y
+      value: 170.1652
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[12].ProceduralPosition.z
+      value: 842.18427
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[12].ProceduralRotation.w
+      value: 0.05168841
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[12].ProceduralRotation.x
+      value: -0.00045631322
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[12].ProceduralRotation.y
+      value: 0.99862427
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[12].ProceduralRotation.z
+      value: 0.00881601
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[13].ProceduralPosition.x
+      value: 1563.1635
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[13].ProceduralPosition.y
+      value: 170.25458
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[13].ProceduralPosition.z
+      value: 837.5481
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[13].ProceduralRotation.w
+      value: 0.052648112
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[13].ProceduralRotation.x
+      value: -0.00050458516
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[13].ProceduralRotation.y
+      value: 0.99856716
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566846994077473644, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[13].ProceduralRotation.z
+      value: 0.009570373
+      objectReference: {fileID: 0}
+    - target: {fileID: 2640857164182526753, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2740784017251420233, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2740784017251420233, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 7.630005
+      objectReference: {fileID: 0}
+    - target: {fileID: 2740784017251420233, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -27.480042
+      objectReference: {fileID: 0}
+    - target: {fileID: 2740784017251420233, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2740784017251420233, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2740784017251420233, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: GoBackSpeed
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: _Editor_Category
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: IncludedColliders.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[0].ProceduralPosition.x
+      value: 1542.359
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[0].ProceduralPosition.y
+      value: 162.65762
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[0].ProceduralPosition.z
+      value: 903.29834
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[0].ProceduralRotation.w
+      value: -0.010396842
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[0].ProceduralRotation.x
+      value: 0.003856603
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[0].ProceduralRotation.y
+      value: 0.9375171
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[0].ProceduralRotation.z
+      value: 0.34776244
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[1].ProceduralPosition.x
+      value: 1542.1648
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[1].ProceduralPosition.y
+      value: 170.19125
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[1].ProceduralPosition.z
+      value: 894.54297
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[1].ProceduralRotation.w
+      value: -0.010396842
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[1].ProceduralRotation.x
+      value: 0.003856603
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[1].ProceduralRotation.y
+      value: 0.9375171
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[1].ProceduralRotation.z
+      value: 0.34776244
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[2].ProceduralPosition.x
+      value: 1541.9929
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[2].ProceduralPosition.y
+      value: 170.0563
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[2].ProceduralPosition.z
+      value: 889.56104
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[2].ProceduralRotation.w
+      value: -0.017240556
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[2].ProceduralRotation.x
+      value: -0.00023332123
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[2].ProceduralRotation.y
+      value: 0.9997598
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[2].ProceduralRotation.z
+      value: -0.013530027
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[3].ProceduralPosition.x
+      value: 1541.7557
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[3].ProceduralPosition.y
+      value: 169.95901
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[3].ProceduralPosition.z
+      value: 884.58093
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[3].ProceduralRotation.w
+      value: -0.023791667
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[3].ProceduralRotation.x
+      value: -0.00023210884
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[3].ProceduralRotation.y
+      value: 0.9996693
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[3].ProceduralRotation.z
+      value: -0.009752662
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[4].ProceduralPosition.x
+      value: 1541.4628
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[4].ProceduralPosition.y
+      value: 169.89522
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[4].ProceduralPosition.z
+      value: 879.60333
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[4].ProceduralRotation.w
+      value: -0.029389968
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[4].ProceduralRotation.x
+      value: -0.00018800987
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[4].ProceduralRotation.y
+      value: 0.99954754
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[4].ProceduralRotation.z
+      value: -0.0063941823
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[5].ProceduralPosition.x
+      value: 1541.1262
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[5].ProceduralPosition.y
+      value: 169.86136
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[5].ProceduralPosition.z
+      value: 874.68243
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[5].ProceduralRotation.w
+      value: -0.034135774
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[5].ProceduralRotation.x
+      value: -0.000117164025
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[5].ProceduralRotation.y
+      value: 0.99941134
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[5].ProceduralRotation.z
+      value: -0.003430274
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[6].ProceduralPosition.x
+      value: 1540.7705
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[6].ProceduralPosition.y
+      value: 169.85365
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[6].ProceduralPosition.z
+      value: 870.0332
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[6].ProceduralRotation.w
+      value: -0.038171347
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[6].ProceduralRotation.x
+      value: -0.000031540614
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[6].ProceduralRotation.y
+      value: 0.9992709
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[6].ProceduralRotation.z
+      value: -0.0008256877
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[7].ProceduralPosition.x
+      value: 1540.383
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[7].ProceduralPosition.y
+      value: 169.86731
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[7].ProceduralPosition.z
+      value: 865.38654
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[7].ProceduralRotation.w
+      value: -0.04158304
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[7].ProceduralRotation.x
+      value: 0.00006089509
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[7].ProceduralRotation.y
+      value: 0.999134
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[7].ProceduralRotation.z
+      value: 0.0014631532
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[8].ProceduralPosition.x
+      value: 1539.9689
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[8].ProceduralPosition.y
+      value: 169.89957
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[8].ProceduralPosition.z
+      value: 860.74225
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[8].ProceduralRotation.w
+      value: -0.044458184
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[8].ProceduralRotation.x
+      value: 0.00015378086
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[8].ProceduralRotation.y
+      value: 0.99900526
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[8].ProceduralRotation.z
+      value: 0.0034555595
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[9].ProceduralPosition.x
+      value: 1539.5325
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[9].ProceduralPosition.y
+      value: 169.94785
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[9].ProceduralPosition.z
+      value: 856.10016
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[9].ProceduralRotation.w
+      value: -0.04684931
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[9].ProceduralRotation.x
+      value: 0.00024254588
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[9].ProceduralRotation.y
+      value: 0.99888855
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[9].ProceduralRotation.z
+      value: 0.0051713954
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[10].ProceduralPosition.x
+      value: 1539.0776
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[10].ProceduralPosition.y
+      value: 170.00972
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[10].ProceduralPosition.z
+      value: 851.45996
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[10].ProceduralRotation.w
+      value: -0.048833624
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[10].ProceduralRotation.x
+      value: 0.00032401702
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[10].ProceduralRotation.y
+      value: 0.9987849
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[10].ProceduralRotation.z
+      value: 0.0066270595
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[11].ProceduralPosition.x
+      value: 1538.6082
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[11].ProceduralPosition.y
+      value: 170.0829
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[11].ProceduralPosition.z
+      value: 846.8214
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[11].ProceduralRotation.w
+      value: -0.050411914
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[11].ProceduralRotation.x
+      value: 0.00039562187
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[11].ProceduralRotation.y
+      value: 0.9986977
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[11].ProceduralRotation.z
+      value: 0.007837566
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[12].ProceduralPosition.x
+      value: 1538.1268
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[12].ProceduralPosition.y
+      value: 170.16522
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[12].ProceduralPosition.z
+      value: 842.18427
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[12].ProceduralRotation.w
+      value: -0.05168841
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[12].ProceduralRotation.x
+      value: 0.00045631322
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[12].ProceduralRotation.y
+      value: 0.99862427
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[12].ProceduralRotation.z
+      value: 0.00881601
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[13].ProceduralPosition.x
+      value: 1537.6366
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[13].ProceduralPosition.y
+      value: 170.2546
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[13].ProceduralPosition.z
+      value: 837.5481
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[13].ProceduralRotation.w
+      value: -0.052648112
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[13].ProceduralRotation.x
+      value: 0.00050458516
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[13].ProceduralRotation.y
+      value: 0.99856716
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886973801178406887, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: SpineBones.Array.data[13].ProceduralRotation.z
+      value: 0.009570373
+      objectReference: {fileID: 0}
+    - target: {fileID: 3018022753052139540, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: turrets.Array.data[6].target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3020592146668638954, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3020592146668638954, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4472499441931612942, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4699212367067417470, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782434170649917120, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858759440671133848, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.00024414062
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858759440671133848, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 36.941666
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858759440671133848, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -12.699463
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858759440671133848, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.702955
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858759440671133848, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7112344
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858759440671133848, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858759440671133848, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4995538315367242821, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5130680478545991818, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1056444084
+      objectReference: {fileID: 0}
+    - target: {fileID: 5275528296619230246, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: mainCrystal.onHealthChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5275528296619230246, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: mainCrystal.onHealthChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 221105574756259151}
+    - target: {fileID: 5275528296619230246, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: mainCrystal.onHealthChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnHealthChange
+      objectReference: {fileID: 0}
+    - target: {fileID: 5275528296619230246, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: mainCrystal.onHealthChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UI.HealthBar, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5275528296619230246, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: mainCrystal.onHealthChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5478657905876455354, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5506525451921082522, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5506525451921082522, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 7.300003
+      objectReference: {fileID: 0}
+    - target: {fileID: 5506525451921082522, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -100.00012
+      objectReference: {fileID: 0}
+    - target: {fileID: 5506525451921082522, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5506525451921082522, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5506525451921082522, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5515951475902156181, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5774900079154064243, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.702953
+      objectReference: {fileID: 0}
+    - target: {fileID: 5774900079154064243, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.71123636
+      objectReference: {fileID: 0}
+    - target: {fileID: 5774900079154064243, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 2.3283064e-10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5774900079154064243, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -2.3283064e-10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5774900079154064243, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90.671
+      objectReference: {fileID: 0}
+    - target: {fileID: 6682439474998194573, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7241240185565545704, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862000266261975752, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1550.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862000266261975752, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 167.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862000266261975752, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 932.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862000266261975752, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862000266261975752, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862000266261975752, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862000266261975752, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862000266261975752, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862000266261975752, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862000266261975752, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7876536206511006742, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_Name
+      value: FakeMorpho Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 7876536206511006742, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8113134575411502547, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8113134575411502547, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: 'managedReferences[6803103387401585658]'
+      value: 'Unity.Behavior Unity.Behavior.BlackboardVariable`1[[MorphoCruiseMode,
+        Assembly-CSharp]]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 8113134575411502547, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: 'managedReferences[6803103387401585659]'
+      value: 'Unity.Behavior Unity.Behavior.BlackboardVariable`1[[System.Single,
+        mscorlib]]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 8113134575411502547, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: 'managedReferences[6803103392753778805]'
+      value: 'Unity.Behavior Unity.Behavior.BlackboardVariable`1[[UnityEngine.Transform,
+        UnityEngine.CoreModule]]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 8113134575411502547, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: managedReferences[6803103387401585658].Name
+      value: CruiseMode
+      objectReference: {fileID: 0}
+    - target: {fileID: 8113134575411502547, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: managedReferences[6803103387401585659].Name
+      value: StunDuration
+      objectReference: {fileID: 0}
+    - target: {fileID: 8113134575411502547, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: managedReferences[6803103392753778805].Name
+      value: Target
+      objectReference: {fileID: 0}
+    - target: {fileID: 8113134575411502547, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_BlackboardVariableOverridesList.Array.size
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 8113134575411502547, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: managedReferences[6803103187332760186].m_Value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8113134575411502547, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: managedReferences[6803103387401585658].m_Value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8113134575411502547, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: managedReferences[6803103387401585659].m_Value
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8113134575411502547, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: managedReferences[6803103392753778805].m_Value
+      value: 
+      objectReference: {fileID: 1458282043848521723}
+    - target: {fileID: 8113134575411502547, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: 'm_BlackboardVariableOverridesList.Array.data[13]'
+      value: 6803103387401585658
+      objectReference: {fileID: 0}
+    - target: {fileID: 8113134575411502547, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: 'm_BlackboardVariableOverridesList.Array.data[14]'
+      value: 6803103387401585659
+      objectReference: {fileID: 0}
+    - target: {fileID: 8113134575411502547, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: 'm_BlackboardVariableOverridesList.Array.data[15]'
+      value: 6803103392753778805
+      objectReference: {fileID: 0}
+    - target: {fileID: 8113134575411502547, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: managedReferences[6803103387401585658].GUID.m_Value0
+      value: 1595929587845185238
+      objectReference: {fileID: 0}
+    - target: {fileID: 8113134575411502547, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: managedReferences[6803103387401585658].GUID.m_Value1
+      value: 12543876594355102798
+      objectReference: {fileID: 0}
+    - target: {fileID: 8113134575411502547, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: managedReferences[6803103387401585659].GUID.m_Value0
+      value: 2960910024359799909
+      objectReference: {fileID: 0}
+    - target: {fileID: 8113134575411502547, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: managedReferences[6803103387401585659].GUID.m_Value1
+      value: 12052094029449438234
+      objectReference: {fileID: 0}
+    - target: {fileID: 8113134575411502547, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: managedReferences[6803103392753778805].GUID.m_Value0
+      value: 6103289140306695453
+      objectReference: {fileID: 0}
+    - target: {fileID: 8113134575411502547, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: managedReferences[6803103392753778805].GUID.m_Value1
+      value: 12534206927785102454
+      objectReference: {fileID: 0}
+    - target: {fileID: 8234467639756948732, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8935945724479748890, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9053282902969947191, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -8
+      objectReference: {fileID: 0}
+    - target: {fileID: 9070327699512913674, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 7862000266261975752, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2916208483909587786}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8847514701491530150, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5699530098809644444}
+    - targetCorrespondingSourceObject: {fileID: 3166805672317506665, guid: 99ff31491fb4544149ff8c8e8efef628,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7840089666790691035}
+  m_SourcePrefab: {fileID: 100100000, guid: 99ff31491fb4544149ff8c8e8efef628, type: 3}
+--- !u!114 &221105574756259151 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7309024950476873959, guid: 99ff31491fb4544149ff8c8e8efef628,
+    type: 3}
+  m_PrefabInstance: {fileID: 7385719972218058152}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23b421902ab546a4b53d361caa3ae8f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &820841198607591264 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7862000266261975752, guid: 99ff31491fb4544149ff8c8e8efef628,
+    type: 3}
+  m_PrefabInstance: {fileID: 7385719972218058152}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1458282043848521723 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8233568460055724627, guid: 99ff31491fb4544149ff8c8e8efef628,
+    type: 3}
+  m_PrefabInstance: {fileID: 7385719972218058152}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2007728004204372383 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9053282902969947191, guid: 99ff31491fb4544149ff8c8e8efef628,
+    type: 3}
+  m_PrefabInstance: {fileID: 7385719972218058152}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2069393653576653838 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8847514701491530150, guid: 99ff31491fb4544149ff8c8e8efef628,
+    type: 3}
+  m_PrefabInstance: {fileID: 7385719972218058152}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1773428102 &5699530098809644444
+ParentConstraint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2069393653576653838}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Weight: 1
+  m_TranslationAtRest: {x: 0, y: 8.33, z: -27.48}
+  m_RotationAtRest: {x: 0, y: 0, z: 0}
+  m_TranslationOffsets:
+  - {x: 0, y: 15.630005, z: -27.480042}
+  m_RotationOffsets:
+  - {x: 0, y: 0, z: 0}
+  m_AffectTranslationX: 1
+  m_AffectTranslationY: 1
+  m_AffectTranslationZ: 1
+  m_AffectRotationX: 1
+  m_AffectRotationY: 1
+  m_AffectRotationZ: 1
+  m_Active: 1
+  m_IsLocked: 1
+  m_Sources:
+  - sourceTransform: {fileID: 2007728004204372383}
+    weight: 1
+--- !u!1 &5588291856933708225 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3166805672317506665, guid: 99ff31491fb4544149ff8c8e8efef628,
+    type: 3}
+  m_PrefabInstance: {fileID: 7385719972218058152}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1773428102 &7840089666790691035
+ParentConstraint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5588291856933708225}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Weight: 1
+  m_TranslationAtRest: {x: 0, y: 8, z: -100}
+  m_RotationAtRest: {x: 0, y: 0, z: 0}
+  m_TranslationOffsets:
+  - {x: 0, y: 15.300003, z: -100.00012}
+  m_RotationOffsets:
+  - {x: 0, y: 0, z: 0}
+  m_AffectTranslationX: 1
+  m_AffectTranslationY: 1
+  m_AffectTranslationZ: 1
+  m_AffectRotationX: 1
+  m_AffectRotationY: 1
+  m_AffectRotationZ: 1
+  m_Active: 1
+  m_IsLocked: 1
+  m_Sources:
+  - sourceTransform: {fileID: 2007728004204372383}
+    weight: 1

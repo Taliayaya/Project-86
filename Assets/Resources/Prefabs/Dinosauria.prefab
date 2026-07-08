@@ -442,7 +442,7 @@ MonoBehaviour:
       max: 0
     xAngle:
       min: -25
-      max: 20
+      max: 10
     invert: 1
     canRotate: 1
   - turret: {fileID: 8354253488568226460}
@@ -473,6 +473,7 @@ MonoBehaviour:
       max: 25
     invert: 1
     canRotate: 1
+  ownerOnly: 1
 --- !u!82 &1875953968032884602
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1334,6 +1335,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
+    DoStepAnimationOnDistanceFactor: 0.055
   UseGluing: 1
   MainGlueBlend: 1
   GlueRangeThreshold: 0.25
@@ -2559,7 +2561,7 @@ NavMeshAgent:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1654015168095858290}
   m_Enabled: 1
-  m_AgentTypeID: 1479372276
+  m_AgentTypeID: -1372625422
   m_Radius: 10
   m_Speed: 3.5
   m_Acceleration: 8
@@ -2585,7 +2587,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1430753956
+  GlobalObjectIdHash: 3002341722
   InScenePlacedSourceGlobalObjectIdHash: 3002341722
   DeferredDespawnTick: 0
   Ownership: 1
@@ -6965,6 +6967,7 @@ MonoBehaviour:
   componentsToDisableOnDeath:
   - {fileID: 6510746446421015335}
   - {fileID: 3605702921532991427}
+  destroyOnDeath: 1
   OnDeath:
     m_PersistentCalls:
       m_Calls: []
@@ -11101,6 +11104,7 @@ MonoBehaviour:
   componentsToDisableOnDeath:
   - {fileID: 6875158011072826948}
   - {fileID: 426679574127038773}
+  destroyOnDeath: 1
   OnDeath:
     m_PersistentCalls:
       m_Calls: []

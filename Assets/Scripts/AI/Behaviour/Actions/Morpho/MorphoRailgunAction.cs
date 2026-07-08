@@ -14,6 +14,14 @@ public partial class MorphoRailgunAction : Action
 
     protected override Status OnStart()
     {
+        if (Target.Value != null && Target.Value.gameObject.layer == LayerMask.NameToLayer("Default"))
+        {
+            Debug.Log("Asurada morpho fire");
+            Morpho.Value.ShootBeam(Target.Value.position, 1f);
+            return Status.Running;
+        }
+
+
         Morpho.Value.ShootBeam(Target.Value.position, Power.Value / 100f);
         return Status.Running;
     }
