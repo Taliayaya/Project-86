@@ -183,7 +183,6 @@ namespace Gameplay.Mecha
         
         private void TriggerNoAmmoPopUp()
         {
-            Debug.Log("No Ammo");
             EventManager.TriggerEvent("OnNoAmmo", new AmmoPopUpData(ammo.gunTypeName, 2f));
         }
         
@@ -234,7 +233,8 @@ namespace Gameplay.Mecha
             {
                 if (!canShoot(gunCheckCanShoot))
                 {
-                    yield return new WaitForSeconds(1f);
+                    yield return WaitFor500Ms;
+                    yield return WaitFor500Ms;
                     continue;
                 }
 
@@ -277,7 +277,6 @@ namespace Gameplay.Mecha
             {
                 if (!canShoot(gunCheckCanShoot))
                 {
-                    Debug.Log(transform.name + " can't shoot");
                     yield return WaitFor500Ms;
                     continue;
                 }
@@ -354,15 +353,9 @@ namespace Gameplay.Mecha
             var bulletDirection = origin.forward;
             if (Physics.Raycast(origin.position, origin.forward, out var hit, maxRaycastDistance, fireBulletLayerMask))
             {
-                //Debug.Log("hit " + hit.transform.name);
                 var direction = (hit.point - gunTransform.position).normalized;
                 if (Vector3.Angle(bulletDirection, direction) < 45)
                     bulletDirection = direction;
-                Debug.DrawLine(origin.position, hit.point, Color.red, 1f);
-            }
-            else
-            {
-                Debug.DrawRay(gunTransform.position, bulletDirection * maxRaycastDistance, Color.green, 1f);
             }
             
             bulletDirection = ReduceAccuracy(bulletDirection);
@@ -411,7 +404,6 @@ namespace Gameplay.Mecha
         [Rpc(SendTo.ClientsAndHost)]
         private void PlayMuzzleFlashRpc()
         {
-            Debug.Log("PlayMuzzleFlashRPC");
             if (_muzzleFlashCoroutine != null)
                 StopCoroutine(_muzzleFlashCoroutine);
             _muzzleFlashCoroutine = StartCoroutine(MuzzleFlash());
@@ -438,7 +430,6 @@ namespace Gameplay.Mecha
         [Rpc(SendTo.ClientsAndHost)]
         private void PlayBulletSoundRpc(bool oneShot = true)
         {
-            Debug.Log($"{name}: {ammo.GetRandomFireSound().name}");
             if (oneShot)
                 gunAudioSource.PlayOneShot(ammo.GetRandomFireSound());
             else

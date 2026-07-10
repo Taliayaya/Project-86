@@ -58,7 +58,6 @@ public partial class ShootTargetAction : Action
         if (Physics.Raycast(movedPosition, direction, out hit, AgentSo.Value.viewDistance, _layerMask))
         {
             float errorRange = Mathf.Abs(hit.distance - targetDistance);
-            Debug.Log($"{Agent.Value.name}: PerformRaycast {Target.Value.name} - hit {hit.transform.name} distance: {hit.distance} < {targetDistance} error: {errorRange}");
             if (errorRange > _doNotShootDistanceFromTarget)
                 return false;
             if (hit.rigidbody)
@@ -67,7 +66,6 @@ public partial class ShootTargetAction : Action
                     return false;
             }
         }
-        Debug.DrawLine(position, hit.point, Color.yellow);
         return true;
     }
 
@@ -80,8 +78,6 @@ public partial class ShootTargetAction : Action
         var direction = Target.Value.transform.position - turret.position;
         var angle = Vector3.Angle(direction, turret.forward);
         var distance = direction.magnitude;
-        
-        Debug.Log($"{Agent.Value.name}: EnemyInRange {Target.Value.name} - angle: {angle} < {AngleToShoot.Value * 0.5f} distance: {distance} < {AgentSo.Value.combatDistance}");
 
         if (distance >= AgentSo.Value.combatDistance)
             return false;

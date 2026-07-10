@@ -68,19 +68,23 @@ public partial class DetectEnemyAction : Action
             _nextVisibleTargets.Clear();
             IEnumerator detectTargets = DetectTargets();
             while (detectTargets.MoveNext()) yield return null;
-            
+
             (_nextVisibleTargets, visibleTargets.Value) = (visibleTargets.Value, _nextVisibleTargets);
-            yield return new WaitForSeconds(detectFrequency.Value);
+
+            // This enumerator is pumped manually by OnUpdate, so a WaitForSeconds yield is
+            // ignored (one tick only) — wait on Time.time instead so detectFrequency is
+            // actually honored. Randomized ±25% to stagger raycasts across agents.
+            float resumeAt = Time.time + detectFrequency.Value * UnityEngine.Random.Range(0.75f, 1.25f);
+            while (Time.time < resumeAt) yield return null;
         }
     }
 
     IEnumerator DetectTargets()
     {
-        // check to see if this copy is necessary for safety
-        var allEnemiesCopy = new List<Unit>(_allEnemies);
-        for (int i = 0; i < allEnemiesCopy.Count; i++)
+        // iterate directly: the yields make a stale copy no safer, and Count is re-checked each step
+        for (int i = 0; i < _allEnemies.Count; i++)
         {
-            Unit enemy = allEnemiesCopy[i];
+            Unit enemy = _allEnemies[i];
             if (!enemy || !enemy.gameObject)
                 continue;
             if (!CanSeeTarget(enemy))
@@ -115,7 +119,6 @@ public partial class DetectEnemyAction : Action
             return false;
         }
 
-        Debug.DrawLine(Position, target.transform.position, Color.blue, 0.3f);
         return PerformRaycast(direction, target);
     }
     
@@ -128,11 +131,7 @@ public partial class DetectEnemyAction : Action
             // Debug.Log("hit " + hit.transform.name);
             bool isDirectTarget = hit.collider.gameObject == target.gameObject;
             if (isDirectTarget || (hit.rigidbody != null && hit.rigidbody.gameObject == target.gameObject))
-            {
-                Debug.DrawLine(Position, target.transform.position, Color.green, 2f);
-                // Debug.Log($"{Agent.Value.name} saw {target.name} at distance {hit.distance} ");
                 return true;
-            }
         }
 
         return false;

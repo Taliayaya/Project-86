@@ -107,7 +107,9 @@ public class WaveLegionSpawner : MonoBehaviour
             if (legionUnits.Count >= maxTotalUnit) // avoid spawning more unit if there are already more than 200
                 yield break;
             SpawnLegionType(type);
-            yield return new WaitForFixedUpdate();
+            // one spawn per rendered frame: WaitForFixedUpdate fires several times on slow
+            // frames, which stacked 8-12 Instantiates into a single frame (35-50 ms hitches)
+            yield return null;
         }
     }
 

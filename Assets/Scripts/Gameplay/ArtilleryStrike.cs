@@ -37,7 +37,6 @@ public class ArtilleryStrike : MonoBehaviour
     private void OnParticleCollision(GameObject other)
     {
         int numCollisions = _particleSystem.GetCollisionEvents(other, _collisionEvents);
-        Debug.Log($"Number of collisions: {numCollisions}");
         for (int i = 0; i < numCollisions; i++)
         {
             ParticleCollisionEvent collision = _collisionEvents[i];
@@ -75,14 +74,12 @@ public class ArtilleryStrike : MonoBehaviour
 
     private void ApplyDamage(Vector3 origin, Collider target)
     {
-        Debug.Log($"Try Applying damage to {target.name}");
         if (!target.TryGetComponent(out IHealth health))
         {
             if (!target.gameObject.TryGetComponent(out health))
                 return;
         }
 
-        Debug.Log($"Applying damage to {target.name}");
         float distance = Vector3.Distance(origin, target.transform.position);
         DamagePackage damagePackage = new DamagePackage()
         {
