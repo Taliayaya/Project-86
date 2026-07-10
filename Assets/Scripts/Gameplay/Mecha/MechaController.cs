@@ -3,6 +3,7 @@ using System.Collections;
 using Armament.Shared;
 using Unity.Cinemachine;
 using Gameplay.Units;
+using NaughtyAttributes;
 using Networking;
 using Networking.Widgets.Session.Session;
 using NUnit.Framework;
@@ -84,7 +85,7 @@ namespace Gameplay.Mecha
         #region Private Fields
 
         private Vector2 _lastMouseUpdate;
-        private Rigidbody _rigidbody;
+        [ShowNonSerializedField]
         private bool _isGrounded;
         public override bool IsGrounded => _isGrounded;
         private bool _isOnWall;
@@ -109,6 +110,7 @@ namespace Gameplay.Mecha
         private Coroutine dashCoroutine = null;
 
         private bool canJump = true;
+        private bool _jumpHeld;
 
         // instead of using transform.up, use surfaceAlignment.upDirection, it's less erratic since its lerping value is much lower (Nova)
         private Ray groundRay;
@@ -131,7 +133,7 @@ namespace Gameplay.Mecha
             View.FirstPerson => vCamera,
             View.Cannon => gunCamera,
             View.ThirdPerson => tpsCamera,
-            View.FreeLook => tpsCamera,
+            View.FreeLook => freeLookCamera,
             _ => throw new ArgumentOutOfRangeException()
         };
         public View CameraView
@@ -141,7 +143,8 @@ namespace Gameplay.Mecha
             {
                 if (_cameraView == value)
                     return;
-                _cameraPreviousView = _cameraView;
+                if (_cameraView != View.FreeLook)
+                    _cameraPreviousView = _cameraView;
                 _cameraView = value;
 
                 vCamera.gameObject.SetActive(value == View.FirstPerson);
@@ -184,9 +187,8 @@ namespace Gameplay.Mecha
             get => _movementmode;
             set
             {
-                Console.WriteLine($"Setting movement mode to: {value}");
-                _movementmode = value; // Set the new value to the private backing field first
-                switch (value) // <-- Use "value" here instead of "_movementmode"
+                _movementmode = value;
+                switch (value)
                 {
                     case MovementMode.Walking:
                         MovementSpeed = juggernautParameters.walkSpeed;
@@ -222,22 +224,26 @@ namespace Gameplay.Mecha
                         zoomCameraUsed.enabled = false;
                         break;
                     case Zoom.X2:
+                        zoomValue = 30;
                         zoomCameraUsed.enabled = true;
                         zoomCameraUsed.gameObject.SetActive(true);
-                        zoomValue = 30;
                         break;
                     case Zoom.X4:
                         zoomValue = 15;
+                        zoomCameraUsed.enabled = true;
+                        zoomCameraUsed.gameObject.SetActive(true);
                         break;
                     case Zoom.X8:
                         zoomValue = 7.5f;
+                        zoomCameraUsed.enabled = true;
+                        zoomCameraUsed.gameObject.SetActive(true);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
 
                 zoomCameraUsed.fieldOfView = zoomValue;
-                EventManager.TriggerEvent("OnZoomChange", _zoom);
+                EventManager.TriggerEvent(Constants.TypedEvents.OnZoomChange, _zoom);
             }
         } 
         
@@ -263,7 +269,7 @@ namespace Gameplay.Mecha
             base.Awake();
             Health = juggernautParameters.health;
             MaxHealth = juggernautParameters.health;
-            _rigidbody = GetComponent<Rigidbody>();
+            _rb = GetComponent<Rigidbody>();
             surfaceAlignment = GetComponent<SurfaceNormalAlignment>();
             vCamera.gameObject.SetActive(IsOwner);
             _xRotation = modelTransform.localEulerAngles.x;
@@ -297,8 +303,8 @@ namespace Gameplay.Mecha
             
             // these events are local
             base.OnEnable();
-            if (!_rigidbody)
-                _rigidbody = GetComponent<Rigidbody>();
+            if (!_rb)
+                _rb = GetComponent<Rigidbody>();
             EventManager.AddListener(Constants.TypedEvents.Inputs.OnLookAround, OnLookAround);
             EventManager.AddListener("OnMove", OnMove);
             //EventManager.AddListener(Constants.TypedEvents.Inputs.OnDash, OnDash);
@@ -329,8 +335,8 @@ namespace Gameplay.Mecha
             EventManager.RemoveListener("OnShoot:Primary", OnShoot);
             EventManager.RemoveListener(Constants.TypedEvents.Inputs.OnFreeLook, OnFreeLook);
             EventManager.RemoveListener(Constants.Events.Inputs.OnChangeView, OnChangeView);
-            EventManager.RemoveListener("GrapplingModule", OnGrappleStart);
-            EventManager.RemoveListener("GrapplingModule", OnGrappleStop);
+            EventManager.RemoveListener("GrapplingModuleStart", OnGrappleStart);
+            EventManager.RemoveListener("GrapplingModuleStop", OnGrappleStop);
         }
 
         public override void OnNetworkSpawn()
@@ -359,7 +365,6 @@ namespace Gameplay.Mecha
             CheckGround(false);
             ApplyGravity();
             LimitSpeed();
-            CheckDistanceForward();
             CheckGrappleSurfaceAlignment();
 
             if (State == UnitState.Default)
@@ -375,34 +380,36 @@ namespace Gameplay.Mecha
             base.Start();
             if (!IsOwner)
                 return;
-            Debug.Log("[MechaController] Start");
             EventManager.TriggerEvent("RegisterMinimapTarget", transform);
             Cursor.lockState = CursorLockMode.Locked;
             groundRay = new Ray(transform.position, Vector3.down);
             surfaceAlignment.discardAngle = maxFloorAngle;
             if (allowMoveOnStart) { _movementmode = MovementMode.Walking; }
-            StartCoroutine(LandingCoroutine());
-
+            _landingCoroutine = StartCoroutine(LandingCoroutine());
+            StartCoroutine(DistanceForwardCoroutine());
         }
 
         #endregion
 
         #region Movement and Camera
 
-        private void CheckGrappleSurfaceAlignment() { 
-            if (_isGrappling ) { surfaceAlignment.useRawNormal = false; } // && isAirborne
-            else if (!_isGrappling){ surfaceAlignment.useRawNormal = false;}
+        private void CheckGrappleSurfaceAlignment()
+        {
+            surfaceAlignment.useRawNormal = _isGrappling;
         }
 
 
-        private void CheckDistanceForward()
+        private IEnumerator DistanceForwardCoroutine()
         {
-            if (Physics.Raycast(vCamera.transform.position, vCamera.transform.forward, out var hit, 5000, forwardMask))
+            var wait = new WaitForSeconds(0.1f);
+            while (!Died)
             {
-                EventManager.TriggerEvent("OnDistanceForward", hit.distance);
+                if (Physics.Raycast(vCamera.transform.position, vCamera.transform.forward, out var hit, 5000, forwardMask))
+                    EventManager.TriggerEvent("OnDistanceForward", hit.distance);
+                else
+                    EventManager.TriggerEvent("OnDistanceForward", float.NaN);
+                yield return wait;
             }
-            else
-                EventManager.TriggerEvent("OnDistanceForward", float.NaN);
         }
         
         public void CheckGround(bool isGrounded)
@@ -413,13 +420,13 @@ namespace Gameplay.Mecha
 
             if (_isGrounded)
             {
-                _rigidbody.linearDamping = groundDrag;
+                _rb.linearDamping = groundDrag;
                 _isOnWall = Vector3.Dot(transform.up, Vector3.up) < 0.8f;
                 if (_isOnWall && !_isGrappling)
                     _isGrounded = false;
             }
             else
-                _rigidbody.linearDamping = 0.3f;
+                _rb.linearDamping = 0.3f;
         }
 
         private void MoveJuggernaut()
@@ -447,11 +454,8 @@ namespace Gameplay.Mecha
 
                 
 
-                if (dot < 0.85f && distance > 10f) {
+                if (dot < 0.85f && distance > 10f)
                     move *= MathF.Max(0, dot / 2f);
-                    Debug.Log("HARD GRAPPLE");
-                    Debug.Log(dot);
-                }
 
                 floorAngleMultiplier = 0.75f;
                 //var surfaceAlignedVector = Vector3.ProjectOnPlane(move + Vector3.up * (_lastMovement.y), surfaceAlignment.rawNormal).normalized;
@@ -466,7 +470,7 @@ namespace Gameplay.Mecha
             
             //if (_isGrappling) { floorAngleMultiplier = 0.5};
             
-            _rigidbody.AddForce(move * (MovementSpeed * 1000f * floorAngleMultiplier), UnityEngine.ForceMode.Force);
+            _rb.AddForce(move * (MovementSpeed * 1000f * floorAngleMultiplier), UnityEngine.ForceMode.Force);
             
         }
 
@@ -474,20 +478,20 @@ namespace Gameplay.Mecha
         private void ApplyGravity()
         {
             float excessGravity = 0f;
-            // Debug.Log("ApplyGravity " + _isGrounded + " " + _isOnWall + " " + _isGrappling + " " + _rigidbody.linearVelocity.y + "");
+            // Debug.Log("ApplyGravity " + _isGrounded + " " + _isOnWall + " " + _isGrappling + " " + _rb.linearVelocity.y + "");
             if (_isGrounded) excessGravity = gravity;
             else if (_isOnWall && !_isGrappling) excessGravity = gravity * (wallFallingMult - 1);
-            else if (_rigidbody.linearVelocity.y < 0) { excessGravity += gravity * (fallGravityMult - 1f); }
+            else if (_rb.linearVelocity.y < 0) { excessGravity += gravity * (fallGravityMult - 1f); }
             else if (_isGrappling) excessGravity += gravity * (fallGravityMult - 1);
-            else if (!isJumping && _rigidbody.linearVelocity.y > 0) { excessGravity += gravity * (lowJumpGravityMult - 1f);  }
-            //Debug.Log(_rigidbody.linearVelocity.y);
-            _rigidbody.AddForce(Vector3.up * excessGravity, UnityEngine.ForceMode.Acceleration);
+            else if (!isJumping && _rb.linearVelocity.y > 0) { excessGravity += gravity * (lowJumpGravityMult - 1f);  }
+            //Debug.Log(_rb.linearVelocity.y);
+            _rb.AddForce(Vector3.up * excessGravity, UnityEngine.ForceMode.Acceleration);
 
             /*
             _yVelocity += gravity;// * gravity; //* Time.fixedDeltaTime; 
             if (_isGrounded && _isInclineStable) 
                 _yVelocity = 0;
-            _rigidbody.AddForce(Vector3.up * _yVelocity, UnityEngine.ForceMode.Acceleration);
+            _rb.AddForce(Vector3.up * _yVelocity, UnityEngine.ForceMode.Acceleration);
             _yVelocity = 0;
             */
         }
@@ -502,19 +506,19 @@ namespace Gameplay.Mecha
 
         private void LimitSpeed()
         {
-            var flatVel = new Vector3(_rigidbody.linearVelocity.x, 0f, _rigidbody.linearVelocity.z);
+            var flatVel = new Vector3(_rb.linearVelocity.x, 0f, _rb.linearVelocity.z);
             if (flatVel.magnitude > MovementSpeed)
             {
                 var limitedVel = flatVel.normalized * MovementSpeed;
-                _rigidbody.linearVelocity = new Vector3(limitedVel.x, _rigidbody.linearVelocity.y, limitedVel.z);
+                _rb.linearVelocity = new Vector3(limitedVel.x, _rb.linearVelocity.y, limitedVel.z);
             }
         }
         
         public void CanMove(bool canMove)
         {
-            if (!_rigidbody)
-                _rigidbody = GetComponent<Rigidbody>();
-            _rigidbody.constraints = canMove ? RigidbodyConstraints.FreezeRotation : RigidbodyConstraints.FreezeAll;
+            if (!_rb)
+                _rb = GetComponent<Rigidbody>();
+            _rb.constraints = canMove ? RigidbodyConstraints.FreezeRotation : RigidbodyConstraints.FreezeAll;
         }
 
         
@@ -577,27 +581,29 @@ namespace Gameplay.Mecha
         // Coroutines for these two scripts are not organised yet, jump / dash.
         private void OnJump(object data)
         {
-            //Debug.Log("Jump attempted");
-            if (canJump) {
-                StartCoroutine(JumpCoroutine()); 
-            }
+            if (data is bool held)
+                _jumpHeld = held;
+            else
+                _jumpHeld = true;
+            if (_jumpHeld && canJump)
+                StartCoroutine(JumpCoroutine());
         }
+
+        private Coroutine _landingCoroutine;
 
         private IEnumerator LandingCoroutine()
         {
             var landingVelocity = Vector3.zero;
-
-            while (true)
+            while (!Died)
             {
                 if (!_isGrounded) { isAirborne = true; }
                 if (isAirborne && _isGrounded)
                 {
-                    _rigidbody.linearVelocity = Vector3.ProjectOnPlane(landingVelocity, surfaceAlignment.normal);
+                    _rb.linearVelocity = Vector3.ProjectOnPlane(landingVelocity, surfaceAlignment.normal);
                     isAirborne = false;
                 }
-                landingVelocity = _rigidbody.linearVelocity;
+                landingVelocity = _rb.linearVelocity;
                 yield return null;
-
             }
         }
         private IEnumerator JumpCoroutine()
@@ -635,7 +641,7 @@ namespace Gameplay.Mecha
                 jumpDir = Vector3.Normalize(rawNormal + Vector3.up * 0.2f);
             }
 
-            _rigidbody.AddForce(jumpDir * juggernautParameters.jumpPower, ForceMode.VelocityChange);
+            _rb.AddForce(jumpDir * juggernautParameters.jumpPower, ForceMode.VelocityChange);
 
             canJump = false;
             isJumping = true;
@@ -647,7 +653,7 @@ namespace Gameplay.Mecha
                 yield return null;
                 elapsedTime += Time.deltaTime;
 
-                isJumping = Input.GetKey("space");
+                isJumping = _jumpHeld;
                 if (!isJumping || elapsedTime > juggernautParameters.maxJumpDuration)
                 {
                     break;
@@ -685,8 +691,6 @@ namespace Gameplay.Mecha
             //surfaceAlignment.useRawNormal = false;
         }
 
-        public float test = 1000f;
-
         private IEnumerator DashCoroutine()
         {
             if (!canDash || isDashing || !_isGrounded)
@@ -710,12 +714,12 @@ namespace Gameplay.Mecha
             //float dashSpeed = MovementSpeed;
             float dashSpeed = juggernautParameters.dashSpeed;
 
-            Vector3 dashDirection = (_rigidbody.transform.forward * _lastMovement.y) +
-                                    (_rigidbody.transform.right * _lastMovement.x);
+            Vector3 dashDirection = (_rb.transform.forward * _lastMovement.y) +
+                                    (_rb.transform.right * _lastMovement.x);
             dashDirection.Normalize();
 
             // Store the initial velocity of the Mecha to make sure we're overriding it
-            Vector3 initialVelocity = _rigidbody.linearVelocity;
+            Vector3 initialVelocity = _rb.linearVelocity;
 
             // Time management for smooth deceleration
             float elapsedTime = 0f;
@@ -730,17 +734,17 @@ namespace Gameplay.Mecha
 
 
                 Vector3 DashVector = dashDirection * (juggernautParameters.dashSpeed * math.max(1f-t, 0.2f));
-                //_rigidbody.AddForce(Vector3.down * test, UnityEngine.ForceMode.Acceleration);
+                //_rb.AddForce(Vector3.down * test, UnityEngine.ForceMode.Acceleration);
                 //Debug.Log(($"Y value: {currentVelocity}"));
 
                 // Velocity based on current speed
-                //_rigidbody.linearVelocity += dashDirection * currentSpeed * Time.deltaTime;
-                _rigidbody.AddForce(DashVector * Time.deltaTime, ForceMode.VelocityChange);
-                if (_rigidbody.linearVelocity.y > dashingMaxUpwardSpeed)
-                    _rigidbody.linearVelocity = new Vector3(_rigidbody.linearVelocity.x, dashingMaxUpwardSpeed, _rigidbody.linearVelocity.z);
+                //_rb.linearVelocity += dashDirection * currentSpeed * Time.deltaTime;
+                _rb.AddForce(DashVector * Time.fixedDeltaTime, ForceMode.VelocityChange);
+                if (_rb.linearVelocity.y > dashingMaxUpwardSpeed)
+                    _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, dashingMaxUpwardSpeed, _rb.linearVelocity.z);
 
-                elapsedTime += Time.deltaTime;  
-                yield return null;  
+                elapsedTime += Time.fixedDeltaTime;
+                yield return new WaitForFixedUpdate();
             }
 
             // Reset after dash is finished
@@ -799,7 +803,6 @@ namespace Gameplay.Mecha
             if (data is not bool run || CurrentMovementMode == MovementMode.Dashing)
                 return;
             CurrentMovementMode = MovementMode.Running;
-            StartCoroutine(DashCoroutine());
         }
 
 
@@ -823,14 +826,15 @@ namespace Gameplay.Mecha
 
         private IEnumerator SlowDownCoroutine()
         {
+            MovementMode modeBeforeSlow = CurrentMovementMode;
             while (_slowDuration > 0)
             {
-                float targetSpeed = CurrentMovementMode == MovementMode.Running ? juggernautParameters.runSpeed : juggernautParameters.walkSpeed;
-
+                float targetSpeed = modeBeforeSlow == MovementMode.Running ? juggernautParameters.runSpeed : juggernautParameters.walkSpeed;
                 MovementSpeed = targetSpeed / _slowStrength;
                 yield return new WaitForFixedUpdate();
                 _slowDuration -= Time.fixedDeltaTime;
             }
+            CurrentMovementMode = modeBeforeSlow;
         }
 
         public override void OnTakeDamage(DamagePackage damagePackage)
@@ -875,9 +879,8 @@ namespace Gameplay.Mecha
 
         private void OnShoot(object arg0)
         {
-            Debug.Log("OnShoot");
             impulseSource.GenerateImpulse(Vector3.forward * recoilStrength);
-            _rigidbody.AddForce(-transform.forward * recoilCounterForce, ForceMode.Impulse);
+            _rb.AddForce(-transform.forward * recoilCounterForce, ForceMode.Impulse);
         }
     }
 }
