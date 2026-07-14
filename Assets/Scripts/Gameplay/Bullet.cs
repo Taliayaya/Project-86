@@ -1,5 +1,5 @@
 using System;
-using Cinemachine;
+using Unity.Cinemachine;
 using Managers;
 using ScriptableObjects;
 using Unity.Netcode;
@@ -64,10 +64,8 @@ namespace Gameplay
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
-            Debug.Log("Bullet spawned " + _ammoName.Value);
             // probably not opti at all, perhaps have a class that have all loaded ammo and just fetch reference instead
             _ammoSo = AmmoReferences.Instance.GetAmmo(_ammoName.Value);
-            Debug.Log("Bullet spawned " + _ammoName.Value + " " + _ammoSo);
         }
 
         public void InitLifeTime(float lifeTime)
@@ -81,9 +79,12 @@ namespace Gameplay
             _impulseSource.GenerateImpulse(Ammo.explosionForce);
         }
 
+        private static readonly Collider[] QuakeOverlapBuffer = new Collider[20];
+        private static readonly Collider[] ExplosionOverlapBuffer = new Collider[5];
+
         private void ApplyExplosionQuake(Vector3 origin)
         {
-            Collider[] results = new Collider[20];
+            Collider[] results = QuakeOverlapBuffer;
             var size = Physics.OverlapSphereNonAlloc(origin, Ammo.explosionRadiusQuake, results);
             for (int i = 0; i < size; i++)
             {
@@ -100,16 +101,18 @@ namespace Gameplay
         {
             if (!IsSpawned || !HasAuthority)
                 return;
+            // GetContact avoids the array allocation of Collision.contacts
+            var contact = other.GetContact(0);
             _damagePackage = new DamagePackage()
             {
                 Type = DamageType.Bullet,
                 Faction = _factionOrigin,
-                
+
                 Bullet = new BulletData()
                 {
                     Damage = Damage,
                     Size = Ammo.bulletSize,
-                    HitPoint = other.contacts[0].point,
+                    HitPoint = contact.point,
                 },
                 Audio = Ammo.onHitSound,
             };
@@ -117,7 +120,6 @@ namespace Gameplay
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
 
-            Debug.Log("bullet hit " + other.gameObject.name + other.collider.name);
             IHealth health;
             bool hasHealth = other.collider.TryGetComponent(out health);
             bool parentHasHealth = false;
@@ -129,17 +131,15 @@ namespace Gameplay
                 // like the bullet ricocheting off the armor
                 if (other.collider.CompareTag("NonHitbox"))
                 {
-                    DeflectBulletRpc(other.contacts[0].point, other.contacts[0].normal);
+                    DeflectBulletRpc(contact.point, contact.normal);
                     return;
                 }
 
                 PoolManager.Instance.BackToPool(gameObject);
-                Debug.Log("Bullet hit " + other.collider.name + " on " + other.gameObject.name + " for " +
-                          _damagePackage.Bullet.Damage + " damage");
                 DamageResponse response = health.TakeDamage(_damagePackage);
                 if (response.Status == DamageResponse.DamageStatus.Deflected)
                 {
-                    DeflectBulletRpc(other.contacts[0].point, other.contacts[0].normal);
+                    DeflectBulletRpc(contact.point, contact.normal);
                     return;
                 }
                 
@@ -148,16 +148,13 @@ namespace Gameplay
                 if (_ammoSo.hitEffect)
                 {
                     // implement on hit effect
-                    var rotation = Quaternion.LookRotation(other.contacts[0].point - _origin);
+                    var rotation = Quaternion.LookRotation(contact.point - _origin);
                     var effect = PoolManager.Instance.Instantiate(_ammoSo.hitEffect, _damagePackage.Bullet.HitPoint, rotation);
                     effect.transform.SetParent(other.collider.transform, true);
                 }
 
                 if (response.IsDead)
-                {
-                    Debug.Log($"Bullet killed {other.gameObject.name} ({response.RemainingHealth}");
                     onKill.Invoke(other.gameObject.GetComponent<NetworkObject>(), _damagePackage, response);
-                }
 
                 return;
             }
@@ -166,7 +163,7 @@ namespace Gameplay
                 if (Ammo.missEffect != null)
                 {
                     // used to be transform.position
-                    MissBulletEffectRpc(other.contacts[0].point);
+                    MissBulletEffectRpc(contact.point);
                 }
             }
 
@@ -176,11 +173,10 @@ namespace Gameplay
                 return;
             }
 
-            var colliders = new Collider[5];
-            var position = other.contacts[0].point;
+            var colliders = ExplosionOverlapBuffer;
+            var position = contact.point;
             var size = Physics.OverlapSphereNonAlloc(position, Ammo.explosionRadius, colliders,
                 Ammo.explosionLayerMask);
-            Debug.DrawLine(position, position + Vector3.up * 10, Color.red, 10f);
             for (int i = 0; i < size; i++)
             {
                 var col = colliders[i];
@@ -203,7 +199,6 @@ namespace Gameplay
                 var effect = Instantiate(Ammo.armorMissEffect, point,
                     Quaternion.LookRotation(reflectedAngle));
                 effect.transform.localScale *= Ammo.armorMissEffectSizeMult;
-                Debug.Log("Armor Miss Effect");
             }
         }
 

@@ -133,7 +133,7 @@ namespace FMODUnity
                     string[] buildNames = new string[buildDirectories.Length];
                     for (int i = 0; i < buildDirectories.Length; i++)
                     {
-                        buildNames[i] = Path.GetFileNameWithoutExtension(buildDirectories[i]);
+                        buildNames[i] = Path.GetFileName(buildDirectories[i]);
                     }
                     return buildNames;
                 }
@@ -513,11 +513,19 @@ namespace FMODUnity
             SetupWizardWindow.Startup();
         }
 
-        private static void RecreateSystem()
+        public static void RecreateSystem()
         {
+            // If preview banks loaded, reload them after the system is recreated
+            bool reloadBanks = PreviewBanksLoaded;
+
             StopAllPreviews();
             DestroySystem();
             CreateSystem();
+
+            if (reloadBanks)
+            {
+                LoadPreviewBanks();
+            }
         }
 
         private static void DestroySystem()
@@ -570,7 +578,14 @@ namespace FMODUnity
                 CheckResult(system.setAdvancedSettings(studioAdvancedSettings, encryptionKey));
             }
 
-            FMOD.RESULT result =  system.initialize(256, FMOD.Studio.INITFLAGS.ALLOW_MISSING_PLUGINS | FMOD.Studio.INITFLAGS.SYNCHRONOUS_UPDATE, FMOD.INITFLAGS.NORMAL, IntPtr.Zero);
+            Settings.Instance.PlayInEditorPlatform.LoadDynamicPlugins(lowlevel, (dynamicLoadResult, cause) => {
+                if (dynamicLoadResult != FMOD.RESULT.OK)
+                {
+                    RuntimeUtils.DebugLogError($"[FMOD] Error loading dynamic plugins: {dynamicLoadResult.ToString()} ({FMOD.Error.String(dynamicLoadResult)}): {cause}");
+                }
+            });
+
+            FMOD.RESULT result = system.initialize(256, FMOD.Studio.INITFLAGS.ALLOW_MISSING_PLUGINS | FMOD.Studio.INITFLAGS.SYNCHRONOUS_UPDATE, FMOD.INITFLAGS.NORMAL, IntPtr.Zero);
             if (result == FMOD.RESULT.OK)
             {
                 FMOD.ChannelGroup master;
@@ -712,7 +727,7 @@ namespace FMODUnity
             CheckResult(lowlevel.getVersion(out version, out buildNumber));
 
             string text = string.Format(
-                L10n.Tr("Version: {0}\nBuild Number: {1}\n\nCopyright \u00A9 Firelight Technologies Pty, Ltd. 2014-2025 \n\nSee LICENSE.TXT for additional license information."),
+                L10n.Tr("Version: {0}\nBuild Number: {1}\n\nCopyright \u00A9 Firelight Technologies Pty, Ltd. 2014-2026 \n\nSee LICENSE.TXT for additional license information."),
                 VersionString(version),
                 buildNumber);
 
@@ -824,9 +839,9 @@ namespace FMODUnity
 
         public static void StopAllPreviews()
         {
-            foreach (FMOD.Studio.EventInstance eventInstance in previewEventInstances)
+            for (int i = previewEventInstances.Count - 1; i >= 0; i--)
             {
-                PreviewStop(eventInstance);
+                PreviewStop(previewEventInstances[i]);
             }
         }
 

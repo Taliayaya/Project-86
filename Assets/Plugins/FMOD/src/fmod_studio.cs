@@ -1,6 +1,6 @@
 /* ======================================================================================== */
 /* FMOD Studio API - C# wrapper.                                                            */
-/* Copyright (c), Firelight Technologies Pty, Ltd. 2004-2025.                               */
+/* Copyright (c), Firelight Technologies Pty, Ltd. 2004-2026.                               */
 /*                                                                                          */
 /* For more detail visit:                                                                   */
 /* https://fmod.com/docs/2.03/api/studio-api.html                                           */
@@ -676,6 +676,10 @@ namespace FMOD.Studio
             RESULT result = FMOD_Studio_System_LoadBankMemory(this.handle, pointer, buffer.Length, LOAD_MEMORY_MODE.LOAD_MEMORY, flags, out bank.handle);
             pinnedArray.Free();
             return result;
+        }
+        public RESULT loadBankMemory(IntPtr buffer, int length, LOAD_BANK_FLAGS flags, out Bank bank)
+        {
+            return FMOD_Studio_System_LoadBankMemory(this.handle, buffer, length, LOAD_MEMORY_MODE.LOAD_MEMORY, flags, out bank.handle);
         }
         public RESULT loadBankCustom(BANK_INFO info, LOAD_BANK_FLAGS flags, out Bank bank)
         {

@@ -5,7 +5,7 @@ using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Editor
+namespace EEditor
 {
     public class BehaviourTreeEditor : EditorWindow
     {
@@ -90,7 +90,7 @@ namespace Editor
                 if (tree)
                     _treeView?.PopulateView(tree);
             }
-            else if (tree && AssetDatabase.CanOpenAssetInEditor(tree.GetInstanceID()))
+            else if (tree && AssetDatabase.CanOpenAssetInEditor(tree.GetEntityId()))
             {
                 _treeView.PopulateView(tree);
             }

@@ -12,6 +12,14 @@ namespace Utility
         public UnityEvent<Collider> onTriggerEnter;
         public UnityEvent<Collider> onTriggerExit;
 
+        public string tagFilter;
+
+        private Rigidbody _rigidbody;
+        private void Start()
+        {
+            _rigidbody = GetComponentInParent<Rigidbody>();
+        }
+
         protected virtual void OnCollisionEnter(Collision collision)
         {
             onCollisionEnter?.Invoke(collision);
@@ -24,11 +32,19 @@ namespace Utility
 
         protected virtual void OnTriggerEnter(Collider other)
         {
+            if (other.attachedRigidbody == _rigidbody)
+                return;
+            if (!string.IsNullOrEmpty(tagFilter) && other.attachedRigidbody && !other.attachedRigidbody.CompareTag(tagFilter))
+                return;
             onTriggerEnter?.Invoke(other);
         }
         
         protected virtual void OnTriggerExit(Collider other)
         {
+            if (other.attachedRigidbody == _rigidbody)
+                return;
+            if (!string.IsNullOrEmpty(tagFilter) && other.attachedRigidbody && !other.attachedRigidbody.CompareTag(tagFilter))
+                return;
             onTriggerExit?.Invoke(other);
         }
     }

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using Armament.Shared;
-using Cinemachine;
+using Unity.Cinemachine;
 using UnityEngine;
 namespace Armament.MainMenu
 {
@@ -9,10 +9,10 @@ namespace Armament.MainMenu
 
 	public class HangarCameraBlendConfigurer
 	{
-		private CinemachineVirtualCamera _hangarCamera;
-		private CinemachineVirtualCamera _personalMarkCamera;
-		private CinemachineVirtualCamera _armamentLeftCamera;
-		private CinemachineVirtualCamera _armamentRightCamera;
+		private CinemachineCamera _hangarCamera;
+		private CinemachineCamera _personalMarkCamera;
+		private CinemachineCamera _armamentLeftCamera;
+		private CinemachineCamera _armamentRightCamera;
 		private CustomBlend[] _defaultBlends;
 		private CinemachineBrain _cinemachineBrain;
 		public CinemachineBrain CinemachineBrain
@@ -20,7 +20,7 @@ namespace Armament.MainMenu
 			get => _cinemachineBrain;
 		}
 
-		public HangarCameraBlendConfigurer(CinemachineVirtualCamera hangarCamera, CinemachineVirtualCamera armamentLeftCamera, CinemachineVirtualCamera armamentRightCamera, CinemachineVirtualCamera personalMarkCamera)
+		public HangarCameraBlendConfigurer(CinemachineCamera hangarCamera, CinemachineCamera armamentLeftCamera, CinemachineCamera armamentRightCamera, CinemachineCamera personalMarkCamera)
 		{
 			_hangarCamera = hangarCamera;
 			_personalMarkCamera = personalMarkCamera;
@@ -32,7 +32,7 @@ namespace Armament.MainMenu
 		{
 			if (_cinemachineBrain != null)
 			{
-				_cinemachineBrain.m_CustomBlends.m_CustomBlends = _defaultBlends;
+				_cinemachineBrain.CustomBlends.CustomBlends = _defaultBlends;
 			}
 		}
 
@@ -52,7 +52,7 @@ namespace Armament.MainMenu
 				return;
 			}
 
-			_defaultBlends = _cinemachineBrain.m_CustomBlends.m_CustomBlends;
+			_defaultBlends = _cinemachineBrain.CustomBlends.CustomBlends;
 
 			TempList<CustomBlend> newBlends = _defaultBlends.Create();
 
@@ -65,7 +65,7 @@ namespace Armament.MainMenu
 
 			AddSmoothBlends(newBlends);
 
-			_cinemachineBrain.m_CustomBlends.m_CustomBlends = newBlends.ToArray();
+			_cinemachineBrain.CustomBlends.CustomBlends = newBlends.ToArray();
 
 			newBlends.Dispose();
 		}
@@ -75,7 +75,7 @@ namespace Armament.MainMenu
 
 			TempArray<string> hangarCameraNames = GetHangarCameraNames();
 
-			bool hasHangarBlends = _defaultBlends.Any(d => hangarCameraNames.Contains(d.m_From) || hangarCameraNames.Contains(d.m_To));
+			bool hasHangarBlends = _defaultBlends.Any(d => hangarCameraNames.Contains(d.From) || hangarCameraNames.Contains(d.To));
 
 			hangarCameraNames.Dispose();
 
@@ -86,7 +86,7 @@ namespace Armament.MainMenu
 		{
 			TempArray<string> hangarCameraNames = GetHangarCameraNames();
 
-			TempList<CustomBlend> otherCameras = newBlends.Where(b => !hangarCameraNames.Contains(b.m_From) && !hangarCameraNames.Contains(b.m_To)).Create();
+			TempList<CustomBlend> otherCameras = newBlends.Where(b => !hangarCameraNames.Contains(b.From) && !hangarCameraNames.Contains(b.To)).Create();
 			if (otherCameras.Count != newBlends.Count)
 			{
 				newBlends.Clear();
@@ -113,15 +113,15 @@ namespace Armament.MainMenu
 		private void InsertImmediateBlends(TempList<CustomBlend> newBlends)
 		{
 
-			InsertCustomBlend(newBlends, "**ANY CAMERA**", _hangarCamera.name, BlendDefinition.Style.Cut);
-			InsertCustomBlend(newBlends, "**ANY CAMERA**", _armamentLeftCamera.name, BlendDefinition.Style.Cut);
-			InsertCustomBlend(newBlends, "**ANY CAMERA**", _armamentRightCamera.name, BlendDefinition.Style.Cut);
-			InsertCustomBlend(newBlends, "**ANY CAMERA**", _personalMarkCamera.name, BlendDefinition.Style.Cut);
+			InsertCustomBlend(newBlends, "**ANY CAMERA**", _hangarCamera.name, BlendDefinition.Styles.Cut);
+			InsertCustomBlend(newBlends, "**ANY CAMERA**", _armamentLeftCamera.name, BlendDefinition.Styles.Cut);
+			InsertCustomBlend(newBlends, "**ANY CAMERA**", _armamentRightCamera.name, BlendDefinition.Styles.Cut);
+			InsertCustomBlend(newBlends, "**ANY CAMERA**", _personalMarkCamera.name, BlendDefinition.Styles.Cut);
 			
-			InsertCustomBlend(newBlends, _hangarCamera.name, "**ANY CAMERA**", BlendDefinition.Style.Cut);
-			InsertCustomBlend(newBlends, _armamentLeftCamera.name, "**ANY CAMERA**", BlendDefinition.Style.Cut);
-			InsertCustomBlend(newBlends, _armamentRightCamera.name, "**ANY CAMERA**", BlendDefinition.Style.Cut);
-			InsertCustomBlend(newBlends, _personalMarkCamera.name, "**ANY CAMERA**", BlendDefinition.Style.Cut);
+			InsertCustomBlend(newBlends, _hangarCamera.name, "**ANY CAMERA**", BlendDefinition.Styles.Cut);
+			InsertCustomBlend(newBlends, _armamentLeftCamera.name, "**ANY CAMERA**", BlendDefinition.Styles.Cut);
+			InsertCustomBlend(newBlends, _armamentRightCamera.name, "**ANY CAMERA**", BlendDefinition.Styles.Cut);
+			InsertCustomBlend(newBlends, _personalMarkCamera.name, "**ANY CAMERA**", BlendDefinition.Styles.Cut);
 		}
 		private void AddSmoothBlends(TempList<CustomBlend> newBlends)
 		{
@@ -143,13 +143,13 @@ namespace Armament.MainMenu
 			InsertCustomBlend(newBlends, _armamentRightCamera.name, _personalMarkCamera.name);
 		}
 
-		private void InsertCustomBlend(TempList<CustomBlend> settings, string from, string to, BlendDefinition.Style tweenType = BlendDefinition.Style.EaseInOut, float duration = 1f)
+		private void InsertCustomBlend(TempList<CustomBlend> settings, string from, string to, BlendDefinition.Styles tweenType = BlendDefinition.Styles.EaseInOut, float duration = 1f)
 		{
 			settings.Insert(0, new CustomBlend()
 			{
-				m_Blend = new BlendDefinition() { m_Style = tweenType, m_Time = duration },
-				m_From = from,
-				m_To = to
+				Blend = new BlendDefinition() { Style = tweenType, Time = duration },
+				From = from,
+				To = to
 			});
 		}
 

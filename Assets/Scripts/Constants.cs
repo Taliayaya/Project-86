@@ -148,6 +148,7 @@ public static class Constants
         public const string OnToggleHealthBar = "OnToggleHealthBar";
 
         public const string OnToggleCockpitView = "OnToggleCockpitView";
+        public const string OnZoomChange = "OnZoomChange";
         // TODO : Add all the typed event names cause i couldnt be bothered -nemo
         
         public const string OnPlayerChanged = "OnPlayerChanged";

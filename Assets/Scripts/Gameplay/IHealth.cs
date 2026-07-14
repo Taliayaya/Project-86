@@ -9,6 +9,7 @@ namespace Gameplay
         Bullet,
         Explosion,
         EffectSlow,
+        EffectPush,
         Blade
     }
     
@@ -55,7 +56,19 @@ namespace Gameplay
             serializer.SerializeValue(ref Duration);
         }
     }
-
+    public struct PushEffectData : INetworkSerializable
+    {
+        public Vector3 Direction;
+        public float Strength;
+        public float Duration;
+        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+        {
+            serializer.SerializeValue(ref Strength);
+            serializer.SerializeValue(ref Duration);
+            serializer.SerializeValue(ref Direction);
+        }
+    }
+    
     public struct DamagePackage : INetworkSerializable
     {
         public DamageType Type;
@@ -67,6 +80,7 @@ namespace Gameplay
         public BulletData Bullet;
         public ExplosionData Explosion;
         public SlowEffectData Slow;
+        public PushEffectData Knockback;
         public BladeData Blade;
         
         public float GetDamage()
@@ -95,6 +109,9 @@ namespace Gameplay
                     break;
                 case DamageType.EffectSlow:
                     serializer.SerializeValue(ref Slow);
+                    break;
+                case DamageType.EffectPush:
+                    serializer.SerializeValue(ref Knockback);
                     break;
                 case DamageType.Blade:
                     serializer.SerializeValue(ref Blade);

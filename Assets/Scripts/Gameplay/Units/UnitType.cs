@@ -13,8 +13,9 @@ namespace Gameplay.Units
         Dinosauria = 16,
         Grauwolf = 32,
         Skorpion = 64,
+        Morpho = 128,
         
-        Legion = Ameise | Lowe | Dinosauria | Grauwolf | Skorpion,
+        Legion = Ameise | Lowe | Dinosauria | Grauwolf | Skorpion | Morpho,
         Republic = Juggernaut | Scavenger,
     }
 }

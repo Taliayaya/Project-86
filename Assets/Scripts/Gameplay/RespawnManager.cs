@@ -73,15 +73,24 @@ namespace Gameplay
         {
             var armamentSection = go.transform.GetChild(2);
             Debug.Assert(armamentSection.name == "Armament", "Armament section not found");
-            
-            MissionManager.Instance.GetPlayerByNetworkId(clientId, out var playerInfo);
-            IReadOnlyPlayer player = SessionManager.Instance.ActiveSession.GetPlayer(playerInfo.Value.PlayerId.Value);
-            Enum.TryParse(player.Properties[Constants.Properties.Session.JuggernautArmament].Value, out ArmamentType armament);
+
+            ArmamentType armamentType = ArmamentType.MachineGun;
+
+            try
+            {
+                MissionManager.Instance.GetPlayerByNetworkId(clientId, out var playerInfo);
+                IReadOnlyPlayer player = SessionManager.Instance.ActiveSession.GetPlayer(playerInfo.Value.PlayerId.Value);
+                Enum.TryParse(player.Properties[Constants.Properties.Session.JuggernautArmament].Value, out armamentType);
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
             
             var switcher1 = armamentSection.GetComponentInChildren<ArmamentComponentSwitcher>();
             var switcher2 = armamentSection.GetComponentInChildren<ArmamentSwitcher>();
-            switcher1.ChangedArmament(armament);
-            switcher2.ChangedArmament(armament);
+            switcher1.ChangedArmament(armamentType);
+            switcher2.ChangedArmament(armamentType);
         }
 
         public GameObject SpawnPlayer()

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections;
-using Cinemachine;
+using Unity.Cinemachine;
 using Gameplay.Units;
 using ScriptableObjects.GameParameters;
 using Unity.Netcode;
@@ -207,7 +207,7 @@ namespace Gameplay
             return true;
         }
 
-        public void SetJuggCamera(CinemachineVirtualCamera playerCam)
+        public void SetJuggCamera(CinemachineCamera playerCam)
         {
             juggCamera = playerCam.transform;
         }
