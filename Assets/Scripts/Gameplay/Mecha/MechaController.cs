@@ -384,7 +384,7 @@ namespace Gameplay.Mecha
             Cursor.lockState = CursorLockMode.Locked;
             groundRay = new Ray(transform.position, Vector3.down);
             surfaceAlignment.discardAngle = maxFloorAngle;
-            if (allowMoveOnStart) { _movementmode = MovementMode.Walking; }
+            if (allowMoveOnStart) { CurrentMovementMode = MovementMode.Walking; }
             _landingCoroutine = StartCoroutine(LandingCoroutine());
             StartCoroutine(DistanceForwardCoroutine());
         }
@@ -477,23 +477,13 @@ namespace Gameplay.Mecha
 
         private void ApplyGravity()
         {
-            float excessGravity = 0f;
-            // Debug.Log("ApplyGravity " + _isGrounded + " " + _isOnWall + " " + _isGrappling + " " + _rb.linearVelocity.y + "");
-            if (_isGrounded) excessGravity = gravity;
-            else if (_isOnWall && !_isGrappling) excessGravity = gravity * (wallFallingMult - 1);
-            else if (_rb.linearVelocity.y < 0) { excessGravity += gravity * (fallGravityMult - 1f); }
-            else if (_isGrappling) excessGravity += gravity * (fallGravityMult - 1);
-            else if (!isJumping && _rb.linearVelocity.y > 0) { excessGravity += gravity * (lowJumpGravityMult - 1f);  }
-            //Debug.Log(_rb.linearVelocity.y);
-            _rb.AddForce(Vector3.up * excessGravity, UnityEngine.ForceMode.Acceleration);
-
-            /*
-            _yVelocity += gravity;// * gravity; //* Time.fixedDeltaTime; 
-            if (_isGrounded && _isInclineStable) 
-                _yVelocity = 0;
-            _rb.AddForce(Vector3.up * _yVelocity, UnityEngine.ForceMode.Acceleration);
-            _yVelocity = 0;
-            */
+            float totalGravity = gravity;
+            if (_isGrounded) totalGravity = gravity;
+            else if (_isOnWall && !_isGrappling) totalGravity = gravity * wallFallingMult;
+            else if (_rb.linearVelocity.y < 0) totalGravity = gravity * fallGravityMult;
+            else if (_isGrappling) totalGravity = gravity * fallGravityMult;
+            else if (!isJumping && _rb.linearVelocity.y > 0) totalGravity = gravity * lowJumpGravityMult;
+            _rb.AddForce(Vector3.up * totalGravity, ForceMode.Acceleration);                 
         }
 
         private void RotateJuggernaut()
@@ -594,16 +584,19 @@ namespace Gameplay.Mecha
         private IEnumerator LandingCoroutine()
         {
             var landingVelocity = Vector3.zero;
+            var wait = new WaitForFixedUpdate();
             while (!Died)
             {
                 if (!_isGrounded) { isAirborne = true; }
                 if (isAirborne && _isGrounded)
                 {
-                    _rb.linearVelocity = Vector3.ProjectOnPlane(landingVelocity, surfaceAlignment.normal);
+                    // clamp so fall speed doesn't convert into a huge tangential skip on slopes
+                    _rb.linearVelocity = Vector3.ClampMagnitude(
+                        Vector3.ProjectOnPlane(landingVelocity, surfaceAlignment.normal), MovementSpeed);
                     isAirborne = false;
                 }
                 landingVelocity = _rb.linearVelocity;
-                yield return null;
+                yield return wait;
             }
         }
         private IEnumerator JumpCoroutine()
