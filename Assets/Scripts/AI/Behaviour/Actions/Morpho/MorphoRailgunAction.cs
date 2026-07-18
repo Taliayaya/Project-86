@@ -14,6 +14,9 @@ public partial class MorphoRailgunAction : Action
 
     protected override Status OnStart()
     {
+        // Default layer = monuments and FakeMorpho: always full power regardless of the
+        // graph's Power setting. Player-built obstacles (Damageable layer) fall through
+        // and use Power (20% in Phase 2).
         if (Target.Value != null && Target.Value.gameObject.layer == LayerMask.NameToLayer("Default"))
         {
             Debug.Log("Asurada morpho fire");

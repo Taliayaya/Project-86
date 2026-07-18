@@ -34,6 +34,8 @@ public static class Constants
         public const string OnAskDataCollectionAgreement = "OnAskDataCollectionAgreement";
         public const string OnDataCollectionAgreement = "OnDataCollectionAgreement";
 
+        public const string AllMonumentsDestroyed = "AllMonumentsDestroyed";
+
         public static class Inputs
         {
             public const string OnChangeView = "OnChangeView";
