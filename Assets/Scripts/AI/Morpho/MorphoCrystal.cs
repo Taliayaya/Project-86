@@ -4,6 +4,7 @@ using DG.Tweening;
 using Gameplay;
 using Gameplay.Units;
 using Unity.Behavior;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -55,7 +56,8 @@ namespace AI
         protected override void Start()
         {
             base.Start();
-            Deactivate();
+            // local call, not the RPC: runs on every client before spawn completes
+            DeactivateAll();
         }
         
         public Status GetStatus
@@ -83,13 +85,21 @@ namespace AI
             crystal.onActivated?.Invoke();
         }
 
+        // public entry points are RPCs: the behavior graph only runs on the owner,
+        // but crystal exposure/glow must show on every client
         [ContextMenu("Activate")]
-        public void Activate()
+        public void Activate() => ActivateRpc();
+
+        public void ActivateMainCrystal() => ActivateMainCrystalRpc();
+
+        [Rpc(SendTo.Everyone)]
+        private void ActivateRpc()
         {
             sideCrystals.ForEach(Activate);
         }
 
-        public void ActivateMainCrystal()
+        [Rpc(SendTo.Everyone)]
+        private void ActivateMainCrystalRpc()
         {
             Activate(mainCrystal);
         }
@@ -105,21 +115,29 @@ namespace AI
         }
         
         [ContextMenu("Deactivate")]
-        public void Deactivate()
+        public void Deactivate() => DeactivateRpc();
+
+        [Rpc(SendTo.Everyone)]
+        private void DeactivateRpc() => DeactivateAll();
+
+        private void DeactivateAll()
         {
             bool bothCrystalsDestroyed = sideCrystals[0].IsDestroyed && sideCrystals[1].IsDestroyed;
             sideCrystals.ForEach(crystal =>
             {
                 Deactivate(crystal);
-                
+
                 // regenerate crystals if destroyed
                 if (bothCrystalsDestroyed)
                 {
-                    crystal.healthComponent.Health = crystal.healthComponent.MaxHealth;
+                    // health is a NetworkVariable: only the authority may write it,
+                    // it replicates to the others
+                    if (crystal.healthComponent.HasAuthority)
+                        crystal.healthComponent.Health = crystal.healthComponent.MaxHealth;
                     crystal.onRegenerated?.Invoke();
                 }
             });
-            
+
             if (mainCrystal.status == Status.Active)
                 Deactivate(mainCrystal);
         }

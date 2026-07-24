@@ -52,6 +52,31 @@ namespace Gameplay.Units
             OnTakeDamage(damagePackage);
         }
 
+        public override void OnNetworkSpawn()
+        {
+            base.OnNetworkSpawn();
+            // TakeDamageRpc only runs on the authority; other clients just see the
+            // NetworkVariable change. Fire the same events there so damage visuals
+            // and death replicate. ponytail: damagePackage is default on remotes —
+            // listeners needing hit direction/type must stay authority-side.
+            health.OnValueChanged += OnHealthReplicated;
+        }
+
+        public override void OnNetworkDespawn()
+        {
+            base.OnNetworkDespawn();
+            health.OnValueChanged -= OnHealthReplicated;
+        }
+
+        private void OnHealthReplicated(float previous, float current)
+        {
+            if (HasAuthority || Mathf.Approximately(previous, current))
+                return;
+            if (current <= 0)
+                Die();
+            OnTakeDamage(default);
+        }
+
         public virtual void OnTakeDamage(DamagePackage damagePackage)
         
         {

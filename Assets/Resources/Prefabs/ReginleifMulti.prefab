@@ -5945,13 +5945,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2211163468806494267}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.00000037252906, y: 1.161, z: -0.0000012417636}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0.00533, y: 4508, z: 4693}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7699130600240120573}
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &2220523017732439292
 GameObject:
   m_ObjectHideFlags: 0
@@ -8411,7 +8411,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 772ec296c64ffb04983bd28c08bd7988, type: 2}
+  - {fileID: 2100000, guid: c15521222f9fd68418a1ce46f84e6935, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9892,7 +9892,7 @@ Transform:
   m_GameObject: {fileID: 3806748912760962534}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.67494106, y: 0.6030426, z: 3.979002}
+  m_LocalPosition: {x: -0.67488, y: 0.60305786, z: 3.979002}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9945,7 +9945,7 @@ MonoBehaviour:
   recoilBodyTorque: {x: 0, y: 0, z: 0}
   accuracy: 0.9
   canFire: 1
-  _currentAmmoRemaining: 0
+  _currentAmmoRemaining: 200
 --- !u!82 &6265959611901813639
 AudioSource:
   m_ObjectHideFlags: 0
@@ -15800,7 +15800,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 772ec296c64ffb04983bd28c08bd7988, type: 2}
+  - {fileID: 2100000, guid: c15521222f9fd68418a1ce46f84e6935, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -17274,7 +17274,7 @@ Transform:
   m_GameObject: {fileID: 6861990782044282263}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.67906284, y: 0.741745, z: 3.9263935}
+  m_LocalPosition: {x: 0.6791239, y: 0.74172974, z: 3.9263935}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -17327,7 +17327,7 @@ MonoBehaviour:
   recoilBodyTorque: {x: 0, y: 0, z: 0}
   accuracy: 0.9
   canFire: 1
-  _currentAmmoRemaining: 0
+  _currentAmmoRemaining: 200
 --- !u!82 &6652484029868090908
 AudioSource:
   m_ObjectHideFlags: 0
@@ -18549,13 +18549,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7305259000244165191}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.00000037252906, y: 1.161, z: -0.0000012417636}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -0.00519, y: 4667, z: 4665}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5193681050658639037}
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &7382075873502758396
 GameObject:
   m_ObjectHideFlags: 0
@@ -19602,10 +19602,10 @@ MonoBehaviour:
   HipsHeightStepBlend: 1
   HipsHeightStepSpeed: 0.37
   HipsAdjustStyle: 0
-  StabilizeCenterOfMass: 0.8
+  StabilizeCenterOfMass: 0.15
   AnimationIsStablePose: 0.75
   StabilizingSpeed: 0.375
-  PushHipsOnLegMove: 0.11
+  PushHipsOnLegMove: 0.03
   NormalizePush: 1
   PushReactionSpeed: 0.14
   PushYBlend: 1
@@ -19632,7 +19632,7 @@ MonoBehaviour:
     BoneStart: {fileID: 6914613887046804360}
     BoneMid: {fileID: 6842342154764056061}
     BoneEnd: {fileID: 5712989809110688317}
-    Side: 1
+    Side: 2
     OppositeLegIndex: 1
     RaycastPrecision: 0
     UseFeet: 0
@@ -19663,7 +19663,7 @@ MonoBehaviour:
     BoneStart: {fileID: 6085930789968801982}
     BoneMid: {fileID: 4964044912671289217}
     BoneEnd: {fileID: 6671241219313104020}
-    Side: 2
+    Side: 1
     OppositeLegIndex: 0
     RaycastPrecision: 0
     UseFeet: 0
@@ -19694,7 +19694,7 @@ MonoBehaviour:
     BoneStart: {fileID: 8762628202126519857}
     BoneMid: {fileID: 1311519381266880552}
     BoneEnd: {fileID: 2741871500999087222}
-    Side: 1
+    Side: 2
     OppositeLegIndex: 3
     RaycastPrecision: 0
     UseFeet: 0
@@ -19725,7 +19725,7 @@ MonoBehaviour:
     BoneStart: {fileID: 5636210305617101677}
     BoneMid: {fileID: 7080532612948226522}
     BoneEnd: {fileID: 703185491354439506}
-    Side: 2
+    Side: 1
     OppositeLegIndex: 2
     RaycastPrecision: 0
     UseFeet: 0
@@ -19740,7 +19740,7 @@ MonoBehaviour:
     FootMiddlePosition: 0.5
     AnkleYawCorrection: 0
   BaseLegAnimating:
-    StepMoveDuration: 0.28
+    StepMoveDuration: 0.2
     MoveToGoalCurve:
       serializedVersion: 2
       m_Curve:
@@ -19853,7 +19853,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     AllowSpeedups: 1
-    AllowDetachBefore: 0.9
+    AllowDetachBefore: 1
     PushHipsOnMoveCurve:
       serializedVersion: 2
       m_Curve:
@@ -19941,7 +19941,7 @@ MonoBehaviour:
     DoStepAnimationOnDistanceFactor: 0.055
   UseGluing: 1
   MainGlueBlend: 1
-  GlueRangeThreshold: 0.45
+  GlueRangeThreshold: 0.705
   GlueFadeInSpeed: 0.92
   AllowGlueBelowFoot: 0.35
   GlueFadeOutSpeed: 0.55
@@ -19961,9 +19961,9 @@ MonoBehaviour:
   _Editor_EnsureCount: 0
   _Editor_OnValidateTrigger: 1
   _EditorAllowAutoUpdateFeetParams: 1
-  _EditorCategory: 0
+  _EditorCategory: 1
   _EditorSetupCategory: 0
-  _EditorMotionCategory: 3
+  _EditorMotionCategory: 2
   _EditorExtraCategory: 2
   setupPose:
     MainHipsPose:
@@ -19994,7 +19994,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   RaycastHitTrigger: 1
-  CastDistance: 1
+  CastDistance: 1.5
   RaycastStartHeight: 0
   RaycastStartHeightMul: 1
   RaycastStyle: 3

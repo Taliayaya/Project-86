@@ -19,7 +19,6 @@ public partial class MorphoRailgunAction : Action
         // and use Power (20% in Phase 2).
         if (Target.Value != null && Target.Value.gameObject.layer == LayerMask.NameToLayer("Default"))
         {
-            Debug.Log("Asurada morpho fire");
             Morpho.Value.ShootBeam(Target.Value.position, 1f);
             return Status.Running;
         }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.VFX;
@@ -6,10 +7,10 @@ using System.Collections;
 using DG.Tweening;
 using Gameplay;
 using Unity.Cinemachine;
-using Unity.Netcode.Components;
+using Unity.Netcode;
 using UnityEngine.Rendering;
 
-public class BeamTrigger : MonoBehaviour
+public class BeamTrigger : NetworkBehaviour
 {
     [SerializeField] VisualEffect beamChargingVFX;
     [SerializeField] VisualEffect beamTravelVFX;
@@ -20,6 +21,8 @@ public class BeamTrigger : MonoBehaviour
     [SerializeField] float explosionDuration = 3f;
     [SerializeField] private float explosionRadius = 200;
     [SerializeField] private int maxAllowedCollisions = 50;
+    [SerializeField] private float explosionDamage = 400f;
+    [SerializeField] private Faction faction = Faction.Legion;
     [SerializeField] private Animator animator;
     [Header("Wings")]
     [SerializeField] private float wingDowntime = 3f;
@@ -130,15 +133,38 @@ public class BeamTrigger : MonoBehaviour
         
         StartCoroutine(RumbleDelay());
         yield return new WaitForFixedUpdate();
-        var size = Physics.OverlapSphereNonAlloc(ExplosionPoint.position, explosionRadius * _power, _colliders);
-        for (int i = 0; i < size; i++)
+        // the beam simulation runs on every client (visuals), but damage is
+        // applied once, on the authority — receivers replicate it themselves
+        if (HasAuthority)
         {
-            var hit = _colliders[i];
-            if (hit.CompareTag("Destructible"))
-                hit.SendMessage("Damage", 100, SendMessageOptions.DontRequireReceiver);
-            else if (hit.TryGetComponent(out IHealth health))
+            var radius = explosionRadius * _power;
+            var size = Physics.OverlapSphereNonAlloc(ExplosionPoint.position, radius, _colliders);
+            var damaged = new HashSet<IHealth>(); // multi-collider units take one hit
+            for (int i = 0; i < size; i++)
             {
-                // var distance = Vector3.Distance(transform.position, hit.transform.position)
+                var hit = _colliders[i];
+                if (hit.CompareTag("Destructible"))
+                    hit.SendMessage("Damage", 100, SendMessageOptions.DontRequireReceiver);
+                else
+                {
+                    var health = hit.GetComponentInParent<IHealth>();
+                    if (health == null || !damaged.Add(health)) continue;
+                    // don't let the Morpho blast its own crystals when shooting a nearby obstacle
+                    if (health is Component part && part.transform.root == transform.root) continue;
+                    var distance = Vector3.Distance(ExplosionPoint.position, hit.ClosestPointOnBounds(ExplosionPoint.position));
+                    health.TakeDamage(new DamagePackage
+                    {
+                        Type = DamageType.Explosion,
+                        Faction = faction,
+                        SourcePosition = ExplosionPoint.position,
+                        Explosion = new ExplosionData
+                        {
+                            // ponytail: linear falloff; swap for an AnimationCurve if design wants shaping
+                            Damage = explosionDamage * _power * Mathf.Clamp01(1f - distance / radius),
+                            Radius = radius
+                        }
+                    });
+                }
             }
         }
         yield return new WaitForSeconds(explosionDuration * _power);
@@ -150,7 +176,12 @@ public class BeamTrigger : MonoBehaviour
         InProgress = false;
     }
 
-    public void InterruptCharge()
+    // called by the behavior graph on the owner — the beam charge/visuals run on
+    // every client, so the interrupt must reach them all too
+    public void InterruptCharge() => InterruptChargeRpc();
+
+    [Rpc(SendTo.Everyone)]
+    private void InterruptChargeRpc()
     {
         if (!Charging) return;
         StopCoroutine(_shootCoroutine);
@@ -168,7 +199,17 @@ public class BeamTrigger : MonoBehaviour
     }
 
     private float _power;
+
+    // called by the behavior graph on the owner only — broadcast so the beam
+    // charge, travel and explosion play on every client
     public void ShootBeam(Vector3 position, float power = 1f)
+    {
+        InProgress = true; // set immediately for the calling graph node
+        ShootBeamRpc(position, power);
+    }
+
+    [Rpc(SendTo.Everyone)]
+    private void ShootBeamRpc(Vector3 position, float power)
     {
         _power = power;
         InProgress = true;
@@ -190,12 +231,14 @@ public class BeamTrigger : MonoBehaviour
 
     
 
-    // Update is called once per frame
+#if UNITY_EDITOR
+    // debug helper — editor only, otherwise any client could fire the boss beam
     void Update()
     {
         if(Keyboard.current.yKey.wasPressedThisFrame)
         {
-            ShootBeam(ExplosionPoint.position);
+            ShootBeamRpc(ExplosionPoint.position, 1f);
         }
     }
+#endif
 }

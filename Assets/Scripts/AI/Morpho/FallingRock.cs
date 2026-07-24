@@ -1,15 +1,12 @@
-using System;
 using System.Collections;
-using Unity.Behavior;
-using UnityEngine;
-using UnityEngine.UIElements;
+using Unity.Netcode;
 using UnityEngine.VFX;
 
 namespace AI
 {
     using UnityEngine;
 
-    public class FallingRock : MonoBehaviour
+    public class FallingRock : NetworkBehaviour
     {
         [SerializeField] private Rigidbody rock;
         private bool hasFallen = false;
@@ -17,30 +14,40 @@ namespace AI
         [SerializeField] private GameObject obstacle;
         [SerializeField] private VisualEffect dust;
         [SerializeField] private float multiplier = 4000;
-        
+
         [SerializeField] private MorphoObstacleChannel morphoObstacleChannel;
         [SerializeField] private bool fallOnAwake;
-        
+
         void Awake()
         {
             if (fallOnAwake)
-                TriggerFall();
+                FallLocal();
         }
 
         public void TriggerFall()
         {
             if (hasFallen) return;
+            TriggerFallRpc();
+        }
+
+        // the grapple pull only happens on the pulling player's client;
+        // the rock has to fall for everyone
+        [Rpc(SendTo.Everyone)]
+        private void TriggerFallRpc() => FallLocal();
+
+        // ponytail: fall physics simulates locally on every client, same accepted
+        // simplification as CollapsePoint — the obstacle's final pose may differ slightly
+        private void FallLocal()
+        {
+            if (hasFallen) return;
 
             hasFallen = true;
             rock.isKinematic = false;
-            StartCoroutine(Fall()); 
+            StartCoroutine(Fall());
         }
 
         IEnumerator Fall()
         {
-            float y = transform.position.y;
-            Vector3 direction = obstacle.transform.position - (rock.transform.position);
-            // rock.AddForce(direction * multiplier, ForceMode.Impulse);
             rock.AddTorque(rock.transform.forward * multiplier, ForceMode.VelocityChange);
             yield return new WaitForSeconds(1f);
             yield return new WaitUntil(() => rock.angularVelocity.magnitude < 0.1f);
@@ -48,17 +55,10 @@ namespace AI
             rock.gameObject.SetActive(false);
             dust.enabled = true;
             dust.Play();
-            
-        }
-        
-        void Explode()
-        {
-            Destroy(gameObject, 0.1f);
         }
 
         public void OnTriggerEnter(Collider other)
         {
-            Debug.Log($"OnTriggerEnter with {other.gameObject.name} ({other.attachedRigidbody.tag})");
             if (other.attachedRigidbody != null)
             {
                 if (other.attachedRigidbody.gameObject.CompareTag("Morpho"))
@@ -70,7 +70,6 @@ namespace AI
 
         public void OnGrapplePull()
         {
-            Debug.Log("OnGrapplePull");
             TriggerFall();
         }
     }
