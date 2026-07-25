@@ -176,6 +176,7 @@ namespace Gameplay.Quests
         {
             if (!CanActivate())
                 return false;
+            gameObject.SetActive(true);
             Status = QuestStatus.Active;
             onActivate?.Invoke(this);
             ActivateTasks();

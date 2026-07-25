@@ -166,6 +166,8 @@ namespace Gameplay
                     MissBulletEffectRpc(contact.point);
                 }
             }
+            if (other.gameObject.CompareTag("Destructible"))
+                other.gameObject.SendMessage("Damage", Damage, SendMessageOptions.DontRequireReceiver);
 
             if (Ammo.explosionRadius == 0)
             {

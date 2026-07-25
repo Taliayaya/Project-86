@@ -32,6 +32,10 @@ namespace Utility
                 else
                     boolEvent.Invoke(boolValue);
             }
+            else
+            {
+                repeatEvent.Invoke();
+            }
         }
     }
     public class OnEventRepeater : MonoBehaviour

@@ -101,6 +101,9 @@ public class BeamTrigger : NetworkBehaviour
     IEnumerator ChargingBeam()
     {
         Charging = true;
+        // fires as soon as the charge-up starts, well before impact, so
+        // cinematic listeners (camera sequencer) get lead time to cut in
+        EventManager.TriggerEvent(Constants.TypedEvents.MorphoBeamCharging, transform.position);
         SetAnimatorTrigger("PrepareShoot");
         ChargingAudio();
         _scaleTween = DOTween.To(() => lensFlare.scale, v => lensFlare.scale = v, flareChargingScale, flareTransitionDuration * _power);
@@ -132,6 +135,7 @@ public class BeamTrigger : NetworkBehaviour
         explosionVFX.SendEvent("Trigger");
         
         StartCoroutine(RumbleDelay());
+        EventManager.TriggerEvent(Constants.TypedEvents.MorphoShot, ExplosionPoint.position);
         yield return new WaitForFixedUpdate();
         // the beam simulation runs on every client (visuals), but damage is
         // applied once, on the authority — receivers replicate it themselves
@@ -144,7 +148,7 @@ public class BeamTrigger : NetworkBehaviour
             {
                 var hit = _colliders[i];
                 if (hit.CompareTag("Destructible"))
-                    hit.SendMessage("Damage", 100, SendMessageOptions.DontRequireReceiver);
+                    hit.SendMessage("Damage", 1000, SendMessageOptions.DontRequireReceiver);
                 else
                 {
                     var health = hit.GetComponentInParent<IHealth>();

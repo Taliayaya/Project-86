@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1713201699193173464}
-  - component: {fileID: 4219285249038536213}
   m_Layer: 7
   m_Name: Right
   m_TagString: Untagged
@@ -32,19 +31,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4624741914722504702}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4219285249038536213
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3938283236010481}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b6594c7b1a44184ba2a6be3dfc6dc6b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Target: {fileID: 7479727562014887341}
 --- !u!1 &153865124040003582
 GameObject:
   m_ObjectHideFlags: 0
@@ -183,13 +169,9 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   Armaments:
   - Type: 0
-    Visuals:
-    - {fileID: 0}
-    - {fileID: 0}
+    Visuals: []
   - Type: 1
-    Visuals:
-    - {fileID: 0}
-    - {fileID: 0}
+    Visuals: []
   changeArmamentOnStart: 0
   useArmamentOverride: 1
   armamentOverride: 0
@@ -208,9 +190,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Armaments:
   - Type: 0
-    Components:
-    - {fileID: 0}
-    - {fileID: 0}
+    Components: []
   changeArmamentOnStart: 0
   useArmamentOverride: 1
   armamentOverride: 0
@@ -1782,7 +1762,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3608888974167755323}
-  - component: {fileID: 5375890812541028815}
   m_Layer: 7
   m_Name: Left
   m_TagString: Untagged
@@ -1805,19 +1784,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8743387804885665566}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5375890812541028815
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 810463555786707576}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b6594c7b1a44184ba2a6be3dfc6dc6b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Target: {fileID: 1437407512686108716}
 --- !u!1 &894749658266075932
 GameObject:
   m_ObjectHideFlags: 0
@@ -2175,7 +2141,7 @@ MonoBehaviour:
   Priority: 5
   juggernautParameters: {fileID: 11400000, guid: 6c4a4c7a46816b44b895f909655cdc26,
     type: 2}
-  gravity: -10
+  gravity: -16
   groundDrag: 3
   airborneHeight: 2.2
   gripLossAngle: 20
@@ -8336,7 +8302,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   faction: 0
   isMainModule: 0
-  cam: {fileID: 0}
+  cam: {fileID: 2051614299365588610}
   rb: {fileID: 3658465726324077533}
   lr: {fileID: 2924301660943589086}
   gunTip: {fileID: 9131797173082457775}
@@ -9892,7 +9858,7 @@ Transform:
   m_GameObject: {fileID: 3806748912760962534}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.67488, y: 0.60305786, z: 3.979002}
+  m_LocalPosition: {x: -0.67492634, y: 0.6030426, z: 3.9790044}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -12070,8 +12036,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4689531138748857898}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.041862514, y: -0.0000015159934, z: 0.000000061753056, w: 0.9991234}
-  m_LocalPosition: {x: 0.000020503998, y: 4, z: -8}
+  m_LocalRotation: {x: 0.041862514, y: -0.000000029802322, z: -0, w: 0.99912345}
+  m_LocalPosition: {x: -0.0000009536743, y: 4, z: -8.000001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -12184,7 +12150,7 @@ MonoBehaviour:
     AmplitudeGain: 1
     FrequencyGain: 1
     Duration: 1
-    m_NoiseOffsets: {x: 0, y: 0, z: 0}
+    m_NoiseOffsets: {x: 70.3186, y: 548.8109, z: 72.98743}
 --- !u!114 &3253611335578867031
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12245,7 +12211,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4689531138748857898}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dbe43d662878a7c43bcd44d43c9e2094, type: 3}
   m_Name: 
@@ -15725,7 +15691,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   faction: 0
   isMainModule: 1
-  cam: {fileID: 0}
+  cam: {fileID: 2051614299365588610}
   rb: {fileID: 3658465726324077533}
   lr: {fileID: 3467752060401662386}
   gunTip: {fileID: 7880209995163108839}
@@ -17274,7 +17240,7 @@ Transform:
   m_GameObject: {fileID: 6861990782044282263}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.6791239, y: 0.74172974, z: 3.9263935}
+  m_LocalPosition: {x: 0.6790777, y: 0.741745, z: 3.926392}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -18210,6 +18176,7 @@ GameObject:
   - component: {fileID: 7159154624656034698}
   - component: {fileID: 2087345230917904479}
   - component: {fileID: 1509966018253359256}
+  - component: {fileID: 1567445500761700352}
   m_Layer: 0
   m_Name: CockpitCamera
   m_TagString: Untagged
@@ -18254,9 +18221,9 @@ MonoBehaviour:
   m_StreamingVersion: 20170927
   m_LegacyPriority: 10
   Target:
-    TrackingTarget: {fileID: 0}
+    TrackingTarget: {fileID: 6327841466780018574}
     LookAtTarget: {fileID: 0}
-    CustomLookAtTarget: 0
+    CustomLookAtTarget: 1
   Lens:
     FieldOfView: 60
     OrthographicSize: 5
@@ -18354,6 +18321,45 @@ MonoBehaviour:
     DissipationDistance: 100
     PropagationSpeed: 343
   DefaultVelocity: {x: 0, y: -1, z: 0}
+--- !u!114 &1567445500761700352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7064745855523087024}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe43d662878a7c43bcd44d43c9e2094, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineDeoccluder
+  CollideAgainst:
+    serializedVersion: 2
+    m_Bits: 1
+  IgnoreTag: 
+  TransparentLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  MinimumDistanceFromTarget: 0.1
+  AvoidObstacles:
+    Enabled: 1
+    DistanceLimit: 0
+    MinimumOcclusionTime: 0
+    CameraRadius: 0.1
+    UseFollowTarget:
+      Enabled: 1
+      YOffset: 1
+    Strategy: 0
+    MaximumEffort: 4
+    SmoothingTime: 0
+    Damping: 0.4
+    DampingWhenOccluded: 0.2
+  ShotQualityEvaluation:
+    Enabled: 0
+    OptimalDistance: 10
+    NearLimit: 5
+    FarLimit: 30
+    MaxQualityBoost: 0.2
 --- !u!1 &7107085987163020000
 GameObject:
   m_ObjectHideFlags: 0
@@ -19232,6 +19238,7 @@ GameObject:
   - component: {fileID: 104620717313384808}
   - component: {fileID: 551288286104583927}
   - component: {fileID: 7100121109500991647}
+  - component: {fileID: 3811674902968084278}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -19255,9 +19262,9 @@ Transform:
   - {fileID: 6915742524547569583}
   - {fileID: 7866113038607822199}
   - {fileID: 4551567498902722764}
+  - {fileID: 4612332021973722751}
   - {fileID: 7479727562014887341}
   - {fileID: 1437407512686108716}
-  - {fileID: 4612332021973722751}
   - {fileID: 2949043135829447847}
   m_Father: {fileID: 6327841466780018574}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -19327,7 +19334,7 @@ MonoBehaviour:
   UseRigidbodyVelocityForIsMoving: 0
   UseRaycastsForIsGrounded: 0
   SlidingParameter: 
-  SpineBone: {fileID: 0}
+  SpineBone: {fileID: 6688774662784230751}
   ChestBone: {fileID: 0}
   RagdolledParameter: 
   SwingHelper: 0.423
@@ -19402,7 +19409,7 @@ MonoBehaviour:
       _rangeHelper: {x: 0, y: 1, z: 0, w: 0}
     - VariableName: Compensate Spine
       Tooltip: 
-      _value: {x: 0.5, y: 0, z: 0, w: 0}
+      _value: {x: 1, y: 0, z: 0, w: 0}
       _string: 
       _curve:
         serializedVersion: 2
@@ -19485,6 +19492,64 @@ MonoBehaviour:
       _uObject: {fileID: 0}
       VariableType: 0
       _rangeHelper: {x: 0, y: 0, z: 0, w: 0}
+  - Enabled: 1
+    Parent: {fileID: 104620717313384808}
+    ModuleReference: {fileID: 11400000, guid: 1494b3d008a47f842bcca38366399d8b, type: 2}
+    customStringList: []
+    customObjectList: []
+    variables:
+    - VariableName: Predict Forward Offset
+      Tooltip: 
+      _value: {x: 0.15, y: 0, z: 0, w: 0}
+      _string: 
+      _curve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      _uObject: {fileID: 0}
+      VariableType: 0
+      _rangeHelper: {x: 0, y: 0, z: 0, w: 0}
+    - VariableName: Predict Forward Hips Offset
+      Tooltip: 
+      _value: {x: 0.05, y: 0, z: 0, w: 0}
+      _string: 
+      _curve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      _uObject: {fileID: 0}
+      VariableType: 0
+      _rangeHelper: {x: 0, y: 0.3, z: 0, w: 0}
+    - VariableName: Extra Multiplier
+      Tooltip: 
+      _value: {x: 1, y: 0, z: 0, w: 0}
+      _string: 
+      _curve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      _uObject: {fileID: 0}
+      VariableType: 0
+      _rangeHelper: {x: 0, y: 0, z: 0, w: 0}
+    - VariableName: Predict Forward IK Offset
+      Tooltip: 
+      _value: {x: 0.1, y: 0, z: 0, w: 0}
+      _string: 
+      _curve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      _uObject: {fileID: 0}
+      VariableType: 0
+      _rangeHelper: {x: 0, y: 0.3, z: 0, w: 0}
   ImpulsesPowerMultiplier: 1
   ImpulsesDurationMultiplier: 1
   ImpulsesDampUpPushes: 0
@@ -19963,7 +20028,7 @@ MonoBehaviour:
   _EditorAllowAutoUpdateFeetParams: 1
   _EditorCategory: 1
   _EditorSetupCategory: 0
-  _EditorMotionCategory: 2
+  _EditorMotionCategory: 3
   _EditorExtraCategory: 2
   setupPose:
     MainHipsPose:
@@ -20084,6 +20149,27 @@ MonoBehaviour:
       Synchronize: 1
       ParameterType: 9
   AnimatorParametersExpanded: 0
+--- !u!135 &3811674902968084278
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7706459632341026678}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 1
+  m_Center: {x: 0, y: 0.5, z: 0.7}
 --- !u!1 &7717320722481631768
 GameObject:
   m_ObjectHideFlags: 0

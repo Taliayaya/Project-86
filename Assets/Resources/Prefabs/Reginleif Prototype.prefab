@@ -3814,10 +3814,10 @@ MonoBehaviour:
   HipsHeightStepBlend: 1
   HipsHeightStepSpeed: 0.37
   HipsAdjustStyle: 0
-  StabilizeCenterOfMass: 0.8
+  StabilizeCenterOfMass: 0.15
   AnimationIsStablePose: 0.75
   StabilizingSpeed: 0.375
-  PushHipsOnLegMove: 0.11
+  PushHipsOnLegMove: 0.03
   NormalizePush: 1
   PushReactionSpeed: 0.14
   PushYBlend: 1
@@ -3845,7 +3845,7 @@ MonoBehaviour:
     BoneMid: {fileID: 9163952366575637359}
     BoneEnd: {fileID: 4791490026095410892}
     Side: 2
-    OppositeLegIndex: -1
+    OppositeLegIndex: 1
     RaycastPrecision: 0
     UseFeet: 0
     BoneFeet: {fileID: 0}
@@ -3876,7 +3876,7 @@ MonoBehaviour:
     BoneMid: {fileID: 7294656551907248403}
     BoneEnd: {fileID: 1479241652143027836}
     Side: 1
-    OppositeLegIndex: 3
+    OppositeLegIndex: 0
     RaycastPrecision: 0
     UseFeet: 0
     BoneFeet: {fileID: 0}
@@ -3906,8 +3906,8 @@ MonoBehaviour:
     BoneStart: {fileID: 6359958007318644899}
     BoneMid: {fileID: 3741211586153479866}
     BoneEnd: {fileID: 144129830535388900}
-    Side: 1
-    OppositeLegIndex: 2
+    Side: 2
+    OppositeLegIndex: 3
     RaycastPrecision: 0
     UseFeet: 0
     BoneFeet: {fileID: 0}
@@ -3937,8 +3937,8 @@ MonoBehaviour:
     BoneStart: {fileID: 8065894813922698751}
     BoneMid: {fileID: 4871519401140803400}
     BoneEnd: {fileID: 3209182216672038157}
-    Side: 2
-    OppositeLegIndex: -1
+    Side: 1
+    OppositeLegIndex: 2
     RaycastPrecision: 0
     UseFeet: 0
     BoneFeet: {fileID: 0}
@@ -4153,7 +4153,7 @@ MonoBehaviour:
     DoStepAnimationOnDistanceFactor: 0.055
   UseGluing: 1
   MainGlueBlend: 1
-  GlueRangeThreshold: 0.25
+  GlueRangeThreshold: 0.705
   GlueFadeInSpeed: 0.85
   AllowGlueBelowFoot: 0.35
   GlueFadeOutSpeed: 0.5
@@ -4206,7 +4206,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   RaycastHitTrigger: 1
-  CastDistance: 1
+  CastDistance: 1.5
   RaycastStartHeight: 0
   RaycastStartHeightMul: 1
   RaycastStyle: 3
@@ -10820,7 +10820,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  test: 1000
   _state: 0
   deathPrefab: {fileID: 7245819395031187743, guid: 2ed37a5d243b79843a00c65c441b2072,
     type: 3}

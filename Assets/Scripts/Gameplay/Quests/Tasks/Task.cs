@@ -90,6 +90,7 @@ namespace Gameplay.Quests.Tasks
             {
                 _startTime = DateTime.Now;
                 Status = TaskStatus.Active;
+                gameObject.SetActive(true);
                 ActivateTaskModules();
             }
             else if (Status == TaskStatus.Completed)

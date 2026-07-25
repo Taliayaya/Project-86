@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5690160262943065554}
   - component: {fileID: 6296383325764317875}
   - component: {fileID: 5095103554159092700}
+  - component: {fileID: 2025328459215193352}
   m_Layer: 0
   m_Name: CockpitCamera
   m_TagString: Untagged
@@ -56,9 +57,9 @@ MonoBehaviour:
   m_StreamingVersion: 20170927
   m_LegacyPriority: 10
   Target:
-    TrackingTarget: {fileID: 0}
+    TrackingTarget: {fileID: 240056689427174799}
     LookAtTarget: {fileID: 0}
-    CustomLookAtTarget: 0
+    CustomLookAtTarget: 1
   Lens:
     FieldOfView: 60
     OrthographicSize: 5
@@ -156,6 +157,45 @@ MonoBehaviour:
     DissipationDistance: 100
     PropagationSpeed: 343
   DefaultVelocity: {x: 0, y: -1, z: 0}
+--- !u!114 &2025328459215193352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 96432602949865958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe43d662878a7c43bcd44d43c9e2094, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineDeoccluder
+  CollideAgainst:
+    serializedVersion: 2
+    m_Bits: 1
+  IgnoreTag: 
+  TransparentLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  MinimumDistanceFromTarget: 0.1
+  AvoidObstacles:
+    Enabled: 1
+    DistanceLimit: 0
+    MinimumOcclusionTime: 0
+    CameraRadius: 0.1
+    UseFollowTarget:
+      Enabled: 1
+      YOffset: 1
+    Strategy: 0
+    MaximumEffort: 4
+    SmoothingTime: 0
+    Damping: 0.4
+    DampingWhenOccluded: 0.2
+  ShotQualityEvaluation:
+    Enabled: 0
+    OptimalDistance: 10
+    NearLimit: 5
+    FarLimit: 30
+    MaxQualityBoost: 0.2
 --- !u!1 &126805227998402407
 GameObject:
   m_ObjectHideFlags: 0
@@ -3594,7 +3634,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 300237752
+  GlobalObjectIdHash: 849477079
   InScenePlacedSourceGlobalObjectIdHash: 300237752
   DeferredDespawnTick: 0
   Ownership: 4
@@ -3752,7 +3792,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  test: 1000
   _state: 0
   deathPrefab: {fileID: 7245819395031187743, guid: 2ed37a5d243b79843a00c65c441b2072,
     type: 3}
@@ -11033,7 +11072,7 @@ MonoBehaviour:
   ShoulderOffset: {x: 0, y: 1, z: 0}
   VerticalArmLength: 2
   CameraSide: 0.5
-  CameraDistance: 8
+  CameraDistance: 9
   AvoidObstacles:
     Enabled: 1
     CollisionFilter:
@@ -11055,7 +11094,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e8b78ac948f05a46a6d8339a503172b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineHardLookAt
-  LookAtOffset: {x: 0, y: 0, z: 0}
+  LookAtOffset: {x: 0, y: 3, z: 10}
 --- !u!114 &5943689515049878066
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13678,7 +13717,7 @@ MonoBehaviour:
   UseRigidbodyVelocityForIsMoving: 0
   UseRaycastsForIsGrounded: 0
   SlidingParameter: 
-  SpineBone: {fileID: 0}
+  SpineBone: {fileID: 9132194475247169360}
   ChestBone: {fileID: 0}
   RagdolledParameter: 
   SwingHelper: 0
@@ -13751,6 +13790,19 @@ MonoBehaviour:
       _uObject: {fileID: 0}
       VariableType: 0
       _rangeHelper: {x: 0, y: 1, z: 0, w: 0}
+    - VariableName: Compensate Spine
+      Tooltip: 
+      _value: {x: 1, y: 0, z: 0, w: 0}
+      _string: 
+      _curve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      _uObject: {fileID: 0}
+      VariableType: 0
+      _rangeHelper: {x: 0, y: 0, z: 0, w: 0}
   - Enabled: 1
     Parent: {fileID: 8256466478378288406}
     ModuleReference: {fileID: 11400000, guid: 0645fbea8059aec47aa6ae9d2c93c1d4, type: 2}

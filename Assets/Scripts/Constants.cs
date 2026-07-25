@@ -157,6 +157,8 @@ public static class Constants
         public const string OnTakeDamage = "OnTakeDamage";
         public const string UnitDeath = "UnitDeath";
         public const string UnitSpawn = "UnitSpawn";
+        public const string MorphoShot = "MorphoShot";
+        public const string MorphoBeamCharging = "MorphoBeamCharging";
 
     }
 
