@@ -2,9 +2,7 @@ using System;
 using Discord.Sdk;
 using Networking.Widgets.Core.Base;
 using Networking.Widgets.Session.Session;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Integrations
 {
@@ -35,6 +33,7 @@ namespace Integrations
             _client.SetStatusChangedCallback(OnStatusChanged);
             _client.SetUserUpdatedCallback(OnUserUpdated);
             _client.SetActivityInviteCreatedCallback(OnActivityInvite);
+            _client.SetActivityJoinCallback(OnActivityJoin);
         }
 
         protected override void OnDestroy()
@@ -228,17 +227,28 @@ namespace Integrations
             if (result.Successful())
             {
                 Debug.Log($"Accepted invite with lobby secret: {joinSecret}");
-                var joining = SessionManager.Instance.EnterSession(new EnterSessionData()
-                {
-                    SessionAction = SessionAction.JoinByCode,
-                    JoinCode = joinSecret,
-                });
-                joining.Start();
+                JoinSessionByCode(joinSecret);
             }
             else
             {
                 Debug.LogError($"Failed to accept invite: {result.Error()}");
             }
+        }
+
+        // Fires when a user clicks "Join" on a friend's Rich Presence (the secret set via ActivitySecrets.SetJoin)
+        private void OnActivityJoin(string joinSecret)
+        {
+            Debug.Log($"Joining via Rich Presence secret: {joinSecret}");
+            JoinSessionByCode(joinSecret);
+        }
+
+        private async void JoinSessionByCode(string joinSecret)
+        {
+            await SessionManager.Instance.EnterSession(new EnterSessionData()
+            {
+                SessionAction = SessionAction.JoinByCode,
+                JoinCode = joinSecret,
+            });
         }
     }
 }
