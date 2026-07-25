@@ -1,29 +1,46 @@
 using System;
+using System.Diagnostics;
+using System.IO;
 using Discord.Sdk;
 using Networking.Widgets.Core.Base;
 using Networking.Widgets.Session.Session;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
+#if UNITY_STANDALONE_WIN && !UNITY_EDITOR
+using Microsoft.Win32;
+#endif
 
 namespace Integrations
 {
     public class DiscordManager : Singleton<DiscordManager>
     {
-        [SerializeField] 
+        [SerializeField]
         private ulong clientId; // Set this in the Unity Inspector from the dev portal
-        
+
         private Client _client;
         private string _codeVerifier;
 
         private string _lobbySecret;
         private ulong _lobbyId;
         private RichPresence.LobbyDetails _lobbyDetails;
-        
+
         private RichPresence _richPresence;
-        
+
+        // Set from the "project-86:///_discord/join?secret=..." command line arg Discord launches us
+        // with when a friend clicks Join while the game isn't already running, consumed once connected.
+        private static string _pendingJoinSecret;
+
         public event Action<Client.Status> onStatusChanged;
         public event Action<ulong> onUserUpdated;
-        
+
         public Client Client => _client;
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void Bootstrap()
+        {
+            RegisterUriProtocolHandler();
+            _pendingJoinSecret = ExtractJoinSecretFromCommandLine();
+        }
 
         private void Start()
         {
@@ -91,11 +108,20 @@ namespace Integrations
             if (error != Client.Error.None)
                 Debug.LogError($"Error: {error}, Code: {errorCode}");
             onStatusChanged?.Invoke(status);
-            
+
+            if (status != Client.Status.Ready)
+                return;
+
             // we try to relaunch rich presence if it failed
-            if (status == Client.Status.Ready && _richPresence != null)
-            {
+            if (_richPresence != null)
                 _richPresence.UpdateRichPresence(_client);
+
+            // we were launched (or already running) with a pending Discord join link, join it now
+            if (_pendingJoinSecret != null)
+            {
+                var secret = _pendingJoinSecret;
+                _pendingJoinSecret = null;
+                JoinSessionByCode(secret);
             }
         }
 
@@ -250,5 +276,99 @@ namespace Integrations
                 JoinCode = joinSecret,
             });
         }
+
+        // Discord launches us with e.g. "project-86:///_discord/join?secret=XYZ" as a command line arg
+        // when a friend clicks Join and the game wasn't already running.
+        private static string ExtractJoinSecretFromCommandLine()
+        {
+            const string secretKey = "secret=";
+            foreach (var arg in Environment.GetCommandLineArgs())
+            {
+                if (!arg.StartsWith(Constants.Properties.AppLaunchCmd, StringComparison.OrdinalIgnoreCase))
+                    continue;
+
+                var secretIndex = arg.IndexOf(secretKey, StringComparison.OrdinalIgnoreCase);
+                if (secretIndex < 0)
+                    continue;
+
+                var secret = arg[(secretIndex + secretKey.Length)..];
+                var ampersandIndex = secret.IndexOf('&');
+                if (ampersandIndex >= 0)
+                    secret = secret[..ampersandIndex];
+                return Uri.UnescapeDataString(secret);
+            }
+
+            return null;
+        }
+
+        // We ship as a plain zip (no installer), so there's nothing else that registers the
+        // "project-86://" URI scheme with the OS for us. Re-registering on every launch is cheap
+        // and keeps the handler pointed at the right exe if the player re-extracts to a new folder.
+        private static void RegisterUriProtocolHandler()
+        {
+            try
+            {
+#if UNITY_STANDALONE_WIN && !UNITY_EDITOR
+                RegisterUriProtocolHandlerWindows();
+#elif UNITY_STANDALONE_LINUX && !UNITY_EDITOR
+                RegisterUriProtocolHandlerLinux();
+#endif
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning($"Failed to register {Constants.Properties.AppLaunchCmd} URI protocol handler: {e}");
+            }
+        }
+
+#if UNITY_STANDALONE_WIN && !UNITY_EDITOR
+        private static void RegisterUriProtocolHandlerWindows()
+        {
+            var exePath = Process.GetCurrentProcess().MainModule?.FileName;
+            if (string.IsNullOrEmpty(exePath))
+                return;
+
+            var protocol = Constants.Properties.AppLaunchCmd.Replace("://", "");
+            using var protocolKey = Registry.CurrentUser.CreateSubKey($@"Software\Classes\{protocol}");
+            protocolKey.SetValue("", $"URL:{protocol} Protocol");
+            protocolKey.SetValue("URL Protocol", "");
+            using var commandKey = protocolKey.CreateSubKey(@"shell\open\command");
+            commandKey.SetValue("", $"\"{exePath}\" \"%1\"");
+        }
+#elif UNITY_STANDALONE_LINUX && !UNITY_EDITOR
+        private static void RegisterUriProtocolHandlerLinux()
+        {
+            var exePath = Process.GetCurrentProcess().MainModule?.FileName;
+            if (string.IsNullOrEmpty(exePath))
+                return;
+
+            var protocol = Constants.Properties.AppLaunchCmd.Replace("://", "");
+            var appsDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "applications");
+            Directory.CreateDirectory(appsDir);
+
+            const string desktopFileName = "project-86.desktop";
+            var desktopFilePath = Path.Combine(appsDir, desktopFileName);
+            File.WriteAllText(desktopFilePath,
+                "[Desktop Entry]\n" +
+                "Type=Application\n" +
+                "Name=Project 86\n" +
+                $"Exec=\"{exePath}\" %u\n" +
+                $"MimeType=x-scheme-handler/{protocol};\n" +
+                "NoDisplay=true\n");
+
+            RunTool("xdg-mime", $"default {desktopFileName} x-scheme-handler/{protocol}", appsDir);
+            RunTool("update-desktop-database", appsDir, appsDir);
+        }
+
+        private static void RunTool(string fileName, string arguments, string workingDirectory)
+        {
+            using var process = Process.Start(new ProcessStartInfo(fileName, arguments)
+            {
+                WorkingDirectory = workingDirectory,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+            });
+            process?.WaitForExit();
+        }
+#endif
     }
 }
