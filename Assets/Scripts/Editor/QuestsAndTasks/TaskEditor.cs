@@ -5,7 +5,7 @@ using Gameplay.Quests.Tasks.TasksType;
 using UnityEditor;
 using UnityEngine;
 
-namespace Editor.QuestsAndTasks
+namespace EEditor.QuestsAndTasks
 {
     [CustomEditor(typeof(Task), true)]
     public class TaskEditor : UnityEditor.Editor

@@ -14,9 +14,10 @@ namespace Animations
         [SerializeField] private float shellAlignRotationStrength = 5;
         [SerializeField] private float shellAlignThreshold = 1;
         
+        private static readonly WaitForFixedUpdate WaitFixed = new WaitForFixedUpdate();
+
         public void Eject()
         {
-            Debug.Log("Ejecting shell");
             var shell = Instantiate(shellPrefab, shellSpawnPoint.position, shellSpawnPoint.rotation);
             Rigidbody rb = shell.GetComponent<Rigidbody>();
             shell.SetActive(true);
@@ -38,7 +39,7 @@ namespace Animations
             {
                 if (rb.linearVelocity.sqrMagnitude < shellAlignThreshold)
                 {
-                    yield return new WaitForFixedUpdate();
+                    yield return WaitFixed;
                     continue;
                 }
 
@@ -53,7 +54,7 @@ namespace Animations
                 Vector3 torque = axis.normalized * (angleDeg * Mathf.Deg2Rad * shellAlignRotationStrength); 
                 rb.AddTorque(torque, ForceMode.Acceleration);
 
-                yield return new WaitForFixedUpdate();
+                yield return WaitFixed;
             }
         }
     }

@@ -80,16 +80,16 @@ namespace AI
 
                 ClosestTarget = null;
 
-                Debug.Log("Start seeing " + _targets.Count);
+                // Debug.Log("Start seeing " + _targets.Count);
                 foreach (var target in new List<Unit>(_targets))
                 {
-                    Debug.Log("see has target");
+                    // Debug.Log("see has target");
                     if (!target)
                         continue;
-                    Debug.Log("try see: " + target.gameObject.name);
+                    // Debug.Log("try see: " + target.gameObject.name);
                     if (CanSeeTargetAux(target))
                     {
-                        Debug.Log("see: " + target.gameObject.name);
+                        // Debug.Log("see: " + target.gameObject.name);
                         break;
                     }
 
@@ -106,7 +106,7 @@ namespace AI
             var direction = target.transform.position - transform.position;
             var angle = Vector3.Angle(direction, transform.forward);
             
-            Debug.Log("angle: " + angle + " " + fieldOfViewAngle * 0.5f);
+            // Debug.Log("angle: " + angle + " " + fieldOfViewAngle * 0.5f);
 
             if (angle < fieldOfViewAngle * 0.5f)
             {

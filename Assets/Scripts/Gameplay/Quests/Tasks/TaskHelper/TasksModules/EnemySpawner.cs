@@ -90,7 +90,11 @@ namespace Gameplay.Quests.Tasks.TaskHelper.TasksModules
         public void SpawnEnemies()
         {
             if (!NetworkManager.Singleton.IsHost)
+            {
+                Debug.LogError("Is not host, skipping spawn");
                 return;
+            }
+
             StartCoroutine(SpawnEnemiesCoroutine());
         }
         

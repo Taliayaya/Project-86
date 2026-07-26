@@ -176,8 +176,6 @@ namespace Gameplay.Units
             // if we paused, dont start doing anything
             if (Factions.IsPaused(Faction)) return;
             
-            if (isAutonomous)
-                _behaviourTreeRunner.StartAI();
             if (rotateMainBodyTowardsEnemy)
                 RotateTowardsEnemy();
             if (!navmeshRotate)
@@ -295,19 +293,20 @@ namespace Gameplay.Units
         [SerializeField] private Transform _firstChild;
         [Tooltip("The transform from which raycast are made")][SerializeField] private Transform _sensor;
         private Vector3 _lastPosition;
+        private static readonly WaitForFixedUpdate WaitFixed = new WaitForFixedUpdate();
         IEnumerator RotateTowardsEnemyCoroutine()
         {
             while (true)
             {
                 if (!IsRotating)
                 {
-                    yield return new WaitForFixedUpdate();
+                    yield return WaitFixed;
                     continue;
                 }
                 Vector3 direction;
                 bool hasTarget = Target != null && Target.Unit;
-                if (hasTarget 
-                    && Vector3.Distance(Target.AimPosition, 
+                if (hasTarget
+                    && Vector3.Distance(Target.AimPosition,
                                         transform.position
                                         ) < agentSo.combatDistance)
                     direction = (Target.AimPosition - transform.position).normalized;
@@ -322,17 +321,20 @@ namespace Gameplay.Units
 
                 var newRotation = Quaternion.LookRotation(direction);
 
+                // only touch the transforms when there is something to do — writing them
+                // every fixed tick dirties the hierarchy for the whole unit
                 Quaternion current = _firstChild.localRotation;
-                _firstChild.localRotation = Quaternion.Slerp(current, newRotation, Time.deltaTime * agentSo.rotationSpeed);
-                transform.localRotation = Quaternion.Euler(0, 0, 0);
-                
-                yield return new WaitForFixedUpdate();
+                if (Quaternion.Angle(current, newRotation) > 0.1f)
+                    _firstChild.localRotation = Quaternion.Slerp(current, newRotation, Time.deltaTime * agentSo.rotationSpeed);
+                if (transform.localRotation != Quaternion.identity)
+                    transform.localRotation = Quaternion.identity;
+
+                yield return WaitFixed;
             }
         }
         
         public void StartAI()
         {
-            _behaviourTreeRunner.StartAI();
         }
 
         public void StartMaintainIdealDistance(Transform closestTarget)

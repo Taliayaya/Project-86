@@ -42,7 +42,7 @@ namespace Gameplay.Quests.Tasks.TasksType
             {
                 if (IsOwner)
                 {
-                    _currentEnemyKilled.Value++;
+                    _currentEnemyKilled.Value += 1;
                     Complete();
                     OnTaskProgressChangedHandler(this);
                 }
@@ -51,7 +51,7 @@ namespace Gameplay.Quests.Tasks.TasksType
 
         public override bool CanComplete()
         {
-            Debug.Log($"[CanComplete]2 currentEnemyKilled {_currentEnemyKilled.Value}");
+            Debug.Log($"[CanComplete]2 currentEnemyKilled {_currentEnemyKilled.Value} >= {enemyToKill}");
             return _currentEnemyKilled.Value >= enemyToKill;
         }
 

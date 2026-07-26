@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Cinemachine;
+using Unity.Cinemachine;
 using ScriptableObjects.GameParameters;
 using UI;
 using UI.HUD;
@@ -262,6 +262,12 @@ namespace Gameplay.Mecha
             _joint.maxDistance = distance; // 0.25f;
             // _joint.maxDistance = math.clamp(math.min(_joint.maxDistance - grapplePullSpeed * Time.fixedDeltaTime, distance), 0.25f, maxGrappleDistance);
             _joint.minDistance = distance * 0.25f; // 0.25f;
+
+            if (grapplePoint.transform.parent != null)
+            {
+                if (grapplePoint.transform.parent.CompareTag("Interactable"))
+                    grapplePoint.transform.parent.SendMessageUpwards("OnGrapplePull", SendMessageOptions.DontRequireReceiver);
+            }
         }
         
 
@@ -326,7 +332,7 @@ namespace Gameplay.Mecha
             StopGrapple(false);
         }
         
-        public void SetCamera(CinemachineVirtualCamera vcam)
+        public void SetCamera(CinemachineCamera vcam)
         {
             cam = vcam.transform;
         }

@@ -2,7 +2,7 @@ using Gameplay;
 using UnityEditor;
 using UnityEngine;
 
-namespace Editor
+namespace EEditor
 {
     [CustomEditor(typeof(LegSynchroniseToEnd))]
     public class LegSynchroniseToEndEditor : UnityEditor.Editor

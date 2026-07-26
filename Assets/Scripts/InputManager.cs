@@ -65,7 +65,6 @@ public class InputManager : Singleton<InputManager>
     
     private void OnJump(InputValue inputValue)
     {
-        Debug.Log("OnJump");
         EventManager.TriggerEvent(Constants.TypedEvents.Inputs.OnJump, inputValue.isPressed);
     }
 
@@ -96,7 +95,6 @@ public class InputManager : Singleton<InputManager>
         var data = inputValue.Get<float>();
         if (data > 0)
         {
-            Debug.Log("OnZoomIn");
             EventManager.TriggerEvent("OnZoomIn", data);
         }
     }

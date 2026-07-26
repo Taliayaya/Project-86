@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Editor
+namespace EEditor
 {
     [CustomEditor(typeof(EventManager))]
     public class EventManagerEditor : UnityEditor.Editor

@@ -34,6 +34,8 @@ public static class Constants
         public const string OnAskDataCollectionAgreement = "OnAskDataCollectionAgreement";
         public const string OnDataCollectionAgreement = "OnDataCollectionAgreement";
 
+        public const string AllMonumentsDestroyed = "AllMonumentsDestroyed";
+
         public static class Inputs
         {
             public const string OnChangeView = "OnChangeView";
@@ -148,12 +150,15 @@ public static class Constants
         public const string OnToggleHealthBar = "OnToggleHealthBar";
 
         public const string OnToggleCockpitView = "OnToggleCockpitView";
+        public const string OnZoomChange = "OnZoomChange";
         // TODO : Add all the typed event names cause i couldnt be bothered -nemo
         
         public const string OnPlayerChanged = "OnPlayerChanged";
         public const string OnTakeDamage = "OnTakeDamage";
         public const string UnitDeath = "UnitDeath";
         public const string UnitSpawn = "UnitSpawn";
+        public const string MorphoShot = "MorphoShot";
+        public const string MorphoBeamCharging = "MorphoBeamCharging";
 
     }
 

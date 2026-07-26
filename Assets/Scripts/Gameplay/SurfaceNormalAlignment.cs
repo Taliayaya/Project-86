@@ -91,7 +91,7 @@ public class SurfaceNormalAlignment : NetworkBehaviour
         {
             if (Physics.Raycast(transform.position + rayPositions[i], transform.TransformDirection(rayDirections[i]), out hitData, rayLengths[i])) 
             {
-                rawNormals[hits] = hitData.normal * rayWeights[i];
+                rawNormals[rawHits] = hitData.normal * rayWeights[i];
                 rawHits++;
                 if (Vector3.Angle(Vector3.up, hitData.normal) > discardAngle) { continue; }
                 normals[hits] = hitData.normal * rayWeights[i];

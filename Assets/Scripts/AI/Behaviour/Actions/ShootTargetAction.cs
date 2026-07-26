@@ -19,6 +19,7 @@ public partial class ShootTargetAction : Action
     [SerializeReference] public BlackboardVariable<float> ShootDuration;
     [SerializeReference] public BlackboardVariable<float> AngleToShoot = new(10f);
     [SerializeReference] public BlackboardVariable<float> DistanceShootAlways = new(10f);
+    [SerializeReference] public BlackboardVariable<float> RaycastInterval = new(0.5f);
     [SerializeReference] public BlackboardVariable<List<string>> Layers;
     
     [CreateProperty] WeaponModule[] _weaponModules;
@@ -57,7 +58,6 @@ public partial class ShootTargetAction : Action
         if (Physics.Raycast(movedPosition, direction, out hit, AgentSo.Value.viewDistance, _layerMask))
         {
             float errorRange = Mathf.Abs(hit.distance - targetDistance);
-            Debug.Log($"{Agent.Value.name}: PerformRaycast {Target.Value.name} - hit {hit.transform.name} distance: {hit.distance} < {targetDistance} error: {errorRange}");
             if (errorRange > _doNotShootDistanceFromTarget)
                 return false;
             if (hit.rigidbody)
@@ -66,9 +66,10 @@ public partial class ShootTargetAction : Action
                     return false;
             }
         }
-        Debug.DrawLine(position, hit.point, Color.yellow);
         return true;
     }
+
+    private float _lastRaycastTime;
 
     public bool EnemyInRange(Transform turret)
     {
@@ -77,15 +78,16 @@ public partial class ShootTargetAction : Action
         var direction = Target.Value.transform.position - turret.position;
         var angle = Vector3.Angle(direction, turret.forward);
         var distance = direction.magnitude;
-        
-        Debug.Log($"{Agent.Value.name}: EnemyInRange {Target.Value.name} - angle: {angle} < {AngleToShoot.Value * 0.5f} distance: {distance} < {AgentSo.Value.combatDistance}");
 
         if (distance >= AgentSo.Value.combatDistance)
             return false;
 
         if (angle >= AngleToShoot.Value * 0.5f)
             return false;
-        
+
+        if (Time.time - _lastRaycastTime < RaycastInterval.Value)
+            return true;
+        _lastRaycastTime = Time.time;
         return PerformRaycast(turret.position, direction);
     }
 }

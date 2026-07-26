@@ -1,7 +1,6 @@
 using System;
 using System.Net.Mail;
 using System.Threading.Tasks;
-using Firebase.Auth;
 using Networking;
 using TMPro;
 using Unity.Services.Authentication;
@@ -27,6 +26,7 @@ namespace UI.MainMenu
 
         [SerializeField] private UnityEvent onRegisterSuccess;
 
+#if USE_FIREBASE_AUTH
         async Task SignUpWithUsernamePasswordAsync(string email, string password, string username)
         {
             try
@@ -60,6 +60,7 @@ namespace UI.MainMenu
                 Debug.LogException(ex);
             }
         }
+#endif
 
         public async void OnRegisterButtonClicked()
         {
@@ -89,8 +90,8 @@ namespace UI.MainMenu
                     }
                     else
                     {
-                        feedbackText.text = "";
-                        await SignUpWithUsernamePasswordAsync(emailInput.text,  passwordInput.text, usernameInput.text);
+                        feedbackText.text = "SIGN UP NOT IMPLEMENTED";
+                        // await SignUpWithUsernamePasswordAsync(emailInput.text,  passwordInput.text, usernameInput.text);
                     }
                 }
             }

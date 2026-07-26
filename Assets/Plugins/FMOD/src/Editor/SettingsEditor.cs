@@ -9,6 +9,12 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 
+#if UNITY_6000_2_OR_NEWER
+using TreeView = UnityEditor.IMGUI.Controls.TreeView<int>;
+using TreeViewItem = UnityEditor.IMGUI.Controls.TreeViewItem<int>;
+using TreeViewState = UnityEditor.IMGUI.Controls.TreeViewState<int>;
+#endif
+
 namespace FMODUnity
 {
     [CustomEditor(typeof(Settings))]
@@ -237,6 +243,13 @@ namespace FMODUnity
 
             staticPluginsView = new PlatformPropertyStringListView(Platform.PropertyAccessors.StaticPlugins);
             dynamicPluginsView = new PlatformPropertyStringListView(Platform.PropertyAccessors.Plugins);
+            dynamicPluginsView.onListChanged += () =>
+            {
+                if (dynamicPluginsView.platform is PlatformPlayInEditor)
+                {
+                    EditorUtils.RecreateSystem();
+                }
+            };
 
             Undo.undoRedoPerformed += OnUndoRedo;
         }
@@ -2483,6 +2496,8 @@ namespace FMODUnity
 
             private List<string> displayList;
 
+            public Action onListChanged;
+
             public PlatformPropertyStringListView(Platform.PropertyAccessor<List<string>> property)
                 : base(null, typeof(string), true, false, true, true)
             {
@@ -2547,12 +2562,13 @@ namespace FMODUnity
 
                     EditorGUI.BeginChangeCheck();
 
-                    string newValue = EditorGUI.TextField(rect, list[index] as string);
+                    string newValue = EditorGUI.DelayedTextField(rect, list[index] as string);
 
                     if (EditorGUI.EndChangeCheck())
                     {
                         displayList[index] = newValue;
                         AffirmOverriddenList()[index] = newValue;
+                        onListChanged?.Invoke();
                     }
                 }
             }
@@ -2565,6 +2581,7 @@ namespace FMODUnity
             private void RemoveElement(UnityEditorInternal.ReorderableList list)
             {
                 AffirmOverriddenList().RemoveAt(list.index);
+                onListChanged?.Invoke();
             }
 
             private void OnReorder(UnityEditorInternal.ReorderableList list)

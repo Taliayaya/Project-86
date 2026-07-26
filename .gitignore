@@ -77,6 +77,8 @@ crashlytics-build.properties
 # Developper Specific Resources
 /[Aa]ssets/NEMODESM_PERSONAL_ASSETS**
 
+Assets/_Recovery
+
 # Assets
 Assets/EasyRoads*
 Assets/FImpossible*
@@ -87,7 +89,25 @@ Assets/ZRN*
 *buto*
 Assets/Text*
 Assets/Terrain*
+Assets/MobileDependencyResolver
+Packages/com.discord.partnersdk
+Assets/Plugins/FMOD/platforms
 
 # Lights
 *dir.png*
 *light.exr*
+LightingData.asset*
+*Baking Set.asset*
+
+*.bytes*
+
+Assets/Gaia User Data/*
+Assets/Procedural Worlds
+
+# Crash
+*.blob
+*.log
+
+# Plugins
+EasyRoads3Dv3/
+

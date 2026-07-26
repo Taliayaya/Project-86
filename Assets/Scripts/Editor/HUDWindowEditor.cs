@@ -3,7 +3,7 @@ using UI.HUD.HUDWindowSystem;
 using UnityEditor;
 using UnityEngine;
 
-namespace Editor
+namespace EEditor
 {
     [CustomEditor(typeof(HUDWindow)), CanEditMultipleObjects]
     public class HUDWindowEditor : UnityEditor.Editor

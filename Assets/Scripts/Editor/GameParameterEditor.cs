@@ -3,7 +3,7 @@ using ScriptableObjects.GameParameters;
 using UnityEditor;
 using UnityEngine;
 
-namespace Editor
+namespace EEditor
 {
     [CustomEditor(typeof(GameParameters), true)]
     public class GameParameterEditor : UnityEditor.Editor
