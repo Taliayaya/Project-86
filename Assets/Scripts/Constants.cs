@@ -172,15 +172,4 @@ public static class Constants
 
         public const string AppLaunchCmd = "project-86://";
     }
-
-    public static class Integrations
-    {
-        public static class Discord
-        {
-            public const long AppID = 2 * 0b1011 * 0x1F * 0b101111101110001100001100000110001111111101110010111;
-#if ENABLE_INTEGRATION_DISCORD
-            public const global::Discord.ActivityType ActivityType = 0;
-#endif
-        }
-    }
 }
