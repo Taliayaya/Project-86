@@ -4,10 +4,13 @@ import base64, json, os, sys, urllib.request as u
 from datetime import datetime, timezone
 
 API = "https://services.api.unity.com"
-# leaderboard id -> (display title, embed colour)
+HEADING = "**Today's leaderboard result**"
+# leaderboard id -> (display title, embed colour, blurb)
 BOARDS = {
-    "best_sortie_kills": ("Best Sortie Kills", 0xE03131),
-    "total_kills": ("Total Kills", 0xF59F00),
+    "best_sortie_kills": ("Best Sortie Kills", 0xE03131,
+                          "Most Legion destroyed by a single Processor in one sortie."),
+    "total_kills": ("Total Kills", 0xF59F00,
+                    "Total Legion destroyed by a Processor across every sortie flown."),
 }
 TOP_N = 10
 NAME_CAP = 22          # keeps the table narrow enough not to wrap on mobile
@@ -59,19 +62,20 @@ def main():
     now = datetime.now(timezone.utc).isoformat()
 
     embeds = []
-    for lb_id, (title, colour) in BOARDS.items():
+    for lb_id, (title, colour, blurb) in BOARDS.items():
         res = call(f"{API}/leaderboards/v1/projects/{pid}/environments/{envid}"
                    f"/leaderboards/{lb_id}/scores?offset=0&limit={TOP_N}", headers=auth)
         embeds.append({
             "title": title,
             "color": colour,
-            "description": table(res["results"]) if res["results"] else "_no scores yet_",
+            "description": blurb + "\n" + (table(res["results"]) if res["results"]
+                                              else "_no scores yet_"),
             "footer": {"text": f"{res.get('total', len(res['results']))} pilots ranked"},
             "timestamp": now,
         })
 
     call(env("DISCORD_WEBHOOK"),
-         json.dumps({"embeds": embeds}).encode(),
+         json.dumps({"content": HEADING, "embeds": embeds}).encode(),
          {"Content-Type": "application/json"})
     print("posted", len(embeds), "leaderboards")
 
