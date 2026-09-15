@@ -1,10 +1,15 @@
 #!/usr/bin/env python3
 """Post UGS leaderboards to Discord. All config via env vars."""
 import base64, json, os, sys, urllib.request as u
+from datetime import datetime, timezone
 
 API = "https://services.api.unity.com"
-# leaderboard id -> display title
-BOARDS = {"best_sortie_kills": "Best Sortie Kills", "total_kills": "Total Kills"}
+# leaderboard id -> (display title, embed colour)
+BOARDS = {
+    "best_sortie_kills": ("Best Sortie Kills", 0xE03131),
+    "total_kills": ("Total Kills", 0xF59F00),
+}
+MEDALS = ["\U0001F947", "\U0001F948", "\U0001F949"]  # gold, silver, bronze
 TOP_N = 10
 
 
@@ -25,26 +30,40 @@ def call(url, data=None, headers=None):
         return json.loads(body) if body else None
 
 
+def line(entry):
+    """One ranked row. Names keep their #1234 tag -- several pilots share a name."""
+    name, _, tag = (entry.get("playerName") or entry["playerId"][:8]).partition("#")
+    rank = entry["rank"]
+    badge = MEDALS[rank] if rank < len(MEDALS) else f"`{rank + 1:>2}`"
+    tag = f"`#{tag}`" if tag else ""
+    return f"{badge}  **{name}**{tag} — `{entry['score']:g}`"
+
+
 def main():
     pid, envid = env("UGS_PROJECT"), env("UGS_ENV")
     # The Admin API takes service-account Basic auth directly. Do NOT exchange for a
     # stateless token here -- that one is player-scoped and gets rejected as "untrusted issuer".
     basic = base64.b64encode(f"{env('UGS_KEY_ID')}:{env('UGS_SECRET')}".encode()).decode()
     auth = {"Authorization": f"Basic {basic}"}
+    now = datetime.now(timezone.utc).isoformat()
 
-    blocks = []
-    for lb_id, title in BOARDS.items():
+    embeds = []
+    for lb_id, (title, colour) in BOARDS.items():
         res = call(f"{API}/leaderboards/v1/projects/{pid}/environments/{envid}"
                    f"/leaderboards/{lb_id}/scores?offset=0&limit={TOP_N}", headers=auth)
-        rows = "\n".join(
-            f"{e['rank'] + 1:>2}. {(e.get('playerName') or e['playerId'][:8]):<20} {e['score']:g}"
-            for e in res["results"])
-        blocks.append(f"**{title}**\n```\n{rows or 'no scores yet'}\n```")
+        rows = [line(e) for e in res["results"]]
+        embeds.append({
+            "title": title,
+            "color": colour,
+            "description": "\n".join(rows) or "_no scores yet_",
+            "footer": {"text": f"{res.get('total', len(rows))} pilots ranked"},
+            "timestamp": now,
+        })
 
     call(env("DISCORD_WEBHOOK"),
-         json.dumps({"content": "\n".join(blocks)}).encode(),
+         json.dumps({"embeds": embeds}).encode(),
          {"Content-Type": "application/json"})
-    print("posted", len(blocks), "leaderboards")
+    print("posted", len(embeds), "leaderboards")
 
 
 if __name__ == "__main__":
