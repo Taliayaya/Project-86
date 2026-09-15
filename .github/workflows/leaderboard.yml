@@ -1,0 +1,21 @@
+# Posts the UGS leaderboards to Discord on a schedule.
+# Requires these repo secrets (Settings -> Secrets and variables -> Actions):
+#   UGS_PROJECT, UGS_ENV, UGS_KEY_ID, UGS_SECRET, DISCORD_WEBHOOK
+# The service account needs a Leaderboards viewer role on the project.
+name: Post leaderboards to Discord
+on:
+  schedule:
+    - cron: '0 * * * *'   # hourly, UTC
+  workflow_dispatch:       # manual run button
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 tools/leaderboard/lb.py
+        env:
+          UGS_PROJECT: ${{ secrets.UGS_PROJECT }}
+          UGS_ENV: ${{ secrets.UGS_ENV }}
+          UGS_KEY_ID: ${{ secrets.UGS_KEY_ID }}
+          UGS_SECRET: ${{ secrets.UGS_SECRET }}
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
