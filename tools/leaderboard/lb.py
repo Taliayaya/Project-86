@@ -9,8 +9,14 @@ BOARDS = {
     "best_sortie_kills": ("Best Sortie Kills", 0xE03131),
     "total_kills": ("Total Kills", 0xF59F00),
 }
-MEDALS = ["\U0001F947", "\U0001F948", "\U0001F949"]  # gold, silver, bronze
 TOP_N = 10
+NAME_CAP = 22          # keeps the table narrow enough not to wrap on mobile
+ESC = "\x1b"
+# Discord renders ```ansi blocks. Colour beats emoji for a podium here: emoji are
+# double-width and would break the column alignment that makes this read as a table.
+PODIUM = {0: f"{ESC}[1;33m", 1: f"{ESC}[1;37m", 2: f"{ESC}[0;33m"}
+HEADER = f"{ESC}[4;37m"
+RESET = f"{ESC}[0m"
 
 
 def env(name):
@@ -30,13 +36,18 @@ def call(url, data=None, headers=None):
         return json.loads(body) if body else None
 
 
-def line(entry):
-    """One ranked row. Names keep their #1234 tag -- several pilots share a name."""
-    name, _, tag = (entry.get("playerName") or entry["playerId"][:8]).partition("#")
-    rank = entry["rank"]
-    badge = MEDALS[rank] if rank < len(MEDALS) else f"`{rank + 1:>2}`"
-    tag = f"`#{tag}`" if tag else ""
-    return f"{badge}  **{name}**{tag} — `{entry['score']:g}`"
+def table(results):
+    """Monospace table. Names keep their #1234 tag -- several pilots share a name."""
+    names = [(e.get("playerName") or e["playerId"][:8])[:NAME_CAP] for e in results]
+    scores = [f"{e['score']:g}" for e in results]
+    w_name = max((len(n) for n in names), default=5)
+    w_score = max(max((len(s) for s in scores), default=0), 5)
+    rows = [f"{HEADER}{'#':>2}  {'PILOT':<{w_name}}  {'KILLS':>{w_score}}{RESET}"]
+    for e, name, score in zip(results, names, scores):
+        colour = PODIUM.get(e["rank"], "")
+        end = RESET if colour else ""
+        rows.append(f"{colour}{e['rank'] + 1:>2}  {name:<{w_name}}  {score:>{w_score}}{end}")
+    return "```ansi\n" + "\n".join(rows) + "\n```"
 
 
 def main():
@@ -51,12 +62,11 @@ def main():
     for lb_id, (title, colour) in BOARDS.items():
         res = call(f"{API}/leaderboards/v1/projects/{pid}/environments/{envid}"
                    f"/leaderboards/{lb_id}/scores?offset=0&limit={TOP_N}", headers=auth)
-        rows = [line(e) for e in res["results"]]
         embeds.append({
             "title": title,
             "color": colour,
-            "description": "\n".join(rows) or "_no scores yet_",
-            "footer": {"text": f"{res.get('total', len(rows))} pilots ranked"},
+            "description": table(res["results"]) if res["results"] else "_no scores yet_",
+            "footer": {"text": f"{res.get('total', len(res['results']))} pilots ranked"},
             "timestamp": now,
         })
 
