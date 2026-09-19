@@ -5,7 +5,7 @@
 name: Post leaderboards to Discord
 on:
   schedule:
-    - cron: '0 * * * *'   # hourly, UTC
+    - cron: '0 0 * * *' # Daily
   workflow_dispatch:       # manual run button
 jobs:
   post:
