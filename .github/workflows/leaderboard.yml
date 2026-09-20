@@ -12,6 +12,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # Last run's standings, so the post can show movement. Cache keys are immutable, so save under
+      # the run id and restore the newest match. Losing this cache (7 days idle, or a miss) costs one
+      # report its arrows and nothing else: the poster falls back to a plain table.
+      - uses: actions/cache@v4
+        with:
+          path: tools/leaderboard/state
+          key: leaderboard-state-${{ github.run_id }}
+          restore-keys: leaderboard-state-
       - run: python3 tools/leaderboard/lb.py
         env:
           UGS_PROJECT: ${{ secrets.UGS_PROJECT }}
