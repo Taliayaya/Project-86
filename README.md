@@ -60,37 +60,7 @@ Please note that all aspects outlined here are currently theoretical and subject
 
 ## Download
 
-While the game is still at an early development stage, we wish for players to actively participate in this project. Hence, players are already allowed to download the latest version and play on it.
-Since the game is not completed, it may not exceed their expectations. Yet, because it does not reach it yet that it won't. And because of that, we hardly recommend anyone to share us their ideas or issues.
-
-The game is not on Steam (yet) and players have two ways to download the game for now:
-
-> Concerning Steam, fan games are not allowed without the authorization of the IP. Our goal is to grow a bit more and hope to reach an agreement with them to simply this procedure. 
-
-### [PRERELEASE] Launcher
-
-> **⚠ The launcher update system is currently in test! Try it out or Consider updating by downloading the .zip file through the [releases section](#latest-version).**
-
-A launcher was made so that players do not have to go through the pain of re-downloading every new version. The launcher is not as powerful as Steam update system, yet it already avoids redownloading unchanged files and can hence make the download lighter.
-
-- [Download the launcher](https://github.com/Project-86-Community/Project-86-Launcher/releases/latest)
-- Execute the launcher
-> Your computer will treat this EXE file as a virus. This is because we do not hold a certificate for it yet. This EXE is a compiled installer made from Visual Studio and [the app publicly available here](https://github.com/Project-86-Community/Project-86-Launcher)
-- After installation, the game will be installed in `%Appdata%/Project-86-Community/Build/`. It is not possible with the current launcher to change the download folder. ([You can contribute and improve the launcher](https://github.com/Project-86-Community/Project-86-Launcher)
-- Once the game is downloaded, click PLAY and enjoy.
-
-### Latest version
-
-If downloading the launcher is too much for you, you can simply download the latest build and execute it. This is not a long term recommendation as downloading the whole game every time for an update can be troublesome. 
-
-- Go to [the latest version page](https://github.com/Taliayaya/Project-86/releases/latest)
-- Download the .ZIP file matching the version (e.g. `Project86-vX.X.X-alpha.zip`)
-- Extract it in any directory
-- Execute `Project-86.exe`
-
-> This method can also be a work-around if your computer does not let you download the launcher.
-
-> `Mono not found`? Ensure that the download was done correctly and that the install path does not contain special character (only alphanumeric ones) as it may cause issues. If you have an error, you can [ask help on the discord server](https://discord.gg/Yh2TQH97yA)
+**We are now publishing updates through Itch.io. Please check it out here: https://project-86.itch.io/project-86**
 
 --- 
 
@@ -100,6 +70,7 @@ Please be aware that juggernaut stats, sounds, and visual effects are temporary 
 
 ## How to Contribute
 
+We now use Unity VCS. This GitHub is no longer actively maintained.
 This section was moved to the Wiki: https://github.com/Taliayaya/Project-86/wiki/Project-Installation
 
 ## Disclaimer
